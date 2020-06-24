@@ -11,6 +11,10 @@ brew 'coreutils' # Those that come with macOS are outdated
 brew 'ffmpeg'
 brew 'git'
 brew 'mas' # Mac App Store manager
+brew 'neofetch'
+brew 'teamookla/speedtest/speedtest'
+brew 'youtube-dl'
+brew 'zlib'
 
 # Shell
 brew 'zsh-autosuggestions'
