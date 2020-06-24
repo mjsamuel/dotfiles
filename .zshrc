@@ -4,7 +4,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # Path to your dotfiles.
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES=$HOME/Developer/dotfiles
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -78,6 +78,8 @@ POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='green'
 
 POWERLEVEL9K_VIRTUALENV_FOREGROUND='yellow'
 POWERLEVEL9K_VIRTUALENV_BACKGROUND='clear'
+POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=true
+POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION='${P9K_CONTENT%% *}'
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     root_indicator
@@ -92,8 +94,6 @@ POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='%F{008}\uf460%F{008}'
 
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
     status
-    go_version
-    nvm
     os_icon
 )
 POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
@@ -114,6 +114,3 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
-# PATH VARIABLES
-export PATH=$PATH:/opt/apache-maven/bin

@@ -12,6 +12,9 @@ brew 'ffmpeg'
 brew 'git'
 brew 'mas' # Mac App Store manager
 
+# Shell
+brew 'zsh-autosuggestions'
+
 # Development
 brew 'mysql'
 brew 'node'
