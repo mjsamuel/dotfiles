@@ -30,5 +30,5 @@ ln -s $HOME/Developer/dotfiles/shell/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
 ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
-rm -rf iHOME/.config/neofetch/config.conf
-ln -s $HOME/Developer/dotfiles/.neofetch.conf $HOME/.config/neofetch/config.conf
+rm -rf $HOME/.config/neofetch/config.conf
+ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config.conf
