@@ -26,7 +26,7 @@ I prefer to store my dotfiles (as well as all my other projects) in a folder nam
 
 ## Post-install Tasks
 ### Setting up iTerm2
-1. Open `~/Developer/iterm/mirage dark.itermcolors` to import the colour preset
+1. Open `~/Developer/iterm/mirage dark.itermcolors` to import the colour preset.
 2. Open iTerm2.
 3. Select iTerm2 > Preferences.
 4. Under the General tab, check the box labeled "Load preferences from a custom folder or URL:"
