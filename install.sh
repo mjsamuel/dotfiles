@@ -24,9 +24,10 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~
 rm -rf $HOME/.zshrc
 ln -s $HOME/Developer/dotfiles/shell/.zshrc $HOME/.zshrc
 
-# Symlink zsh functions and paths from our dotfiles
+# Symlinks zsh functions, paths and theme from our dotfiles
 ln -s $HOME/Developer/dotfiles/shell/functions.zsh $HOME/.oh-my-zsh/custom/functions.zsh
 ln -s $HOME/Developer/dotfiles/shell/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
+ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 rm -rf iHOME/.config/neofetch/config.conf
