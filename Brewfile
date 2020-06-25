@@ -22,6 +22,7 @@ brew 'zsh-autosuggestions'
 # Development
 brew 'mysql'
 brew 'node'
+brew 'python'
 
 # Apps
 cask 'atom'
