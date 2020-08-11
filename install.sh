@@ -31,6 +31,8 @@ ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/the
 
 # Symlink Sublime's command line tool
 ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+# Symlink Sublime preferences
+ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 rm -rf $HOME/.config/neofetch/config.conf
