@@ -4324,7 +4324,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>410 363 620 392 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 563 1440 314 0 0 1440 877 </string>
+	<string>7 8 703 862 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>709 399 731 471 0 0 1440 877 </string>
 	<key>New Bookmarks</key>
@@ -6808,7 +6808,7 @@
 			<key>Blur</key>
 			<true/>
 			<key>Blur Radius</key>
-			<real>30</real>
+			<real>0.10000000000000001</real>
 			<key>Bold Color</key>
 			<dict>
 				<key>Alpha Component</key>
@@ -7304,7 +7304,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.27246986040609134</real>
+			<real>0.30362864847715737</real>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -7362,7 +7362,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>AA1B8DA5-E522-4FB1-8A81-3D646872D91D</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>411</integer>
+	<integer>428</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -8155,7 +8155,7 @@
 	<key>PromptOnQuit</key>
 	<false/>
 	<key>QuitWhenAllWindowsClosed</key>
-	<true/>
+	<false/>
 	<key>SUAutomaticallyUpdate</key>
 	<true/>
 	<key>SUEnableAutomaticChecks</key>
@@ -8167,7 +8167,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-08-07T01:34:01Z</date>
+	<date>2020-08-11T03:22:06Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>

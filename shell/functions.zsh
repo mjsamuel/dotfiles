@@ -35,3 +35,32 @@ dl() {
         youtube-dl "$1"
     fi
 }
+
+edf() {
+    subl ~/Developer/dotfiles/shell/functions.zsh
+}
+
+ai() {
+    cd ~/School/ai/Homework/p2-multiagent-thinky
+    subl .
+    open http://ai.berkeley.edu/multiagent.html
+}
+
+hb-sync() {
+    cd $HOME/Developer/homebridge/Homebridge-MagicHome-Sync
+    source ./host/venv/bin/activate
+}
+
+ipse() {
+  cd ~/School/ipse/Assignment\ 1/Bonfire
+  open Bonfire.xcodeproj
+  open ../2020_S2_A1_iphone.pdf
+  open https://rmit.instructure.com/courses/75755/assignments/481832
+}
+
+site() {
+    cd $HOME/Developer/mjsamuel.github.io
+    subl .
+    open http://localhost:4000
+    bundle exec jekyll serve --watch --livereload --host 0.0.0.0
+}
