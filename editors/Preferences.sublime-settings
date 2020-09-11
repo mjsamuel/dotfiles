@@ -1,5 +1,6 @@
 {
 	"color_scheme": "Packages/ayu/ayu-dark.sublime-color-scheme",
+	"copy_with_empty_selection": false,
 	"ensure_newline_at_eof_on_save": true,
 	"font_size": 13,
 	"hot_exit": false,
@@ -13,5 +14,9 @@
 	"tab_size": 2,
 	"theme": "ayu-dark.sublime-theme",
 	"translate_tabs_to_spaces": true,
-	"copy_with_empty_selection": false
+	"draw_white_space": "all",
+	"rulers": [80],
+	"draw_indent_guides": false,
+	"ui_separator": true, // separators between panels
+	"ui_wide_scrollbars": true,
 }
