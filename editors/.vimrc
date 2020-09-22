@@ -4,19 +4,17 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'drewtempelmeyer/palenight.vim'
-
 Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-
 Plug 'itchyny/lightline.vim'
-
 Plug 'airblade/vim-gitgutter'
-
 Plug 'ayu-theme/ayu-vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
-set number
+set relativenumber
 
 " ColorScheme
 set termguicolors
@@ -44,6 +42,7 @@ endif
 
 
 " NerdTree Settings
+
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
@@ -56,3 +55,16 @@ endif
 set noshowmode
 set list
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»
+
+" Rebinding
+map ; :Files<CR>
+map <C-o> :NERDTreeToggle<CR>
+
+" Indenting
+" filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=2
+" when indenting with '>', use 4 spaces width
+set shiftwidth=2
+" On pressing tab, insert 4 spaces
+set expandtab
