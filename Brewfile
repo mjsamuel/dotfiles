@@ -18,11 +18,13 @@ brew 'zlib'
 
 # Shell
 brew 'zsh-autosuggestions'
+brew 'tmux'
 
 # Development
 brew 'mysql'
 brew 'node'
 brew 'python'
+brew 'vim'
 
 # Apps
 cask 'atom'
