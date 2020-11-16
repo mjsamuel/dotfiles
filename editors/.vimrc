@@ -1,3 +1,4 @@
+" Installing plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/goyo.vim'
@@ -14,57 +15,47 @@ Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
-set relativenumber
-
 " ColorScheme
 set termguicolors
 let ayucolor="dark"
 colorscheme ayu
-
-let g:lightline = { 'colorscheme': 'ayu' }
-let g:airline_theme = 'ayu'
-
-
-if (has("nvim"))
-  "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-endif
-
-" Italics for my favorite color scheme
-" let g:palenight_terminal_italics=1
-
-"For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-"Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-" < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
 if (has("termguicolors"))
   set termguicolors
 endif
 
-
 " NerdTree Settings
-
 autocmd StdinReadPre * let s:std_in=1
+" open NerdTree automatically if no file is specified
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+" Lightline
+" display the status line
 set laststatus=2
-
-if !has('gui_running')
-  set t_Co=256
-endif
-
+" setting ayu colors
+let g:lightline = { 'colorscheme': 'ayu' }
+let g:airline_theme = 'ayu'
+" hide things like -- INSERT -- as lightline replaces this
 set noshowmode
+
+" Invisibles
+" showing invisibles
 set list
+" changing how invisible characters are show
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»
 
-" Rebinding
-map ; :Files<CR>
+" Rebindings
+map <C-;> :Files<CR>
 map <C-o> :NERDTreeToggle<CR>
 
-" Indenting
-" filetype plugin indent on
-" show existing tab with 4 spaces width
-set tabstop=2
-" when indenting with '>', use 4 spaces width
-set shiftwidth=2
-" On pressing tab, insert 4 spaces
+" Indentation
+" setting indentation for specifc file types (default is 4)
+set tabstop=4
+autocmd FileType html setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+" insert spaces when tab is pressed
 set expandtab
+
+" Misc
+" show linenumbers
+set number
+
