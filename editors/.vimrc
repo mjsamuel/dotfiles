@@ -22,6 +22,16 @@ colorscheme ayu
 if (has("termguicolors"))
   set termguicolors
 endif
+" toggle between dark and light mode
+map <C-f> :call ToggleColor()<CR>
+function ToggleColor()
+  if g:ayucolor==?"dark"
+    let g:ayucolor="light"
+  else
+    let g:ayucolor="dark"
+  endif
+  colorscheme ayu
+endfunction 
 
 " NerdTree Settings
 autocmd StdinReadPre * let s:std_in=1
@@ -40,12 +50,15 @@ set noshowmode
 " Invisibles
 " showing invisibles
 set list
-" changing how invisible characters are show
+" changing how invisible characters are shown
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»
 
 " Rebindings
-map <C-;> :Files<CR>
+map <C-f> :Files<CR>
 map <C-o> :NERDTreeToggle<CR>
+" Maps 'kj' or 'jk' to exit insert mode
+imap kj <C-C>
+imap jk <C-C>
 
 " Indentation
 " setting indentation for specifc file types (default is 4)
