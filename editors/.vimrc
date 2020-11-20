@@ -23,7 +23,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 " toggle between dark and light mode
-map <C-f> :call ToggleColor()<CR>
+map <C-s> :call ToggleColor()<CR>
 function ToggleColor()
   if g:ayucolor==?"dark"
     let g:ayucolor="light"
@@ -61,10 +61,11 @@ imap kj <C-C>
 imap jk <C-C>
 
 " Indentation
-" setting indentation for specifc file types (default is 4)
+" setting the default number of spaces
 set tabstop=4
-autocmd FileType html setlocal ts=2 sts=2 sw=2
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+set shiftwidth=4
+" setting indentation for specifc file types (default is 4)
+autocmd BufRead,BufNewFile *.html,*.js,*.jsx setlocal ts=2 sts=2 sw=2 
 " insert spaces when tab is pressed
 set expandtab
 
