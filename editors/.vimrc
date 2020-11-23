@@ -72,4 +72,5 @@ set expandtab
 " Misc
 " show linenumbers
 set number
-
+" display a ruler
+set colorcolumn=80
