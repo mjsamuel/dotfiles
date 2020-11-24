@@ -15,6 +15,9 @@ brew 'neofetch'
 brew 'teamookla/speedtest/speedtest'
 brew 'youtube-dl'
 brew 'zlib'
+brew 'tmux'
+brew 'bat'
+brew 'fzf'
 
 # Shell
 brew 'zsh-autosuggestions'
@@ -27,21 +30,18 @@ brew 'python'
 brew 'vim'
 
 # Apps
-cask 'atom'
 cask 'bartender'
 cask 'discord'
 cask 'docker'
-cask 'firefox'
-cask 'github'
-cask 'google-chrome'
 cask 'skype'
 cask 'slack'
 cask 'the-unarchiver'
 cask 'transmission'
-cask 'vlc'
+cask 'iina'
+cask 'sublime-text'
 
 # Fonts
-cask 'font-meslolg-nerd-font'
+cask 'font-meslo-lg-nerd-font'
 
 # Mac App Store
 mas 'Keynote', id: 409183694

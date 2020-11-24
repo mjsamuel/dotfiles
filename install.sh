@@ -17,10 +17,13 @@ brew bundle
 # Set default MySQL root password and auth type.
 mysql -u root -e "ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY 'password'; FLUSH PRIVILEGES;"
 
+# Install oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 # Install Powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
-# Removes .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
+# Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
 rm -rf $HOME/.zshrc
 ln -s $HOME/Developer/dotfiles/shell/.zshrc $HOME/.zshrc
 
@@ -31,14 +34,21 @@ ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/the
 
 # Symlink Sublime's command line tool
 ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
+
 # Symlink Sublime preferences
 ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
+
 # Symlink tmux config file
 ln -s ~/Developer/dotfiles/other/.tmux.conf ~/
+
 # Symlink vimrc
 ln -s ~/Developer/dotfiles/editors/.vimrc ~/
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
+neofetch >/dev/null 2>&1
 rm -rf $HOME/.config/neofetch/config.conf
 ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config.conf
+
+neofetch
+echo "Install complete"
 
