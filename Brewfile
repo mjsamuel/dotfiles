@@ -20,13 +20,13 @@ brew 'bat'
 brew 'fzf'
 
 # Shell
-brew 'zsh-autosuggestions'
 brew 'tmux'
 
 # Development
 brew 'mysql'
 brew 'node'
 brew 'python'
+brew 'pyenv'
 brew 'vim'
 
 # Apps

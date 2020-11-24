@@ -34,7 +34,6 @@ ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/the
 
 # Symlink Sublime's command line tool
 ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
-
 # Symlink Sublime preferences
 ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 
@@ -43,6 +42,9 @@ ln -s ~/Developer/dotfiles/other/.tmux.conf ~/
 
 # Symlink vimrc
 ln -s ~/Developer/dotfiles/editors/.vimrc ~/
+# Install vim plug
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 neofetch >/dev/null 2>&1
@@ -51,4 +53,3 @@ ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config
 
 neofetch
 echo "Install complete"
-
