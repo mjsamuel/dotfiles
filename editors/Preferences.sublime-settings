@@ -4,7 +4,7 @@
 	"draw_indent_guides": false,
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
-	"font_size": 13,
+	"font_size": 14,
 	"hot_exit": false,
 	"ignored_packages":
 	[
@@ -16,7 +16,7 @@
 		80
 	],
 	"spell_check": true,
-	"tab_size": 2,
+	"tab_size": 4,
 	"theme": "ayu-dark.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"ui_separator": true,
