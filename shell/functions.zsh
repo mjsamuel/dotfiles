@@ -1,66 +1,89 @@
 # Create a new directory and enter it
-function mkd() {
+mkd() {
     mkdir -p "$@" && cd "$_";
 }
 
-# Takes either one or two arguments to download videos, thumnails or audio using
-# youtube-dl.
-#
-# $1 - Specify if downloading the audio of a video (`a`), it's thumbnail ('t')
-#      or the video resolution (any integer). If none of these are specified then
-#      the argument is used as a url.
-# $2 - Video url if $1 is specified
-#
-# Examples
-#     dl https://www.youtube.com/watch?v=dQw4w9WgXcQ
-#     dl 480 https://www.youtube.com/watch?v=dQw4w9WgXcQ
-#     dl 720 https://www.youtube.com/watch?v=dQw4w9WgXcQ
-#     dl t https://www.youtube.com/watch?v=dQw4w9WgXcQ
-#     dl a https://www.youtube.com/watch?v=dQw4w9WgXcQ
+c() {
+  clear
+}
+
+unalias g
+g() {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
+}
+
+#######################################
+# Downloads either the audio, video or the thumbnail of a video
+# 
+# Options:
+#   -a Whether to download the audio or not
+#   -t Whether to download the thumbnail or not
+#   -v Whether to download the video or not
+#   -V [resolution] Whether to download a video and the resolution to do it at
+# Arguments:
+#   URL of the video you want to download specific features of
+# Outputs:
+#   Writes the file to the current directory
+# Examples:
+#   dl -atv https://www.youtube.com/watch?v=dQw4w9WgXcQ
+#   dl -V 480 https://www.youtube.com/watch?v=dQw4w9WgXcQ
+#   dl -V 720 https://www.youtube.com/watch?v=dQw4w9WgXcQ
+#######################################
 dl() {
-    if [[ "$1" =~ ^-?[0-9]+$ ]]
-    then
-        # Downloads a video at the specified resolution or lower if not available
-        youtube-dl -f 'bestvideo[height<='"$1"']+bestaudio/best[height<='"$1"']' "$2"
-    elif [ "$1" = "a" ]
-    then
-        # Downloads only the audio of a video as an .mp3
-        youtube-dl --extract-audio --audio-format mp3 "$2"
-    elif [ "$1" = "t" ]
-    then
-        # Downloads the thumbnail of a video
-        youtube-dl --write-thumbnail --skip-download "$2"
-    else
-        # Downloads a video at the best quality available
-        youtube-dl "$1"
-    fi
+  COLOR_GREEN="\u001b[32m"
+  COLOR_RED="\u001b[31m"
+  COLOUR_RESET="\u001b[0m"
+
+  audio_flag=false
+  thumbnail_flag=false
+  video_flag=false
+  video_resolution=
+
+  while getopts atvV: option; do
+    case $option in
+      a) audio_flag=true;;
+      t) thumbnail_flag=true;;
+      v) video_flag=true;;
+      V) video_resolution=$OPTARG;;
+      \?) return;;
+    esac
+  done
+
+  shift $((OPTIND - 1))
+  url="$@"
+
+  # Exiting if a URL isn't provided
+  if [[ -z $url ]]; then
+    echo "${COLOR_RED}ERROR${COLOUR_RESET}: A URL must be specified"
+    return
+  fi
+
+  # Extracting and downloading the mp3 from the video
+  if [[ $audio_flag = true ]]; then
+    echo "${COLOR_GREEN}DOWNLOADING AUDIO${COLOUR_RESET}"
+    youtube-dl --extract-audio --audio-format mp3 "$url"
+  fi
+
+  # Downloading the thumbnail from the video
+  if [[ $thumbnail_flag = true ]]; then
+    echo "${COLOR_GREEN}DOWNLOADING THUMBNAIL${COLOUR_RESET}"
+    youtube-dl --write-thumbnail --skip-download "$url"
+  fi 
+
+  # Downloading the video at the specified resolution or lower if not available
+  if [[ -n $video_resolution ]]; then
+    echo "${COLOR_GREEN}DOWNLOADING VIDEO${COLOUR_RESET}"
+    youtube-dl -f \
+      'bestvideo[height<='"$video_resolution"']+bestaudio/best[height<='"$video_resolution"']' \
+      "$url"
+  # Downloading the video at the best quality available
+  elif [[ $video_flag = true ]]; then
+    echo "${COLOR_GREEN}DOWNLOADING VIDEO${COLOUR_RESET}"
+    youtube-dl "$url"
+  fi
 }
 
-edf() {
-    subl ~/Developer/dotfiles/shell/functions.zsh
-}
-
-ai() {
-    cd ~/School/ai/Homework/p2-multiagent-thinky
-    subl .
-    open http://ai.berkeley.edu/multiagent.html
-}
-
-hb-sync() {
-    cd $HOME/Developer/homebridge/Homebridge-MagicHome-Sync
-    source ./host/venv/bin/activate
-}
-
-ipse() {
-  cd ~/School/ipse/Assignment\ 1/Bonfire
-  open Bonfire.xcodeproj
-  open ../2020_S2_A1_iphone.pdf
-  open https://rmit.instructure.com/courses/75755/assignments/481832
-}
-
-site() {
-    cd $HOME/Developer/mjsamuel.github.io
-    subl .
-    open http://localhost:4000
-    bundle exec jekyll serve --watch --livereload --host 0.0.0.0
-}
