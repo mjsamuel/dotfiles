@@ -1,6 +1,3 @@
-# Compiled Python files
-*.pyc
-
 # Folder view configuration files
 .DS_Store
 Desktop.ini
@@ -12,3 +9,9 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+# File where I keep funcitons specific to my projects 
+shell/personal_functions.zsh
+
+# Vim
+*.swp
