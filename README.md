@@ -33,6 +33,12 @@ I prefer to store my dotfiles (as well as all my other projects) in a folder nam
 5. Click on "Browse" and point it to  `~/Developer/dotfiles/iterm/com.googlecode.iterm2.plist`.
 6. Restart iTerm2.
 
+### Vim
+1. Open up vim and run the following commands to install all plugins
+    ```
+    :PlugInstall
+    ```
+
 ## Thanks to...
 - [Mathias Bynens](https://github.com/mathiasbynens) and their [dotfiles repository](https://github.com/mathiasbynens/dotfiles)
 - [Dries Vints](https://github.com/driesvints) and their [dotfiles repository](https://github.com/driesvints/dotfiles)
