@@ -27,6 +27,7 @@ brew 'mysql'
 brew 'node'
 brew 'python'
 brew 'pyenv'
+brew 'pyenv-virtualenv'
 brew 'vim'
 
 # Apps
