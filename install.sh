@@ -23,6 +23,10 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 # Install Powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
+# Configuring git
+git config --global user.name "mjsamuel"
+git config --global user.email "matthew.samuel@outlook.com.au"
+
 # Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
 rm -rf $HOME/.zshrc
 ln -s $HOME/Developer/dotfiles/shell/.zshrc $HOME/.zshrc
