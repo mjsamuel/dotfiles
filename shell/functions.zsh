@@ -87,3 +87,8 @@ dl() {
   fi
 }
 
+# Quickly clone one of my repos
+clone() {
+    git clone "git@github.com:mjsamuel/$1.git"
+}
+
