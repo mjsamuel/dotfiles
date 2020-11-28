@@ -18,6 +18,7 @@ brew 'zlib'
 brew 'tmux'
 brew 'bat'
 brew 'fzf'
+brew 'exa'
 
 # Shell
 brew 'tmux'
