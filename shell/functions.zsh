@@ -3,10 +3,6 @@ mkd() {
     mkdir -p "$@" && cd "$_";
 }
 
-c() {
-  clear
-}
-
 unalias g
 g() {
   if [[ $# > 0 ]]; then

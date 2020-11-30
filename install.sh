@@ -9,7 +9,6 @@ fi
 
 # Update Homebrew recipes
 brew update
-
 # Install all our dependencies with bundle
 brew tap homebrew/bundle
 brew bundle
@@ -33,6 +32,7 @@ ln -s $HOME/Developer/dotfiles/shell/.zshrc $HOME/.zshrc
 
 # Symlinks zsh functions, paths and theme from our dotfiles
 ln -s $HOME/Developer/dotfiles/shell/functions.zsh $HOME/.oh-my-zsh/custom/functions.zsh
+ln -s $HOME/Developer/dotfiles/shell/aliases.zsh $HOME/.oh-my-zsh/custom/aliases.zsh
 ln -s $HOME/Developer/dotfiles/shell/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
 ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
 
