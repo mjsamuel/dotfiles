@@ -65,7 +65,7 @@ imap jk <C-C>
 set tabstop=4
 set shiftwidth=4
 " setting indentation for specifc file types (default is 4)
-autocmd BufRead,BufNewFile *.html,*.js,*.jsx,*.sh setlocal ts=2 sts=2 sw=2 
+autocmd BufRead,BufNewFile *.html,*.js,*.jsx,*.sh,*.yml setlocal ts=2 sts=2 sw=2 
 " insert spaces when tab is pressed
 set expandtab
 
