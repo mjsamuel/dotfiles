@@ -22,6 +22,7 @@ brew 'exa'
 
 # Shell
 brew 'tmux'
+brew 'tmuxinator'
 
 # Development
 brew 'mysql'
