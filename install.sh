@@ -42,7 +42,7 @@ ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local
 ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 
 # Symlink tmux config file
-ln -s ~/Developer/dotfiles/other/.tmux.conf ~/
+ln -s ~/Developer/dotfiles/tmux/.tmux.conf ~/
 
 # Symlink vimrc
 ln -s ~/Developer/dotfiles/editors/.vimrc ~/
