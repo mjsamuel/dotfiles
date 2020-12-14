@@ -12,6 +12,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ayu-theme/ayu-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
 
 call plug#end()
 
@@ -56,9 +57,6 @@ set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:�
 " Rebindings
 map <C-f> :Files<CR>
 map <C-o> :NERDTreeToggle<CR>
-" Maps 'kj' or 'jk' to exit insert mode
-imap kj <C-C>
-imap jk <C-C>
 
 " Indentation
 " setting the default number of spaces
