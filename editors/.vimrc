@@ -53,7 +53,6 @@ set noshowmode
 set list
 " changing how invisible characters are shown
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»
-
 " Rebindings
 map <C-f> :Files<CR>
 map <C-o> :NERDTreeToggle<CR>
@@ -72,3 +71,5 @@ set expandtab
 set number
 " display a ruler
 set colorcolumn=80
+" Reloads vimrc on save
+autocmd bufwritepost .vimrc source ~/.vimrc
