@@ -42,6 +42,7 @@ cask 'the-unarchiver'
 cask 'transmission'
 cask 'iina'
 cask 'sublime-text'
+cask 'vnc-viewer'
 
 # Fonts
 cask 'font-meslo-lg-nerd-font'
