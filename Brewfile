@@ -43,6 +43,7 @@ cask 'transmission'
 cask 'iina'
 cask 'sublime-text'
 cask 'vnc-viewer'
+cask 'visual-studio-code'
 
 # Fonts
 cask 'font-meslo-lg-nerd-font'

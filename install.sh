@@ -41,6 +41,10 @@ ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local
 # Symlink Sublime preferences
 ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
 
+# Symlink VS Code settings file
+rm ~/Library/Application\ Support/Code/User/settings.json
+ln -s ~/Developer/dotfiles/editors/vs_code_settings.json ~/Library/Application\ Support/Code/User/settings.json
+
 # Symlink tmux config file
 ln -s ~/Developer/dotfiles/tmux/.tmux.conf ~/
 

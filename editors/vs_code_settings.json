@@ -1,0 +1,26 @@
+{
+    "editor.minimap.enabled": false,
+    "workbench.colorTheme": "Ayu Dark Bordered",
+    "editor.fontSize": 16,
+    "editor.renderWhitespace": "all",
+    "editor.renderIndentGuides": false,
+    "editor.renderControlCharacters": true,
+    "terminal.integrated.fontFamily": "MesloLGM Nerd Font",
+    "workbench.activityBar.visible": false,
+    "editor.emptySelectionClipboard": false,
+    // "editor.formatOnSave": true,
+    "editor.rulers": [
+        80
+    ],
+    "files.autoSave": "off",
+    "cSpell.enabled": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+}
