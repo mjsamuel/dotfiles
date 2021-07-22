@@ -73,3 +73,6 @@ set number
 set colorcolumn=80
 " Reloads vimrc on save
 autocmd bufwritepost .vimrc source ~/.vimrc
+
+" Sortcut to run python file when F9 is pressed 
+autocmd FileType python map <F8> :w<CR>:exec '!clear; python %'<CR>
