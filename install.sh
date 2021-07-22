@@ -55,5 +55,11 @@ neofetch >/dev/null 2>&1
 rm -rf $HOME/.config/neofetch/config.conf
 ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config.conf
 
+# Install tt and symlink theme
+sudo curl -L https://github.com/lemnos/tt/releases/download/v0.4.0/tt-osx -o /usr/local/bin/tt && sudo chmod +x /usr/local/bin/tt
+sudo curl -o /usr/share/man/man1/tt.1.gz -L https://github.com/lemnos/tt/releases/download/v0.4.0/tt.1.gz
+mkdir ~/.tt/themes
+ln -s ~/Developer/dotfiles/tt/ayu ~/.tt/themes
+
 neofetch
 echo "Install complete"
