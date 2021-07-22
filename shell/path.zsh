@@ -1,13 +1,30 @@
 export PATH=$PATH:/opt/apache-maven/bin
+
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
+export PATH="$PATH:$HOME/.rvm/bin"
 
 export PATH="$HOME/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+# Commented out due to slow shell startup times
+# eval "$(pyenv init -)"
+# eval "$(pyenv virtualenv-init -)"
 
-export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
-export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
-export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig"
-export PATH="$PATH:$HOME/.rvm/bin"
+# Application paths
+CAT="/bin/cat"
+TMUX="/usr/bin/tmux"
+TPUT="/usr/bin/tput"
+CMD="/mnt/c/Windows/system32/cmd.exe"
+GREP='/usr/bin/grep'
+XARGS='/usr/bin/xargs'
+CUT='/usr/bin/cut'
+
+# WSL specific application paths
+CLIP='/mnt/c/Windows/system32/clip.exe'
+WSLVIEW="/usr/bin/wslview"
+
+# MISC
+BOLD="$($TPUT bold)"
+COLOR_RED="$($TPUT setaf 1)"
+COLOR_GREEN="$($TPUT setaf 2)"
+COLOR_YELLOW="$($TPUT setaf 3)"
+COLOR_RESET="$($TPUT sgr0)" 

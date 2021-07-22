@@ -30,10 +30,6 @@ g() {
 #   dl -V 720 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 #######################################
 dl() {
-  COLOR_GREEN="\u001b[32m"
-  COLOR_RED="\u001b[31m"
-  COLOUR_RESET="\u001b[0m"
-
   audio_flag=false
   thumbnail_flag=false
   video_flag=false
@@ -88,3 +84,25 @@ clone() {
     git clone "git@github.com:mjsamuel/$1.git"
 }
 
+# search() {
+#   file=
+#   directory=
+#   word=
+
+#   while getopts f:d:w: option; do
+#     case $option in
+#       f) file=$OPTARG;;
+#       d) directory=$OPTARG;;
+#       w) word=$OPTARG;;
+#       \?) return;;
+#     esac
+#   done
+
+#   if [[ -n "$file" ]]; then
+#     find . -type d -name "$file"
+#   elif [[ -n "$directory" ]]; then
+#     find . -type d -name "$directory"
+#   if [[ -n "$word" ]]; then
+#     grep -rnw . -e "$word"
+#   fi
+# }
