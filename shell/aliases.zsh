@@ -7,3 +7,4 @@ alias sshhosts="grep -w -i -E 'Host|HostName' ~/.ssh/config | sed 's/Host //' | 
 alias mux='tmuxinator'
 alias rtv='python3 -m rtv'
 alias tt='tt -theme ayu -showwpm'
+alias vim='nvim'
