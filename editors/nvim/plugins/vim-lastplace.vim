@@ -1,0 +1,2 @@
+Plug 'farmergreg/vim-lastplace'
+
