@@ -10,7 +10,6 @@ brew 'bash' # Latest Bash version
 brew 'coreutils' # Those that come with macOS are outdated
 brew 'ffmpeg'
 brew 'git'
-brew 'mas' # Mac App Store manager
 brew 'neofetch'
 brew 'teamookla/speedtest/speedtest'
 brew 'youtube-dl'
@@ -36,18 +35,11 @@ brew 'vim'
 cask 'bartender'
 cask 'discord'
 cask 'docker'
-cask 'skype'
-cask 'slack'
 cask 'the-unarchiver'
 cask 'transmission'
 cask 'iina'
-cask 'sublime-text'
 cask 'vnc-viewer'
 cask 'visual-studio-code'
 
 # Fonts
 cask 'font-meslo-lg-nerd-font'
-
-# Mac App Store
-mas 'Keynote', id: 409183694
-mas 'Pages', id: 409201541
