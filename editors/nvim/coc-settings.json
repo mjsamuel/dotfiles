@@ -28,6 +28,5 @@
     "php-cs-fixer.enableFormatProvider": true,
     "intelephense.environment.phpVersion": "8",
     "tailwindCSS.validate": true,
-    "tailwindCSS.emmetCompletions": true,
-    "prettier.requireConfig": true
+    "tailwindCSS.emmetCompletions": true
 }
