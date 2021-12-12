@@ -14,9 +14,9 @@ brew 'neofetch'
 brew 'teamookla/speedtest/speedtest'
 brew 'youtube-dl'
 brew 'zlib'
-brew 'tmux'
 brew 'bat'
 brew 'fzf'
+brew 'ripgrep'
 brew 'exa'
 
 # Shell
