@@ -27,6 +27,12 @@ set backup
 set backupdir=~/.local/share/nvim/backup//
 set updatetime=300 " Reduce time for highlighting other references
 set redrawtime=10000 " Allow more time for loading syntax on large files
+set colorcolumn=80
+
+let mapleader = "\<space>"
+nmap <leader>ve :edit ~/.config/nvim/init.vim<cr>
+nmap <leader>vc :edit ~/.config/nvim/coc-settings.json<cr>
+nmap <leader>vr :source ~/.config/nvim/init.vim<cr>
 
 " Allow gf to open non-existent files
 map gf :edit <cfile><cr>
@@ -56,6 +62,8 @@ call plug#begin(data_dir . '/plugins')
   source ~/.config/nvim/plugins/quickscope.vim
   source ~/.config/nvim/plugins/smooth-scroll.vim
   source ~/.config/nvim/plugins/splitjoin.vim
+  source ~/.config/nvim/plugins/fzf.vim
+  source ~/.config/nvim/plugins/eunuch.vim
 call plug#end()
 doautocmd User PlugLoaded
 

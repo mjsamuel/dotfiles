@@ -3,7 +3,7 @@ Plug 'ayu-theme/ayu-vim'
 let ayucolor="dark"
 autocmd User PlugLoaded ++nested colorscheme ayu
 
-map <C-s> :call ToggleColor()<CR>
+map <leader>s :call ToggleColor()<CR>
 function ToggleColor()
   if g:ayucolor==?"dark"
     let g:ayucolor="mirage"

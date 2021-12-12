@@ -19,6 +19,7 @@ let g:coc_global_extensions = [
     \ 'https://github.com/rodrigore/coc-tailwind-intellisense',
     \ 'coc-tsserver',
     \ '@yaegassy/coc-volar',
+    \ 'coc-prettier',
 \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -121,3 +122,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 nmap <leader>l :CocFzfList<cr> 
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+nmap <leader>p :Prettier<cr>

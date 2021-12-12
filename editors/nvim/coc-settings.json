@@ -28,5 +28,6 @@
     "php-cs-fixer.enableFormatProvider": true,
     "intelephense.environment.phpVersion": "8",
     "tailwindCSS.validate": true,
-    "tailwindCSS.emmetCompletions": true
+    "tailwindCSS.emmetCompletions": true,
+    "coc.preferences.formatOnSaveFiletypes": ["css", "js", "markdown"]
 }
