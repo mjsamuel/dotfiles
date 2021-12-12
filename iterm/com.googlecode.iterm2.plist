@@ -4825,13 +4825,13 @@
 				<key>Alpha Component</key>
 				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.0</real>
+				<real>0.098039215686274508</real>
 				<key>Color Space</key>
 				<string>sRGB</string>
 				<key>Green Component</key>
-				<real>0.0</real>
+				<real>0.078431372549019607</real>
 				<key>Red Component</key>
-				<real>0.0</real>
+				<real>0.058823529411764705</real>
 			</dict>
 			<key>Background Image Location</key>
 			<string></string>
@@ -7665,9 +7665,9 @@
 	<key>TabsHaveCloseButton</key>
 	<false/>
 	<key>TerminalMargin</key>
-	<integer>12</integer>
+	<integer>0</integer>
 	<key>TerminalVMargin</key>
-	<integer>4</integer>
+	<integer>0</integer>
 	<key>UseBorder</key>
 	<false/>
 	<key>VisualIndicatorForEsc</key>
