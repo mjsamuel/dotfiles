@@ -18,13 +18,10 @@ GREP='/usr/bin/grep'
 XARGS='/usr/bin/xargs'
 CUT='/usr/bin/cut'
 
-# WSL specific application paths
-CLIP='/mnt/c/Windows/system32/clip.exe'
-WSLVIEW="/usr/bin/wslview"
-
 # MISC
 BOLD="$($TPUT bold)"
 COLOR_RED="$($TPUT setaf 1)"
 COLOR_GREEN="$($TPUT setaf 2)"
 COLOR_YELLOW="$($TPUT setaf 3)"
 COLOR_RESET="$($TPUT sgr0)" 
+
