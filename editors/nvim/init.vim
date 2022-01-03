@@ -64,6 +64,8 @@ call plug#begin(data_dir . '/plugins')
   source ~/.config/nvim/plugins/splitjoin.vim
   source ~/.config/nvim/plugins/fzf.vim
   source ~/.config/nvim/plugins/eunuch.vim
+  source ~/.config/nvim/plugins/replacewithregister.vim
+  source ~/.config/nvim/plugins/textobj-user.vim
 call plug#end()
 doautocmd User PlugLoaded
 
