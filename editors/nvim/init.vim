@@ -28,6 +28,7 @@ set backupdir=~/.local/share/nvim/backup//
 set updatetime=300 " Reduce time for highlighting other references
 set redrawtime=10000 " Allow more time for loading syntax on large files
 set colorcolumn=80
+set nohlsearch
 
 let mapleader = "\<space>"
 nmap <leader>ve :edit ~/.config/nvim/init.vim<cr>
