@@ -36,23 +36,18 @@ ln -s $HOME/Developer/dotfiles/shell/aliases.zsh $HOME/.oh-my-zsh/custom/aliases
 ln -s $HOME/Developer/dotfiles/shell/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
 ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
 
-# Symlink Sublime's command line tool
-ln -s /Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl /usr/local/bin/subl
-# Symlink Sublime preferences
-ln -s ~/Developer/dotfiles/editor/Preferences.sublime-settings Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings
-
 # Symlink VS Code settings file
-rm ~/Library/Application\ Support/Code/User/settings.json
-ln -s ~/Developer/dotfiles/editors/vs_code_settings.json ~/Library/Application\ Support/Code/User/settings.json
+rm $HOME/Library/Application\ Support/Code/User/settings.json
+ln -s $HOME/Developer/dotfiles/editors/vs_code_settings.json ~/Library/Application\ Support/Code/User/settings.json
 
 # Symlink tmux config file
-ln -s ~/Developer/dotfiles/tmux/.tmux.conf ~/
+ln -s $HOME/Developer/dotfiles/tmux/.tmux.conf $HOME/
 
 # Symlink vimrc
-ln -s ~/Developer/dotfiles/editors/.vimrc ~/
+ln -s $HOME/Developer/dotfiles/editors/nvim $HOME/.config/
 # Install vim plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 neofetch >/dev/null 2>&1

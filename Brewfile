@@ -18,8 +18,6 @@ brew 'bat'
 brew 'fzf'
 brew 'ripgrep'
 brew 'exa'
-
-# Shell
 brew 'tmux'
 brew 'tmuxinator'
 
