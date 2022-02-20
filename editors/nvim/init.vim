@@ -68,6 +68,7 @@ call plug#begin(data_dir . '/plugins')
   source ~/.config/nvim/plugins/replacewithregister.vim
   source ~/.config/nvim/plugins/textobj-user.vim
   source ~/.config/nvim/plugins/osc52.vim
+  source ~/.config/nvim/plugins/copilot.vim
 call plug#end()
 doautocmd User PlugLoaded
 
