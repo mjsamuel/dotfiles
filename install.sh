@@ -28,37 +28,33 @@ git config --global user.email "matthew.samuel@outlook.com.au"
 
 # Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
 rm -rf $HOME/.zshrc
-ln -s $HOME/Developer/dotfiles/shell/.zshrc $HOME/.zshrc
+ln -s $HOME/Developer/dotfiles/zsh/.zshrc $HOME/.zshrc
 
 # Symlinks zsh functions, paths and theme from our dotfiles
-ln -s $HOME/Developer/dotfiles/shell/functions.zsh $HOME/.oh-my-zsh/custom/functions.zsh
-ln -s $HOME/Developer/dotfiles/shell/aliases.zsh $HOME/.oh-my-zsh/custom/aliases.zsh
-ln -s $HOME/Developer/dotfiles/shell/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
-ln -s $HOME/Developer/dotfiles/shell/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
-
-# Symlink VS Code settings file
-rm $HOME/Library/Application\ Support/Code/User/settings.json
-ln -s $HOME/Developer/dotfiles/editors/vs_code_settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -s $HOME/Developer/dotfiles/zsh/functions.zsh $HOME/.oh-my-zsh/custom/functions.zsh
+ln -s $HOME/Developer/dotfiles/zsh/aliases.zsh $HOME/.oh-my-zsh/custom/aliases.zsh
+ln -s $HOME/Developer/dotfiles/zsh/path.zsh $HOME/.oh-my-zsh/custom/path.zsh
+ln -s $HOME/Developer/dotfiles/zsh/theme.zsh-theme $HOME/.oh-my-zsh/custom/themes/theme.zsh-theme
 
 # Symlink tmux config file
 ln -s $HOME/Developer/dotfiles/tmux/.tmux.conf $HOME/
 
 # Symlink vimrc
-ln -s $HOME/Developer/dotfiles/editors/nvim $HOME/.config/
+ln -s $HOME/Developer/dotfiles/nvim $HOME/.config/
 # Install vim plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 neofetch >/dev/null 2>&1
-rm -rf $HOME/.config/neofetch/config.conf
+rm -rf $HOME/.config/neofetch/zsh.conf
 ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config.conf
 
 # Install tt and symlink theme
 sudo curl -L https://github.com/lemnos/tt/releases/download/v0.4.0/tt-osx -o /usr/local/bin/tt && sudo chmod +x /usr/local/bin/tt
 sudo curl -o /usr/share/man/man1/tt.1.gz -L https://github.com/lemnos/tt/releases/download/v0.4.0/tt.1.gz
 mkdir ~/.tt/themes
-ln -s ~/Developer/dotfiles/tt/ayu ~/.tt/themes
+ln -s ~/Developer/dotfiles/other/tt_ayu_theme $HOME/.tt/themes/ayu
 
 neofetch
 echo "Install complete"
