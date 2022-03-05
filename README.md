@@ -16,12 +16,16 @@ I prefer to store my dotfiles (as well as all my other projects) in a folder nam
    ```
    xcode-select --install
    ```
-4. Clone this repo into `~/Deveoper` with the following command:
+4. Install [zsh](https://github.com/robbyrussell/oh-my-zsh#getting-started).
+5. Generate ssh keys and associate it with Github:
+   ```
+   ssh-keygen -t ed25519
+   ```
+6. Clone this repo into `~/Deveoper` with the following command:
    ```
    git clone https://github.com/mjsamuel/dotfiles.git $HOME/Developer
    ```
-5. Install [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh#getting-started).
-6. Run the install script with:
+7. Run the install script with:
    ```
    ./install.sh
    ```
