@@ -47,7 +47,7 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 neofetch >/dev/null 2>&1
-rm -rf $HOME/.config/neofetch/zsh.conf
+rm -rf $HOME/.config/neofetch/config.conf
 ln -s $HOME/Developer/dotfiles/other/neofetch.conf $HOME/.config/neofetch/config.conf
 
 # Install tt and symlink theme
