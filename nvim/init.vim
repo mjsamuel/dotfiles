@@ -30,6 +30,7 @@ set redrawtime=10000 " Allow more time for loading syntax on large files
 set colorcolumn=80
 set nohlsearch
 
+nnoremap ; :
 let mapleader = "\<space>"
 nmap <leader>ve :edit ~/.config/nvim/init.vim<cr>
 nmap <leader>vc :edit ~/.config/nvim/coc-settings.json<cr>
@@ -37,9 +38,6 @@ nmap <leader>vr :source ~/.config/nvim/init.vim<cr>
 
 " Allow gf to open non-existent files
 map gf :edit <cfile><cr>
-" Easy insertion of a trailing ; or , from insert mode
-imap ;; <Esc>A;<Esc>
-imap ,, <Esc>A,<Esc>
 
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
