@@ -19,6 +19,7 @@ eval "$(pyenv init -)"
 
 plugins=(
     git
+    vi-mode
     zsh-autosuggestions
     zsh-nvm
 )
