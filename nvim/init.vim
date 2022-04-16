@@ -46,7 +46,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(data_dir . '/plugins')
-  source ~/.config/nvim/plugins/zengarden.vim
+  source ~/.config/nvim/plugins/theme.vim
   source ~/.config/nvim/plugins/airline.vim
   source ~/.config/nvim/plugins/surround.vim
   source ~/.config/nvim/plugins/nerdtree.vim
