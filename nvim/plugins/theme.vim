@@ -12,6 +12,8 @@ function DarkModeDetection()
             set background=light
             colorscheme zengarden
         endif
+    else
+        colorscheme ayu
     endif
 endfunction
 

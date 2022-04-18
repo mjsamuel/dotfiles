@@ -1,0 +1,20 @@
+#!/bin/sh
+RUN_AS_USER="sudo -u $(echo 'show State:/Users/ConsoleUser' | scutil | awk '/Name :/ { print $3 }')"
+TMUX="$RUN_AS_USER /opt/homebrew/bin/tmux"
+DEFAULTS="$RUN_AS_USER /usr/bin/defaults"
+
+$TMUX list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
+    target="${p%% *}"
+    id="${p##* }"
+    if [ "$target" = "nvim" ]; then
+        $TMUX send-keys -t "$id" ":call DarkModeDetection()" C-m
+    fi
+done
+
+if $DEFAULTS read -g AppleInterfaceStyle; then
+     $TMUX set-option -g status-style "bg=green, fg=black" \; \
+        set-option -g window-status-current-style "bg=green, fg=black"
+else
+     $TMUX set-option -g status-style "bg=black, fg=white" \; \
+        set-option -g window-status-current-style "bg=red, fg=white"
+fi
