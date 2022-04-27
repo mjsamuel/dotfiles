@@ -4,7 +4,7 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.startup</string>
+    <string>com.matthewsamuel.dark-mode-notify</string>
     <key>KeepAlive</key>
     <true/>
     <key>StandardErrorPath</key>

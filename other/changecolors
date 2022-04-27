@@ -1,20 +1,25 @@
 #!/bin/sh
-RUN_AS_USER="sudo -u $(echo 'show State:/Users/ConsoleUser' | scutil | awk '/Name :/ { print $3 }')"
-TMUX="$RUN_AS_USER /opt/homebrew/bin/tmux"
-DEFAULTS="$RUN_AS_USER /usr/bin/defaults"
+TMUX="/opt/homebrew/bin/tmux"
 
-$TMUX list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
-    target="${p%% *}"
-    id="${p##* }"
-    if [ "$target" = "nvim" ]; then
-        $TMUX send-keys -t "$id" ":call DarkModeDetection()" C-m
-    fi
-done
+changeNvimColors() {
+    $TMUX list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
+        target="${p%% *}"
+        id="${p##* }"
+        if [ "$target" = "nvim" ]; then
+            $TMUX send-keys -t "$id" ":call $1()" C-m
+        fi
+    done
+}
 
-if $DEFAULTS read -g AppleInterfaceStyle; then
-     $TMUX set-option -g status-style "bg=green, fg=black" \; \
-        set-option -g window-status-current-style "bg=green, fg=black"
+changeTmuxColors() {
+    $TMUX set-option -g status-style "$1" \; \
+       set-option -g window-status-current-style "$2"
+}
+
+if [ "$DARKMODE" = 1 ]; then
+    changeNvimColors "ChangeColorschemeDark"
+    changeTmuxColors "bg=green, fg=black" "bg=green, fg=black"
 else
-     $TMUX set-option -g status-style "bg=black, fg=white" \; \
-        set-option -g window-status-current-style "bg=red, fg=white"
+    changeNvimColors "ChangeColorschemeLight"
+    changeTmuxColors "bg=black, fg=white" "bg=red, fg=white"
 fi
