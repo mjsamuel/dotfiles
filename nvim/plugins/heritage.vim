@@ -1,2 +1,0 @@
-Plug 'jessarcher/vim-heritage'
-

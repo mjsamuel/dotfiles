@@ -46,27 +46,23 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
 endif
 
 call plug#begin(data_dir . '/plugins')
-  source ~/.config/nvim/plugins/theme.vim
   source ~/.config/nvim/plugins/airline.vim
-  source ~/.config/nvim/plugins/surround.vim
-  source ~/.config/nvim/plugins/nerdtree.vim
-  source ~/.config/nvim/plugins/markdown-preview.vim
-  source ~/.config/nvim/plugins/heritage.vim
   source ~/.config/nvim/plugins/coc.vim
   source ~/.config/nvim/plugins/commentary.vim
-  source ~/.config/nvim/plugins/vim-lastplace.vim
-  source ~/.config/nvim/plugins/pasta.vim
-  source ~/.config/nvim/plugins/floaterm.vim
+  source ~/.config/nvim/plugins/copilot.vim
   source ~/.config/nvim/plugins/editorconfig.vim
-  source ~/.config/nvim/plugins/quickscope.vim
+  source ~/.config/nvim/plugins/eunuch.vim
+  source ~/.config/nvim/plugins/fzf.vim
+  source ~/.config/nvim/plugins/nerdtree.vim
+  source ~/.config/nvim/plugins/osc52.vim
+  source ~/.config/nvim/plugins/pasta.vim
+  source ~/.config/nvim/plugins/replacewithregister.vim
   source ~/.config/nvim/plugins/smooth-scroll.vim
   source ~/.config/nvim/plugins/splitjoin.vim
-  source ~/.config/nvim/plugins/fzf.vim
-  source ~/.config/nvim/plugins/eunuch.vim
-  source ~/.config/nvim/plugins/replacewithregister.vim
+  source ~/.config/nvim/plugins/surround.vim
   source ~/.config/nvim/plugins/textobj-user.vim
-  source ~/.config/nvim/plugins/osc52.vim
-  source ~/.config/nvim/plugins/copilot.vim
+  source ~/.config/nvim/plugins/theme.vim
+  source ~/.config/nvim/plugins/vim-lastplace.vim
 call plug#end()
 doautocmd User PlugLoaded
 
