@@ -29,5 +29,12 @@
     "intelephense.environment.phpVersion": "8",
     "tailwindCSS.validate": true,
     "tailwindCSS.emmetCompletions": true,
-    "coc.preferences.formatOnSaveFiletypes": ["css", "js", "markdown"]
+    "coc.preferences.formatOnSaveFiletypes": [
+      "css",
+      "js",
+      "markdown"
+    ],
+    "java.format.settings.url": "/mnt/c/Work/code-formatter-config-1.0.3.xml",
+    "java.import.gradle.enabled": false
 }
+
