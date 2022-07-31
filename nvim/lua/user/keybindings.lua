@@ -4,6 +4,11 @@ local g = vim.g
 g.mapleader = ' '
 keymap.set('n', ';', ':')
 
+keymap.set('n', '<Leader>p', 'p`[v`]=')
+
+-- Allow gf to open non-existent files
+keymap.set('', 'gf', ':edit <cfile><CR>')
+
 -- quickly edit/reload vim config
 keymap.set('n', '<Leader>ve', ':edit ~/.config/nvim/init.lua<cr>')
 keymap.set('n', '<Leader>vr', ':source ~/.config/nvim/init.lua<cr>')
