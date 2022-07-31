@@ -71,7 +71,7 @@ require('packer').startup(function(use)
     use {
         'Shatur/neovim-ayu',
         config = function()
-            require('user.plugins.ayu')
+            require('user.plugins.theme')
         end
     }
 

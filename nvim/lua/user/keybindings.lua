@@ -15,7 +15,7 @@ keymap.set('n', '<Leader>vr', ':source ~/.config/nvim/init.lua<cr>')
 
 -- telescope
 keymap.set('n', '<Leader>f', '<cmd>Telescope find_files<cr>')
-keymap.set('n', '<Leader>g', '<cmd>Telescope live_grep<cr>')
+keymap.set('n', '<Leader>r', '<cmd>Telescope live_grep<cr>')
 keymap.set('n', '<Leader>b', '<cmd>Telescope buffers<cr>')
 keymap.set('n', '<Leader>h', '<cmd>Telescope help_tags<cr>')
 
