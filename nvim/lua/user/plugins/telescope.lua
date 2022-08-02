@@ -23,7 +23,7 @@ require('telescope').setup {
         },
         mappings = {
             i = {
-                ['q'] = actions.close,
+                ['ESC'] = actions.close,
             }
         },
         file_ignore_patterns = { '.git/' },

@@ -1,1 +1,3 @@
-require('ayu').colorscheme()
+local ayu = require('ayu')
+ayu.colorscheme()
+

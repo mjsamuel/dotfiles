@@ -1,5 +1,4 @@
 local alpha = require("alpha")
-local dashboard = require("alpha.themes.dashboard")
 
 local function button(sc, txt, keybind)
   local sc_ = sc:gsub("%s", ""):gsub("SPC", "<leader>")
@@ -34,17 +33,18 @@ local options = {
   header = {
     type = "text",
     val = {
-      "   ⣴⣶⣤⡤⠦⣤⣀⣤⠆     ⣈⣭⣿⣶⣿⣦⣼⣆          ",
-      "    ⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦       ",
-      "          ⠈⢿⣿⣟⠦ ⣾⣿⣿⣷    ⠻⠿⢿⣿⣧⣄     ",
-      "           ⣸⣿⣿⢧ ⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄    ",
-      "          ⢠⣿⣿⣿⠈    ⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀   ",
-      "   ⢠⣧⣶⣥⡤⢄ ⣸⣿⣿⠘  ⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄  ",
-      "  ⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷   ⢊⣿⣿⡏  ⢸⣿⣿⡇ ⢀⣠⣄⣾⠄   ",
-      " ⣠⣿⠿⠛ ⢀⣿⣿⣷⠘⢿⣿⣦⡀ ⢸⢿⣿⣿⣄ ⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄  ",
-      " ⠙⠃   ⣼⣿⡟  ⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿ ⣿⣿⡇ ⠛⠻⢷⣄ ",
-      "      ⢻⣿⣿⣄   ⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟ ⠫⢿⣿⡆     ",
-      "       ⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃     ",
+        "         ⣀⣤⣤⣶⡶⠲⢶⣶⠶⣤⣤⣀⡀        ",
+        "     ⢀⣤⣞⠋⠁  ⠈⢹⡆ ⠈⠻⣦⠙⣮⡻⣷⣦⣀     ",
+        "   ⢀⡴⢋⡾⠁⢀⣠⡤⠖⠚⠉    ⢸⡇⠈⢷⠹⡞⣿⣷⡄   ",
+        "  ⢠⢟⣴⠋⣠⠶⣋⣡⠤⠶⠖⠒⠒⠒⠒⠒⠚⠁ ⢸⡆⣿⢹⣼⡿⣆  ",
+        " ⢀⣿⡞⣡⢞⣵⢞⣩⠶⠚⣛⣉⡙⠛⠲⢦⣀  ⣠⡟⢀⡿⣸⢻⣇⣿⡆ ",
+        " ⢸⡟⣼⢣⡟⣱⢟⣵⠞⠋⠉⠉⠉⠳⣄ ⠈⠉⠉⠉⣠⡾⣡⠟⣼⣽⢃⣷ ",
+        " ⢸⣷⡏⡿⣼⢣⡟⢁⡴⠚⠓⠶⣤⣀⠈⠓⠶⠤⠶⠚⣩⡴⣋⣾⡽⢃⣾⡟ ",
+        " ⠈⢿⡷⡇⣿⣼ ⡿  ⢀⣀⡀⠈⠙⠓⠒⠒⠒⣋⣥⣞⡿⠋⣠⠞⣽⠃ ",
+        "  ⠈⢷⣷⢿⢹⡄⣧ ⢰⠋⠉⠉⠉⠙⠛⠛⠋⣉⡵⠞⠉⢀⡾⢋⡼⠃  ",
+        "    ⠙⢾⣧⢷⡹⣆⠘⣇   ⣀⡤⠖⠋⠁ ⢀⡴⢋⣤⠟⠁   ",
+        "      ⠙⠳⢿⣮⣳⣌⠳⣄⡀⠙⢦⣄⡀⢀⣀⡬⠟⠋      ",
+        "          ⠉⠉⠛⠚⠛⠓⠒⠛⠋⠉⠁         "
     },
     opts = {
       position = "center",
@@ -55,21 +55,21 @@ local options = {
   buttons = {
     type = "group",
     val = {
-      button("SPC f", "  Find File  ", ":Telescope find_files<CR>"),
-      button("SPC o", "  Recent File  ", ":Telescope oldfiles<CR>"),
-      button("SPC r", "  Find Word  ", ":Telescope live_grep<CR>"),
-      button("SPC t h", "  Themes  ", ":Telescope themes<CR>"),
-      button("SPC v e", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
+      button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+      button("s", "  Open last session", ":SessionManager load_last_session<CR>"),
+      button('e', '  New file' , ':ene<CR>'),
+      button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h <CR>"),
+      button("q", "  Quit NVIM", ":q<CR>"),
     },
     opts = {
-      spacing = 1,
+      spacing = 0,
     },
   },
 }
 
 -- dynamic header padding
 local fn = vim.fn
-local marginTopPercent = 0.25
+local marginTopPercent = 0.2
 local headerPadding = fn.max { 2, fn.floor(fn.winheight(0) * marginTopPercent) }
 
 alpha.setup {

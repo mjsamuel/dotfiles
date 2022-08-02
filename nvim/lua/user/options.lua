@@ -25,3 +25,5 @@ set.splitbelow = true
 set.splitright = true
 
 set.cursorline = true
+
+set.termguicolors = true

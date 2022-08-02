@@ -122,6 +122,14 @@ require('packer').startup(function(use)
         end
     }
 
+    use {
+        'Shatur/neovim-session-manager',
+        requires = { { 'nvim-lua/plenary.nvim' } },
+        config = function()
+            require('user.plugins.session-manager')
+        end
+    }
+
     if packer_bootstrap then
         require('packer').sync()
     end
