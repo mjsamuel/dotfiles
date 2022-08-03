@@ -4,7 +4,7 @@ set.number = true
 set.relativenumber = true
 
 set.list = true
-vim.cmd('set listchars=tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»')
+-- vim.cmd('set listchars=tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»')
 set.signcolumn='yes:2'
 set.hlsearch = false
 

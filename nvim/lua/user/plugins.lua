@@ -41,9 +41,10 @@ require('packer').startup(function(use)
     }
 
     use {
-        'williamboman/nvim-lsp-installer',
-        config = function()
-            require('user.plugins.lsp-installer')
+        "williamboman/mason.nvim",
+        requires = { { 'williamboman/mason-lspconfig.nvim' } },
+        config = function ()
+            require('user.plugins.mason')
         end
     }
 
@@ -128,6 +129,14 @@ require('packer').startup(function(use)
         config = function()
             require('user.plugins.session-manager')
         end
+    }
+
+    use {
+       'lukas-reineke/indent-blankline.nvim',
+        config = function ()
+            require('user.plugins.indent-blankline')
+        end
+
     }
 
     if packer_bootstrap then
