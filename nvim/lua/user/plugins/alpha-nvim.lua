@@ -64,7 +64,7 @@ local options = {
       button("q", "  Quit NVIM", ":q<CR>"),
     },
     opts = {
-      spacing = 0,
+      spacing = 1,
     },
   },
 }
