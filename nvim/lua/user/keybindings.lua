@@ -31,3 +31,6 @@ keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
 
 -- format
 keymap.set("n", "<Leader>p", ":Format<cr>")
+
+-- nvim tree
+keymap.set('n', '<leader>n', ':NvimTreeFindFileToggle<CR>', { silent = true, noremap = true })

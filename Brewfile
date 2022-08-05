@@ -6,13 +6,12 @@ tap 'homebrew/cask-versions'
 tap 'homebrew/bundle'
 
 # Binaries
-brew 'bash' # Latest Bash version
 brew 'coreutils' # Those that come with macOS are outdated
 brew 'ffmpeg'
 brew 'git'
 brew 'neofetch'
 brew 'teamookla/speedtest/speedtest'
-brew 'youtube-dl'
+brew 'youtube-dlp'
 brew 'zlib'
 brew 'bat'
 brew 'fzf'
@@ -20,24 +19,21 @@ brew 'ripgrep'
 brew 'exa'
 brew 'tmux'
 brew 'tmuxinator'
+brew 'git-delta'
 
 # Development
-brew 'mysql'
 brew 'node'
 brew 'python'
-brew 'pyenv'
-brew 'pyenv-virtualenv'
-brew 'vim'
+brew 'neovim'
 
 # Apps
 cask 'bartender'
 cask 'discord'
 cask 'docker'
-cask 'the-unarchiver'
 cask 'transmission'
 cask 'iina'
 cask 'vnc-viewer'
-cask 'visual-studio-code'
 
 # Fonts
 cask 'font-meslo-lg-nerd-font'
+cask 'font-fira-code-nerd-font'

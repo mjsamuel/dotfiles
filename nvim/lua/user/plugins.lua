@@ -43,7 +43,7 @@ require("packer").startup(function(use)
 
 	use({
 		"williamboman/mason.nvim",
-		requires = { 'WhoIsSethDaniel/mason-tool-installer.nvim', },
+		requires = { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 		config = function()
 			require("user.plugins.mason")
 		end,
@@ -63,8 +63,6 @@ require("packer").startup(function(use)
 	})
 
 	use({ "tpope/vim-surround" })
-
-	use({ "tpope/vim-commentary" })
 
 	use({ "tpope/vim-fugitive", opt = true, cmd = "Git" })
 
@@ -147,6 +145,13 @@ require("packer").startup(function(use)
 		"mhartington/formatter.nvim",
 		config = function()
 			require("user.plugins.formatter")
+		end,
+	})
+
+	use({
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup()
 		end,
 	})
 
