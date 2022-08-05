@@ -39,11 +39,11 @@ ln -s "$HOME/Developer/dotfiles/zsh/theme.zsh-theme" "$HOME/.oh-my-zsh/custom/th
 # Symlink tmux config file
 ln -s "$HOME/Developer/dotfiles/tmux/.tmux.conf" "$HOME/"
 
-# Symlink vimrc
+# Symlink kitty config
+ln -s "$HOME/Developer/dotfiles/kitty" "$HOME/.config/"
+
+# Symlink vim config
 ln -s "$HOME/Developer/dotfiles/nvim" "$HOME/.config/"
-# Install vim plug
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # Removes deafult neofetch config file and symlinks config file from our dotfiles
 neofetch >/dev/null 2>&1
