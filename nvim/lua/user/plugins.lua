@@ -10,7 +10,7 @@ require("packer").startup(function(use)
 	use({
 		"lewis6991/impatient.nvim",
 		config = function()
-			require("user.plugins.impatient")
+			require("impatient")
 		end,
 	})
 
@@ -76,11 +76,15 @@ require("packer").startup(function(use)
 	})
 
 	use({
+		"projekt0n/github-nvim-theme",
+		config = function()
+			require("user.plugins.theme")
+		end,
+	})
+
+	use({
 		"nvim-lualine/lualine.nvim",
-		requires = {
-			"Shatur/neovim-ayu",
-			"kyazdani42/nvim-web-devicons",
-		},
+		requires = { "kyazdani42/nvim-web-devicons" },
 		config = function()
 			require("user.plugins.lualine")
 		end,
@@ -89,7 +93,7 @@ require("packer").startup(function(use)
 	use({
 		"lewis6991/gitsigns.nvim",
 		config = function()
-			require("user.plugins.gitsigns")
+			require("gitsigns").setup()
 		end,
 	})
 
@@ -104,7 +108,7 @@ require("packer").startup(function(use)
 	use({
 		"L3MON4D3/LuaSnip",
 		config = function()
-			require("user.plugins.luasnip")
+			require("luasnip")
 		end,
 	})
 
@@ -112,13 +116,6 @@ require("packer").startup(function(use)
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup()
-		end,
-	})
-
-	use({
-		"goolord/alpha-nvim",
-		config = function()
-			require("user.plugins.alpha-nvim")
 		end,
 	})
 
@@ -152,6 +149,14 @@ require("packer").startup(function(use)
 		"numToStr/Comment.nvim",
 		config = function()
 			require("Comment").setup()
+		end,
+	})
+
+	use({
+		"folke/trouble.nvim",
+		requires = "kyazdani42/nvim-web-devicons",
+		config = function()
+			require("trouble")
 		end,
 	})
 

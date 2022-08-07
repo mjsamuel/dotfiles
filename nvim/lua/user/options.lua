@@ -5,7 +5,7 @@ set.relativenumber = true
 
 set.list = true
 -- vim.cmd('set listchars=tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»')
-set.signcolumn = "yes:2"
+set.signcolumn = "yes:1"
 set.hlsearch = false
 
 set.mouse = "a"
@@ -35,3 +35,4 @@ set.showmode = false
 
 set.clipboard = "unnamedplus"
 
+set.fillchars = { eob = " " }
