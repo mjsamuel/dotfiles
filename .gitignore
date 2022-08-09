@@ -15,3 +15,4 @@ shell/personal_functions.zsh
 
 # Vim
 *.swp
+nvim/plugin
