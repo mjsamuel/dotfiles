@@ -15,7 +15,8 @@ set.confirm = true
 
 set.undofile = true
 set.backup = true
-set.backupdir = "/Users/matthewsamuel/.local/share/nvim/backup/"
+set.backupdir = os.getenv("HOME") .. "/.local/share/nvim/backup/"
+
 
 set.tabstop = 2
 set.shiftwidth = 4
@@ -30,7 +31,7 @@ set.termguicolors = true
 
 vim.lsp.handlers["textDocument/references"] = require("telescope.builtin").lsp_references
 
-set.laststatus = 3 -- global statusline
+set.laststatus = 3
 set.showmode = false
 
 set.clipboard = "unnamedplus"
