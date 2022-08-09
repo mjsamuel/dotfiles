@@ -136,8 +136,6 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	use({ "mfussenegger/nvim-dap" })
-
 	use({ "gpanders/editorconfig.nvim" })
 
 	use({
@@ -159,6 +157,28 @@ require("packer").startup(function(use)
 		requires = "kyazdani42/nvim-web-devicons",
 		config = function()
 			require("trouble")
+		end,
+	})
+
+	use({
+		"mfussenegger/nvim-dap",
+		config = function()
+			require("user.plugins.dap")
+		end,
+	})
+
+	use({
+		"rcarriga/nvim-dap-ui",
+		config = function()
+			require("dapui").setup()
+		end,
+	})
+
+	use({
+		"mfussenegger/nvim-jdtls",
+		ft = "java",
+		config = function()
+			require("user.plugins.jdtls")
 		end,
 	})
 

@@ -40,3 +40,8 @@ keymap.set('n', "<leader>t", ":TroubleToggle document_diagnostics<cr>")
 keymap.set('n', "<leader>T", ":TroubleToggle workspace_diagnostics<cr>")
 
 keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+
+-- debug
+keymap.set("n", "<leader>du", ":lua require(\"dapui\").toggle()<cr>")
+keymap.set("n", "<leader>dc", ":lua require(\"dap\").continue()<cr>")
+keymap.set("n", "<leader>db", ":lua require(\"dap\").toggle_breakpoint()<cr>")

@@ -28,10 +28,6 @@ require("lspconfig")["html"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["jdtls"].setup({
-	capabilities = capabilities,
-})
-
 require("lspconfig")["jsonls"].setup({
 	capabilities = capabilities,
 })
