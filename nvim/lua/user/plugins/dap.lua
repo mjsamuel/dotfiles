@@ -1,6 +1,13 @@
-local dap = require("dap")
+local dap, dapui = require("dap"), require("dapui")
 
 dap.configurations.java = {
+	{
+		type = "java",
+		request = "attach",
+		name = "Debug (Backend) - Remote",
+		hostName = "127.0.0.1",
+		port = 8787,
+	},
 	{
 		type = "java",
 		request = "attach",
@@ -9,5 +16,3 @@ dap.configurations.java = {
 		port = 8788,
 	},
 }
-
-vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })

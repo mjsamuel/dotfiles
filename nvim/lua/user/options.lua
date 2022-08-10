@@ -29,11 +29,11 @@ set.cursorline = true
 
 set.termguicolors = true
 
-vim.lsp.handlers["textDocument/references"] = require("telescope.builtin").lsp_references
-
 set.laststatus = 3
 set.showmode = false
 
 set.clipboard = "unnamedplus"
 
 set.fillchars = { eob = " " }
+
+set.lazyredraw = true

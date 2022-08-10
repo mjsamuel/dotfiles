@@ -28,7 +28,8 @@ require("packer").startup(function(use)
 
 	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
+		requires = { "nvim-lua/plenary.nvim" },
+		cmd = "Telescope",
 		config = function()
 			require("user.plugins.telescope")
 		end,
@@ -66,19 +67,16 @@ require("packer").startup(function(use)
 
 	use({ "tpope/vim-surround" })
 
-	use({ "tpope/vim-fugitive", opt = true, cmd = "Git" })
+	use({
+		"tpope/vim-fugitive",
+		cmd = "Git",
+	})
 
 	use({ "kyazdani42/nvim-web-devicons" })
 
 	use({
 		"Shatur/neovim-ayu",
-		config = function()
-			require("user.plugins.theme")
-		end,
-	})
-
-	use({
-		"projekt0n/github-nvim-theme",
+    after = "lualine.nvim",
 		config = function()
 			require("user.plugins.theme")
 		end,
@@ -147,6 +145,7 @@ require("packer").startup(function(use)
 
 	use({
 		"numToStr/Comment.nvim",
+    keys = "gcc",
 		config = function()
 			require("Comment").setup()
 		end,
@@ -155,6 +154,7 @@ require("packer").startup(function(use)
 	use({
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
+		cmd = "Trouble",
 		config = function()
 			require("trouble")
 		end,
@@ -170,7 +170,7 @@ require("packer").startup(function(use)
 	use({
 		"rcarriga/nvim-dap-ui",
 		config = function()
-			require("dapui").setup()
+			require("user.plugins.dap-ui")
 		end,
 	})
 
