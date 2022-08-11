@@ -35,7 +35,10 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	use({
+		"nvim-telescope/telescope-fzf-native.nvim",
+		run = "make",
+	})
 
 	use({
 		"neovim/nvim-lspconfig",
@@ -75,20 +78,22 @@ require("packer").startup(function(use)
 	use({ "kyazdani42/nvim-web-devicons" })
 
 	use({
+		"nvim-lualine/lualine.nvim",
+		requires = { "kyazdani42/nvim-web-devicons" },
+		after = "neovim-ayu",
+		config = function()
+			require("user.plugins.lualine")
+		end,
+	})
+
+	use({
 		"Shatur/neovim-ayu",
-    after = "lualine.nvim",
 		config = function()
 			require("user.plugins.theme")
 		end,
 	})
 
-	use({
-		"nvim-lualine/lualine.nvim",
-		requires = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			require("user.plugins.lualine")
-		end,
-	})
+	use("EdenEast/nightfox.nvim")
 
 	use({
 		"lewis6991/gitsigns.nvim",
@@ -100,6 +105,7 @@ require("packer").startup(function(use)
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = "kyazdani42/nvim-web-devicons",
+		cmd = "NvimTreeFindFileToggle",
 		config = function()
 			require("user.plugins.nvim-tree")
 		end,
@@ -116,14 +122,6 @@ require("packer").startup(function(use)
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup()
-		end,
-	})
-
-	use({
-		"Shatur/neovim-session-manager",
-		requires = { { "nvim-lua/plenary.nvim" } },
-		config = function()
-			require("user.plugins.session-manager")
 		end,
 	})
 
@@ -145,7 +143,7 @@ require("packer").startup(function(use)
 
 	use({
 		"numToStr/Comment.nvim",
-    keys = "gcc",
+		keys = "gcc",
 		config = function()
 			require("Comment").setup()
 		end,
@@ -154,7 +152,7 @@ require("packer").startup(function(use)
 	use({
 		"folke/trouble.nvim",
 		requires = "kyazdani42/nvim-web-devicons",
-		cmd = "Trouble",
+		cmd = { "Trouble", "TroubleToggle" },
 		config = function()
 			require("trouble")
 		end,
@@ -162,6 +160,7 @@ require("packer").startup(function(use)
 
 	use({
 		"mfussenegger/nvim-dap",
+		ft = "java",
 		config = function()
 			require("user.plugins.dap")
 		end,
@@ -169,6 +168,7 @@ require("packer").startup(function(use)
 
 	use({
 		"rcarriga/nvim-dap-ui",
+		after = "nvim-dap",
 		config = function()
 			require("user.plugins.dap-ui")
 		end,
