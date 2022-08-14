@@ -93,7 +93,9 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	use("EdenEast/nightfox.nvim")
+	use("ellisonleao/gruvbox.nvim")
+
+  use({"sainnhe/gruvbox-material"})
 
 	use({
 		"lewis6991/gitsigns.nvim",

@@ -1,5 +1,6 @@
-require('lualine').setup({
-    options = {
-        globalstatus = false
-    },
+require("lualine").setup({
+	options = {
+		globalstatus = true,
+		theme = "gruvbox-material",
+	},
 })
