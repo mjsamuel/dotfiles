@@ -14,7 +14,7 @@
     <key>ProgramArguments</key>
     <array>
        <string>/usr/local/bin/dark-mode-notify</string>
-       <string>/Users/matthewsamuel/Developer/dotfiles/other/changecolors</string>
+       <string>/Users/matthewsamuel/Developer/dotfiles/other/scripts/changecolors</string>
     </array>
 </dict>
 </plist>

@@ -7,14 +7,9 @@ changeNvimColors() {
         target="${p%% *}"
         id="${p##* }"
         if [ "$target" = "nvim" ]; then
-            $TMUX send-keys -t "$id" ":call $1()" C-m
+            $TMUX send-keys -t "$id" ":set background=$1" C-m
         fi
     done
-}
-
-changeTmuxColors() {
-    $TMUX set-option -g status-style "$1" \; \
-       set-option -g window-status-current-style "$2"
 }
 
 changeSystemColors() {
@@ -24,11 +19,9 @@ changeSystemColors() {
 # Auto change when dark mode is changed by system
 # 'DARKMODE' set by dark-mode-notify: https://github.com/bouk/dark-mode-notify
 if [ "$DARKMODE" = 1 ]; then
-    changeNvimColors "ChangeColorschemeDark"
-    changeTmuxColors "bg=green, fg=black" "bg=green, fg=black"
+    changeNvimColors "dark"
 elif [ "$DARKMODE" = 0 ]; then
-    changeNvimColors "ChangeColorschemeLight"
-    changeTmuxColors "bg=black, fg=white" "bg=red, fg=white"
+    changeNvimColors "light"
 # Manually change colors
 else 
     if [ "$1" = "dark" ]; then

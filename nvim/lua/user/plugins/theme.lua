@@ -1,13 +1,3 @@
--- local ayu = require("ayu")
--- local colors = require("ayu.colors")
---
--- ayu.setup({
--- 	overrides = {
--- 		IncSearch = { bg = "#FFB454", fg = "#0A0E14" },
--- 	},
--- })
--- ayu.colorscheme()
-
 vim.cmd("colorscheme gruvbox-material")
 
 function ToggleTheme()

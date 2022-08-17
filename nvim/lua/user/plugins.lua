@@ -80,22 +80,18 @@ require("packer").startup(function(use)
 	use({
 		"nvim-lualine/lualine.nvim",
 		requires = { "kyazdani42/nvim-web-devicons" },
-		after = "neovim-ayu",
+		after = "gruvbox-material",
 		config = function()
 			require("user.plugins.lualine")
 		end,
 	})
 
 	use({
-		"Shatur/neovim-ayu",
+		"sainnhe/gruvbox-material",
 		config = function()
 			require("user.plugins.theme")
 		end,
 	})
-
-	use("ellisonleao/gruvbox.nvim")
-
-  use({"sainnhe/gruvbox-material"})
 
 	use({
 		"lewis6991/gitsigns.nvim",
