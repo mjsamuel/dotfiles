@@ -158,7 +158,6 @@ require("packer").startup(function(use)
 
 	use({
 		"mfussenegger/nvim-dap",
-		ft = "java",
 		config = function()
 			require("user.plugins.dap")
 		end,
@@ -166,7 +165,6 @@ require("packer").startup(function(use)
 
 	use({
 		"rcarriga/nvim-dap-ui",
-		after = "nvim-dap",
 		config = function()
 			require("user.plugins.dap-ui")
 		end,
@@ -177,6 +175,13 @@ require("packer").startup(function(use)
 		ft = "java",
 		config = function()
 			require("user.plugins.jdtls")
+		end,
+	})
+
+	use({
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			require("user.plugins.context")
 		end,
 	})
 

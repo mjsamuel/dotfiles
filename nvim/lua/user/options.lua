@@ -4,7 +4,7 @@ set.number = true
 set.relativenumber = true
 
 set.list = true
--- vim.cmd('set listchars=tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»')
+vim.cmd('set listchars=tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¬,precedes:«,extends:»')
 set.signcolumn = "yes:1"
 set.hlsearch = false
 
@@ -16,7 +16,6 @@ set.confirm = true
 set.undofile = true
 set.backup = true
 set.backupdir = os.getenv("HOME") .. "/.local/share/nvim/backup/"
-
 
 set.tabstop = 2
 set.shiftwidth = 4
@@ -37,3 +36,5 @@ set.clipboard = "unnamedplus"
 set.fillchars = { eob = " " }
 
 set.lazyredraw = true
+
+set.wrap = false
