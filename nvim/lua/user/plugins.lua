@@ -57,11 +57,13 @@ require("packer").startup(function(use)
 
 	use({
 		"hrsh7th/nvim-cmp",
+		after = { "friendly-snippets" },
 		requires = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
+			"onsails/lspkind.nvim",
 		},
 		config = function()
 			require("user.plugins.cmp")
@@ -184,6 +186,8 @@ require("packer").startup(function(use)
 			require("user.plugins.context")
 		end,
 	})
+
+	use("rafamadriz/friendly-snippets")
 
 	if packer_bootstrap then
 		require("packer").sync()

@@ -1,58 +1,59 @@
+local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-require("lspconfig")["angularls"].setup({
+lspconfig["angularls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["bashls"].setup({
+lspconfig["bashls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["cmake"].setup({
+lspconfig["cmake"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["cssls"].setup({
+lspconfig["cssls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["dockerls"].setup({
+lspconfig["dockerls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["emmet_ls"].setup({
+lspconfig["emmet_ls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["html"].setup({
+lspconfig["html"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["jsonls"].setup({
+lspconfig["jsonls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["lemminx"].setup({
+lspconfig["lemminx"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["marksman"].setup({
+lspconfig["marksman"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["pyright"].setup({
+lspconfig["pyright"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["sourcekit"].setup({
+lspconfig["sourcekit"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["sqlls"].setup({
+lspconfig["sqlls"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["sumneko_lua"].setup({
+lspconfig["sumneko_lua"].setup({
 	capabilities = capabilities,
 	settings = {
 		Lua = {
@@ -63,19 +64,19 @@ require("lspconfig")["sumneko_lua"].setup({
 	},
 })
 
-require("lspconfig")["tailwindcss"].setup({
+lspconfig["tailwindcss"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["taplo"].setup({
+lspconfig["taplo"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["tsserver"].setup({
+lspconfig["tsserver"].setup({
 	capabilities = capabilities,
 })
 
-require("lspconfig")["yamlls"].setup({
+lspconfig["yamlls"].setup({
 	capabilities = capabilities,
 })
 
@@ -89,3 +90,4 @@ for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
+
