@@ -12,11 +12,13 @@ require("treesitter-context").setup({
 			"switch",
 			"case",
 		},
+		json = {
+			"object",
+			"pair",
+		},
 		ts = {
-			"subscribe",
-			"map",
-      "pipe",
-      "forkjoin"
+			"object",
+			"pair",
 		},
 	},
 })
