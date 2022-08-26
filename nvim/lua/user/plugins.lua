@@ -57,7 +57,7 @@ require("packer").startup(function(use)
 
 	use({
 		"hrsh7th/nvim-cmp",
-		after = { "friendly-snippets" },
+		event = "InsertEnter",
 		requires = {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
@@ -167,6 +167,7 @@ require("packer").startup(function(use)
 
 	use({
 		"rcarriga/nvim-dap-ui",
+		module = "dapui",
 		config = function()
 			require("user.plugins.dap-ui")
 		end,
@@ -188,6 +189,8 @@ require("packer").startup(function(use)
 	})
 
 	use("rafamadriz/friendly-snippets")
+
+	use("nathom/filetype.nvim")
 
 	if packer_bootstrap then
 		require("packer").sync()
