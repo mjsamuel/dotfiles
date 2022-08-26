@@ -70,14 +70,22 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	use({ "tpope/vim-surround" })
+	use({
+		"kylechui/nvim-surround",
+		config = function()
+			require("nvim-surround").setup({})
+		end,
+	})
 
 	use({
 		"tpope/vim-fugitive",
 		cmd = "Git",
 	})
 
-	use({ "kyazdani42/nvim-web-devicons" })
+	use({
+		"kyazdani42/nvim-web-devicons",
+		module = "nvim-web-devicons",
+	})
 
 	use({
 		"nvim-lualine/lualine.nvim",
@@ -105,7 +113,7 @@ require("packer").startup(function(use)
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = "kyazdani42/nvim-web-devicons",
-		cmd = "NvimTreeFindFileToggle",
+		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 		config = function()
 			require("user.plugins.nvim-tree")
 		end,
@@ -113,6 +121,8 @@ require("packer").startup(function(use)
 
 	use({
 		"L3MON4D3/LuaSnip",
+		wants = "friendly-snippets",
+		after = "nvim-cmp",
 		config = function()
 			require("luasnip")
 		end,
@@ -120,6 +130,7 @@ require("packer").startup(function(use)
 
 	use({
 		"windwp/nvim-autopairs",
+		after = "nvim-cmp",
 		config = function()
 			require("nvim-autopairs").setup()
 		end,
@@ -143,7 +154,8 @@ require("packer").startup(function(use)
 
 	use({
 		"numToStr/Comment.nvim",
-		keys = "gcc",
+		module = "Comment",
+		keys = { "gc", "gb" },
 		config = function()
 			require("Comment").setup()
 		end,
@@ -183,6 +195,7 @@ require("packer").startup(function(use)
 
 	use({
 		"nvim-treesitter/nvim-treesitter-context",
+		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 		config = function()
 			require("user.plugins.context")
 		end,

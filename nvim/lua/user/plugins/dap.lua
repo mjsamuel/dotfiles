@@ -1,4 +1,4 @@
-local dap, dapui = require("dap"), require("dapui")
+local dap = require("dap")
 
 dap.configurations.java = {
 	{
