@@ -1,11 +1,10 @@
-local project_name = vim.fn.fnamemodify(vim.api.nvim_exec("!git rev-parse --show-toplevel", true), ":t")
-local workspace_dir = "/home/msamuel/Developer/workspaces/" .. project_name:sub(1, -2)
 local home = os.getenv("HOME")
+local project_name = vim.fn.fnamemodify(vim.api.nvim_exec("!git rev-parse --show-toplevel", true), ":t")
+local workspace_dir = home .. "/Developer/workspaces/" .. project_name:sub(1, -2)
 
 local config = {
 	cmd = {
 		"java",
-		-- "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8788",
 		"-Declipse.application=org.eclipse.jdt.ls.core.id1",
 		"-Dosgi.bundles.defaultStartLevel=4",
 		"-Declipse.product=org.eclipse.jdt.ls.core.product",
