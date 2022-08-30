@@ -113,7 +113,7 @@ require("packer").startup(function(use)
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = "kyazdani42/nvim-web-devicons",
-		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+		cmd = { "NvimTreeToggle", "NvimTreeFocus", 'NvimTreeFindFileToggle' },
 		config = function()
 			require("user.plugins.nvim-tree")
 		end,
@@ -179,7 +179,6 @@ require("packer").startup(function(use)
 
 	use({
 		"rcarriga/nvim-dap-ui",
-		module = "dapui",
 		config = function()
 			require("user.plugins.dap-ui")
 		end,
