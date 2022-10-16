@@ -113,7 +113,7 @@ require("packer").startup(function(use)
 	use({
 		"kyazdani42/nvim-tree.lua",
 		requires = "kyazdani42/nvim-web-devicons",
-		cmd = { "NvimTreeToggle", "NvimTreeFocus", 'NvimTreeFindFileToggle' },
+		cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFileToggle" },
 		config = function()
 			require("user.plugins.nvim-tree")
 		end,
@@ -217,6 +217,14 @@ require("packer").startup(function(use)
 			require("session_manager").setup({
 				autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 			})
+		end,
+	})
+
+	use({
+		"melkster/modicator.nvim",
+		after = "gruvbox-material",
+		config = function()
+			require("user.plugins.modicator")
 		end,
 	})
 
