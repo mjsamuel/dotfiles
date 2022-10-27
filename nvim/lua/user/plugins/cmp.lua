@@ -31,6 +31,7 @@ cmp.setup({
 		},
 		documentation = {
 			border = border("CmpDocBorder"),
+			winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
 		},
 	},
 	formatting = {
@@ -78,3 +79,8 @@ cmp.setup({
 		{ name = "luasnip" },
 	}),
 })
+
+vim.cmd("highlight! link CmpPmenu Pmenu")
+vim.cmd("highlight! link CmpPmenuBorder Pmenu")
+vim.cmd("highlight! CmpPmenu guibg=#282828")
+vim.cmd("highlight! CmpPmenuBorder guifg=#615750")
