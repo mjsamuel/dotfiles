@@ -8,4 +8,10 @@ function ToggleTheme()
 	end
 end
 
-vim.keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+vim.cmd("highlight! link CmpPmenu Pmenu")
+vim.cmd("highlight! link CmpPmenuBorder Pmenu")
+vim.cmd("highlight! CmpPmenu guibg=#282828")
+vim.cmd("highlight! CmpPmenuBorder guifg=#615750")
+
+vim.cmd [[highlight! NormalFloat guibg=#282828]]
+vim.cmd [[highlight! FloatBorder guibg=#282828]]

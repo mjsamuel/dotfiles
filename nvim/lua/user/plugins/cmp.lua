@@ -23,8 +23,6 @@ cmp.setup({
 		ghost_text = true,
 	},
 	window = {
-		-- completion = cmp.config.window.bordered(),
-		-- documentation = cmp.config.window.bordered(),
 		completion = {
 			border = border("CmpBorder"),
 			winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
@@ -36,9 +34,7 @@ cmp.setup({
 	},
 	formatting = {
 		format = lspkind.cmp_format({
-			-- The function below will be called before any actual modifications from lspkind
-			-- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-			before = function(entry, vim_item)
+			before = function(_, vim_item)
 				return vim_item
 			end,
 		}),
@@ -75,12 +71,9 @@ cmp.setup({
 	}),
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
-		{ name = "buffer" },
 		{ name = "luasnip" },
 	}),
 })
 
-vim.cmd("highlight! link CmpPmenu Pmenu")
-vim.cmd("highlight! link CmpPmenuBorder Pmenu")
-vim.cmd("highlight! CmpPmenu guibg=#282828")
-vim.cmd("highlight! CmpPmenuBorder guifg=#615750")
+require("luasnip/loaders/from_vscode").lazy_load()
+

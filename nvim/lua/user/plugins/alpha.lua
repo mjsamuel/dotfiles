@@ -14,10 +14,6 @@ dashboard.section.buttons.val = {
 	dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h <CR>"),
 	dashboard.button("q", "  Quit NVIM", ":qa<CR>"),
 }
-local handle = io.popen("fortune")
-local fortune = handle:read("*a")
-handle:close()
-dashboard.section.footer.val = fortune
 
 dashboard.config.opts.noautocmd = true
 

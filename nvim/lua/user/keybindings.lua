@@ -9,10 +9,6 @@ keymap.set("n", "<Leader>p", "p`[v`]=")
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
 
--- quickly edit/reload vim config
-keymap.set("n", "<Leader>ve", ":edit ~/.config/nvim/init.lua<cr>")
-keymap.set("n", "<Leader>vr", ":source ~/.config/nvim/init.lua<cr>")
-
 -- telescope
 keymap.set("n", "<Leader>ff", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>fg", "<cmd>Telescope live_grep<cr>")
@@ -49,3 +45,6 @@ keymap.set("n", "<leader>T", ":TroubleToggle workspace_diagnostics<cr>")
 keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>')
 keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>')
 keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
+
+-- theme
+vim.keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")

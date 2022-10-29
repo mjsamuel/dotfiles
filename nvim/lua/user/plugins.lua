@@ -64,6 +64,8 @@ require("packer").startup(function(use)
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-cmdline",
 			"onsails/lspkind.nvim",
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
 		},
 		config = function()
 			require("user.plugins.cmp")
@@ -116,15 +118,6 @@ require("packer").startup(function(use)
 		cmd = { "NvimTreeToggle", "NvimTreeFocus", "NvimTreeFindFileToggle" },
 		config = function()
 			require("user.plugins.nvim-tree")
-		end,
-	})
-
-	use({
-		"L3MON4D3/LuaSnip",
-		wants = "friendly-snippets",
-		after = "nvim-cmp",
-		config = function()
-			require("luasnip")
 		end,
 	})
 
@@ -192,16 +185,6 @@ require("packer").startup(function(use)
 		end,
 	})
 
-	use({
-		"nvim-treesitter/nvim-treesitter-context",
-		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-		config = function()
-			require("user.plugins.context")
-		end,
-	})
-
-	use("rafamadriz/friendly-snippets")
-
 	use("nathom/filetype.nvim")
 
 	use({
@@ -217,14 +200,6 @@ require("packer").startup(function(use)
 			require("session_manager").setup({
 				autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 			})
-		end,
-	})
-
-	use({
-		"melkster/modicator.nvim",
-		after = "gruvbox-material",
-		config = function()
-			require("user.plugins.modicator")
 		end,
 	})
 
