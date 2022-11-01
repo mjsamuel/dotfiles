@@ -1,4 +1,19 @@
-require("mason").setup()
+local border = {
+	{ "╭", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╮", "FloatBorder" },
+	{ "│", "FloatBorder" },
+	{ "╯", "FloatBorder" },
+	{ "─", "FloatBorder" },
+	{ "╰", "FloatBorder" },
+	{ "│", "FloatBorder" },
+}
+
+require("mason").setup({
+	ui = {
+		border = border,
+	},
+})
 
 require("mason-tool-installer").setup({
 	ensure_installed = {
@@ -22,10 +37,10 @@ require("mason-tool-installer").setup({
 		"taplo",
 		"typescript-language-server",
 		"yaml-language-server",
-    "stylua",
-    "prettier",
-    "firefox-debug-adapter"
+		"stylua",
+		"prettier",
+		"firefox-debug-adapter",
 	},
-  run_on_start = true,
-  start_delay = 15000
+	run_on_start = true,
+	start_delay = 15000,
 })
