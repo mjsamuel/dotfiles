@@ -27,7 +27,7 @@ keymap.set("n", "gD", ":lua vim.lsp.buf.declaration()<cr>")
 keymap.set("n", "gi", ":lua vim.lsp.buf.implementation()<cr>")
 keymap.set("n", "gw", ":lua vim.lsp.buf.document_symbol()<cr>")
 keymap.set("n", "gw", ":lua vim.lsp.buf.workspace_symbol()<cr>")
-keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
+keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>")
 keymap.set("n", "gt", ":lua vim.lsp.buf.type_definition()<cr>")
 keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
 
