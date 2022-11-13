@@ -166,15 +166,9 @@ require("packer").startup({
 
 		use({
 			"mfussenegger/nvim-dap",
+			requires = "rcarriga/nvim-dap-ui",
 			config = function()
 				require("user.plugins.dap")
-			end,
-		})
-
-		use({
-			"rcarriga/nvim-dap-ui",
-			config = function()
-				require("user.plugins.dap-ui")
 			end,
 		})
 
@@ -204,6 +198,8 @@ require("packer").startup({
 			end,
 		})
 
+		use("nvim-treesitter/nvim-treesitter-context")
+
 		if packer_bootstrap then
 			require("packer").sync()
 		end
@@ -211,17 +207,18 @@ require("packer").startup({
 	config = {
 		display = {
 			open_fn = function()
-				return require("packer.util").float({ border = {
-            { "╭", "FloatBorder" },
-            { "─", "FloatBorder" },
-            { "╮", "FloatBorder" },
-            { "│", "FloatBorder" },
-            { "╯", "FloatBorder" },
-            { "─", "FloatBorder" },
-            { "╰", "FloatBorder" },
-            { "│", "FloatBorder" },
-        }
-        })
+				return require("packer.util").float({
+					border = {
+						{ "╭", "FloatBorder" },
+						{ "─", "FloatBorder" },
+						{ "╮", "FloatBorder" },
+						{ "│", "FloatBorder" },
+						{ "╯", "FloatBorder" },
+						{ "─", "FloatBorder" },
+						{ "╰", "FloatBorder" },
+						{ "│", "FloatBorder" },
+					},
+				})
 			end,
 		},
 	},
