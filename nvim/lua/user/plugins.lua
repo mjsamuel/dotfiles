@@ -198,6 +198,8 @@ require("packer").startup({
 			end,
 		})
 
+		use("nvim-treesitter/nvim-treesitter-context")
+
 		if packer_bootstrap then
 			require("packer").sync()
 		end

@@ -16,3 +16,4 @@ vim.cmd("highlight! CmpPmenuBorder guifg=#615750")
 vim.cmd([[highlight! NormalFloat guibg=#282828]])
 vim.cmd([[highlight! FloatBorder guibg=#282828]])
 
+vim.cmd("highlight! TreesitterContext guibg=#32302F")
