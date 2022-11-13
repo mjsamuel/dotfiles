@@ -8,12 +8,11 @@ end
 
 vim.cmd("colorscheme gruvbox-material")
 
+vim.cmd("highlight! Pmenu guibg=#282828")
 vim.cmd("highlight! link CmpPmenu Pmenu")
 vim.cmd("highlight! link CmpPmenuBorder Pmenu")
-vim.cmd("highlight! CmpPmenu guibg=#282828")
-vim.cmd("highlight! CmpPmenuBorder guifg=#615750")
+vim.cmd("highlight! link NormalFloat Pmenu")
+vim.cmd("highlight! link FloatBorder Pmenu")
 
-vim.cmd([[highlight! NormalFloat guibg=#282828]])
-vim.cmd([[highlight! FloatBorder guibg=#282828]])
+vim.cmd("highlight! link TreesitterContext CursorLine")
 
-vim.cmd("highlight! TreesitterContext guibg=#32302F")
