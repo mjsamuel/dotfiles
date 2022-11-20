@@ -66,7 +66,6 @@ require("packer").startup({
 				"hrsh7th/cmp-cmdline",
 				"onsails/lspkind.nvim",
 				"L3MON4D3/LuaSnip",
-				"rafamadriz/friendly-snippets",
 			},
 			config = function()
 				require("user.plugins.cmp")

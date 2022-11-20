@@ -42,10 +42,20 @@ require("telescope").setup({
 	pickers = {
 		find_files = {
 			hidden = true,
+			theme = "dropdown",
+			previewer = false,
 		},
 		buffers = {
-			ignore_current_buffer = true,
+			show_all_buffers = true,
 			sort_lastused = true,
+			theme = "dropdown",
+			previewer = false,
+			mappings = {
+				i = {
+					["<c-m>"] = "delete_buffer",
+					previewer = false,
+				},
+			},
 		},
 	},
 	extension = {
