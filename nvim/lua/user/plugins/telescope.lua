@@ -52,7 +52,7 @@ require("telescope").setup({
 			previewer = false,
 			mappings = {
 				i = {
-					["<c-m>"] = "delete_buffer",
+					["<c-d>"] = "delete_buffer",
 					previewer = false,
 				},
 			},

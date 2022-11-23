@@ -39,6 +39,9 @@ set.lazyredraw = true
 
 set.wrap = false
 
+set.ignorecase = true
+set.smartcase = true
+
 -- disable default plugins
 local disabled_built_ins = {
     "netrw",

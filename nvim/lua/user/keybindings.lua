@@ -47,4 +47,5 @@ keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>')
 keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- theme
-vim.keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+
