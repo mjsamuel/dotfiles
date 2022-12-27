@@ -35,7 +35,7 @@ keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
 keymap.set("n", "<Leader>p", ":Format<cr>")
 
 -- nvim tree
-keymap.set("n", "<leader>n", ":NvimTreeFindFileToggle<cr>", { silent = true, noremap = true })
+keymap.set("n", "<leader>n", ":Neotree toggle position=right<cr>", { silent = true, noremap = true })
 
 -- trouble
 keymap.set("n", "<leader>t", ":TroubleToggle document_diagnostics<cr>")
