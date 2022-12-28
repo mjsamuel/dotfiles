@@ -4,8 +4,6 @@ local g = vim.g
 g.mapleader = " "
 keymap.set("n", ";", ":")
 
-keymap.set("n", "<Leader>p", "p`[v`]=")
-
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
 
@@ -14,6 +12,12 @@ keymap.set("n", "<Leader>ff", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>fg", "<cmd>Telescope live_grep<cr>")
 keymap.set("n", "<Leader>fb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>fh", "<cmd>Telescope help_tags<cr>")
+
+-- buffer management
+keymap.set("n", "<Leader>bb", "<cmd>Telescope buffers<cr>")
+keymap.set("n", "<Leader>bd", "<cmd>Telescope buffers<cr>")
+keymap.set("n", "<Leader>bn", ":bn<cr>")
+keymap.set("n", "<Leader>bp", ":bp<cr>")
 
 -- git
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
@@ -34,8 +38,8 @@ keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
 -- format
 keymap.set("n", "<Leader>p", ":Format<cr>")
 
--- nvim tree
-keymap.set("n", "<leader>n", ":Neotree toggle position=right<cr>", { silent = true, noremap = true })
+-- neo-tree
+keymap.set("n", "<leader>n", ":Neotree reveal toggle position=right<cr>", { silent = true, noremap = true })
 
 -- trouble
 keymap.set("n", "<leader>t", ":TroubleToggle document_diagnostics<cr>")
@@ -48,4 +52,3 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- theme
 keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
-
