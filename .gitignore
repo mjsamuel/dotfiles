@@ -16,3 +16,4 @@ shell/personal_functions.zsh
 # Vim
 *.swp
 nvim/plugin
+nvim/lazy-lock.json

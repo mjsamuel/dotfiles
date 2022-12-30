@@ -1,7 +1,5 @@
 local keymap = vim.keymap
-local g = vim.g
 
-g.mapleader = " "
 keymap.set("n", ";", ":")
 
 -- Allow gf to open non-existent files
