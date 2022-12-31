@@ -172,10 +172,17 @@ function M.config()
 		},
 	}
 
-	local num_plugins_loaded = #vim.fn.globpath(vim.fn.stdpath("data") .. "/site/pack/packer/start", "*", 0, 1)
 	local footer = {
 		type = "text",
-		val = { num_plugins_loaded .. " plugins ﮣ loaded" },
+		val = function()
+			local stats = require("lazy").stats()
+			return string.format(
+				"%s/%s plugins ﮣ loaded in %.3f seconds",
+				stats.loaded,
+				stats.count,
+				(stats.startuptime / 1000)
+			)
+		end,
 		opts = {
 			position = "center",
 			hl = "Comment",
@@ -210,11 +217,10 @@ function M.config()
 		val = {
 			{ type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
 			{ type = "padding", val = 1 },
-			dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
 			dashboard.button("S", "  Open last session", ":SessionManager load_last_session<CR>"),
 			dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
 			dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h <CR>"),
-			dashboard.button("u", "  Update plugins", ":Lazy install<CR>"),
+			dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),
 			dashboard.button("q", "  Quit", ":qa<CR>"),
 		},
 		position = "center",
