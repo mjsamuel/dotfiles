@@ -2,49 +2,38 @@ return {
 	"nvim-lua/plenary.nvim",
 	"MunifTanjim/nui.nvim",
 	"kyazdani42/nvim-web-devicons",
-	{ "gpanders/editorconfig.nvim", lazy = false },
+	{ "gpanders/editorconfig.nvim", event = "BufReadPre" },
 	{
 		"kylechui/nvim-surround",
 		keys = {
 			{ "ys", desc = "Surround" },
 			{ "S", mode = "v", desc = "Surround" },
 		},
-		config = function()
-			require("nvim-surround").setup({})
-		end,
+		config = true,
 	},
 	{ "tpope/vim-fugitive", cmd = "Git" },
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "BufReadPre",
-		config = function()
-			require("gitsigns").setup()
-		end,
+		config = true,
 	},
-	{ "nvim-neo-tree/neo-tree.nvim", cmd = "Neotree",
-	},
+	{ "nvim-neo-tree/neo-tree.nvim", cmd = "Neotree" },
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		config = function()
-			require("nvim-autopairs").setup()
-		end,
+		config = true,
 	},
 	{
 		"numToStr/Comment.nvim",
 		keys = {
 			{ "gc", desc = "Comment" },
 		},
-		config = function()
-			require("Comment").setup()
-		end,
+		config = true,
 	},
 	{
 		"folke/trouble.nvim",
 		cmd = "TroubleToggle",
-		config = function()
-			require("trouble")
-		end,
+		config = true,
 	},
 	{
 		"Shatur/neovim-session-manager",
@@ -53,6 +42,17 @@ return {
 			require("session_manager").setup({
 				autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 			})
+		end,
+	},
+	{
+		"monaqa/dial.nvim",
+		keys = { "<C-a>", { "<C-x>", mode = "n" } },
+	},
+	{
+		"RRethy/vim-illuminate",
+		event = "BufReadPost",
+		config = function()
+			require("illuminate").configure({ delay = 200 })
 		end,
 	},
 }

@@ -10,6 +10,7 @@ function M.config()
 			theme = "gruvbox-material",
 			section_separators = "",
 			component_separators = "",
+			disabled_filetypes = { "alpha" },
 		},
 	})
 end

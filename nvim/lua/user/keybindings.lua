@@ -50,3 +50,11 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- theme
 keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+
+-- increment/decrement
+keymap.set("n", "<C-a>", ":lua require('dial.map').inc_normal()<cr>")
+keymap.set("n", "<C-x>", ":lua require('dial.map').dec_normal()<cr>")
+keymap.set("v", "<C-a>", ":lua require('dial.map').inc_visual()<cr>")
+keymap.set("v", "<C-x>", ":lua require('dial.map').dec_visual()<cr>")
+keymap.set("v", "g<C-a>", ":lua require('dial.map').inc_gvisual()<cr>")
+keymap.set("v", "g<C-x>", ":lua require('dial.map').dec_gvisual()<cr>")

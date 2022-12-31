@@ -8,6 +8,7 @@ local M = {
 		{ "hrsh7th/cmp-cmdline" },
 		{ "onsails/lspkind.nvim" },
 		{ "L3MON4D3/LuaSnip" },
+		{ "rafamadriz/friendly-snippets" },
 	},
 }
 
@@ -16,18 +17,7 @@ function M.config()
 	local luasnip = require("luasnip")
 	local lspkind = require("lspkind")
 
-	local function border(hl_name)
-		return {
-			{ "╭", hl_name },
-			{ "─", hl_name },
-			{ "╮", hl_name },
-			{ "│", hl_name },
-			{ "╯", hl_name },
-			{ "─", hl_name },
-			{ "╰", hl_name },
-			{ "│", hl_name },
-		}
-	end
+	require("luasnip.loaders.from_vscode").lazy_load()
 
 	-- Set completeopt to have a better completion experience
 	vim.o.completeopt = "menuone,longest,preview"
