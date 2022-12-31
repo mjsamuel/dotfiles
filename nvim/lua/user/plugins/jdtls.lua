@@ -1,4 +1,7 @@
-local M = { "mfussenegger/nvim-jdtls" }
+local M = {
+	"mfussenegger/nvim-jdtls",
+	ft = "java",
+}
 
 function M.config()
 	local home = os.getenv("HOME")

@@ -1,4 +1,10 @@
-local M = { "nvim-telescope/telescope.nvim" }
+local M = {
+	"nvim-telescope/telescope.nvim",
+	cmd = "Telescope",
+	dependencies = {
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+	},
+}
 
 function M.config()
 	require("telescope").setup({

@@ -1,59 +1,58 @@
 return {
-	{ "nvim-lua/plenary.nvim" },
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		build = "make",
-	},
-	{ "hrsh7th/cmp-nvim-lsp" },
-	{ "hrsh7th/cmp-buffer" },
-	{ "hrsh7th/cmp-path" },
-	{ "hrsh7th/cmp-cmdline" },
-	{ "onsails/lspkind.nvim" },
-	{ "L3MON4D3/LuaSnip" },
+	"nvim-lua/plenary.nvim",
+	"MunifTanjim/nui.nvim",
+	"kyazdani42/nvim-web-devicons",
+	{ "gpanders/editorconfig.nvim", lazy = false },
 	{
 		"kylechui/nvim-surround",
+		keys = {
+			{ "ys", desc = "Surround" },
+			{ "S", mode = "v", desc = "Surround" },
+		},
 		config = function()
 			require("nvim-surround").setup({})
 		end,
 	},
-	{ "tpope/vim-fugitive" },
-	{ "kyazdani42/nvim-web-devicons" },
+	{ "tpope/vim-fugitive", cmd = "Git" },
 	{
 		"lewis6991/gitsigns.nvim",
+		event = "BufReadPre",
 		config = function()
 			require("gitsigns").setup()
 		end,
 	},
-	{ "nvim-neo-tree/neo-tree.nvim" },
+	{ "nvim-neo-tree/neo-tree.nvim", cmd = "Neotree",
+	},
 	{
 		"windwp/nvim-autopairs",
+		event = "InsertEnter",
 		config = function()
 			require("nvim-autopairs").setup()
 		end,
 	},
-	{ "gpanders/editorconfig.nvim" },
 	{
 		"numToStr/Comment.nvim",
+		keys = {
+			{ "gc", desc = "Comment" },
+		},
 		config = function()
 			require("Comment").setup()
 		end,
 	},
 	{
 		"folke/trouble.nvim",
+		cmd = "TroubleToggle",
 		config = function()
 			require("trouble")
 		end,
 	},
-	{ "rcarriga/nvim-dap-ui" },
-	{ "nathom/filetype.nvim" },
 	{
 		"Shatur/neovim-session-manager",
+		lazy = false,
 		config = function()
 			require("session_manager").setup({
 				autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
 			})
 		end,
 	},
-	{ "nvim-treesitter/nvim-treesitter-context" },
-	{ "MunifTanjim/nui.nvim" },
 }

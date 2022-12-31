@@ -1,4 +1,15 @@
-local M = { "hrsh7th/nvim-cmp" }
+local M = {
+	"hrsh7th/nvim-cmp",
+	event = "InsertEnter",
+	dependencies = {
+		{ "hrsh7th/cmp-nvim-lsp" },
+		{ "hrsh7th/cmp-buffer" },
+		{ "hrsh7th/cmp-path" },
+		{ "hrsh7th/cmp-cmdline" },
+		{ "onsails/lspkind.nvim" },
+		{ "L3MON4D3/LuaSnip" },
+	},
+}
 
 function M.config()
 	local cmp = require("cmp")
@@ -27,11 +38,11 @@ function M.config()
 		},
 		window = {
 			completion = {
-				border = border("CmpBorder"),
+				border = require("user.misc.opts").border,
 				winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
 			},
 			documentation = {
-				border = border("CmpDocBorder"),
+				border = require("user.misc.opts").border,
 				winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
 			},
 		},

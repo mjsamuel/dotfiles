@@ -13,16 +13,8 @@ vim.opt.runtimepath:prepend(lazypath)
 
 vim.g.mapleader = " "
 require("lazy").setup("user.plugins", {
+	defaults = { lazy = true },
 	ui = {
-		border = {
-			{ "╭", "FloatBorder" },
-			{ "─", "FloatBorder" },
-			{ "╮", "FloatBorder" },
-			{ "│", "FloatBorder" },
-			{ "╯", "FloatBorder" },
-			{ "─", "FloatBorder" },
-			{ "╰", "FloatBorder" },
-			{ "│", "FloatBorder" },
-		},
+		border = require("user.misc.opts").border,
 	},
 })

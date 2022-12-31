@@ -1,4 +1,7 @@
-local M = { "goolord/alpha-nvim" }
+local M = {
+	"goolord/alpha-nvim",
+	lazy = false,
+}
 
 function M.config()
 	local path_ok, path = pcall(require, "plenary.path")

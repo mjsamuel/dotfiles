@@ -1,4 +1,7 @@
-local M = { "sainnhe/gruvbox-material" }
+local M = {
+	"sainnhe/gruvbox-material",
+	lazy = false,
+}
 
 function M.config()
 	vim.cmd("colorscheme gruvbox-material")
