@@ -1,6 +1,7 @@
 local keymap = vim.keymap
 
 keymap.set("n", ";", ":")
+keymap.set("v", ";", ":")
 
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
@@ -13,15 +14,13 @@ keymap.set("n", "<Leader>fh", "<cmd>Telescope help_tags<cr>")
 
 -- buffer management
 keymap.set("n", "<Leader>bb", "<cmd>Telescope buffers<cr>")
-keymap.set("n", "<Leader>bd", "<cmd>Telescope buffers<cr>")
-keymap.set("n", "<Leader>bn", ":bn<cr>")
-keymap.set("n", "<Leader>bp", ":bp<cr>")
 
 -- git
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gc", "<cmd>Telescope git_commits<cr>")
 keymap.set("n", "<Leader>gs", "<cmd>Telescope git_stash<cr>")
-keymap.set("n", "<Leader>gb", "<cmd>:Git blame<cr>")
+keymap.set("n", "<Leader>gb", "<cmd>:Gitsigns toggle_current_line_blame<cr>")
+keymap.set("n", "<Leader>gB", "<cmd>:Git blame<cr>")
 
 -- lsp
 keymap.set("n", "gd", ":lua vim.lsp.buf.definition()<cr>")
@@ -50,11 +49,3 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- theme
 keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
-
--- increment/decrement
-keymap.set("n", "<C-a>", ":lua require('dial.map').inc_normal()<cr>")
-keymap.set("n", "<C-x>", ":lua require('dial.map').dec_normal()<cr>")
-keymap.set("v", "<C-a>", ":lua require('dial.map').inc_visual()<cr>")
-keymap.set("v", "<C-x>", ":lua require('dial.map').dec_visual()<cr>")
-keymap.set("v", "g<C-a>", ":lua require('dial.map').inc_gvisual()<cr>")
-keymap.set("v", "g<C-x>", ":lua require('dial.map').dec_gvisual()<cr>")

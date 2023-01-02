@@ -2,9 +2,6 @@ local M = {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	event = "BufReadPost",
-	dependencies = {
-		"nvim-treesitter/nvim-treesitter-context",
-	},
 }
 
 function M.config()

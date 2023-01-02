@@ -14,6 +14,14 @@ vim.opt.runtimepath:prepend(lazypath)
 vim.g.mapleader = " "
 require("lazy").setup("user.plugins", {
 	defaults = { lazy = true },
+	install = {
+		missing = true,
+		colorscheme = { "gruvbox-material" },
+	},
+	change_detection = {
+		enabled = true,
+		notify = false,
+	},
 	ui = {
 		border = require("user.misc.opts").border,
 	},

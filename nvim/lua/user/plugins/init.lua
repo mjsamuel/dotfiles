@@ -1,34 +1,36 @@
 return {
 	"nvim-lua/plenary.nvim",
-	"MunifTanjim/nui.nvim",
 	"kyazdani42/nvim-web-devicons",
+	{
+		"SmiteshP/nvim-navic",
+		config = function()
+			vim.g.navic_silence = true
+			require("nvim-navic").setup({ separator = " ", highlight = true, depth_limit = 5 })
+		end,
+	},
 	{ "gpanders/editorconfig.nvim", event = "BufReadPre" },
+	{ "tpope/vim-fugitive", cmd = "Git" },
 	{
 		"kylechui/nvim-surround",
-		keys = {
-			{ "ys", desc = "Surround" },
-			{ "S", mode = "v", desc = "Surround" },
-		},
+		keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
 		config = true,
 	},
-	{ "tpope/vim-fugitive", cmd = "Git" },
+	{
+		"RRethy/vim-illuminate",
+		event = "BufReadPost",
+		config = function()
+			require("illuminate").configure({ delay = 200 })
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "BufReadPre",
 		config = true,
 	},
-	{ "nvim-neo-tree/neo-tree.nvim", cmd = "Neotree" },
 	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		config = true,
-	},
-	{
-		"numToStr/Comment.nvim",
-		keys = {
-			{ "gc", desc = "Comment" },
-		},
-		config = true,
+		"nvim-neo-tree/neo-tree.nvim",
+		cmd = "Neotree",
+		dependencies = { "MunifTanjim/nui.nvim" },
 	},
 	{
 		"folke/trouble.nvim",
@@ -37,7 +39,7 @@ return {
 	},
 	{
 		"Shatur/neovim-session-manager",
-		lazy = false,
+		event = "VeryLazy",
 		config = function()
 			require("session_manager").setup({
 				autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
@@ -45,14 +47,15 @@ return {
 		end,
 	},
 	{
-		"monaqa/dial.nvim",
-		keys = { "<C-a>", { "<C-x>", mode = "n" } },
-	},
-	{
-		"RRethy/vim-illuminate",
-		event = "BufReadPost",
-		config = function()
-			require("illuminate").configure({ delay = 200 })
-		end,
+		"phelipetls/jsonpath.nvim",
+		ft = "json",
+		keys = {
+			{
+				"yj",
+				function()
+					return vim.fn.setreg("+", require("jsonpath").get())
+				end,
+			},
+		},
 	},
 }

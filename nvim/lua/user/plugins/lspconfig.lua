@@ -1,98 +1,57 @@
 local M = {
 	"neovim/nvim-lspconfig",
 	event = "BufReadPre",
+	dependencies = "mason-lspconfig.nvim",
 }
 
 function M.config()
 	local lspconfig = require("lspconfig")
+	local navic = require("nvim-navic")
 	local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 	local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 	function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-		opts = {
-			border = require("user.misc.opts").border,
-		}
+		opts = { border = require("user.misc.opts").border }
 		return orig_util_open_floating_preview(contents, syntax, opts, ...)
 	end
 
-	lspconfig["angularls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["bashls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["cmake"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["cssls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["dockerls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["emmet_ls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["html"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["jsonls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["lemminx"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["marksman"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["pyright"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["sourcekit"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["sqlls"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["sumneko_lua"].setup({
-		capabilities = capabilities,
-		settings = {
+	local language_servers = {
+		angularls = {},
+		bashls = {},
+		cmake = {},
+		cssls = {},
+		dockerls = {},
+		emmet_ls = {},
+		html = {},
+		jsonls = {},
+		lemminx = {},
+		marksman = {},
+		pyright = {},
+		sqlls = {},
+		tailwindcss = {},
+		taplo = {},
+		tsserver = {},
+		yamlls = {},
+		sumneko_lua = {
 			Lua = {
 				diagnostics = {
 					globals = { "vim" },
 				},
 			},
 		},
-	})
+	}
 
-	lspconfig["tailwindcss"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["taplo"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["tsserver"].setup({
-		capabilities = capabilities,
-	})
-
-	lspconfig["yamlls"].setup({
-		capabilities = capabilities,
-	})
+	for ls, settings in pairs(language_servers) do
+		lspconfig[ls].setup({
+			capabilities = capabilities,
+			settings = settings,
+			on_attach = function(client, bufnr)
+				if client.server_capabilities.documentSymbolProvider then
+					navic.attach(client, bufnr)
+				end
+			end,
+		})
+	end
 
 	local signs = {
 		Error = " ",
