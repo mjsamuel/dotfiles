@@ -64,13 +64,14 @@ function M.config()
 				case_mode = "smart_case",
 			},
 			["ui-select"] = {
-				require("telescope.themes").get_ivy(),
+				require("telescope.themes").get_cursor(),
 			},
 		},
 	})
 
 	require("telescope").load_extension("fzf")
 	require("telescope").load_extension("ui-select")
+	require("telescope").load_extension("refactoring")
 end
 
 return M

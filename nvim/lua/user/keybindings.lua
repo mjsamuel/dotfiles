@@ -31,7 +31,16 @@ keymap.set("n", "gw", ":lua vim.lsp.buf.workspace_symbol()<cr>")
 keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>")
 keymap.set("n", "gt", ":lua vim.lsp.buf.type_definition()<cr>")
 keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
+
+-- code refactoring/fixing
 keymap.set("n", "<Leader>af", ":lua vim.lsp.buf.code_action()<cr>")
+keymap.set("n", "<Leader>rf", ":lua vim.lsp.buf.rename()<cr>")
+keymap.set(
+	"v",
+	"<leader>rr",
+	"<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
+	{ noremap = true }
+)
 
 -- format
 keymap.set("n", "<Leader>p", ":Format<cr>")

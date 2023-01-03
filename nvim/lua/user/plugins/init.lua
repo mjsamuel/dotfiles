@@ -1,6 +1,7 @@
 return {
 	"nvim-lua/plenary.nvim",
 	"kyazdani42/nvim-web-devicons",
+	"ThePrimeagen/refactoring.nvim",
 	{
 		"SmiteshP/nvim-navic",
 		config = function()
