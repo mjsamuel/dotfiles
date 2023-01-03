@@ -31,6 +31,7 @@ keymap.set("n", "gw", ":lua vim.lsp.buf.workspace_symbol()<cr>")
 keymap.set("n", "gr", ":lua vim.lsp.buf.references()<cr>")
 keymap.set("n", "gt", ":lua vim.lsp.buf.type_definition()<cr>")
 keymap.set("n", "K", ":lua vim.lsp.buf.hover()<cr>")
+keymap.set("n", "<Leader>af", ":lua vim.lsp.buf.code_action()<cr>")
 
 -- format
 keymap.set("n", "<Leader>p", ":Format<cr>")
@@ -49,3 +50,6 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- theme
 keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
+
+-- yank
+keymap.set("n", "Y", "<cmd>Telescope registers<cr>")

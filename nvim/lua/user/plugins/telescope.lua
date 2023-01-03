@@ -3,6 +3,7 @@ local M = {
 	cmd = "Telescope",
 	dependencies = {
 		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		{ "nvim-telescope/telescope-ui-select.nvim" },
 	},
 }
 
@@ -24,19 +25,6 @@ function M.config()
 			selection_strategy = "reset",
 			sorting_strategy = "ascending",
 			layout_strategy = "horizontal",
-			layout_config = {
-				horizontal = {
-					prompt_position = "top",
-					preview_width = 0.55,
-					results_width = 0.8,
-				},
-				vertical = {
-					mirror = false,
-				},
-				width = 0.87,
-				height = 0.80,
-				preview_cutoff = 120,
-			},
 			file_ignore_patterns = { ".git/", "node_modules" },
 			path_display = { "truncate" },
 			winblend = 0,
@@ -49,16 +37,10 @@ function M.config()
 			qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 		},
 		pickers = {
-			find_files = {
-				hidden = true,
-				theme = "dropdown",
-				previewer = false,
-			},
 			buffers = {
 				show_all_buffers = true,
 				sort_lastused = true,
-				theme = "dropdown",
-				previewer = false,
+				theme = "ivy",
 				mappings = {
 					i = {
 						[";"] = "delete_buffer",
@@ -66,18 +48,29 @@ function M.config()
 					},
 				},
 			},
+			find_files = { theme = "ivy" },
+			git_commits = { theme = "ivy" },
+			git_stash = { theme = "ivy" },
+			git_status = { theme = "ivy" },
+			help_tags = { theme = "ivy" },
+			live_grep = { theme = "ivy" },
+			registers = { theme = "ivy" },
 		},
-		extension = {
+		extensions = {
 			fzf = {
 				fuzzy = true,
 				override_generic_sorter = true,
 				override_file_sorter = true,
 				case_mode = "smart_case",
 			},
+			["ui-select"] = {
+				require("telescope.themes").get_ivy(),
+			},
 		},
 	})
 
 	require("telescope").load_extension("fzf")
+	require("telescope").load_extension("ui-select")
 end
 
 return M
