@@ -20,7 +20,13 @@ return {
 		"RRethy/vim-illuminate",
 		event = "BufReadPost",
 		config = function()
-			require("illuminate").configure({ delay = 200 })
+			require("illuminate").configure({
+				delay = 200,
+				filetypes_denylist = {
+					"fugitiveblame",
+					"TelescopePrompt",
+				},
+			})
 		end,
 	},
 	{
