@@ -25,6 +25,7 @@ brew 'git-delta'
 brew 'node'
 brew 'python'
 brew 'neovim'
+brew 'lazygit'
 
 # Apps
 cask 'bartender'

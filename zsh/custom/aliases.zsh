@@ -6,6 +6,7 @@ alias rtv='python3 -m rtv'
 alias tt='tt -theme ayu -showwpm'
 alias v='nvim'
 alias b='brew'
+alias lg='lazygit'
 
 # ssh
 alias s='ssh'
