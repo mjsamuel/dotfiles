@@ -6,9 +6,11 @@ keymap.set("v", ";", ":")
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
 
--- files search
-keymap.set("n", "<Leader>ff", "<cmd>Telescope find_files<cr>")
-keymap.set("n", "<Leader>fg", "<cmd>Telescope live_grep<cr>")
+-- search
+keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
+keymap.set("n", "<Leader>sf", "<cmd>Telescope find_files<cr>")
+keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
+keymap.set("n", "<Leader>ss", "<cmd>Telescope live_grep<cr>")
 
 -- window management
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
@@ -29,7 +31,7 @@ keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gc", "<cmd>Telescope git_commits<cr>")
 keymap.set("n", "<Leader>gs", "<cmd>Telescope git_stash<cr>")
-keymap.set("n", "<Leader>gB", "<cmd>Git blame<cr>")
+keymap.set("n", "<Leader>gb", "<cmd>Git blame<cr>")
 
 -- lsp
 keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
@@ -44,7 +46,7 @@ keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 -- code refactoring/fixing
 keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 keymap.set("n", "<Leader>cc", ":lua vim.lsp.buf.rename()<cr>")
-keymap.set("n", "<Leader>cf", ":Format<cr>")
+keymap.set("n", "<Leader>cf", "<cmd>Format<cr>")
 keymap.set(
 	"v",
 	"<leader>cr",
@@ -61,9 +63,15 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 
 -- misc
+keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
-keymap.set("n", "<leader>n", ":Neotree reveal toggle position=right<cr>", { silent = true, noremap = true })
-keymap.set("n", "<leader>s", ":lua ToggleTheme()<cr>")
-keymap.set("n", "<leader>t", ":TroubleToggle document_diagnostics<cr>")
-keymap.set("n", "<leader>T", ":TroubleToggle workspace_diagnostics<cr>")
+keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
+keymap.set(
+	"n",
+	"<leader>n",
+	"<cmd>Neotree reveal toggle position=right<cr>",
+	{ silent = true, noremap = true }
+)
+keymap.set("n", "<leader>s", "<cmd>lua ToggleTheme()<cr>")
+keymap.set("n", "<leader>t", "<cmd>TroubleToggle document_diagnostics<cr>")

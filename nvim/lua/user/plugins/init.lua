@@ -38,6 +38,12 @@ return {
 		"nvim-neo-tree/neo-tree.nvim",
 		cmd = "Neotree",
 		dependencies = { "MunifTanjim/nui.nvim" },
+		config = {
+			close_if_last_window = true,
+			window = {
+				width = "fit_content",
+			},
+		},
 	},
 	{
 		"folke/trouble.nvim",
@@ -60,7 +66,7 @@ return {
 			{
 				"yj",
 				function()
-					return vim.fn.setreg("+", require("jsonpath").get())
+					return vim.fn.setreg('"', require("jsonpath").get())
 				end,
 			},
 		},
