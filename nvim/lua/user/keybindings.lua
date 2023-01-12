@@ -8,16 +8,16 @@ keymap.set("", "gf", ":edit <cfile><CR>")
 
 -- search
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
-keymap.set("n", "<Leader>sf", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>ss", "<cmd>Telescope live_grep<cr>")
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")
+keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 
 -- window management
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
 keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
 keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
 keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
-keymap.set("n", "<Leader>ww", "<C-W>p")
+keymap.set("n", "<Leader>ww", "<C-W>w")
 keymap.set("n", "<Leader>wh", "<C-W>s")
 keymap.set("n", "<Leader>wv", "<C-W>v")
 keymap.set("n", "<Leader>wd", "<C-W>c")
@@ -53,6 +53,17 @@ keymap.set(
 	"<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
 	{ noremap = true }
 )
+keymap.set("n", "<leader>cs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word under cursor using sed
+
+-- move selected code when in visual mode
+keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
+keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv")
+
+-- keep cursor in middle when jumping through files
+keymap.set("n", "<C-d>", "<C-d>zz")
+keymap.set("n", "<C-u>", "<C-u>zz")
+keymap.set("n", "n", "nzzzv")
+keymap.set("n", "N", "Nzzzv")
 
 -- debug
 keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>')
@@ -61,17 +72,12 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
+keymap.set("n", "<leader>y", ':let @+=@"<cr>', { silent = true }) -- copy what's in current register to system clipboard
 
 -- misc
-keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
+keymap.set("n", "<Leader>p", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
 keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
-keymap.set(
-	"n",
-	"<leader>n",
-	"<cmd>Neotree reveal toggle position=right<cr>",
-	{ silent = true, noremap = true }
-)
-keymap.set("n", "<leader>s", "<cmd>lua ToggleTheme()<cr>")
+keymap.set("n", "<leader>n", "<cmd>Neotree reveal toggle<cr>", { silent = true, noremap = true })
 keymap.set("n", "<leader>t", "<cmd>TroubleToggle document_diagnostics<cr>")

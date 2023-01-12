@@ -20,6 +20,7 @@ set.backupdir = os.getenv("HOME") .. "/.local/share/nvim/backup/"
 set.tabstop = 2
 set.shiftwidth = 4
 set.expandtab = true
+set.smartindent = true
 
 set.splitbelow = true
 set.splitright = true

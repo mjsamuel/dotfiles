@@ -25,6 +25,8 @@ return {
 				filetypes_denylist = {
 					"fugitiveblame",
 					"TelescopePrompt",
+          "mason",
+          "lazy"
 				},
 			})
 		end,
@@ -38,12 +40,15 @@ return {
 		"nvim-neo-tree/neo-tree.nvim",
 		cmd = "Neotree",
 		dependencies = { "MunifTanjim/nui.nvim" },
-		config = {
-			close_if_last_window = true,
-			window = {
-				width = "fit_content",
-			},
-		},
+		config = function()
+			require("neo-tree").setup({
+				close_if_last_window = true,
+				window = {
+					position = "right",
+					auto_expand_width = true,
+				},
+			})
+		end,
 	},
 	{
 		"folke/trouble.nvim",
