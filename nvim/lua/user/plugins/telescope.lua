@@ -53,9 +53,9 @@ function M.config()
 			git_stash = { theme = "ivy" },
 			git_status = { theme = "ivy" },
 			help_tags = { theme = "ivy" },
-			live_grep = { theme = "ivy", disable_coordinates = true },
+			live_grep = { theme = "ivy" },
 			lsp_implementations = { theme = "ivy" },
-      lsp_references = { theme = "ivy", show_line = false },
+			lsp_references = { theme = "ivy", show_line = false },
 			registers = { theme = "ivy" },
 		},
 		extensions = {

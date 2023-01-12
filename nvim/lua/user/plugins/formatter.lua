@@ -13,7 +13,8 @@ function M.config()
 			javascriptreact = { require("formatter.filetypes.javascriptreact").prettier },
 			html = { require("formatter.filetypes.html").prettier },
 			json = { require("formatter.filetypes.json").prettier },
-			markdown = { require("formatter.filetypes.markdown").prettier },
+			markdown = { require("formatter.filetypes.markdown").markdownlint },
+			python = { require("formatter.filetypes.python").autopep8 },
 		},
 	})
 end

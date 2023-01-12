@@ -33,6 +33,8 @@ return {
 				"stylua",
 				"prettier",
 				"shellcheck",
+				"autopep8",
+				"markdownlint",
 			}
 
 			local mr = require("mason-registry")

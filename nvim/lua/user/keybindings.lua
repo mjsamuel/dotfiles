@@ -76,6 +76,7 @@ keymap.set("n", "<leader>y", ':let @+=@"<cr>', { silent = true }) -- copy what's
 
 -- misc
 keymap.set("n", "<Leader>p", "<cmd>Format<cr>")
+keymap.set("v", "<Leader>p", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
 keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
