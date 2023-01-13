@@ -29,6 +29,7 @@ ln -s "$DOTFILES_DIR"/zsh/custom/* "$HOME/.oh-my-zsh/custom/"
 ln -s "$DOTFILES_DIR/tmux/" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/kitty" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/nvim" "$HOME/.config/"
+ln -s "$DOTFILES_DIR/wezterm" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/other/neofetch" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/git/.gitconfig" "$HOME/"
 
