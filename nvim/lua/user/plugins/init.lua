@@ -25,8 +25,8 @@ return {
 				filetypes_denylist = {
 					"fugitiveblame",
 					"TelescopePrompt",
-          "mason",
-          "lazy"
+					"mason",
+					"lazy",
 				},
 			})
 		end,

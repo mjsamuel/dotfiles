@@ -20,7 +20,7 @@ keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 keymap.set("n", "<Leader>ww", "<C-W>w")
 keymap.set("n", "<Leader>wh", "<C-W>s")
 keymap.set("n", "<Leader>wv", "<C-W>v")
-keymap.set("n", "<Leader>wd", "<C-W>c")
+keymap.set("n", "<Leader>wx", "<C-W>c")
 
 -- buffer management
 keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
@@ -75,8 +75,8 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", ':let @+=@"<cr>', { silent = true }) -- copy what's in current register to system clipboard
 
 -- misc
-keymap.set("n", "<Leader>p", "<cmd>Format<cr>")
-keymap.set("v", "<Leader>p", "<cmd>Format<cr>")
+keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
+keymap.set("v", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
 keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
