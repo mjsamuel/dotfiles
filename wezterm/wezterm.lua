@@ -14,7 +14,7 @@ return {
 	font = wezterm.font("FiraCode Nerd Font Mono"),
 	font_size = 18,
 	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
-	window_padding = { left = 16, right = 16, top = 24, bottom = 0 },
+	window_padding = { left = 16, right = 16, top = 32, bottom = 0 },
 	-- Keybindings
 	keys = {
 		{ key = "Enter", mods = "ALT", action = act.DisableDefaultAssignment },
