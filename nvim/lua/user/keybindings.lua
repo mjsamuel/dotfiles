@@ -54,6 +54,7 @@ keymap.set(
 	{ noremap = true }
 )
 keymap.set("n", "<leader>cs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word under cursor using sed
+keymap.set("n", "<leader>cp", ":lua require('copilot.suggestion').toggle_auto_trigger()<cr>") -- toggle copilot
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
