@@ -21,7 +21,7 @@ function M.config()
 				{
 					"filename",
 					symbols = { modified = "", readonly = "", unnamed = "" },
-					separator = ">",
+					separator = "",
 				},
 				{ navic.get_location, cond = navic.is_available },
 			},

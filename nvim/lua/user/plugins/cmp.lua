@@ -5,10 +5,8 @@ local M = {
 		{ "hrsh7th/cmp-nvim-lsp" },
 		{ "hrsh7th/cmp-buffer" },
 		{ "hrsh7th/cmp-path" },
-		{ "hrsh7th/cmp-cmdline" },
 		{ "onsails/lspkind.nvim" },
 		{ "L3MON4D3/LuaSnip" },
-		{ "rafamadriz/friendly-snippets" },
 	},
 }
 
@@ -16,8 +14,6 @@ function M.config()
 	local cmp = require("cmp")
 	local luasnip = require("luasnip")
 	local lspkind = require("lspkind")
-
-	require("luasnip.loaders.from_vscode").lazy_load()
 
 	-- Set completeopt to have a better completion experience
 	vim.o.completeopt = "menuone,longest,preview"
@@ -78,6 +74,11 @@ function M.config()
 			{ name = "buffer" },
 			{ name = "luasnip" },
 		}),
+	})
+
+	cmp.setup.cmdline(":", {
+		mapping = cmp.mapping.preset.cmdline(),
+		sources = cmp.config.sources({ { name = "path" } }),
 	})
 end
 
