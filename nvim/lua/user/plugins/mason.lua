@@ -11,6 +11,7 @@ return {
 
 			local tools = {
 				"angular-language-server",
+				"autopep8",
 				"bash-language-server",
 				"cmake-language-server",
 				"css-lsp",
@@ -21,20 +22,20 @@ return {
 				"json-lsp",
 				"lemminx",
 				"lua-language-server",
+				"markdownlint",
 				"marksman",
 				"prettier",
+				"prettier",
 				"pyright",
+				"shellcheck",
 				"sqlls",
+				"stylua",
 				"stylua",
 				"tailwindcss-language-server",
 				"taplo",
 				"typescript-language-server",
 				"yaml-language-server",
-				"stylua",
-				"prettier",
-				"shellcheck",
-				"autopep8",
-				"markdownlint",
+				"sql-formatter",
 			}
 
 			local mr = require("mason-registry")
