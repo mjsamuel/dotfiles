@@ -4,8 +4,6 @@ local M = {
 }
 
 function M.config()
-	local util = require("formatter.util")
-
 	require("formatter").setup({
 		filetype = {
 			html = { require("formatter.filetypes.html").prettier },
@@ -20,7 +18,10 @@ function M.config()
 			sql = {
 				{
 					exe = "sql-formatter",
-					args = { util.escape_path(util.get_current_buffer_file_path()) },
+					args = {
+						"--config",
+						"$HOME/Developer/dotfiles/other/sql-formatter.json",
+					},
 					stdin = true,
 				},
 			},

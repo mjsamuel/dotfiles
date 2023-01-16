@@ -1,0 +1,15 @@
+{
+  "language": "plsql",
+  "dialect": "plsql",
+  "tabWidth": 2,
+  "useTabs": false,
+  "keywordCase": "upper",
+  "indentStyle": "tabularRight",
+  "logicalOperatorNewline": "before",
+  "tabulateAlias": false,
+  "commaPosition": "after",
+  "expressionWidth": 50,
+  "linesBetweenQueries": 2,
+  "denseOperators": false,
+  "newlineBeforeSemicolon": true
+}
