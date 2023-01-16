@@ -1,9 +1,9 @@
 [user]
-	name = mjsamuel
-	email = matthew.samuel@outlook.com.au
+    name = mjsamuel
+    email = matthew.samuel@outlook.com.au
 
 [core]
-	editor = nvim
+    editor = nvim
 
 [core]
     pager = delta
