@@ -10,8 +10,8 @@ M.config = {
 		auto_trigger = true,
 		keymap = {
 			accept = "<M-Enter>",
-			prev = false,
-			next = false,
+			prev = "<M-[>",
+			next = "<M-]>",
 			dismiss = "<M-Esc>",
 		},
 	},
