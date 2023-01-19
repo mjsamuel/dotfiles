@@ -56,18 +56,18 @@ local function set_highlights()
 	end
 end
 
+function ToggleTheme()
+	if vim.o.background == "dark" then
+		vim.o.background = "light"
+	else
+		vim.o.background = "dark"
+	end
+	set_highlights()
+end
+
 function M.config()
 	vim.cmd("colorscheme gruvbox-material")
 	set_highlights()
-
-	function ToggleTheme()
-		if vim.o.background == "dark" then
-			vim.o.background = "light"
-		else
-			vim.o.background = "dark"
-		end
-		set_highlights()
-	end
 end
 
 return M
