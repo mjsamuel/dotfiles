@@ -76,4 +76,10 @@ return {
 			},
 		},
 	},
+	{
+		"narutoxy/silicon.lua",
+		config = {
+			output = os.getenv("HOME") .. "/Desktop/SILICON_${year}-${month}-${date}_${time}.png",
+		},
+	},
 }

@@ -20,6 +20,7 @@ brew 'exa'
 brew 'tmux'
 brew 'tmuxinator'
 brew 'git-delta'
+brew 'silicon'
 
 # Development
 brew 'node'
@@ -36,5 +37,4 @@ cask 'iina'
 cask 'vnc-viewer'
 
 # Fonts
-cask 'font-meslo-lg-nerd-font'
 cask 'font-fira-code-nerd-font'
