@@ -83,5 +83,6 @@ keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
 keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
 keymap.set("n", "<leader>n", "<cmd>Neotree reveal toggle<cr>", { silent = true, noremap = true })
 keymap.set("n", "<leader>t", "<cmd>TroubleToggle document_diagnostics<cr>")
-keymap.set('v', '<Leader>s', "<cmd>lua require('silicon').visualise_api({})<cr><esc>")
-
+keymap.set("v", "<leader>s", function()
+	require("user.misc.silicon").screenshot()
+end)
