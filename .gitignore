@@ -10,10 +10,10 @@ Thumbs.db
 .Spotlight-V100
 .Trashes
 
-# File where I keep funcitons specific to my projects 
-shell/personal_functions.zsh
-
 # Vim
 *.swp
 nvim/plugin
 nvim/lazy-lock.json
+
+# Misc files
+other/tt/.errors
