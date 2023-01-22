@@ -1,6 +1,7 @@
 #!/bin/sh
-TMUX="/opt/homebrew/bin/tmux"
+DEFAULTS="/usr/bin/defaults"
 OSASCIPT="/usr/bin/osascript"
+TMUX="/opt/homebrew/bin/tmux"
 
 changeNvimColors() {
     $TMUX list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
@@ -16,6 +17,11 @@ changeSystemColors() {
     $OSASCIPT -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = $1" 1> /dev/null
 }
 
+toggleSystemColors() {
+    color=$(if $DEFAULTS read -g AppleInterfaceStyle > /dev/null 2>&1; then echo "false"; else echo "true"; fi)
+    changeSystemColors "$color"
+}
+
 # Auto change when dark mode is changed by system
 # 'DARKMODE' set by dark-mode-notify: https://github.com/bouk/dark-mode-notify
 if [ "$DARKMODE" = 1 ]; then
@@ -26,9 +32,10 @@ elif [ "$DARKMODE" = 0 ]; then
 else 
     if [ "$1" = "dark" ]; then
         changeSystemColors "true"
-    else
+    elif [ "$1" = "light" ]; then
         changeSystemColors "false"
+    else
+        toggleSystemColors
     fi
 fi
-
 

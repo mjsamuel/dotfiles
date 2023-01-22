@@ -6,6 +6,9 @@ keymap.set("v", ";", ":")
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
 
+-- turn of vim recording
+keymap.set("n", "q", "<nop>")
+
 -- search
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")

@@ -65,7 +65,7 @@ function ToggleTheme()
 	set_highlights()
 end
 
-local function in_os_dark_mode()
+local function get_os_appearance()
 	if vim.fn.has("mac") == 1 then
 		vim.fn.system("defaults read -g AppleInterfaceStyle")
 	elseif vim.fn.has("win32unix") then
@@ -73,16 +73,13 @@ local function in_os_dark_mode()
 			'powershell.exe "Get-ItemProperty -Path HKCU:SOFTWAREMicrosoftWindowsCurrentVersionThemesPersonalize -Name AppsUseLightTheme" | grep 0'
 		)
 	end
-	return vim.g.shell_error
+
+	return vim.v.shell_error == 1 and "light" or "dark"
 end
 
 function M.config()
 	vim.cmd("colorscheme gruvbox-material")
-	if in_os_dark_mode() then
-		vim.o.background = "dark"
-	else
-		vim.o.background = "light"
-	end
+	vim.o.background = get_os_appearance()
 	set_highlights()
 end
 
