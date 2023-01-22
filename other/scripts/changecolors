@@ -7,7 +7,7 @@ changeNvimColors() {
         target="${p%% *}"
         id="${p##* }"
         if [ "$target" = "nvim" ]; then
-            $TMUX send-keys -t "$id" ":set background=$1" C-m
+            $TMUX send-keys -t "$id" Escape ":set background=$1" C-m
         fi
     done
 }
