@@ -4,175 +4,151 @@ local M = {
 }
 
 function M.config()
-	local path_ok, path = pcall(require, "plenary.path")
-	if not path_ok then
-		return
-	end
-
 	local alpha = require("alpha")
 	local dashboard = require("alpha.themes.dashboard")
+	local path = require("plenary.path")
 	local nvim_web_devicons = require("nvim-web-devicons")
-	local cdir = vim.fn.getcwd()
 
-	local function getGreeting(name)
-		local tableTime = os.date("*t")
-		local hour = tableTime.hour
-		local greetingsTable = {
-			[1] = "  Sleep well",
-			[2] = "  Good morning",
-			[3] = "  Good afternoon",
-			[4] = "  Good evening",
-			[5] = "望 Good night",
-		}
-		local greetingIndex = 0
-		if hour == 23 or hour < 7 then
-			greetingIndex = 1
-		elseif hour < 12 then
-			greetingIndex = 2
-		elseif hour >= 12 and hour < 18 then
-			greetingIndex = 3
-		elseif hour >= 18 and hour < 21 then
-			greetingIndex = 4
-		elseif hour >= 21 then
-			greetingIndex = 5
-		end
-		return greetingsTable[greetingIndex] .. ", " .. name
-	end
-
-	local function get_extension(fn)
-		local match = fn:match("^.+(%..+)$")
-		local ext = ""
-		if match ~= nil then
-			ext = match:sub(2)
-		end
-		return ext
-	end
-
-	local function icon(fn)
-		local nwd = require("nvim-web-devicons")
-		local ext = get_extension(fn)
-		return nwd.get_icon(fn, ext, { default = true })
-	end
-
-	local function file_button(fn, sc, short_fn)
-		short_fn = short_fn or fn
-		local ico_txt
-		local fb_hl = {}
-
-		local ico, hl = icon(fn)
-		local hl_option_type = type(nvim_web_devicons.highlight)
-		if hl_option_type == "boolean" then
-			if hl and nvim_web_devicons.highlight then
-				table.insert(fb_hl, { hl, 0, 1 })
-			end
-		end
-		if hl_option_type == "string" then
-			table.insert(fb_hl, { nvim_web_devicons.highlight, 0, 1 })
-		end
-		ico_txt = ico .. "  "
-
-		local file_button_el = dashboard.button(sc, ico_txt .. short_fn, "<cmd>e " .. fn .. " <CR>")
-		local fn_start = short_fn:match(".*/")
-		if fn_start ~= nil then
-			table.insert(fb_hl, { "Comment", #ico_txt - 2, #fn_start + #ico_txt - 2 })
-		end
-		file_button_el.opts.hl = fb_hl
-		return file_button_el
-	end
-
-	local default_mru_ignore = { "gitcommit" }
-
-	local mru_opts = {
-		ignore = function(path, ext)
-			return (string.find(path, "COMMIT_EDITMSG")) or (vim.tbl_contains(default_mru_ignore, ext))
-		end,
-	}
-
-	--- @param start number
-	--- @param cwd string optional
-	--- @param items_number number optional number of items to generate, default = 10
-	local function mru(start, cwd, items_number, opts)
-		opts = opts or mru_opts
-		items_number = items_number or 9
-
-		local oldfiles = {}
-		for _, v in pairs(vim.v.oldfiles) do
-			if #oldfiles == items_number then
-				break
-			end
-			local cwd_cond
-			if not cwd then
-				cwd_cond = true
-			else
-				cwd_cond = vim.startswith(v, cwd)
-			end
-			local ignore = (opts.ignore and opts.ignore(v, get_extension(v))) or false
-			if (vim.fn.filereadable(v) == 1) and cwd_cond and not ignore then
-				oldfiles[#oldfiles + 1] = v
-			end
-		end
-
-		local special_shortcuts = { "a", "r", "s", "t", "d" }
-		local target_width = 35
-
-		local tbl = {}
-		for i, fn in ipairs(oldfiles) do
-			local short_fn
-			if cwd then
-				short_fn = vim.fn.fnamemodify(fn, ":.")
-			else
-				short_fn = vim.fn.fnamemodify(fn, ":~")
-			end
-
-			if #short_fn > target_width then
-				short_fn = path.new(short_fn):shorten(1, { -2, -1 })
-				if #short_fn > target_width then
-					short_fn = path.new(short_fn):shorten(1, { -1 })
-				end
-			end
-
-			local shortcut = ""
-			if i <= #special_shortcuts then
-				shortcut = special_shortcuts[i]
-			else
-				shortcut = tostring(i + start - 1 - #special_shortcuts)
-			end
-
-			local file_button_el = file_button(fn, " " .. shortcut, short_fn)
-			tbl[i] = file_button_el
-		end
-		return {
-			type = "group",
-			val = tbl,
-			opts = {},
-		}
-	end
-
-	local header = {
-		type = "text",
-		val = {
-			" ",
+	local options = {
+		disallowed_file_types = { "gitcommit" },
+		recent_files = {
+			number_of_items = 5,
+			special_shortcuts = { "a", "r", "s", "t", "d" },
+		},
+		padding = 2,
+		header_art = {
 			"███    ██ ██    ██ ██ ███    ███",
 			"████   ██ ██    ██ ██ ████  ████",
 			"██ ██  ██ ██    ██ ██ ██ ████ ██",
 			"██  ██ ██  ██  ██  ██ ██  ██  ██",
 			"██   ████   ████   ██ ██      ██",
 		},
+	}
+
+	local function get_greeting(name)
+		local hour = os.date("*t").hour
+		local greeting = ""
+		if hour == 23 or hour < 7 then
+			greeting = "  Sleep well"
+		elseif hour < 12 then
+			greeting = "  Good morning"
+		elseif hour >= 12 and hour < 18 then
+			greeting = "  Good afternoon"
+		elseif hour >= 18 and hour < 21 then
+			greeting = "  Good evening"
+		elseif hour >= 21 then
+			greeting = "望 Good night"
+		end
+		return greeting .. ", " .. name
+	end
+
+	local function get_extension(filename)
+		local match = filename:match("^.+(%..+)$")
+		local extension = ""
+		if match ~= nil then
+			extension = match:sub(2)
+		end
+		return extension
+	end
+
+	local function get_icon(filename)
+		local extension = get_extension(filename)
+		return nvim_web_devicons.get_icon(filename, extension, { default = true })
+	end
+
+	local function file_button(filename, shortcut, short_function)
+		short_function = short_function or filename
+		local icon_text
+		local button_highlight = {}
+
+		local icon, highlight = get_icon(filename)
+		local hl_option_type = type(nvim_web_devicons.highlight)
+		if hl_option_type == "boolean" then
+			if highlight and nvim_web_devicons.highlight then
+				table.insert(button_highlight, { highlight, 0, 1 })
+			end
+		end
+		if hl_option_type == "string" then
+			table.insert(button_highlight, { nvim_web_devicons.highlight, 0, 1 })
+		end
+		icon_text = icon .. "  "
+
+		local button_element = dashboard.button(shortcut, icon_text .. short_function, "<cmd>e " .. filename .. " <cr>")
+		local function_start = short_function:match(".*/")
+		if function_start ~= nil then
+			table.insert(button_highlight, { "Comment", #icon_text - 2, #function_start + #icon_text - 2 })
+		end
+		button_element.opts.hl = button_highlight
+		return button_element
+	end
+
+	local function get_recent_files_buttons(number_of_items, shortcut_keys)
+		number_of_items = number_of_items or 9
+
+		local current_working_directory = vim.fn.getcwd()
+		local recent_files = {}
+		for _, file in pairs(vim.v.oldfiles) do
+			if #recent_files == number_of_items then
+				break
+			end
+
+			local in_current_working_directory = vim.startswith(file, current_working_directory)
+			local readable = vim.fn.filereadable(file) == 1
+			local disallowed_type = vim.tbl_contains(options.disallowed_file_types, get_extension(file))
+
+			if readable and in_current_working_directory and not disallowed_type then
+				table.insert(recent_files, file)
+			end
+		end
+
+		local target_width = 35
+
+		local items = {}
+		for i, filename in ipairs(recent_files) do
+			local filename_short
+			filename_short = vim.fn.fnamemodify(filename, ":.")
+
+			if #filename_short > target_width then
+				filename_short = path.new(filename_short):shorten(1, { -2, -1 })
+				if #filename_short > target_width then
+					filename_short = path.new(filename_short):shorten(1, { -1 })
+				end
+			end
+
+			local shortcut = ""
+			if i <= #shortcut_keys then
+				shortcut = shortcut_keys[i]
+			else
+				shortcut = tostring(i - 1 - #shortcut_keys)
+			end
+
+			local file_button_element = file_button(filename, " " .. shortcut, filename_short)
+			table.insert(items, file_button_element)
+		end
+		return {
+			type = "group",
+			val = items,
+			opts = {},
+		}
+	end
+
+	local sections = {}
+	sections.header = {
+		type = "text",
+		val = options.header_art,
 		opts = { position = "center" },
 	}
 
-	local userName = "Matthew"
-	local greeting = getGreeting(userName)
-	local greetHeading = {
+	sections.greeting = {
 		type = "text",
-		val = greeting,
+		val = get_greeting("Matthew"),
 		opts = {
 			position = "center",
 			hl = "String",
 		},
 	}
 
-	local footer = {
+	sections.stats = {
 		type = "text",
 		val = function()
 			local stats = require("lazy").stats()
@@ -189,7 +165,7 @@ function M.config()
 		},
 	}
 
-	local section_mru = {
+	sections.recent_files = {
 		type = "group",
 		val = {
 			{
@@ -205,14 +181,19 @@ function M.config()
 			{
 				type = "group",
 				val = function()
-					return { mru(1, cdir, 5) }
+					return {
+						get_recent_files_buttons(
+							options.recent_files.number_of_items,
+							options.recent_files.special_shortcuts
+						),
+					}
 				end,
 				opts = { shrink_margin = false },
 			},
 		},
 	}
 
-	local buttons = {
+	sections.buttons = {
 		type = "group",
 		val = {
 			{ type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
@@ -226,17 +207,20 @@ function M.config()
 		position = "center",
 	}
 
+	local total_height = 27 -- TODO: dynamically calculate this
+	local padding_top = math.floor((vim.o.lines - total_height) / 2)
+
 	local opts = {
 		layout = {
-			{ type = "padding", val = 2 },
-			header,
-			{ type = "padding", val = 2 },
-			greetHeading,
-			footer,
-			{ type = "padding", val = 2 },
-			section_mru,
-			{ type = "padding", val = 2 },
-			buttons,
+			{ type = "padding", val = padding_top },
+			sections.header,
+			{ type = "padding", val = options.padding },
+			sections.greeting,
+			sections.stats,
+			{ type = "padding", val = options.padding },
+			sections.recent_files,
+			{ type = "padding", val = options.padding },
+			sections.buttons,
 		},
 	}
 
