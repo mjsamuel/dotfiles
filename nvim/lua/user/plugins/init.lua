@@ -9,7 +9,6 @@ return {
 			require("nvim-navic").setup({ separator = " ", highlight = true, depth_limit = 5 })
 		end,
 	},
-	{ "gpanders/editorconfig.nvim", event = "BufReadPre" },
 	{ "tpope/vim-fugitive", cmd = "Git" },
 	{
 		"kylechui/nvim-surround",
