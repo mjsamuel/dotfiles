@@ -32,13 +32,7 @@ function M.config()
     taplo = {},
     tsserver = {},
     yamlls = {},
-    sumneko_lua = {
-      Lua = {
-        diagnostics = {
-          globals = { "vim" },
-        },
-      },
-    },
+    sumneko_lua = {},
   }
 
   for ls, settings in pairs(language_servers) do
