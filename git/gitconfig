@@ -2,6 +2,9 @@
     name = mjsamuel
     email = matthew.samuel@outlook.com.au
 
+[init]
+    defaultBranch = main
+
 [core]
     editor = nvim
 
