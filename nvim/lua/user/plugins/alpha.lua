@@ -208,7 +208,9 @@ function M.config()
 	}
 
 	local total_height = 27 -- TODO: dynamically calculate this
-	local padding_top = math.floor((vim.o.lines - total_height) / 2)
+	local padding_top = function()
+		return math.floor((vim.o.lines - total_height) / 2)
+	end
 
 	local opts = {
 		layout = {
