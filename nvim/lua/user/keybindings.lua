@@ -53,10 +53,10 @@ keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 keymap.set("n", "<Leader>cc", ":lua vim.lsp.buf.rename()<cr>")
 keymap.set("n", "<Leader>cf", "<cmd>Format<cr>")
 keymap.set(
-	"v",
-	"<leader>cr",
-	"<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
-	{ noremap = true }
+  "v",
+  "<leader>cr",
+  "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
+  { noremap = true }
 )
 keymap.set("n", "<leader>cs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word under cursor using sed
 keymap.set("n", "<leader>cp", ":lua require('copilot.suggestion').toggle_auto_trigger()<cr>") -- toggle copilot
@@ -89,5 +89,5 @@ keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
 keymap.set("n", "<leader>n", "<cmd>Neotree reveal toggle<cr>", { silent = true, noremap = true })
 keymap.set("n", "<leader>t", "<cmd>TroubleToggle document_diagnostics<cr>")
 keymap.set("v", "<leader>s", function()
-	require("user.misc.silicon").screenshot()
+  require("user.misc.silicon").screenshot()
 end)
