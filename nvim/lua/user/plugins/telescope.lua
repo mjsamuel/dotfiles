@@ -48,7 +48,7 @@ function M.config()
 					},
 				},
 			},
-			find_files = { theme = "ivy" },
+			find_files = { theme = "ivy", hidden = true },
 			git_commits = { theme = "ivy" },
 			git_stash = { theme = "ivy" },
 			git_status = { theme = "ivy" },
