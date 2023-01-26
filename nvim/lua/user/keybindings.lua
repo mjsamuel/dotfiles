@@ -1,5 +1,7 @@
 local keymap = vim.keymap
 
+keymap.set("n", " ", "<nop>")
+
 keymap.set("n", ";", ":")
 keymap.set("v", ";", ":")
 

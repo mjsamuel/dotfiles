@@ -4,6 +4,10 @@ local M = {
 }
 
 function M.config()
+	-- disable/hide the default statusline
+	vim.opt.showmode = false
+	vim.opt.laststatus = 0
+
 	local navic = require("nvim-navic")
 	require("lualine").setup({
 		options = {
