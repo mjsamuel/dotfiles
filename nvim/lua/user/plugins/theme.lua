@@ -70,7 +70,7 @@ local function get_os_appearance()
     vim.fn.system("defaults read -g AppleInterfaceStyle")
   elseif vim.fn.has("win32unix") then
     vim.fn.system(
-      'powershell.exe "Get-ItemProperty -Path HKCU:SOFTWAREMicrosoftWindowsCurrentVersionThemesPersonalize -Name AppsUseLightTheme" | grep 0'
+      'powershell.exe "Get-ItemProperty -Path HKCU:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize -Name AppsUseLightTheme" | grep 0'
     )
   end
 
