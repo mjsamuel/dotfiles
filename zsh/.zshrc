@@ -18,6 +18,8 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 
 export VI_MODE_SET_CURSOR=true
+bindkey -v
+KEYTIMEOUT=1
 
 plugins=(
     git
