@@ -12,7 +12,7 @@ function M.config()
   require("lualine").setup({
     options = {
       globalstatus = true,
-      theme = "gruvbox-material",
+      theme = "tokyonight",
       section_separators = "",
       component_separators = "",
       disabled_filetypes = { "alpha" },

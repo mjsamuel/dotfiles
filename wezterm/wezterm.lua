@@ -3,9 +3,9 @@ local act = wezterm.action
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "Gruvbox dark, medium (base16)"
+		return "tokyonight"
 	else
-		return "Gruvbox Light"
+		return "tokyonight-day"
 	end
 end
 
@@ -14,7 +14,7 @@ return {
 	font = wezterm.font("FiraCode Nerd Font Mono"),
 	font_size = 18,
 	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
-	window_padding = { left = 16, right = 16, top = 32, bottom = 0 },
+	window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 	-- Keybindings
 	keys = {
 		{ key = "Enter", mods = "ALT", action = act.DisableDefaultAssignment },
