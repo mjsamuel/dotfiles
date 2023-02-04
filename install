@@ -37,7 +37,7 @@ sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '
 ln -s "$DOTFILES_DIR/other/tt" "$HOME/.tt"
 
 # Git setup
-ln -s "$DOTFILES_DIR/git/gitconfig" "$HOME/.gitconfig"
+ln -s "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 git config --global init.templatedir "$DOTFILES_DIR/git/git_template"
 
 # Dark mode notify
