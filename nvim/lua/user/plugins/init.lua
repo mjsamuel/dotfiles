@@ -22,10 +22,11 @@ return {
       require("illuminate").configure({
         delay = 200,
         filetypes_denylist = {
-          "fugitiveblame",
           "TelescopePrompt",
-          "mason",
+          "fugitiveblame",
           "lazy",
+          "mason",
+          "neo-tree",
         },
       })
     end,
@@ -77,7 +78,7 @@ return {
   },
   {
     "ggandor/leap.nvim",
-    keys = { "s", "S"},
+    keys = { "s", "S" },
     config = function()
       require("leap").add_default_mappings()
     end,
