@@ -3,9 +3,9 @@ local act = wezterm.action
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
-		return "tokyonight"
+		return "tokyonight_night"
 	else
-		return "tokyonight-day"
+		return "tokyonight_day"
 	end
 end
 
@@ -21,7 +21,7 @@ return {
 		{ key = "f", mods = "CMD", action = act.ToggleFullScreen },
 	},
 	-- Misc
-	window_close_confirmation = "NeverPrompt",
+	window_close_confirmatio = "NeverPrompt",
 	hide_tab_bar_if_only_one_tab = true,
 	window_decorations = "RESIZE",
 	native_macos_fullscreen_mode = true,

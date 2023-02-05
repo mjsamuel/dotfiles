@@ -172,7 +172,6 @@ function M.config()
         type = "text",
         val = "Recent files",
         opts = {
-          hl = "SpecialComment",
           shrink_margin = false,
           position = "center",
         },
@@ -193,7 +192,7 @@ function M.config()
   sections.buttons = {
     type = "group",
     val = {
-      { type = "text", val = "Quick links", opts = { hl = "SpecialComment", position = "center" } },
+      { type = "text", val = "Quick links", opts = { position = "center" } },
       { type = "padding", val = 1 },
       dashboard.button("S", "  Open last session", ":SessionManager load_last_session<CR>"),
       dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),

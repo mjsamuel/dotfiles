@@ -45,7 +45,6 @@ return {
         close_if_last_window = true,
         window = {
           position = "left",
-          auto_expand_width = true,
         },
       })
     end,
