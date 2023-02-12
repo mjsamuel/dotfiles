@@ -41,12 +41,7 @@ return {
     cmd = "Neotree",
     dependencies = { "MunifTanjim/nui.nvim" },
     config = function()
-      require("neo-tree").setup({
-        close_if_last_window = true,
-        window = {
-          position = "left",
-        },
-      })
+      require("neo-tree").setup()
     end,
   },
   {
