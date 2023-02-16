@@ -32,7 +32,7 @@ function M.config()
     taplo = {},
     tsserver = {},
     yamlls = {},
-    sumneko_lua = {},
+    lua_ls = {},
   }
 
   for ls, settings in pairs(language_servers) do
