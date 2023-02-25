@@ -34,7 +34,6 @@ ln -s "$DOTFILES_DIR/other/neofetch" "$HOME/.config/"
 
 # Install tt (typing test) and symlink theme
 sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '/usr/local/bin/tt' && sudo chmod +x '/usr/local/bin/tt'
-ln -s "$DOTFILES_DIR/other/tt" "$HOME/.tt"
 
 # Git setup
 ln -s "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
