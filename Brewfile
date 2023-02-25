@@ -1,31 +1,29 @@
 # Taps
-tap 'homebrew/cask'
 tap 'homebrew/cask-eid'
 tap 'homebrew/cask-fonts'
 tap 'homebrew/cask-versions'
 tap 'homebrew/bundle'
 
 # Binaries
-brew 'coreutils' # Those that come with macOS are outdated
 brew 'bat'
+brew 'coreutils' # Those that come with macOS are outdated
 brew 'exa'
 brew 'ffmpeg'
 brew 'fzf'
 brew 'git'
 brew 'git-delta'
+brew 'lazygit'
+brew 'mosh'
 brew 'neofetch'
+brew 'neovim'
+brew 'node'
+brew 'python'
 brew 'ripgrep'
 brew 'silicon'
 brew 'teamookla/speedtest/speedtest'
 brew 'tmux'
 brew 'youtube-dlp'
 brew 'zlib'
-
-# Development
-brew 'node'
-brew 'python'
-brew 'neovim'
-brew 'lazygit'
 
 # Apps
 cask 'bartender'

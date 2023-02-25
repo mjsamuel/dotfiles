@@ -1,5 +1,5 @@
 local wezterm = require("wezterm")
-local act = wezterm.action
+local action = wezterm.action
 
 local function scheme_for_appearance(appearance)
 	if appearance:find("Dark") then
@@ -17,8 +17,8 @@ return {
 	window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 	-- Keybindings
 	keys = {
-		{ key = "Enter", mods = "ALT", action = act.DisableDefaultAssignment },
-		{ key = "f", mods = "CMD", action = act.ToggleFullScreen },
+		{ key = "Enter", mods = "ALT", action = action.DisableDefaultAssignment },
+		{ key = "f", mods = "CMD", action = action.ToggleFullScreen },
 	},
 	-- Misc
 	window_close_confirmatio = "NeverPrompt",

@@ -24,7 +24,7 @@ function silicon.screenshot()
     "--language",
     filetype,
     "--window-title",
-    vim.fn.expand("%:t"),
+    "../" .. vim.fn.expand("%:t"),
     "--line-offset",
     start_line,
     -- "--background",
@@ -38,6 +38,11 @@ function silicon.screenshot()
   local job = Job:new({
     command = "silicon",
     args = args,
+    on_exit = function(_, code)
+      if code == 0 then
+        print("Screenshot saved to " .. output_path)
+      end
+    end,
     on_stderr = function(_, data, _)
       print(vim.inspect(data))
     end,
