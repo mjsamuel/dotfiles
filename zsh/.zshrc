@@ -20,10 +20,14 @@ autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
 
 # Plugins/misc
-source ~/.fzf.zsh
 source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${HOMEBREW_PREFIX}/opt/powerlevel10k/powerlevel10k.zsh-theme"
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
+
+# fzf
+PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
+[[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
 
