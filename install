@@ -15,11 +15,11 @@ brew tap homebrew/bundle
 brew bundle
 
 # Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
-rm -rf "$HOME/.zshrc"
-ln -s "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
+rm -rf "$HOME/.zprofile"
+ln -s "$DOTFILES_DIR/zsh/.zprofile" "$HOME/"
 
 # Symlinks
-ln -s "$DOTFILES_DIR/zsh/custom/" "$HOME/.config/zsh/"
+ln -s "$DOTFILES_DIR/zsh/custom" "$HOME/.config/zsh/"
 ln -s "$DOTFILES_DIR/tmux/" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/kitty" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/nvim" "$HOME/.config/"

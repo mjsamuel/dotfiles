@@ -1,15 +1,10 @@
-export "XDG_CACHE_HOME=$HOME/.cache/"
-export "XDG_CONFIG_HOME=$HOME/.config/"
-export "XDG_DATA_HOME"="$HOME/.local/share"
-
 # Enable Powerlevel10k instant prompt
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 export TERM=xterm-256color
-export EDITOR=nvim
-export HISTFILE="$HOME/.cache/zsh/history"
+export HISTFILE="$XDG_CACHE_HOME/zsh/history"
 
 # vi mode
 bindkey -v
@@ -30,4 +25,7 @@ source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+
+autoload -Uz compinit
+compinit
 
