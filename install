@@ -14,30 +14,24 @@ brew update
 brew tap homebrew/bundle
 brew bundle
 
-# Install oh-my-zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Install Powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k"
-
 # Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
 rm -rf "$HOME/.zshrc"
 ln -s "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
 
 # Symlinks
-ln -s "$DOTFILES_DIR"/zsh/custom/* "$HOME/.oh-my-zsh/custom/"
+ln -s "$DOTFILES_DIR/zsh/custom/" "$HOME/.config/zsh/"
 ln -s "$DOTFILES_DIR/tmux/" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/kitty" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/nvim" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/wezterm" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/other/neofetch" "$HOME/.config/"
 
-# Install tt (typing test) and symlink theme
-sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '/usr/local/bin/tt' && sudo chmod +x '/usr/local/bin/tt'
-
 # Git setup
 ln -s "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
 git config --global init.templatedir "$DOTFILES_DIR/git/git_template"
+
+# Install tt (typing test) and symlink theme
+sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '/usr/local/bin/tt' && sudo chmod +x '/usr/local/bin/tt'
 
 # Dark mode notify
 git clone 'https://github.com/bouk/dark-mode-notify.git'

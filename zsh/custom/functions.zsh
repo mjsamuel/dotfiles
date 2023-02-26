@@ -3,7 +3,6 @@ mkd() {
     mkdir -p "$@" && cd "$_";
 }
 
-unalias g
 g() {
   if [[ $# > 0 ]]; then
     git $@
