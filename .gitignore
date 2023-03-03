@@ -16,5 +16,6 @@ nvim/plugin
 nvim/lazy-lock.json
 
 # Misc files
-other/tt/.errors
-zsh/custom/.zcompdump
+.zcompdump
+*/tt/.errors
+*/lazygit/state.yml

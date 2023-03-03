@@ -14,20 +14,13 @@ brew update
 brew tap homebrew/bundle
 brew bundle
 
-# Remove .zshrc from $HOME (if it exists) and symlinks the .zshrc file from our dotfiles
+# Remove .zprofile from home (if it exists) and symlink new one
 rm -rf "$HOME/.zprofile"
 ln -s "$DOTFILES_DIR/zsh/.zprofile" "$HOME/"
 
-# Symlinks
-ln -s "$DOTFILES_DIR/zsh/custom" "$HOME/.config/zsh/"
-ln -s "$DOTFILES_DIR/git/" "$HOME/.config/"
-ln -s "$DOTFILES_DIR/tmux/" "$HOME/.config/"
-ln -s "$DOTFILES_DIR/kitty" "$HOME/.config/"
-ln -s "$DOTFILES_DIR/nvim" "$HOME/.config/"
-ln -s "$DOTFILES_DIR/wezterm" "$HOME/.config/"
-ln -s "$DOTFILES_DIR/other/neofetch" "$HOME/.config/"
+ln -s "$DOTFILES_DIR/config/" "$HOME/.config/"
 
-# Install tt (typing test) and symlink theme
+# Install tt (typing test)
 sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '/usr/local/bin/tt' && sudo chmod +x '/usr/local/bin/tt'
 
 # Dark mode notify
