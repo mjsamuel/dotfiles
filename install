@@ -20,15 +20,12 @@ ln -s "$DOTFILES_DIR/zsh/.zprofile" "$HOME/"
 
 # Symlinks
 ln -s "$DOTFILES_DIR/zsh/custom" "$HOME/.config/zsh/"
+ln -s "$DOTFILES_DIR/git/" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/tmux/" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/kitty" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/nvim" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/wezterm" "$HOME/.config/"
 ln -s "$DOTFILES_DIR/other/neofetch" "$HOME/.config/"
-
-# Git setup
-ln -s "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
-git config --global init.templatedir "$DOTFILES_DIR/git/git_template"
 
 # Install tt (typing test) and symlink theme
 sudo curl -L 'https://github.com/lemnos/tt/releases/download/v0.4.2/tt-osx' -o '/usr/local/bin/tt' && sudo chmod +x '/usr/local/bin/tt'
