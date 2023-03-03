@@ -12,8 +12,8 @@ Thumbs.db
 
 # Vim
 *.swp
-nvim/plugin
-nvim/lazy-lock.json
+*/nvim/plugin
+*/nvim/lazy-lock.json
 
 # Misc files
 .zcompdump

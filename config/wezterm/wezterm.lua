@@ -15,6 +15,7 @@ return {
 	font_size = 20,
 	color_scheme = scheme_for_appearance(wezterm.gui.get_appearance()),
 	window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
+	cursor_blink_rate = 0,
 	-- Keybindings
 	keys = {
 		{ key = "Enter", mods = "ALT", action = action.DisableDefaultAssignment },
