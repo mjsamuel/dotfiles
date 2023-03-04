@@ -7,6 +7,7 @@ alias tt='tt -notheme -showwpm'
 alias v='nvim'
 alias b='brew'
 alias lg='lazygit'
+alias nb='newsboat'
 
 # ssh
 alias s='ssh'
