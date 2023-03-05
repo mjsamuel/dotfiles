@@ -194,7 +194,7 @@ function M.config()
     val = {
       { type = "text", val = "Quick links", opts = { position = "center" } },
       { type = "padding", val = 1 },
-      dashboard.button("S", "  Open last session", ":SessionManager load_last_session<CR>"),
+      dashboard.button("S", "  Open last session", ":SessionManager load_current_dir_session<CR>"),
       dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
       dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h <CR>"),
       dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),
