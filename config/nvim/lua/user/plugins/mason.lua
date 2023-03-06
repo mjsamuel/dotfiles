@@ -28,6 +28,8 @@ return {
         "prettier",
         "pyright",
         "shellcheck",
+        "shfmt",
+        "sql-formatter",
         "sqlls",
         "stylua",
         "stylua",
@@ -35,7 +37,6 @@ return {
         "taplo",
         "typescript-language-server",
         "yaml-language-server",
-        "sql-formatter",
       }
 
       local mr = require("mason-registry")

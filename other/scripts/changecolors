@@ -14,11 +14,11 @@ changeNvimColors() {
 }
 
 changeSystemColors() {
-    $OSASCIPT -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = $1" 1> /dev/null
+    $OSASCIPT -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = $1" 1>/dev/null
 }
 
 toggleSystemColors() {
-    color=$(if $DEFAULTS read -g AppleInterfaceStyle > /dev/null 2>&1; then echo "false"; else echo "true"; fi)
+    color=$(if $DEFAULTS read -g AppleInterfaceStyle >/dev/null 2>&1; then echo "false"; else echo "true"; fi)
     changeSystemColors "$color"
 }
 
@@ -29,7 +29,7 @@ if [ "$DARKMODE" = 1 ]; then
 elif [ "$DARKMODE" = 0 ]; then
     changeNvimColors "light"
 # Manually change colors
-else 
+else
     if [ "$1" = "dark" ]; then
         changeSystemColors "true"
     elif [ "$1" = "light" ]; then
@@ -38,4 +38,3 @@ else
         toggleSystemColors
     fi
 fi
-

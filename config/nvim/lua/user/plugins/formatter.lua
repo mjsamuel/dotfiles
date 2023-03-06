@@ -25,6 +25,7 @@ function M.config()
           stdin = true,
         },
       },
+      sh = { require("formatter.filetypes.sh").shfmt }
     },
   })
 end
