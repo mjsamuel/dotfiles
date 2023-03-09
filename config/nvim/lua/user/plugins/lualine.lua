@@ -8,7 +8,6 @@ function M.config()
   vim.opt.showmode = false
   vim.opt.laststatus = 0
 
-  local navic = require("nvim-navic")
   require("lualine").setup({
     options = {
       globalstatus = true,
@@ -27,7 +26,6 @@ function M.config()
           symbols = { modified = "", readonly = "", unnamed = "" },
           separator = "",
         },
-        { navic.get_location, cond = navic.is_available },
       },
     },
   })

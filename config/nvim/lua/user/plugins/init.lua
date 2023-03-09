@@ -2,13 +2,6 @@ return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
   "ThePrimeagen/refactoring.nvim",
-  {
-    "SmiteshP/nvim-navic",
-    config = function()
-      vim.g.navic_silence = true
-      require("nvim-navic").setup({ separator = " ", highlight = true, depth_limit = 5 })
-    end,
-  },
   { "tpope/vim-fugitive", cmd = "Git" },
   {
     "kylechui/nvim-surround",

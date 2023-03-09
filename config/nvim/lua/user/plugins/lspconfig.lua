@@ -6,7 +6,6 @@ local M = {
 
 function M.config()
   local lspconfig = require("lspconfig")
-  local navic = require("nvim-navic")
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
   local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -45,11 +44,6 @@ function M.config()
     lspconfig[ls].setup({
       capabilities = capabilities,
       settings = settings,
-      on_attach = function(client, bufnr)
-        if client.server_capabilities.documentSymbolProvider then
-          navic.attach(client, bufnr)
-        end
-      end,
     })
   end
 
