@@ -3,6 +3,7 @@ return {
   "kyazdani42/nvim-web-devicons",
   "ThePrimeagen/refactoring.nvim",
   { "tpope/vim-fugitive", cmd = "Git" },
+  { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
