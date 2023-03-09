@@ -15,7 +15,7 @@ require("lazy").setup("user.plugins", {
   defaults = { lazy = true },
   install = {
     missing = true,
-    colorscheme = { "gruvbox-material" },
+    colorscheme = { "tokyonight" },
   },
   change_detection = {
     enabled = true,
