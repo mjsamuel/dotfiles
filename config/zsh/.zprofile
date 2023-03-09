@@ -15,5 +15,10 @@ export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
+export PLAYDATE_SDK_PATH="$XDG_DATA_HOME/PlaydateSDK"
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+playdate_sdk="/usr/local/playdate/gcc-arm-none-eabi-9-2019-q4-major/bin:${PLAYDATE_SDK_PATH}/bin:$PATH"
+maven="/opt/apache-maven/bin"
+PATH="$PATH:${playdate_sdk}:${maven}"
