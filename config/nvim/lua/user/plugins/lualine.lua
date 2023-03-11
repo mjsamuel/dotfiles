@@ -3,6 +3,10 @@ local M = {
   event = "VeryLazy",
 }
 
+local function get_diagnositc_count(severity)
+  return #vim.diagnostic.get(nil, { severity = severity })
+end
+
 function M.config()
   -- disable/hide the default statusline
   vim.opt.showmode = false
@@ -18,15 +22,44 @@ function M.config()
     },
     sections = {
       lualine_a = { "mode" },
-      lualine_b = { "branch" },
-      lualine_c = {
-        { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+      lualine_b = {
         {
-          "filename",
-          symbols = { modified = "", readonly = "", unnamed = "" },
-          separator = "",
+          function()
+            return " "
+              .. get_diagnositc_count("error")
+              .. "  "
+              .. get_diagnositc_count("warn")
+              .. "  "
+              .. get_diagnositc_count("hint")
+          end,
+          on_click = function()
+            vim.cmd("TroubleToggle workspace_diagnostics")
+          end,
         },
       },
+      lualine_c = {
+        { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
+        { "filename" },
+      },
+      lualine_x = {
+        {
+          function()
+            local words = vim.fn.wordcount()["words"]
+            return words .. " words"
+          end,
+          cond = function()
+            local ft = vim.opt_local.filetype:get()
+            local count = {
+              text = true,
+              markdown = true,
+            }
+            return count[ft] ~= nil
+          end,
+        },
+        "branch",
+      },
+      lualine_y = {},
+      lualine_z = {},
     },
   })
 end

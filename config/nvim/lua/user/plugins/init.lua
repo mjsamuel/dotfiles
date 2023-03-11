@@ -31,14 +31,6 @@ return {
     config = true,
   },
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = "Neotree",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    config = function()
-      require("neo-tree").setup()
-    end,
-  },
-  {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
     config = true,
@@ -51,18 +43,6 @@ return {
         autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
       })
     end,
-  },
-  {
-    "phelipetls/jsonpath.nvim",
-    ft = "json",
-    keys = {
-      {
-        "yj",
-        function()
-          return vim.fn.setreg('"', require("jsonpath").get())
-        end,
-      },
-    },
   },
   {
     "ggandor/leap.nvim",
