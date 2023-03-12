@@ -3,8 +3,20 @@ local M = {
   event = "VeryLazy",
 }
 
-local function get_diagnositc_count(severity)
-  return #vim.diagnostic.get(nil, { severity = severity })
+local function create_diagnostic_component(severity, icon, color)
+  local function get_diagnostic_count(s)
+    return #vim.diagnostic.get(nil, { severity = s })
+  end
+
+  return {
+    function()
+      return string.format("%s %s", icon, get_diagnostic_count(severity))
+    end,
+    padding = { left = 1, right = 0 },
+    color = function()
+      return get_diagnostic_count(severity) > 0 and color or nil
+    end,
+  }
 end
 
 function M.config()
@@ -22,26 +34,16 @@ function M.config()
     },
     sections = {
       lualine_a = { "mode" },
-      lualine_b = {
-        {
-          function()
-            return " "
-              .. get_diagnositc_count("error")
-              .. "  "
-              .. get_diagnositc_count("warn")
-              .. "  "
-              .. get_diagnositc_count("hint")
-          end,
-          on_click = function()
-            vim.cmd("TroubleToggle workspace_diagnostics")
-          end,
-        },
-      },
+      lualine_b = {},
       lualine_c = {
+        create_diagnostic_component("error", "", "DiagnosticError"),
+        create_diagnostic_component("warn", "", "DiagnosticWarn"),
+        create_diagnostic_component("hint", "", "DiagnosticHint"),
         { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
         { "filename" },
       },
       lualine_x = {
+        -- word count for markdown and text files
         {
           function()
             local words = vim.fn.wordcount()["words"]
