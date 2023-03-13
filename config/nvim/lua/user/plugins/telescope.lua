@@ -56,6 +56,7 @@ function M.config()
       live_grep = { theme = "ivy" },
       lsp_implementations = { theme = "ivy" },
       lsp_references = { theme = "ivy", show_line = false },
+      diagnostics = { theme = "ivy", line_width = 1000 },
       registers = { theme = "ivy" },
     },
     extensions = {

@@ -8,7 +8,7 @@ keymap.set("v", ";", ":")
 -- Allow gf to open non-existent files
 keymap.set("", "gf", ":edit <cfile><CR>")
 
--- turn of vim recording
+-- turn off vim recording
 keymap.set("n", "q", "<nop>")
 
 -- search
@@ -16,6 +16,7 @@ keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
+keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 
 -- window management
 keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
@@ -59,7 +60,6 @@ keymap.set(
   { noremap = true }
 )
 keymap.set("n", "<leader>cs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word under cursor using sed
-keymap.set("n", "<leader>cp", ":lua require('copilot.suggestion').toggle_auto_trigger()<cr>") -- toggle copilot
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
@@ -85,9 +85,6 @@ keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("v", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
-keymap.set("n", "<leader>T", "<cmd>TroubleToggle workspace_diagnostics<cr>")
-keymap.set("n", "<leader>n", "<cmd>Neotree reveal toggle<cr>", { silent = true, noremap = true })
-keymap.set("n", "<leader>t", "<cmd>TroubleToggle document_diagnostics<cr>")
 keymap.set("v", "<leader>s", function()
   require("user.misc.silicon").screenshot()
 end)

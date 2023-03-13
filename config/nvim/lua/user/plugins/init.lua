@@ -31,11 +31,6 @@ return {
     config = true,
   },
   {
-    "folke/trouble.nvim",
-    cmd = "TroubleToggle",
-    config = true,
-  },
-  {
     "Shatur/neovim-session-manager",
     event = "VeryLazy",
     config = function()
