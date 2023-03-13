@@ -1,8 +1,8 @@
 # Matt's Dotfiles
 
-<img src="/images/screenshot.png"/>
-
 A collection of dotfiles that I use for customising my machine.
+![image](images/dark.png)
+![image](images/light.png)
 
 ## Installation
 
