@@ -3,7 +3,7 @@ local M = {
   event = "VeryLazy",
 }
 
-local function create_diagnostic_component(severity, icon, color)
+local function create_diagnostic_component(severity, icon, color, separator)
   local function get_diagnostic_count(s)
     return #vim.diagnostic.get(nil, { severity = s })
   end
@@ -14,7 +14,11 @@ local function create_diagnostic_component(severity, icon, color)
     end,
     padding = { left = 1, right = 0 },
     color = function()
-      return get_diagnostic_count(severity) > 0 and color or nil
+      return get_diagnostic_count(severity) > 0 and color or "FoldColumn"
+    end,
+    separator = separator,
+    on_click = function()
+      vim.cmd("Telescope diagnostics severity=" .. severity)
     end,
   }
 end
@@ -38,7 +42,7 @@ function M.config()
       lualine_c = {
         create_diagnostic_component("error", "", "DiagnosticError"),
         create_diagnostic_component("warn", "", "DiagnosticWarn"),
-        create_diagnostic_component("hint", "", "DiagnosticHint"),
+        create_diagnostic_component("hint", "", "DiagnosticHint", " |"),
         { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
         { "filename" },
       },
@@ -57,6 +61,7 @@ function M.config()
             }
             return count[ft] ~= nil
           end,
+          separator = "|",
         },
         "branch",
       },
