@@ -1,14 +1,16 @@
 # Matt's Dotfiles
-
 A collection of dotfiles that I use for customising my machine.
-![image](images/dark.png)
 ![image](images/light.png)
+![image](images/dark.png)
 
 ## Installation
-
 1. Install macOS Command Line Tools by running:
    ```bash
    xcode-select --install
+   ```
+1. Generate ssh key and register with GitHub
+   ```bash
+   ssh-keygen
    ```
 1. Run the install script
    ```bash
@@ -17,3 +19,4 @@ A collection of dotfiles that I use for customising my machine.
 
 ## Post-Install Tasks
 N/A
+
