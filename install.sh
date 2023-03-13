@@ -36,6 +36,9 @@ cd "$HOME/Developer/tt" && make && sudo make install
 # sudo launchctl load -w "$HOME/Library/LaunchAgents/com.matthewsamuel.dark-mode-notify.plist"
 sudo ln -s "$DOTFILES_DIR/scripts/changecolors" "/usr/local/bin/"
 
+# Disable ssh password authentication
+sudo cp "$DOTFILES_DIR/other/ssh.conf" "/etc/ssh/sshd_config.d/"
+
 # cleanup
 rm -rf "$HOME/Developer/tt"
 
