@@ -29,7 +29,6 @@ keymap.set("n", "<Leader>wv", "<C-W>v")
 keymap.set("n", "<Leader>wx", "<C-W>c")
 
 -- buffer management
-keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
 keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 
@@ -48,6 +47,7 @@ keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>")
 keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
 keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
 keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
+keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
 
 -- code refactoring/fixing
 keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
@@ -78,7 +78,7 @@ keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
-keymap.set("n", "<leader>y", ':let @+=@"<cr>', { silent = true }) -- copy what's in current register to system clipboard
+keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
 keymap.set("n", "<Leader>f", "<cmd>Format<cr>")

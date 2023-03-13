@@ -44,7 +44,13 @@ function M.config()
         create_diagnostic_component("warn", "", "DiagnosticWarn"),
         create_diagnostic_component("hint", "", "DiagnosticHint", " |"),
         { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
-        { "filename" },
+        {
+          "filename",
+          on_click = function()
+            vim.cmd("let @+ = expand('%:p')")
+            print("Copied file path to clipboard")
+          end,
+        },
       },
       lualine_x = {
         -- word count for markdown and text files
