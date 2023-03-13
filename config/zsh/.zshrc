@@ -42,12 +42,10 @@ source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
-FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+FZF_DEFAULT_COMMAND='rg --files --hidden'
 FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-	--color=fg:#c0caf5,bg:#1a1b26,hl:#bb9af7
-	--color=fg+:#c0caf5,bg+:#1a1b26,hl+:#7dcfff
-	--color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff 
-	--color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
+    --layout=default --height=100% --color 16
+    "
 
 autoload -Uz compinit
 compinit

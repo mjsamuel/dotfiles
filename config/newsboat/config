@@ -15,3 +15,5 @@ bind-key h quit
 bind-key n next-unread
 bind-key N prev-unread
 
+browser "open -a safari '%u'"
+auto-reload yes
