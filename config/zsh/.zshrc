@@ -42,10 +42,8 @@ source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
-FZF_DEFAULT_COMMAND='rg --files --hidden'
-FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-    --layout=default --height=100% --color 16
-    "
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
 
 autoload -Uz compinit
 compinit

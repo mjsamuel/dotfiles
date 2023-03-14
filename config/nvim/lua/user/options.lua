@@ -28,7 +28,7 @@ set.splitkeep = "screen"
 set.splitright = true -- put new windows right of current
 set.tabstop = 4 -- number of spaces to insert when tab is pressed
 set.termguicolors = true -- true color support
-set.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
+set.timeoutlen = 500 -- time to wait for a mapped sequence to complete (in milliseconds)
 set.undofile = true
 set.wrap = false
 

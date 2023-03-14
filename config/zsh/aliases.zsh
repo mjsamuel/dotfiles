@@ -20,3 +20,4 @@ alias yta="yt-dlp -x -f bestaudio/best"
 # tmux
 alias t="tmux"
 alias ta="tmux attach"
+alias ts="tmux-sessionizer"
