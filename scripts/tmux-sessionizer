@@ -1,25 +1,19 @@
 #!/bin/sh
 
-if [ $# -eq 1 ]; then
-    selected=$1
-else
-    selected=$(find "$HOME/Developer" -mindepth 1 -maxdepth 1 -type d | fzf $FZF_DEFAULT_OPTS)
-fi
+session_exists() {
+    tmux list-sessions | grep "$selected_name"
+}
 
-if [ -z "$selected" ]; then
-    exit 0
-fi
-
+selected="$(find "$HOME/Developer" -mindepth 1 -maxdepth 1 -type d | fzf $FZF_DEFAULT_OPTS)"
+[ -z "$selected" ] && exit 0
 selected_name=$(basename "$selected" | tr . _)
+
+in_tmux="$TMUX"
 tmux_running=$(pgrep tmux)
-
-if [ -z "$TMUX" ] && [ -z "$tmux_running" ]; then
+if { [ -z "$tmux_running" ] && [ -z "$in_tmux" ]; } ||
+    { [ -z "$in_tmux" ] && [ -z "$(session_exists)" ]; }; then
     tmux new-session -s "$selected_name" -c "$selected"
-    exit 0
-fi
-
-if ! tmux has-session -t="$selected_name" 2> /dev/null; then
+elif [ -z "$(session_exists)" ]; then
     tmux new-session -ds "$selected_name" -c "$selected"
+    tmux switch-client -t "$selected_name"
 fi
-
-tmux switch-client -t "$selected_name"
