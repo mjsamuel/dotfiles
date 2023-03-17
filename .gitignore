@@ -17,6 +17,7 @@ Thumbs.db
 
 # Misc files
 .zcompdump
+config/workspaces
 */tt/.errors
 */lazygit/state.yml
 */docker
