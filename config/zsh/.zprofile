@@ -20,10 +20,12 @@ export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export PLAYDATE_SDK_PATH="$HOME/Developer/PlaydateSDK"
 
 # Path
-playdate_sdk="/usr/local/playdate/gcc-arm-none-eabi-9-2019-q4-major/bin:$HOME/Developer/PlaydateSDK/bin"
-maven="/opt/apache-maven/bin"
-scripts="$HOME/Developer/dotfiles/scripts"
-PATH="$PATH:${playdate_sdk}:${maven}:${scripts}:${CARGO_HOME}/bin"
+export PATH="$PATH\
+:$HOME/Developer/dotfiles/scripts\
+:/opt/apache-maven/bin\
+:$CARGO_HOME
+:/usr/local/playdate/gcc-arm-none-eabi-9-2019-q4-major/bin:$HOME/Developer/PlaydateSDK/bin\
+"
 
 # misc
 export BAT_THEME="base16-256"

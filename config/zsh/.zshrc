@@ -42,8 +42,13 @@ source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
 [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
+
+# keybindings
+bindkey -s '^F' "tmux-sessionizer\n"
 
 autoload -Uz compinit
 compinit
