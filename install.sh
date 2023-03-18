@@ -1,6 +1,6 @@
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 mkdir -p "$HOME/Developer"
-git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
+git clone "git@github.com:mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 
 # Remove .zprofile from home (if it exists) and symlink new one
 rm -f "$HOME/.zprofile"
