@@ -4,9 +4,12 @@ local M = {
 }
 
 function M.config()
-  local home = os.getenv("HOME")
-  local project_name = vim.fn.fnamemodify(vim.api.nvim_exec("!git rev-parse --show-toplevel", true), ":t")
-  local workspace_dir = home .. "/Developer/workspaces/" .. project_name:sub(1, -2)
+  local jdtls = require("jdtls")
+  local jdtls_setup = require("jdtls.setup")
+
+  local data_home = os.getenv("XDG_DATA_HOME")
+  local project_root = jdtls_setup.find_root({ ".git" })
+  local workspace_dir = os.getenv("XDG_CACHE_HOME") .. "/java-workspaces/" .. string.gsub(project_root:sub(2), "/", ".")
 
   local config = {
     cmd = {
@@ -16,6 +19,7 @@ function M.config()
       "-Declipse.product=org.eclipse.jdt.ls.core.product",
       "-Dlog.protocol=true",
       "-Dlog.level=ALL",
+      "-noverify",
       "-Xms1g",
       "--add-modules=ALL-SYSTEM",
       "--add-opens",
@@ -23,13 +27,15 @@ function M.config()
       "--add-opens",
       "java.base/java.lang=ALL-UNNAMED",
       "-jar",
-      home .. "/.local/share/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
       "-configuration",
-      home .. "/.local/share/nvim/mason/packages/jdtls/config_linux",
+      data_home .. "/nvim/mason/packages/jdtls/config_linux",
       "-data",
       workspace_dir,
     },
-    root_dir = require("jdtls.setup").find_root({ ".git" }),
+    handlers = {
+      ["language/status"] = function() end,
+    },
     settings = {
       java = {
         configuration = {
@@ -45,17 +51,20 @@ function M.config()
     init_options = {
       bundles = {
         vim.fn.glob(
-          home .. "/Developer/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
+          data_home .. "/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
         ),
+      },
+      extendedClientCapabilities = {
+        progressReportProvider = false,
       },
     },
     on_attach = {
-      require("jdtls").setup_dap(),
+      jdtls.setup_dap(),
     },
   }
 
-  require("jdtls").start_or_attach(config)
-  require("jdtls.setup").add_commands()
+  jdtls.start_or_attach(config)
+  jdtls_setup.add_commands()
 end
 
 return M

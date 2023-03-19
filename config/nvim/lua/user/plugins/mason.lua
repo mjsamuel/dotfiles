@@ -10,7 +10,6 @@ return {
       })
 
       local tools = {
-        "angular-language-server",
         "autopep8",
         "bash-language-server",
         "cmake-language-server",
@@ -18,6 +17,7 @@ return {
         "dockerfile-language-server",
         "emmet-ls",
         "html-lsp",
+        "java-debug-adapter",
         "jdtls",
         "json-lsp",
         "lemminx",
