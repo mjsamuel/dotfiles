@@ -46,4 +46,14 @@ return {
       require("leap").add_default_mappings()
     end,
   },
+  {
+    "j-hui/fidget.nvim",
+    config = {
+      text = {
+        spinner = { "⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾" },
+        done = "",
+      },
+    },
+    event = "BufReadPre",
+  },
 }
