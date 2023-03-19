@@ -12,10 +12,17 @@ M.config = function()
     return {
       foreground = utils.get_highlight("StatusLine").fg,
       background = utils.get_highlight("StatusLine").bg,
+      comment = utils.get_highlight("Comment").fg,
       diagnostic_error = utils.get_highlight("DiagnosticError").fg,
       diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
       diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
       diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
+      mode_normal = utils.get_highlight("MiniStatuslineModeNormal").bg,
+      mode_insert = utils.get_highlight("MiniStatuslineModeInsert").bg,
+      mode_visual = utils.get_highlight("MiniStatuslineModeVisual").bg,
+      mode_command = utils.get_highlight("MiniStatuslineModeCommand").bg,
+      mode_replace = utils.get_highlight("MiniStatuslineModeReplace").bg,
+      mode_other = utils.get_highlight("MiniStatuslineModeOther").bg,
     }
   end
 
@@ -30,7 +37,6 @@ M.config = function()
   -- Segments
   local Align = { provider = "%=" }
   local Space = { provider = " " }
-  local Seperator = { provider = " | " }
 
   local ModeSegment = {
     init = function(self)
@@ -74,27 +80,27 @@ M.config = function()
         t = "T",
       },
       mode_colors = {
-        n = "MiniStatuslineModeNormal",
-        i = "MiniStatuslineModeInsert",
-        v = "MiniStatuslineModeVisual",
-        V = "MiniStatuslineModeVisual",
-        ["\22"] = "MiniStatuslineModeOther",
-        c = "MiniStatuslineModeCommand",
-        s = "MiniStatuslineModeOther",
-        S = "MiniStatuslineModeOther",
-        ["\19"] = "MiniStatuslineModeOther",
-        R = "MiniStatuslineModeReplace",
-        r = "MiniStatuslineModeReplace",
-        ["!"] = "MiniStatuslineModeOther",
-        t = "MiniStatuslineModeOther",
+        n = "mode_normal",
+        i = "mode_insert",
+        v = "mode_visual",
+        V = "mode_visual",
+        ["\22"] = "mode_other",
+        c = "mode_command",
+        s = "mode_other",
+        S = "mode_other",
+        ["\19"] = "mode_other",
+        R = "mode_replace",
+        r = "mode_replace",
+        ["!"] = "mode_other",
+        t = "mode_other",
       },
     },
     provider = function(self)
-      return " " .. self.mode_names[self.mode] .. " "
+      return " " .. self.mode_names[self.mode]
     end,
     hl = function(self)
       local mode = self.mode:sub(1, 1) -- get only the first mode character
-      return self.mode_colors[mode]
+      return { fg = self.mode_colors[mode], bg = "background" }
     end,
     update = {
       "ModeChanged",
@@ -111,6 +117,19 @@ M.config = function()
         self.filename = vim.api.nvim_buf_get_name(0)
       end,
     },
+    { -- file path
+      provider = function(self)
+        local filename = vim.fn.fnamemodify(self.filename, ":.:h")
+        if not conditions.width_percent_below(#filename, 0.2) then
+          filename = vim.fn.pathshorten(filename)
+        end
+        return ".." .. filename .. "/"
+      end,
+      hl = function()
+        return { fg = "comment", bg = "background", italic = true }
+      end,
+    },
+    Space,
     { -- file icon
       init = function(self)
         local filename = self.filename
@@ -128,14 +147,7 @@ M.config = function()
     Space,
     { -- file name
       provider = function(self)
-        local filename = vim.fn.fnamemodify(self.filename, ":.")
-        if filename == "" then
-          return "[No Name]"
-        end
-        if not conditions.width_percent_below(#filename, 0.25) then
-          filename = vim.fn.pathshorten(filename)
-        end
-        return filename
+        return vim.fn.fnamemodify(self.filename, ":t")
       end,
       hl = function()
         if vim.bo.modified then
@@ -154,7 +166,7 @@ M.config = function()
       warn_icon = "",
       info_icon = "",
       hint_icon = "",
-      default_hl = { fg = "foreground", bg = "background" },
+      default_hl = { fg = "comment", bg = "background", italic = true },
     },
     init = function(self)
       self.errors = #vim.diagnostic.get(nil, { severity = "error" })
@@ -165,28 +177,34 @@ M.config = function()
     update = { "DiagnosticChanged", "BufEnter" },
     {
       provider = function(self)
-        return self.error_icon .. " " .. self.errors
+        return self.errors > 0 and " " .. self.error_icon .. " " .. self.errors
       end,
-      hl = function(self)
-        return self.errors > 0 and { fg = "diagnostic_error", bg = "background" } or self.default_hl
-      end,
-    },
-    Space,
-    {
-      provider = function(self)
-        return self.warn_icon .. " " .. self.warnings
-      end,
-      hl = function(self)
-        return self.warnings > 0 and { fg = "diagnostic_warn", bg = "background" } or self.default_hl
+      hl = function()
+        return { fg = "diagnostic_error", bg = "background" }
       end,
     },
-    Space,
     {
       provider = function(self)
-        return self.hint_icon .. " " .. self.hints
+        return self.warnings > 0 and " " .. self.warn_icon .. " " .. self.warnings
       end,
-      hl = function(self)
-        return self.hints > 0 and { fg = "diagnostic_hint", bg = "background" } or self.default_hl
+      hl = function()
+        return { fg = "diagnostic_warn", bg = "background" }
+      end,
+    },
+    {
+      provider = function(self)
+        return self.info > 0 and " " .. self.info_icon .. " " .. self.info
+      end,
+      hl = function()
+        return { fg = "diagnostic_info", bg = "background" }
+      end,
+    },
+    {
+      provider = function(self)
+        return self.hints > 0 and " " .. self.hint_icon .. " " .. self.hints
+      end,
+      hl = function()
+        return { fg = "diagnostic_hint", bg = "background" }
       end,
     },
   }
@@ -208,8 +226,7 @@ M.config = function()
         return self.word_count .. " words"
       end,
     },
-    Seperator,
-    hl = "StatusLine",
+    hl = { fg = "comment", bg = "background" }
   }
 
   local GitSegment = {
@@ -223,18 +240,18 @@ M.config = function()
         return " " .. self.status_dict.head
       end,
     },
-    hl = "StatusLine",
+    hl = { fg = "comment", bg = "background" }
   }
 
   require("heirline").setup({
     statusline = {
       ModeSegment,
       Space,
-      DiagnosticsSegment,
-      Seperator,
       FileNameSegment,
+      DiagnosticsSegment,
       Align,
       WordCountSegment,
+      Space,
       GitSegment,
       Space,
     },

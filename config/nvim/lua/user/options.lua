@@ -10,6 +10,7 @@ set.fillchars = { eob = " " }
 set.formatoptions = "jcroqlnt" -- tcqj
 set.hlsearch = false -- disable highlighting search term
 set.ignorecase = true -- ignore case when searching
+set.laststatus = 3
 set.list = true -- show invisible characters
 set.listchars = { tab = "→ ", trail = "•", eol = "¬", extends = "»", precedes = "«" } -- how to show invisible characters
 set.mouse = "a" -- enable mouse mode
