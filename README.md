@@ -16,7 +16,3 @@ A collection of dotfiles that I use for customising my machine.
    ```bash
    sudo curl -fsSL "https://raw.githubusercontent.com/mjsamuel/dotfiles/master/install.sh" | sh
    ```
-
-## Post-Install Tasks
-N/A
-
