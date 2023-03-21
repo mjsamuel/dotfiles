@@ -95,13 +95,23 @@ M.config = function()
         t = "mode_other",
       },
     },
-    provider = function(self)
-      return " " .. self.mode_names[self.mode]
-    end,
-    hl = function(self)
-      local mode = self.mode:sub(1, 1) -- get only the first mode character
-      return { fg = self.mode_colors[mode], bg = "background" }
-    end,
+    {
+      provider = " ",
+      hl = function(self)
+        local mode = self.mode:sub(1, 1) -- get only the first mode character
+        return { bg = self.mode_colors[mode] }
+      end,
+    },
+    Space,
+    {
+      provider = function(self)
+        return self.mode_names[self.mode]
+      end,
+      hl = function(self)
+        local mode = self.mode:sub(1, 1) -- get only the first mode character
+        return { fg = self.mode_colors[mode], bg = "background" }
+      end,
+    },
     update = {
       "ModeChanged",
       pattern = "*:*",
@@ -120,10 +130,10 @@ M.config = function()
     { -- file path
       provider = function(self)
         local filename = vim.fn.fnamemodify(self.filename, ":.:h")
-        if not conditions.width_percent_below(#filename, 0.2) then
+        if not conditions.width_percent_below(#filename, 0.3) then
           filename = vim.fn.pathshorten(filename)
         end
-        return ".." .. filename .. "/"
+        return filename .. "/"
       end,
       hl = function()
         return { fg = "comment", bg = "background", italic = true }
@@ -226,7 +236,7 @@ M.config = function()
         return self.word_count .. " words"
       end,
     },
-    hl = { fg = "comment", bg = "background" }
+    hl = { fg = "comment", bg = "background" },
   }
 
   local GitSegment = {
@@ -240,7 +250,7 @@ M.config = function()
         return " " .. self.status_dict.head
       end,
     },
-    hl = { fg = "comment", bg = "background" }
+    hl = { fg = "comment", bg = "background" },
   }
 
   require("heirline").setup({
