@@ -76,7 +76,7 @@ function M.config()
     local button_element = dashboard.button(shortcut, icon_text .. short_function, "<cmd>e " .. filename .. " <cr>")
     local function_start = short_function:match(".*/")
     if function_start ~= nil then
-      table.insert(button_highlight, { "Comment", #icon_text - 2, #function_start + #icon_text - 2 })
+      table.insert(button_highlight, { "Comment", #icon_text, #function_start + #icon_text })
     end
     button_element.opts.hl = button_highlight
     return button_element
