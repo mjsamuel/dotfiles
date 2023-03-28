@@ -1,7 +1,13 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
-  "ThePrimeagen/refactoring.nvim",
+  {
+    "ThePrimeagen/refactoring.nvim",
+    config = function()
+      require('refactoring').setup({})
+      require("telescope").load_extension("refactoring")
+    end,
+  },
   { "tpope/vim-fugitive", cmd = "Git" },
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
   {
@@ -54,7 +60,7 @@ return {
         done = "",
       },
     },
-    event = "BufReadPre",
+    event = "LspAttach",
   },
   {
     "nvim-tree/nvim-tree.lua",

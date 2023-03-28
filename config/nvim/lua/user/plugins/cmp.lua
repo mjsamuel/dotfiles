@@ -73,12 +73,13 @@ function M.config()
       { name = "nvim_lsp" },
       { name = "buffer" },
       { name = "luasnip" },
+      { name = "luasnip" },
+      { name = "path" },
     }),
   })
 
   cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({ { name = "path" } }),
   })
 end
 
