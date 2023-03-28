@@ -28,6 +28,12 @@ git clone "https://github.com/lemnos/tt.git" "$HOME/Developer/tt"
 cd "$HOME/Developer/tt" && make && sudo make install
 rm -rf "$HOME/Developer/tt"
 
+# Wezterm undercurl support
+tempfile=$(mktemp) \
+  && curl -o "$tempfile" https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
+  && tic -x -o ~/.terminfo "$tempfile" \
+  && rm "$tempfile"
+
 neofetch
 echo "Install complete! Please restart your terminal."
 [ "$BUNDLE_FAILED" = true ] && echo "- Some packages failed to install. Run 'brew bundle --file $DOTFILES_DIR/Brewfile' manually."
