@@ -20,7 +20,7 @@ return {
           "fugitiveblame",
           "lazy",
           "mason",
-          "neo-tree",
+          "NvimTree",
         },
       })
     end,
@@ -55,5 +55,14 @@ return {
       },
     },
     event = "BufReadPre",
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    cmd = "NvimTreeToggle",
+    config = {
+      view = {
+        side = "right",
+      },
+    },
   },
 }
