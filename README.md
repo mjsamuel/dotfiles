@@ -1,5 +1,4 @@
 # Matt's Dotfiles
-A collection of dotfiles that I use for customising my machine.
 ![image](images/light.png)
 ![image](images/dark.png)
 

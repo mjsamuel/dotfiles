@@ -25,16 +25,14 @@ return {
         "markdownlint",
         "marksman",
         "prettier",
-        "prettier",
         "pyright",
         "shellcheck",
         "shfmt",
         "sql-formatter",
         "sqlls",
         "stylua",
-        "stylua",
         "tailwindcss-language-server",
-        "taplo",
+        "taplo", -- toml language server
         "typescript-language-server",
         "yaml-language-server",
       }
