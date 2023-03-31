@@ -4,7 +4,7 @@ return {
   {
     "ThePrimeagen/refactoring.nvim",
     config = function()
-      require('refactoring').setup({})
+      require("refactoring").setup({})
       require("telescope").load_extension("refactoring")
     end,
   },
@@ -26,7 +26,6 @@ return {
           "fugitiveblame",
           "lazy",
           "mason",
-          "NvimTree",
         },
       })
     end,
@@ -48,9 +47,7 @@ return {
   {
     "ggandor/leap.nvim",
     keys = { "s", "S" },
-    config = function()
-      require("leap").add_default_mappings()
-    end,
+    config = true,
   },
   {
     "j-hui/fidget.nvim",
@@ -63,12 +60,12 @@ return {
     event = "LspAttach",
   },
   {
-    "nvim-tree/nvim-tree.lua",
-    cmd = "NvimTreeToggle",
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "Neotree",
     config = {
-      view = {
-        side = "right",
-      },
+      enable_git_status = false,
+      enable_diagnostics = false,
     },
   },
 }

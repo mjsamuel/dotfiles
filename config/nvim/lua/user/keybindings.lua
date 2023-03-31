@@ -52,7 +52,6 @@ keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
 -- code refactoring/fixing
 keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 keymap.set("n", "<Leader>cc", ":lua vim.lsp.buf.rename()<cr>")
-keymap.set("n", "<Leader>cf", "<cmd>Format<cr>")
 keymap.set(
   "v",
   "<leader>cr",
@@ -84,8 +83,7 @@ keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>
 keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("v", "<Leader>f", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>l", "<cmd>Lazy<cr>c")
-keymap.set("n", "<Leader>n", "<cmd>NvimTreeToggle<cr>c")
+keymap.set("n", "<Leader>n", "<cmd>Neotree toggle reveal=true position=right<cr>")
 keymap.set("v", "<leader>s", function()
   require("user.misc.silicon").screenshot()
 end)
