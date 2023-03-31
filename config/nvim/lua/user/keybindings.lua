@@ -31,6 +31,7 @@ keymap.set("n", "<Leader>wx", "<C-W>c")
 -- buffer management
 keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
 keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 
 -- git
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")

@@ -3,6 +3,7 @@ local set = vim.opt
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+set.completeopt = "menuone,noselect"
 set.confirm = true -- confirm to save changes before exiting modified buffer
 set.cursorline = true -- highlight current line
 set.expandtab = true -- insert spaces when tab is pressed

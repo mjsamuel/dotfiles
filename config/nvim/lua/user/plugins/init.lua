@@ -47,7 +47,9 @@ return {
   {
     "ggandor/leap.nvim",
     keys = { "s", "S" },
-    config = true,
+    config = function()
+      require("leap").add_default_mappings()
+    end,
   },
   {
     "j-hui/fidget.nvim",

@@ -3,6 +3,9 @@ local M = {
   version = false,
   build = ":TSUpdate",
   event = "BufReadPost",
+  dependencies = {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+  },
 }
 
 function M.config()
@@ -10,14 +13,24 @@ function M.config()
     ensure_install = { "lua", "typescript", "java", "json", "markdown", "make", "python" },
     sync_install = false,
     auto_install = true,
-    highlight = {
-      enable = true,
-      disable = { "NvimTree" },
-      additional_vim_regex_highlighting = false,
-    },
+    highlight = { enable = true },
     indent = { enable = true },
     context_commentstring = {
       enable = true,
+    },
+    textobjects = {
+      select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+          ["aa"] = "@parameter.outer",
+          ["ia"] = "@parameter.inner",
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+        },
+      },
     },
   })
 end
