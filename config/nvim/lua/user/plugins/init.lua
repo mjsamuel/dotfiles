@@ -70,4 +70,9 @@ return {
       enable_diagnostics = false,
     },
   },
+  {
+    "windwp/nvim-autopairs",
+    event = "InsertEnter",
+    config = true,
+  },
 }
