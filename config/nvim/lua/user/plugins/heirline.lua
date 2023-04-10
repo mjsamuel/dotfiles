@@ -95,13 +95,6 @@ M.config = function()
         t = "mode_other",
       },
     },
-    {
-      provider = " ",
-      hl = function(self)
-        local mode = self.mode:sub(1, 1) -- get only the first mode character
-        return { bg = self.mode_colors[mode] }
-      end,
-    },
     Space,
     {
       provider = function(self)
