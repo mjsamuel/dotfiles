@@ -1,5 +1,6 @@
 local M = {
   "nvim-telescope/telescope.nvim",
+  commit = "762fcbf360dfc789e2dd435bda353a73242c2504",
   cmd = "Telescope",
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -8,6 +9,17 @@ local M = {
 }
 
 function M.config()
+  local minimal_opts = {
+    theme = "minimal",
+    layout_strategy = "horizontal",
+    layout_config = {
+      horizontal = { width = 0.9, height = 0.65, preview_width = 0.6, prompt_position = "top" },
+    },
+    prompt_title = false,
+    results_title = false,
+    preview_title = false,
+  }
+
   require("telescope").setup({
     defaults = {
       vimgrep_arguments = {
@@ -19,45 +31,34 @@ function M.config()
         "--column",
         "--smart-case",
       },
-      selection_caret = "  ",
-      entry_prefix = "  ",
-      initial_mode = "insert",
-      selection_strategy = "reset",
       sorting_strategy = "ascending",
       layout_strategy = "horizontal",
       file_ignore_patterns = { ".git/", "node_modules" },
       path_display = { "truncate" },
       winblend = 0,
-      border = {},
-      borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
       color_devicons = true,
-      set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-      file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-      grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-      qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
     },
     pickers = {
-      buffers = {
+      buffers = vim.tbl_extend("force", minimal_opts, {
         show_all_buffers = true,
         sort_lastused = true,
-        theme = "ivy",
         mappings = {
           i = {
             [";"] = "delete_buffer",
-            previewer = false,
           },
         },
-      },
-      find_files = { theme = "ivy", hidden = true },
-      git_commits = { theme = "ivy" },
-      git_stash = { theme = "ivy" },
-      git_status = { theme = "ivy" },
-      help_tags = { theme = "ivy" },
-      live_grep = { theme = "ivy" },
-      lsp_implementations = { theme = "ivy" },
-      lsp_references = { theme = "ivy", show_line = false },
-      diagnostics = { theme = "ivy", line_width = 1000 },
-      registers = { theme = "ivy" },
+      }),
+      diagnostics = minimal_opts,
+      find_files = vim.tbl_extend("force", minimal_opts, { hidden = true }),
+      git_commits = minimal_opts,
+      git_stash = minimal_opts,
+      git_status = minimal_opts,
+      help_tags = minimal_opts,
+      live_grep = minimal_opts,
+      lsp_implementations = minimal_opts,
+      lsp_references = vim.tbl_extend("force", minimal_opts, { show_line = false }),
+      registers = minimal_opts,
+      theme = minimal_opts,
     },
     extensions = {
       fzf = {

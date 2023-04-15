@@ -8,6 +8,8 @@ function M.config()
   local lspconfig = require("lspconfig")
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+  require("lspconfig.ui.windows").default_options.border = "rounded"
+
   local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
   function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
     opts = { border = require("user.misc.opts").border }
