@@ -223,6 +223,17 @@ function M.config()
   }
 
   alpha.setup(opts)
+
+  -- disable statusline on dashboard
+  local configured_laststatus = vim.opt_local.laststatus:get()
+  vim.opt_local.laststatus = 0
+  print(vim.opt_global.laststatus:get())
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "AlphaClosed",
+    callback = function()
+      vim.opt_local.laststatus = configured_laststatus
+    end,
+  })
 end
 
 return M

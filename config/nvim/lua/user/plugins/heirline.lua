@@ -118,21 +118,24 @@ M.config = function()
     {
       init = function(self)
         self.filename = vim.api.nvim_buf_get_name(0)
+        self.filetype = vim.bo.filetype
       end,
     },
     { -- file path
+      condition = function (self)
+        return self.filename ~= ""
+      end,
       provider = function(self)
         local filename = vim.fn.fnamemodify(self.filename, ":.:h")
         if not conditions.width_percent_below(#filename, 0.3) then
           filename = vim.fn.pathshorten(filename)
         end
-        return filename .. "/"
+        return filename .. "/ "
       end,
       hl = function()
         return { fg = "comment", bg = "background", italic = true }
       end,
     },
-    Space,
     { -- file icon
       init = function(self)
         local filename = self.filename
@@ -150,10 +153,10 @@ M.config = function()
     Space,
     { -- file name
       provider = function(self)
-        return vim.fn.fnamemodify(self.filename, ":t")
+        return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype
       end,
-      hl = function()
-        if vim.bo.modified then
+      hl = function(self)
+        if vim.bo.modified and self.filename ~= "" then
           return { fg = "foreground", bg = "background", italic = true }
         else
           return "StatusLine"
@@ -164,6 +167,9 @@ M.config = function()
   )
 
   local DiagnosticsSegment = {
+    condition = function()
+        return vim.api.nvim_buf_get_name(0) ~= ""
+    end,
     static = {
       error_icon = "",
       warn_icon = "",
