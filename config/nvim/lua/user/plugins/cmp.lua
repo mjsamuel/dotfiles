@@ -3,7 +3,6 @@ local M = {
   event = "InsertEnter",
   dependencies = {
     { "hrsh7th/cmp-nvim-lsp" },
-    { "hrsh7th/cmp-buffer" },
     { "hrsh7th/cmp-path" },
     { "onsails/lspkind.nvim" },
     { "L3MON4D3/LuaSnip" },
@@ -24,11 +23,11 @@ function M.config()
     },
     window = {
       completion = {
-        border = require("user.misc.opts").border,
+        border = "rounded",
         winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
       },
       documentation = {
-        border = require("user.misc.opts").border,
+        border = "rounded",
         winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
       },
     },
@@ -71,7 +70,6 @@ function M.config()
     }),
     sources = cmp.config.sources({
       { name = "nvim_lsp" },
-      { name = "buffer" },
       { name = "luasnip" },
     }),
   })

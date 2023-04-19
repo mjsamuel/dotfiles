@@ -1,13 +1,10 @@
 local opts = {}
-opts.border = {
-  { "╭", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "╮", "FloatBorder" },
-  { "│", "FloatBorder" },
-  { "╯", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "╰", "FloatBorder" },
-  { "│", "FloatBorder" },
+
+opts.signs = {
+  Error = " ",
+  Warn = " ",
+  Hint = " ",
+  Info = " ",
 }
 
 return opts

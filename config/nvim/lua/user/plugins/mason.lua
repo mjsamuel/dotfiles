@@ -5,7 +5,7 @@ return {
     config = function()
       require("mason").setup({
         ui = {
-          border = require("user.misc.opts").border,
+          border = "rounded",
         },
       })
 
@@ -25,16 +25,15 @@ return {
         "markdownlint",
         "marksman",
         "prettier",
+        "prettierd",
         "pyright",
         "shellcheck",
         "shfmt",
         "sql-formatter",
-        "sqlls",
         "stylua",
         "tailwindcss-language-server",
         "taplo", -- toml language server
         "typescript-language-server",
-        "yaml-language-server",
       }
 
       local mr = require("mason-registry")

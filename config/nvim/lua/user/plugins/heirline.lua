@@ -45,14 +45,14 @@ M.config = function()
     static = {
       mode_names = {
         n = "NORMAL",
-        no = "O-PENDING",
-        nov = "O-PENDING",
-        noV = "O-PENDING",
-        ["no\22"] = "O-PENDING",
         niI = "NORMAL",
         niR = "NORMAL",
         niV = "NORMAL",
         nt = "NORMAL",
+        no = "O-PENDING",
+        nov = "O-PENDING",
+        noV = "O-PENDING",
+        ["no\22"] = "O-PENDING",
         v = "VISUAL",
         vs = "VISUAL",
         V = "V-LINE",
@@ -95,7 +95,6 @@ M.config = function()
         t = "mode_other",
       },
     },
-    Space,
     {
       provider = function(self)
         return self.mode_names[self.mode]
@@ -122,7 +121,7 @@ M.config = function()
       end,
     },
     { -- file path
-      condition = function (self)
+      condition = function(self)
         return self.filename ~= ""
       end,
       provider = function(self)
@@ -166,56 +165,40 @@ M.config = function()
     { provider = "%<" } -- this means that the statusline is cut here when there's not enough space
   )
 
+  local function create_diagnostic_segment(severity)
+    return {
+      condition = function(self)
+        return self.diagnostics[severity] > 0
+      end,
+      provider = function(self)
+        return self.icons[severity:gsub("^%l", string.upper)] .. self.diagnostics[severity] .. " "
+      end,
+      hl = function()
+        return { fg = "diagnostic_" .. severity, bg = "background" }
+      end,
+    }
+  end
   local DiagnosticsSegment = {
     condition = function()
-        return vim.api.nvim_buf_get_name(0) ~= ""
+      return vim.api.nvim_buf_get_name(0) ~= ""
     end,
     static = {
-      error_icon = "",
-      warn_icon = "",
-      info_icon = "",
-      hint_icon = "",
       default_hl = { fg = "comment", bg = "background", italic = true },
+      icons = require("user.misc.opts").signs,
     },
     init = function(self)
-      self.errors = #vim.diagnostic.get(nil, { severity = "error" })
-      self.warnings = #vim.diagnostic.get(nil, { severity = "warn" })
-      self.hints = #vim.diagnostic.get(nil, { severity = "hint" })
-      self.info = #vim.diagnostic.get(nil, { severity = "info" })
+      self.diagnostics = {
+        error = #vim.diagnostic.get(nil, { severity = "error" }),
+        warn = #vim.diagnostic.get(nil, { severity = "warn" }),
+        hint = #vim.diagnostic.get(nil, { severity = "hint" }),
+        info = #vim.diagnostic.get(nil, { severity = "info" }),
+      }
     end,
     update = { "DiagnosticChanged", "BufEnter" },
-    {
-      provider = function(self)
-        return self.errors > 0 and " " .. self.error_icon .. " " .. self.errors
-      end,
-      hl = function()
-        return { fg = "diagnostic_error", bg = "background" }
-      end,
-    },
-    {
-      provider = function(self)
-        return self.warnings > 0 and " " .. self.warn_icon .. " " .. self.warnings
-      end,
-      hl = function()
-        return { fg = "diagnostic_warn", bg = "background" }
-      end,
-    },
-    {
-      provider = function(self)
-        return self.info > 0 and " " .. self.info_icon .. " " .. self.info
-      end,
-      hl = function()
-        return { fg = "diagnostic_info", bg = "background" }
-      end,
-    },
-    {
-      provider = function(self)
-        return self.hints > 0 and " " .. self.hint_icon .. " " .. self.hints
-      end,
-      hl = function()
-        return { fg = "diagnostic_hint", bg = "background" }
-      end,
-    },
+    create_diagnostic_segment("error"),
+    create_diagnostic_segment("warn"),
+    create_diagnostic_segment("info"),
+    create_diagnostic_segment("hint"),
   }
 
   local WordCountSegment = {
@@ -254,9 +237,11 @@ M.config = function()
 
   require("heirline").setup({
     statusline = {
+      Space,
       ModeSegment,
       Space,
       FileNameSegment,
+      Space,
       DiagnosticsSegment,
       Align,
       WordCountSegment,

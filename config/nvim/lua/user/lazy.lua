@@ -22,6 +22,6 @@ require("lazy").setup("user.plugins", {
     notify = false,
   },
   ui = {
-    border = require("user.misc.opts").border,
+    border = "rounded",
   },
 })

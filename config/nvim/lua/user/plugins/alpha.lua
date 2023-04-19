@@ -12,7 +12,9 @@ function M.config()
   local options = {
     disallowed_file_types = { "gitcommit" },
     recent_files = {
-      number_of_items = 5,
+      number_of_items = function()
+        return math.floor(vim.o.lines / 6)
+      end,
       special_shortcuts = { "a", "r", "s", "t", "d" },
     },
     padding = 2,
@@ -23,54 +25,20 @@ function M.config()
       "██  ██ ██  ██  ██  ██ ██  ██  ██",
       "██   ████   ████   ██ ██      ██",
     },
+    name = "Matthew",
   }
 
-  local function get_greeting(name)
-    local hour = os.date("*t").hour
-    local greeting = ""
-    if hour == 23 or hour < 7 then
-      greeting = "  Sleep well"
-    elseif hour < 12 then
-      greeting = "  Good morning"
-    elseif hour >= 12 and hour < 18 then
-      greeting = "  Good afternoon"
-    elseif hour >= 18 and hour < 21 then
-      greeting = "  Good evening"
-    elseif hour >= 21 then
-      greeting = "望 Good night"
-    end
-    return greeting .. ", " .. name
-  end
-
   local function get_extension(filename)
-    local match = filename:match("^.+(%..+)$")
-    local extension = ""
-    if match ~= nil then
-      extension = match:sub(2)
-    end
-    return extension
-  end
-
-  local function get_icon(filename)
-    local extension = get_extension(filename)
-    return nvim_web_devicons.get_icon(filename, extension, { default = true })
+    return vim.fn.fnamemodify(filename, ":e")
   end
 
   local function file_button(filename, shortcut, short_function)
     short_function = short_function or filename
     local icon_text
     local button_highlight = {}
+    local extension = get_extension(filename)
 
-    local icon, highlight = get_icon(filename)
-    local hl_option_type = type(nvim_web_devicons.highlight)
-    if hl_option_type == "boolean" then
-      if highlight and nvim_web_devicons.highlight then
-        table.insert(button_highlight, { highlight, 0, 1 })
-      end
-    end
-    if hl_option_type == "string" then
-      table.insert(button_highlight, { nvim_web_devicons.highlight, 0, 1 })
-    end
+    local icon = nvim_web_devicons.get_icon(filename, extension, { default = true })
     icon_text = icon .. "  "
 
     local button_element = dashboard.button(shortcut, icon_text .. short_function, "<cmd>e " .. filename .. " <cr>")
@@ -119,7 +87,7 @@ function M.config()
       if i <= #shortcut_keys then
         shortcut = shortcut_keys[i]
       else
-        shortcut = tostring(i - 1 - #shortcut_keys)
+        shortcut = tostring(i - #shortcut_keys)
       end
 
       local file_button_element = file_button(filename, " " .. shortcut, filename_short)
@@ -141,7 +109,22 @@ function M.config()
 
   sections.greeting = {
     type = "text",
-    val = get_greeting("Matthew"),
+    val = function()
+      local hour = os.date("*t").hour
+      local greeting = ""
+      if hour == 23 or hour < 7 then
+        greeting = "  Sleep well"
+      elseif hour < 12 then
+        greeting = "  Good morning"
+      elseif hour >= 12 and hour < 18 then
+        greeting = "  Good afternoon"
+      elseif hour >= 18 and hour < 21 then
+        greeting = "  Good evening"
+      elseif hour >= 21 then
+        greeting = "望 Good night"
+      end
+      return greeting .. ", " .. options.name
+    end,
     opts = {
       position = "center",
       hl = "String",
@@ -181,7 +164,7 @@ function M.config()
         type = "group",
         val = function()
           return {
-            get_recent_files_buttons(options.recent_files.number_of_items, options.recent_files.special_shortcuts),
+            get_recent_files_buttons(options.recent_files.number_of_items(), options.recent_files.special_shortcuts),
           }
         end,
         opts = { shrink_margin = false },
@@ -203,8 +186,8 @@ function M.config()
     position = "center",
   }
 
-  local total_height = 27 -- TODO: dynamically calculate this
   local padding_top = function()
+    local total_height = 21 + options.recent_files.number_of_items() -- TODO: dynamically calculate this
     return math.floor((vim.o.lines - total_height) / 2)
   end
 
@@ -226,8 +209,12 @@ function M.config()
 
   -- disable statusline on dashboard
   local configured_laststatus = vim.opt_local.laststatus:get()
-  vim.opt_local.laststatus = 0
-  print(vim.opt_global.laststatus:get())
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "AlphaReady",
+    callback = function()
+      vim.opt_local.laststatus = 0
+    end,
+  })
   vim.api.nvim_create_autocmd("User", {
     pattern = "AlphaClosed",
     callback = function()

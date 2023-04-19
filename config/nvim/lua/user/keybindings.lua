@@ -2,31 +2,25 @@ local keymap = vim.keymap
 
 keymap.set("n", " ", "<nop>")
 
-keymap.set("n", ";", ":")
-keymap.set("v", ";", ":")
-
--- Allow gf to open non-existent files
-keymap.set("", "gf", ":edit <cfile><CR>")
+keymap.set({"n", "v"}, ";", ":")
 
 -- turn off vim recording
 keymap.set("n", "q", "<nop>")
 
 -- search
+keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
+keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
-keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")
-keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
+keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
+keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
 -- window management
-keymap.set("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
-keymap.set("n", "<C-j>", "<C-w>j", { desc = "Go to lower window" })
-keymap.set("n", "<C-k>", "<C-w>k", { desc = "Go to upper window" })
-keymap.set("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
 keymap.set("n", "<Leader>ww", "<C-W>w")
 keymap.set("n", "<Leader>wh", "<C-W>s")
 keymap.set("n", "<Leader>wv", "<C-W>v")
-keymap.set("n", "<Leader>wx", "<C-W>c")
 
 -- buffer management
 keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
@@ -34,9 +28,8 @@ keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
 keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
 
 -- git
+keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
-keymap.set("n", "<Leader>gc", "<cmd>Telescope git_commits<cr>")
-keymap.set("n", "<Leader>gs", "<cmd>Telescope git_stash<cr>")
 keymap.set("n", "<Leader>gb", "<cmd>Git blame<cr>")
 
 -- lsp
@@ -81,10 +74,5 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
-keymap.set("n", "<Leader>f", "<cmd>Format<cr>")
-keymap.set("v", "<Leader>f", "<cmd>Format<cr>")
+keymap.set({ "n", "v" }, "<Leader>f", "<cmd>Format<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>n", "<cmd>Neotree toggle reveal=true position=right<cr>")
-keymap.set("v", "<leader>s", function()
-  require("user.misc.silicon").screenshot()
-end)

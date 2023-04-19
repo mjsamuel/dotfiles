@@ -1,6 +1,7 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
+  "nvim-telescope/telescope-file-browser.nvim",
   {
     "ThePrimeagen/refactoring.nvim",
     config = function()
@@ -13,7 +14,13 @@ return {
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    config = true,
+    config = {
+      surrounds = {
+        ["("] = { add = { "(", ")" } },
+        ["{"] = { add = { "{", "}" } },
+        ["["] = { add = { "[", "]" } },
+      },
+    },
   },
   {
     "RRethy/vim-illuminate",
@@ -21,12 +28,7 @@ return {
     config = function()
       require("illuminate").configure({
         delay = 200,
-        filetypes_denylist = {
-          "TelescopePrompt",
-          "fugitiveblame",
-          "lazy",
-          "mason",
-        },
+        filetypes_denylist = { "TelescopePrompt", "fugitiveblame", "lazy", "mason" },
       })
     end,
   },
@@ -62,17 +64,29 @@ return {
     event = "LspAttach",
   },
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    cmd = "Neotree",
-    config = {
-      enable_git_status = false,
-      enable_diagnostics = false,
-    },
-  },
-  {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true,
+  },
+  {
+    "numToStr/Comment.nvim",
+    keys = { { "gc" }, { "gc", mode = "v" } },
+    dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
+    config = function()
+      require("Comment").setup({
+        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+      })
+    end,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufReadPre",
+    config = function()
+      require("indent_blankline").setup({
+        show_current_context = true,
+        show_current_context_start = true,
+        disable_with_nolist = true,
+      })
+    end,
   },
 }

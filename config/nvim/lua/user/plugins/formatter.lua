@@ -6,15 +6,15 @@ local M = {
 function M.config()
   require("formatter").setup({
     filetype = {
-      html = { require("formatter.filetypes.html").prettier },
-      javascript = { require("formatter.filetypes.javascript").prettier },
-      javascriptreact = { require("formatter.filetypes.javascriptreact").prettier },
-      json = { require("formatter.filetypes.json").prettier },
+      html = { require("formatter.filetypes.html").prettierd },
+      javascript = { require("formatter.filetypes.javascript").prettierd },
+      javascriptreact = { require("formatter.filetypes.javascriptreact").prettierd },
+      json = { require("formatter.filetypes.json").prettierd },
       lua = { require("formatter.filetypes.lua").stylua },
       markdown = { require("formatter.filetypes.markdown").markdownlint },
       python = { require("formatter.filetypes.python").autopep8 },
-      typescript = { require("formatter.filetypes.typescript").prettier },
-      typescriptreact = { require("formatter.filetypes.typescriptreact").prettier },
+      typescript = { require("formatter.filetypes.typescript").prettierd },
+      typescriptreact = { require("formatter.filetypes.typescriptreact").prettierd },
       sql = {
         {
           exe = "sql-formatter",
@@ -25,7 +25,7 @@ function M.config()
           stdin = true,
         },
       },
-      sh = { require("formatter.filetypes.sh").shfmt }
+      sh = { require("formatter.filetypes.sh").shfmt },
     },
   })
 end

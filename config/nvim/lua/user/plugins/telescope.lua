@@ -37,15 +37,15 @@ function M.config()
       path_display = { "truncate" },
       winblend = 0,
       color_devicons = true,
+      theme = minimal_opts,
     },
     pickers = {
       buffers = vim.tbl_extend("force", minimal_opts, {
         show_all_buffers = true,
+        ignore_current_buffer = true,
         sort_lastused = true,
         mappings = {
-          i = {
-            [";"] = "delete_buffer",
-          },
+          i = { [";"] = "delete_buffer" },
         },
       }),
       diagnostics = minimal_opts,
@@ -58,7 +58,10 @@ function M.config()
       lsp_implementations = minimal_opts,
       lsp_references = vim.tbl_extend("force", minimal_opts, { show_line = false }),
       registers = minimal_opts,
-      theme = minimal_opts,
+      grep_string = minimal_opts,
+      lsp_document_symbols = minimal_opts,
+      lsp_workspace_symbols = minimal_opts,
+      git_bcommits = minimal_opts,
     },
     extensions = {
       fzf = {
@@ -70,11 +73,14 @@ function M.config()
       ["ui-select"] = {
         require("telescope.themes").get_cursor(),
       },
+      file_browser = minimal_opts,
     },
   })
 
-  require("telescope").load_extension("fzf")
-  require("telescope").load_extension("ui-select")
+  local extension = { "fzf", "ui-select", "file_browser" }
+  for _, e in ipairs(extension) do
+    require("telescope").load_extension(e)
+  end
 end
 
 return M
