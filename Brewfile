@@ -1,19 +1,20 @@
 # Taps
 tap 'homebrew/cask-fonts'
-tap 'homebrew/cask-versions'
 tap 'romkatv/powerlevel10k'
 tap 'teamookla/speedtest'
 
 # Binaries
-brew 'bat'
+brew 'bat' # Better 'cat' replacement
 brew 'coreutils' # Those that come with macOS are outdated
-brew 'exa'
+brew 'exa' # Better 'ls' replacement
+brew 'fd' # Faster 'find' replacement
 brew 'ffmpeg'
 brew 'fzf'
 brew 'git'
 brew 'git-delta'
 brew 'golang'
 brew 'lazygit'
+brew 'mas'
 brew 'mosh'
 brew 'neofetch'
 brew 'neovim'
@@ -21,8 +22,8 @@ brew 'newsboat'
 brew 'node'
 brew 'powerlevel10k'
 brew 'python'
-brew 'ripgrep'
-brew 'silicon'
+brew 'ripgrep' # Faster 'grep' replacement
+brew 'silicon' # Code screenshot tool
 brew 'speedtest'
 brew 'tmux'
 brew 'yt-dlp'
@@ -42,6 +43,13 @@ cask 'playdate-simulator'
 cask 'transmission'
 cask 'visual-studio-code'
 cask 'wezterm'
+cask 'neovide'
 
 # Fonts
 cask 'font-fira-code-nerd-font'
+
+# Mac App Store
+mas 'AdGuard for Safari', id: 1440147258
+mas 'Vimari', id: 1480933944
+mas 'Dark Reader for Safari', id: 1438243180
+mas '1Password for Safari', id: 1569813296
