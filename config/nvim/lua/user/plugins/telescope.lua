@@ -13,7 +13,7 @@ function M.config()
     theme = "minimal",
     layout_strategy = "horizontal",
     layout_config = {
-      horizontal = { width = 0.9, height = 0.65, preview_width = 0.6, prompt_position = "top" },
+      horizontal = { width = 0.9, height = 0.65, preview_width = 0.55, prompt_position = "top" },
     },
     prompt_title = false,
     results_title = false,
@@ -73,7 +73,13 @@ function M.config()
       ["ui-select"] = {
         require("telescope.themes").get_cursor(),
       },
-      file_browser = minimal_opts,
+      file_browser = vim.tbl_extend("force", minimal_opts, {
+        cwd = vim.fn.expand("%:p:h"),
+        git_status = false,
+        hidden = true,
+        select_buffer = true,
+        previewer = false,
+      }),
     },
   })
 

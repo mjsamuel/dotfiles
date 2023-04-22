@@ -66,7 +66,12 @@ return {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    config = true,
+    config = function()
+      local autopairs = require("nvim-autopairs")
+      local Rule = require("nvim-autopairs.rule")
+      autopairs.setup()
+      autopairs.add_rules({ Rule("{{", "  }", "html"):set_end_pair_length(2) })
+    end,
   },
   {
     "numToStr/Comment.nvim",

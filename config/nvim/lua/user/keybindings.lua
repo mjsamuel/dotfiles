@@ -2,14 +2,14 @@ local keymap = vim.keymap
 
 keymap.set("n", " ", "<nop>")
 
-keymap.set({"n", "v"}, ";", ":")
+keymap.set({ "n", "v" }, ";", ":")
 
 -- turn off vim recording
 keymap.set("n", "q", "<nop>")
 
 -- search
 keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
-keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser<cr>")
+keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser path=%:p:h<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
@@ -48,7 +48,7 @@ keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
 keymap.set("n", "<Leader>cc", ":lua vim.lsp.buf.rename()<cr>")
 keymap.set(
   "v",
-  "<leader>cr",
+  "<leader>cc",
   "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
   { noremap = true }
 )
