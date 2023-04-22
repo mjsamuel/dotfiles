@@ -6,6 +6,7 @@ git clone "git@github.com:mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 rm -f "$HOME/.zprofile"
 ln -s "$DOTFILES_DIR/config/zsh/.zprofile" "$HOME"
 . "$HOME/.zprofile" # source zprofile
+mkdir -p "$HOME/.cache/zsh"
 
 # Symlinks
 ln -s "$DOTFILES_DIR/config" "$HOME/.config"
