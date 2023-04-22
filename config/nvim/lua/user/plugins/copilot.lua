@@ -5,7 +5,14 @@ local M = {
 }
 
 M.config = {
-  panel = { enabled = false },
+  panel = {
+    enabled = true,
+    auto_refresh = true,
+    layout = {
+      position = "right",
+      ratio = 0.4,
+    },
+  },
   suggestion = {
     auto_trigger = true,
     keymap = {
