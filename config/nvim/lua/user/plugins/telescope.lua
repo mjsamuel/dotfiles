@@ -8,18 +8,18 @@ local M = {
   },
 }
 
-function M.config()
-  local minimal_opts = {
-    theme = "minimal",
-    layout_strategy = "horizontal",
-    layout_config = {
-      horizontal = { width = 0.9, height = 0.65, preview_width = 0.55, prompt_position = "top" },
-    },
-    prompt_title = false,
-    results_title = false,
-    preview_title = false,
-  }
+TelescopeDefaultTheme = {
+  theme = "minimal",
+  layout_strategy = "horizontal",
+  layout_config = {
+    horizontal = { width = 0.9, height = 0.65, preview_width = 0.55, prompt_position = "top" },
+  },
+  prompt_title = false,
+  results_title = false,
+  preview_title = false,
+}
 
+function M.config()
   require("telescope").setup({
     defaults = {
       vimgrep_arguments = {
@@ -37,10 +37,10 @@ function M.config()
       path_display = { "truncate" },
       winblend = 0,
       color_devicons = true,
-      theme = minimal_opts,
+      theme = TelescopeDefaultTheme,
     },
     pickers = {
-      buffers = vim.tbl_extend("force", minimal_opts, {
+      buffers = vim.tbl_extend("force", TelescopeDefaultTheme, {
         show_all_buffers = true,
         ignore_current_buffer = true,
         sort_lastused = true,
@@ -48,20 +48,20 @@ function M.config()
           i = { [";"] = "delete_buffer" },
         },
       }),
-      diagnostics = minimal_opts,
-      find_files = vim.tbl_extend("force", minimal_opts, { hidden = true }),
-      git_commits = minimal_opts,
-      git_stash = minimal_opts,
-      git_status = minimal_opts,
-      help_tags = minimal_opts,
-      live_grep = minimal_opts,
-      lsp_implementations = minimal_opts,
-      lsp_references = vim.tbl_extend("force", minimal_opts, { show_line = false }),
-      registers = minimal_opts,
-      grep_string = minimal_opts,
-      lsp_document_symbols = minimal_opts,
-      lsp_workspace_symbols = minimal_opts,
-      git_bcommits = minimal_opts,
+      diagnostics = TelescopeDefaultTheme,
+      find_files = vim.tbl_extend("force", TelescopeDefaultTheme, { hidden = true }),
+      git_commits = TelescopeDefaultTheme,
+      git_stash = TelescopeDefaultTheme,
+      git_status = TelescopeDefaultTheme,
+      help_tags = TelescopeDefaultTheme,
+      live_grep = TelescopeDefaultTheme,
+      lsp_implementations = TelescopeDefaultTheme,
+      lsp_references = vim.tbl_extend("force", TelescopeDefaultTheme, { show_line = false }),
+      registers = TelescopeDefaultTheme,
+      grep_string = TelescopeDefaultTheme,
+      lsp_document_symbols = TelescopeDefaultTheme,
+      lsp_workspace_symbols = TelescopeDefaultTheme,
+      git_bcommits = TelescopeDefaultTheme,
     },
     extensions = {
       fzf = {
@@ -73,7 +73,7 @@ function M.config()
       ["ui-select"] = {
         require("telescope.themes").get_cursor(),
       },
-      file_browser = vim.tbl_extend("force", minimal_opts, {
+      file_browser = vim.tbl_extend("force", TelescopeDefaultTheme, {
         cwd = vim.fn.expand("%:p:h"),
         git_status = false,
         hidden = true,
