@@ -44,6 +44,7 @@ cask 'playdate-simulator'
 cask 'transmission'
 cask 'visual-studio-code'
 cask 'wezterm'
+cask 'alt-tab'
 
 # Mac App Store
 mas '1Password for Safari', id: 1569813296
