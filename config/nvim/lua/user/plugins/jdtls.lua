@@ -8,7 +8,7 @@ function M.config()
   local jdtls_setup = require("jdtls.setup")
 
   local data_home = os.getenv("XDG_DATA_HOME")
-  local project_root = jdtls_setup.find_root({ ".git" })
+  local project_root = vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true })[1])
   local workspace_dir = os.getenv("XDG_CACHE_HOME") .. "/java-workspaces/" .. string.gsub(project_root:sub(2), "/", ".")
 
   local config = {
@@ -33,16 +33,13 @@ function M.config()
       "-data",
       workspace_dir,
     },
-    handlers = {
-      ["language/status"] = function() end,
-    },
     settings = {
       java = {
         configuration = {
           runtimes = {
             {
               name = "JavaSE-11",
-              path = "/usr/java/jdk-11.0.11+9/",
+              path = "/usr/java/jdk-11.0.15+10/",
             },
           },
         },
@@ -51,7 +48,8 @@ function M.config()
     init_options = {
       bundles = {
         vim.fn.glob(
-          data_home .. "/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar"
+          data_home .. "/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+          1
         ),
       },
       extendedClientCapabilities = {
@@ -59,7 +57,7 @@ function M.config()
       },
     },
     on_attach = {
-      jdtls.setup_dap(),
+      jdtls.setup_dap({ hotcodereplace = "auto" }),
     },
   }
 

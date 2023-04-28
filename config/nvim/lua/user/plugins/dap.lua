@@ -60,6 +60,7 @@ return {
               "scopes",
               "watches",
               "breakpoints",
+              "repl",
             },
             size = 40,
             position = "right",

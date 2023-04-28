@@ -65,9 +65,9 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- debug
-keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>')
-keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>')
-keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>')
+keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>', { silent = true })
+keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>', { silent = true })
+keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>', { silent = true })
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
