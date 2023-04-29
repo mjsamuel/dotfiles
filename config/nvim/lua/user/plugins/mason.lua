@@ -10,30 +10,33 @@ return {
       })
 
       local tools = {
-        "autopep8",
+        -- lsp
         "bash-language-server",
         "cmake-language-server",
         "css-lsp",
         "dockerfile-language-server",
         "emmet-ls",
         "html-lsp",
-        "java-debug-adapter",
         "jdtls",
         "json-lsp",
-        "lemminx",
+        "lemminx", -- xml
         "lua-language-server",
-        "markdownlint",
         "marksman",
-        "prettier",
-        "prettierd",
         "pyright",
+        "tailwindcss-language-server",
+        "taplo", -- toml
+        "typescript-language-server",
+        -- dap
+        "java-debug-adapter",
+        -- linters
+        "cspell",
         "shellcheck",
+        -- formatters
+        "autopep8",
+        "prettierd",
         "shfmt",
         "sql-formatter",
         "stylua",
-        "tailwindcss-language-server",
-        "taplo", -- toml language server
-        "typescript-language-server",
       }
 
       local mr = require("mason-registry")

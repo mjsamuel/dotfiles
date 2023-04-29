@@ -13,7 +13,7 @@ keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser path=%:p:h<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -44,15 +44,8 @@ keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
 
 -- code refactoring/fixing
-keymap.set("n", "<Leader>ca", ":lua vim.lsp.buf.code_action()<cr>")
-keymap.set("n", "<Leader>cc", ":lua vim.lsp.buf.rename()<cr>")
-keymap.set(
-  "v",
-  "<leader>cc",
-  "<Esc><cmd>lua require('telescope').extensions.refactoring.refactors()<CR>",
-  { noremap = true }
-)
-keymap.set("n", "<leader>cs", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]) -- replace current word under cursor using sed
+keymap.set({ "n", "v" }, "<Leader>ra", ":lua vim.lsp.buf.code_action()<cr>")
+keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
@@ -74,5 +67,5 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
-keymap.set({ "n", "v" }, "<Leader>f", "<cmd>Format<cr>")
+keymap.set({ "n", "v" }, "<Leader>f", "<cmd>lua vim.lsp.buf.format()<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
