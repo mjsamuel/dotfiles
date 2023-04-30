@@ -18,6 +18,7 @@ M.config = function()
       null_ls.builtins.code_actions.cspell.with({
         filetypes = cspell_filetypes,
       }),
+      -- TODO: refactoring not working at the moment - investigate
       null_ls.builtins.code_actions.refactoring,
       -- formatting
       null_ls.builtins.formatting.stylua,
@@ -25,6 +26,7 @@ M.config = function()
       null_ls.builtins.formatting.prettierd,
       null_ls.builtins.formatting.sql_formatter,
       null_ls.builtins.formatting.shfmt,
+      null_ls.builtins.formatting.xmlformat,
     },
   })
 end

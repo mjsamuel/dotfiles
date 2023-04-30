@@ -44,7 +44,13 @@ keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
 
 -- code refactoring/fixing
-keymap.set({ "n", "v" }, "<Leader>ra", ":lua vim.lsp.buf.code_action()<cr>")
+keymap.set("n", "<Leader>ra", ":lua vim.lsp.buf.code_action()<cr>")
+keymap.set(
+  "v",
+  "<Leader>ra",
+  ":lua require('refactoring').select_refactor()<CR>",
+  { noremap = true, silent = true, expr = false }
+)
 keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
 
 -- move selected code when in visual mode

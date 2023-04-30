@@ -17,13 +17,6 @@ function M.config()
     emmet_ls = {},
     html = {},
     jsonls = {},
-    lemminx = {
-      xml = {
-        server = {
-          workDir = os.getenv("XDG_CACHE_HOME") .. "/lemminx",
-        },
-      },
-    },
     lua_ls = {},
     marksman = {},
     pyright = {},

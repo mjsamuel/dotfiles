@@ -38,6 +38,11 @@ function M.config()
       winblend = 0,
       color_devicons = true,
       theme = TelescopeDefaultTheme,
+      mappings = {
+        -- TODO: trouble is loaded when telescope is, figure out how to lazy load trouble when needed
+        i = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
+        n = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
+      },
     },
     pickers = {
       buffers = vim.tbl_extend("force", TelescopeDefaultTheme, {
@@ -55,7 +60,7 @@ function M.config()
       git_status = TelescopeDefaultTheme,
       help_tags = TelescopeDefaultTheme,
       live_grep = TelescopeDefaultTheme,
-      lsp_implementations = TelescopeDefaultTheme,
+      lsp_implementations = vim.tbl_extend("force", TelescopeDefaultTheme, { show_line = false }),
       lsp_references = vim.tbl_extend("force", TelescopeDefaultTheme, { show_line = false }),
       registers = TelescopeDefaultTheme,
       grep_string = TelescopeDefaultTheme,

@@ -4,10 +4,7 @@ return {
   "nvim-telescope/telescope-file-browser.nvim",
   {
     "ThePrimeagen/refactoring.nvim",
-    config = function()
-      require("refactoring").setup({})
-      require("telescope").load_extension("refactoring")
-    end,
+    config = true,
   },
   { "tpope/vim-fugitive", cmd = "Git" },
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
@@ -35,7 +32,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    config = true,
+    config = { trouble = false },
   },
   {
     "Shatur/neovim-session-manager",
@@ -94,4 +91,9 @@ return {
       })
     end,
   },
+  {
+    "folke/trouble.nvim",
+    config = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
+  },
+  { "folke/todo-comments.nvim", config = true, event = "BufReadPost" },
 }

@@ -14,17 +14,14 @@ return {
         "bash-language-server",
         "cmake-language-server",
         "css-lsp",
-        "dockerfile-language-server",
         "emmet-ls",
         "html-lsp",
         "jdtls",
         "json-lsp",
-        "lemminx", -- xml
         "lua-language-server",
         "marksman",
         "pyright",
         "tailwindcss-language-server",
-        "taplo", -- toml
         "typescript-language-server",
         -- dap
         "java-debug-adapter",
@@ -37,6 +34,7 @@ return {
         "shfmt",
         "sql-formatter",
         "stylua",
+        "xmlformatter",
       }
 
       local mr = require("mason-registry")
