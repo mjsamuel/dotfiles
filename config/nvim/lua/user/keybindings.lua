@@ -33,15 +33,16 @@ keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gb", "<cmd>Git blame<cr>")
 
 -- lsp
-keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
+keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
 keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
+keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>")
-keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.document_symbol()<cr>")
-keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>")
 keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
 keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
+keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.document_symbol()<cr>")
+keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>")
+keymap.set({ "n", "v" }, "<Leader>f", "<cmd>lua vim.lsp.buf.format()<cr>")
 
 -- code refactoring/fixing
 keymap.set("n", "<Leader>ra", ":lua vim.lsp.buf.code_action()<cr>")
@@ -73,5 +74,4 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
-keymap.set({ "n", "v" }, "<Leader>f", "<cmd>lua vim.lsp.buf.format()<cr>")
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")

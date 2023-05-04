@@ -96,8 +96,8 @@ M.config = function()
       },
     },
     {
-      provider = function(self)
-        return self.mode_names[self.mode]
+      provider = function()
+        return "▊"
       end,
       hl = function(self)
         local mode = self.mode:sub(1, 1) -- get only the first mode character
@@ -237,7 +237,6 @@ M.config = function()
 
   require("heirline").setup({
     statusline = {
-      Space,
       ModeSegment,
       Space,
       FileNameSegment,

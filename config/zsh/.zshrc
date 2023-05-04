@@ -50,6 +50,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 # keybindings
 bindkey -s '^F' "tmux-sessionizer\n"
 
+# misc
+BAT_THEME="ansi"
+
 autoload -Uz compinit
 compinit
 
