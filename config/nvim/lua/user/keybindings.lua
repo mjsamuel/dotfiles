@@ -54,6 +54,15 @@ keymap.set(
 )
 keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
 
+-- harpooon
+keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
+keymap.set("n", "mm", "<cmd>lua require('harpoon.mark').add_file()<CR>")
+keymap.set("n", "mq", "<cmd>lua require('harpoon.ui').nav_file(1) <CR>")
+keymap.set("n", "mw", "<cmd>lua require('harpoon.ui').nav_file(2) <CR>")
+keymap.set("n", "mf", "<cmd>lua require('harpoon.ui').nav_file(3) <CR>")
+keymap.set("n", "mp", "<cmd>lua require('harpoon.ui').nav_file(4) <CR>")
+keymap.set("n", "mg", "<cmd>lua require('harpoon.ui').nav_file(5) <CR>")
+
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
 keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv")
