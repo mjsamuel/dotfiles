@@ -3,9 +3,6 @@ local M = {
   version = false,
   build = ":TSUpdate",
   event = "BufReadPost",
-  dependencies = {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-  },
 }
 
 function M.config()
@@ -17,20 +14,6 @@ function M.config()
     indent = { enable = true },
     context_commentstring = {
       enable = true,
-    },
-    textobjects = {
-      select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-          ["aa"] = "@parameter.outer",
-          ["ia"] = "@parameter.inner",
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["ac"] = "@class.outer",
-          ["ic"] = "@class.inner",
-        },
-      },
     },
   })
 end

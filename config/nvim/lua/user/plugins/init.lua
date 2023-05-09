@@ -96,5 +96,4 @@ return {
     "folke/trouble.nvim",
     config = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
   },
-  { "folke/todo-comments.nvim", config = true, event = "BufReadPost" },
 }
