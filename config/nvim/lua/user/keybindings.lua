@@ -13,7 +13,7 @@ keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser path=%:p:h<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -54,15 +54,6 @@ keymap.set(
 )
 keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
 
--- harpooon
-keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
-keymap.set("n", "mm", "<cmd>lua require('harpoon.mark').add_file()<CR>")
-keymap.set("n", "mq", "<cmd>lua require('harpoon.ui').nav_file(1) <CR>")
-keymap.set("n", "mw", "<cmd>lua require('harpoon.ui').nav_file(2) <CR>")
-keymap.set("n", "mf", "<cmd>lua require('harpoon.ui').nav_file(3) <CR>")
-keymap.set("n", "mp", "<cmd>lua require('harpoon.ui').nav_file(4) <CR>")
-keymap.set("n", "mg", "<cmd>lua require('harpoon.ui').nav_file(5) <CR>")
-
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
 keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv")
@@ -77,6 +68,13 @@ keymap.set("n", "N", "Nzzzv")
 keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>', { silent = true })
 keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>', { silent = true })
 keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>', { silent = true })
+
+-- harpooon
+keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
+keymap.set("n", "mm", "<cmd>lua require('harpoon.mark').add_file()<CR>")
+for i, key in ipairs({ "q", "w", "f", "p", "g" }) do
+  keymap.set("n", "m" .. key, "<cmd>lua require('harpoon.ui').nav_file(" .. i .. ") <CR>")
+end
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
