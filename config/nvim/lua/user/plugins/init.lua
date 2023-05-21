@@ -7,12 +7,12 @@ return {
     "ThePrimeagen/refactoring.nvim",
     config = true,
   },
-  { "tpope/vim-fugitive", cmd = "Git" },
+  { "tpope/vim-fugitive",         cmd = "Git" },
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    config = {
+    opts = {
       surrounds = {
         ["("] = { add = { "(", ")" } },
         ["{"] = { add = { "{", "}" } },
@@ -33,7 +33,7 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    config = { trouble = false },
+    opts = { trouble = false },
   },
   {
     "Shatur/neovim-session-manager",
@@ -53,7 +53,7 @@ return {
   },
   {
     "j-hui/fidget.nvim",
-    config = {
+    opts = {
       text = {
         spinner = { "⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾" },
         done = "",
@@ -94,6 +94,6 @@ return {
   },
   {
     "folke/trouble.nvim",
-    config = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
+    opts = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
   },
 }

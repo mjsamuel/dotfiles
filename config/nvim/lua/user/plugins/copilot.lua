@@ -4,7 +4,7 @@ local M = {
   event = "VeryLazy",
 }
 
-M.config = {
+M.opts = {
   panel = {
     enabled = true,
     auto_refresh = true,
