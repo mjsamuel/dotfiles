@@ -2,7 +2,12 @@ return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
   "nvim-telescope/telescope-file-browser.nvim",
-  "ThePrimeagen/harpoon",
+  {
+    "ThePrimeagen/harpoon",
+    opts = {
+      mark_branch = true,
+    }
+  },
   {
     "ThePrimeagen/refactoring.nvim",
     config = true,
