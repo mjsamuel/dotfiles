@@ -20,6 +20,18 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
+-- Highlight on yank
+vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = "YankHighlight",
+  callback = function()
+    vim.cmd("IlluminatePauseBuf")
+    vim.highlight.on_yank({ higroup = "Search", timeout = "250" })
+    vim.cmd("IlluminateResumeBuf")
+  end,
+})
+
+-- enable spell check for specific filetypes
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "gitcommit", "markdown" },
   callback = function()
@@ -27,3 +39,4 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
+
