@@ -120,22 +120,33 @@ M.config = function()
         self.filetype = vim.bo.filetype
       end,
     },
-    { -- file path
+    {
+      -- file path
       condition = function(self)
         return self.filename ~= ""
-      end,
-      provider = function(self)
-        local filename = vim.fn.fnamemodify(self.filename, ":.:h")
-        if not conditions.width_percent_below(#filename, 0.3) then
-          filename = vim.fn.pathshorten(filename)
-        end
-        return filename .. "/ "
       end,
       hl = function()
         return { fg = "comment", bg = "background", italic = true }
       end,
+      flexible = 1,
+      {
+        provider = function(self)
+          return vim.fn.fnamemodify(self.filename, ":.:h") .. "/"
+        end,
+      },
+      {
+        provider = function(self)
+          local filename = vim.fn.fnamemodify(self.filename, ":.:h")
+          return vim.fn.pathshorten(filename) .. "/"
+        end,
+      },
+      {
+        provider = "",
+      },
     },
-    { -- file icon
+    Space,
+    {
+      -- file icon
       init = function(self)
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ":e")
@@ -150,7 +161,8 @@ M.config = function()
       end,
     },
     Space,
-    { -- file name
+    {
+      -- file name
       provider = function(self)
         return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype
       end,
@@ -227,18 +239,22 @@ M.config = function()
       self.status_dict = vim.b.gitsigns_status_dict
       self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
     end,
+    hl = { fg = "comment", bg = "background" },
+    flexible = 1,
     {
       provider = function(self)
         return " " .. self.status_dict.head
       end,
     },
-    hl = { fg = "comment", bg = "background" },
+    {
+      provider = "",
+    },
   }
 
   require("heirline").setup({
     statusline = {
       ModeSegment,
-      Space,
+      Align,
       FileNameSegment,
       Space,
       DiagnosticsSegment,
