@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = "YankHighlight",
   callback = function()
     vim.cmd("IlluminatePauseBuf")
-    vim.highlight.on_yank({ higroup = "Search", timeout = "250" })
+    vim.highlight.on_yank({ higroup = "Search", timeout = "200", on_visual = false })
     vim.cmd("IlluminateResumeBuf")
   end,
 })
@@ -39,4 +39,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
-
