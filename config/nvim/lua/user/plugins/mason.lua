@@ -27,9 +27,8 @@ return {
         "java-debug-adapter",
         -- linters
         "cspell",
-        "shellcheck",
         -- formatters
-        "autopep8",
+        "black",
         "prettierd",
         "shfmt",
         "sql-formatter",
