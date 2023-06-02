@@ -3,42 +3,29 @@ local M = {
   event = "VeryLazy",
 }
 
-M.config = function()
+M.segments = {}
+
+M.setup_colors = function()
   local utils = require("heirline.utils")
-  local conditions = require("heirline.conditions")
+  return {
+    foreground = utils.get_highlight("StatusLine").fg,
+    background = utils.get_highlight("StatusLine").bg,
+    comment = utils.get_highlight("Comment").fg,
+    diagnostic_error = utils.get_highlight("DiagnosticError").fg,
+    diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
+    diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
+    diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
+    mode_normal = utils.get_highlight("MiniStatuslineModeNormal").bg,
+    mode_insert = utils.get_highlight("MiniStatuslineModeInsert").bg,
+    mode_visual = utils.get_highlight("MiniStatuslineModeVisual").bg,
+    mode_command = utils.get_highlight("MiniStatuslineModeCommand").bg,
+    mode_replace = utils.get_highlight("MiniStatuslineModeReplace").bg,
+    mode_other = utils.get_highlight("MiniStatuslineModeOther").bg,
+  }
+end
 
-  -- setup colors
-  local function setup_colors()
-    return {
-      foreground = utils.get_highlight("StatusLine").fg,
-      background = utils.get_highlight("StatusLine").bg,
-      comment = utils.get_highlight("Comment").fg,
-      diagnostic_error = utils.get_highlight("DiagnosticError").fg,
-      diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
-      diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
-      diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
-      mode_normal = utils.get_highlight("MiniStatuslineModeNormal").bg,
-      mode_insert = utils.get_highlight("MiniStatuslineModeInsert").bg,
-      mode_visual = utils.get_highlight("MiniStatuslineModeVisual").bg,
-      mode_command = utils.get_highlight("MiniStatuslineModeCommand").bg,
-      mode_replace = utils.get_highlight("MiniStatuslineModeReplace").bg,
-      mode_other = utils.get_highlight("MiniStatuslineModeOther").bg,
-    }
-  end
-
-  vim.api.nvim_create_augroup("Heirline", { clear = true })
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function()
-      utils.on_colorscheme(setup_colors)
-    end,
-    group = "Heirline",
-  })
-
-  -- Segments
-  local Align = { provider = "%=" }
-  local Space = { provider = " " }
-
-  local ModeSegment = {
+M.segments.mode = function()
+  return {
     init = function(self)
       self.mode = vim.fn.mode(1)
     end,
@@ -112,8 +99,12 @@ M.config = function()
       end),
     },
   }
+end
 
-  FileNameSegment = utils.insert(
+M.segments.file_name = function()
+  local utils = require("heirline.utils")
+  local Space = { provider = " " }
+  return utils.insert(
     {
       init = function(self)
         self.filename = vim.api.nvim_buf_get_name(0)
@@ -151,7 +142,7 @@ M.config = function()
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ":e")
         self.icon, self.icon_color =
-          require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+            require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
       end,
       provider = function(self)
         return self.icon and self.icon
@@ -176,7 +167,9 @@ M.config = function()
     },
     { provider = "%<" } -- this means that the statusline is cut here when there's not enough space
   )
+end
 
+M.segments.diagnostics = function()
   local function create_diagnostic_segment(severity)
     return {
       condition = function(self)
@@ -190,12 +183,11 @@ M.config = function()
       end,
     }
   end
-  local DiagnosticsSegment = {
+  return {
     condition = function()
       return vim.api.nvim_buf_get_name(0) ~= ""
     end,
     static = {
-      default_hl = { fg = "comment", bg = "background", italic = true },
       icons = require("user.misc.opts").signs,
     },
     init = function(self)
@@ -212,8 +204,31 @@ M.config = function()
     create_diagnostic_segment("info"),
     create_diagnostic_segment("hint"),
   }
+end
 
-  local WordCountSegment = {
+M.segments.git = function()
+  local conditions = require("heirline.conditions")
+  return {
+    condition = conditions.is_git_repo,
+    init = function(self)
+      self.status_dict = vim.b.gitsigns_status_dict
+      self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
+    end,
+    hl = { fg = "comment", bg = "background" },
+    flexible = 2,
+    {
+      provider = function(self)
+        return " " .. self.status_dict.head
+      end,
+    },
+    {
+      provider = "",
+    },
+  }
+end
+
+M.segments.word_count = function()
+  return {
     condition = function()
       local ft = vim.opt_local.filetype:get()
       local count = {
@@ -232,39 +247,36 @@ M.config = function()
     },
     hl = { fg = "comment", bg = "background" },
   }
+end
 
-  local GitSegment = {
-    condition = conditions.is_git_repo,
-    init = function(self)
-      self.status_dict = vim.b.gitsigns_status_dict
-      self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
+M.config = function()
+  local utils = require("heirline.utils")
+
+  vim.api.nvim_create_augroup("Heirline", { clear = true })
+  vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+      utils.on_colorscheme(M.setup_colors)
     end,
-    hl = { fg = "comment", bg = "background" },
-    flexible = 1,
-    {
-      provider = function(self)
-        return " " .. self.status_dict.head
-      end,
-    },
-    {
-      provider = "",
-    },
-  }
+    group = "Heirline",
+  })
+
+  local Align = { provider = "%=" }
+  local Space = { provider = " " }
 
   require("heirline").setup({
     statusline = {
-      ModeSegment,
-      Align,
-      FileNameSegment,
+      M.segments.mode(),
       Space,
-      DiagnosticsSegment,
-      Align,
-      WordCountSegment,
+      M.segments.file_name(),
       Space,
-      GitSegment,
+      M.segments.diagnostics(),
+      Align,
+      M.segments.word_count(),
+      Space,
+      M.segments.git(),
       Space,
     },
-    opts = { colors = setup_colors() },
+    opts = { colors = M.setup_colors() },
   })
 end
 
