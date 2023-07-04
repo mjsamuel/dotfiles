@@ -8,6 +8,11 @@ local M = {
 function M.config()
   local lspconfig = require("lspconfig")
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local on_attach = function(client, bufnr)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint(bufnr, true)
+    end
+  end
 
   local language_servers = {
     angularls = {},
@@ -17,17 +22,43 @@ function M.config()
     emmet_ls = {},
     html = {},
     jsonls = {},
-    lua_ls = {},
+    lua_ls = { Lua = { hint = { enable = true } } },
     marksman = {},
     pyright = {},
     tailwindcss = {},
-    tsserver = {},
+    tsserver = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = "all",
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
+    },
   }
 
   for ls, settings in pairs(language_servers) do
     lspconfig[ls].setup({
       capabilities = capabilities,
       settings = settings,
+      on_attach = on_attach,
     })
   end
 
