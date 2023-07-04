@@ -48,7 +48,7 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 di
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 
 # keybindings
-bindkey -s '^P' "tmux-sessionizer\n"
+bindkey -s '^[s' "tmux-sessionizer\n"
 
 # misc
 BAT_THEME="ansi"
