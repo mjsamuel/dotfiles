@@ -1,6 +1,5 @@
 local M = {
   "nvim-telescope/telescope.nvim",
-  commit = "762fcbf360dfc789e2dd435bda353a73242c2504",
   cmd = "Telescope",
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -9,14 +8,11 @@ local M = {
 }
 
 TelescopeDefaultTheme = {
-  theme = "minimal",
-  layout_strategy = "horizontal",
-  layout_config = {
-    horizontal = { width = 0.9, height = 0.65, preview_width = 0.55, prompt_position = "top" },
-  },
+  theme = "ivy",
   prompt_title = false,
   results_title = false,
   preview_title = false,
+  layout_config = { preview_width = 0.55 },
 }
 
 function M.config()
@@ -37,7 +33,6 @@ function M.config()
       path_display = { "truncate" },
       winblend = 0,
       color_devicons = true,
-      theme = TelescopeDefaultTheme,
       mappings = {
         -- TODO: trouble is loaded when telescope is, figure out how to lazy load trouble when needed
         i = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
