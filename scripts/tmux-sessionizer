@@ -14,6 +14,8 @@ tmux_running=$(pgrep tmux)
 if { [ -z "$tmux_running" ] && [ -z "$in_tmux" ]; } ||
     { [ -z "$in_tmux" ] && [ -z "$(session_exists)" ]; }; then
     tmux new-session -s "$selected_name" -c "$selected"
+elif [ -z "$in_tmux" ] && [ -n "$(session_exists)" ]; then
+    tmux attach -t "$selected_name"
 else
     [ -z "$(session_exists)" ] && tmux new-session -ds "$selected_name" -c "$selected"
     tmux switch-client -t "$selected_name"
