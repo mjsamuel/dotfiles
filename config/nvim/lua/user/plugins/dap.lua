@@ -32,7 +32,7 @@ return {
       end
 
       vim.fn.sign_define("DapBreakpoint", {
-        text = "",
+        text = "",
         texthl = "DiagnosticSignError",
         linehl = "",
         numhl = "",

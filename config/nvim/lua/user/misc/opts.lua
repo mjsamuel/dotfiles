@@ -1,9 +1,9 @@
 local opts = {}
 
 opts.signs = {
-  Error = " ",
-  Warn = " ",
-  Hint = " ",
+  Error = " ",
+  Warn = " ",
+  Hint = "󰌶 ",
   Info = " ",
 }
 
