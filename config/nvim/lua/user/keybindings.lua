@@ -13,7 +13,7 @@ keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser path=%:p:h<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -67,7 +67,7 @@ keymap.set("n", "N", "Nzzzv")
 -- debug
 keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>', { silent = true })
 keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>', { silent = true })
-keymap.set("n", "<leader>db", ':lua require("dap").toggle_breakpoint()<cr>', { silent = true })
+keymap.set("n", "<leader>dd", 'lua require("dap").toggle_breakpoint()<cr>', { silent = true })
 
 -- harpooon
 keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
@@ -78,7 +78,26 @@ end
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
-keymap.set("n", "<leader>y", ':let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
+keymap.set("n", "<leader>y", 'let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
+
+keymap.set("i", "<Tab>", function()
+  local cp = require("copilot.suggestion")
+  if cp.is_visible() then
+    cp.accept()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+  end
+end)
+
+keymap.set("i", "<C-c>", function()
+  local cp = require("copilot.suggestion")
+  if cp.is_visible() then
+    cp.dismiss()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "n", false)
+  end
+end)
+

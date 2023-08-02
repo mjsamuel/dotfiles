@@ -15,12 +15,7 @@ M.opts = {
   },
   suggestion = {
     auto_trigger = true,
-    keymap = {
-      accept = "<Tab>",
-      prev = "<M-[>",
-      next = "<M-]>",
-      dismiss = "<M-Esc>",
-    },
+    keymap = { accept = false },
   },
 }
 
