@@ -5,7 +5,15 @@ local M = {
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/cmp-path" },
     { "onsails/lspkind.nvim" },
-    { "L3MON4D3/LuaSnip" },
+    {
+      "L3MON4D3/LuaSnip",
+      dependencies = {
+        "rafamadriz/friendly-snippets",
+        config = function()
+          require("luasnip.loaders.from_vscode").lazy_load()
+        end,
+      },
+    },
   },
 }
 
@@ -37,14 +45,17 @@ function M.config()
         end,
       }),
     },
-
+    snippet = {
+      expand = function(args)
+        require("luasnip").lsp_expand(args.body)
+      end,
+    },
     mapping = cmp.mapping.preset.insert({
       ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
       ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-      ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-      ["<C-f>"] = cmp.mapping.scroll_docs(4),
-      ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.abort(),
+      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-u>"] = cmp.mapping.scroll_docs(4),
+      ["<C-c>"] = cmp.mapping.abort(),
       ["<CR>"] = cmp.mapping.confirm({ select = true }),
       ["<S-CR>"] = cmp.mapping.confirm({
         behavior = cmp.ConfirmBehavior.Replace,
@@ -53,9 +64,9 @@ function M.config()
     }),
     sources = cmp.config.sources({
       { name = "nvim_lsp" },
+      { name = "luasnip" },
     }),
   })
-
 
   cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline(),

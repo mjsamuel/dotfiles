@@ -8,11 +8,6 @@ local M = {
 function M.config()
   local lspconfig = require("lspconfig")
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-  local on_attach = function(client, bufnr)
-    if client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint(bufnr, true)
-    end
-  end
 
   local language_servers = {
     angularls = {},
@@ -58,7 +53,6 @@ function M.config()
     lspconfig[ls].setup({
       capabilities = capabilities,
       settings = settings,
-      on_attach = on_attach,
     })
   end
 
