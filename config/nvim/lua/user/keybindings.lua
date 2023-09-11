@@ -78,7 +78,7 @@ end
 
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
-keymap.set("n", "<leader>y", 'let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
+keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
 keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
