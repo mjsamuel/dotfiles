@@ -19,12 +19,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   end,
 })
 
--- vim.api.nvim_create_autocmd("BufEnter", {
---   callback = function()
---     vim.api.nvim_feedkeys("zz", "n", false)
---   end,
--- })
-
 -- Highlight on yank
 vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

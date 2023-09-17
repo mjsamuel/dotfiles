@@ -9,7 +9,7 @@ keymap.set("n", "q", "<nop>")
 
 -- search
 keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
-keymap.set("n", "<Leader>s/", "<cmd>Telescope file_browser path=%:p:h<cr>")
+keymap.set("n", "<Leader>st", "<cmd>Telescope file_browser path=%:p:h<cr>") -- search tree
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
