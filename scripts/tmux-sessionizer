@@ -1,22 +1,19 @@
 #!/bin/sh
-
 WORKSPACES_FILE="$HOME/.config/workspaces"
-session_exists() {
-    tmux list-sessions | grep "$selected_name"
-}
 
 selected="$(find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d | fzf $FZF_DEFAULT_OPTS)"
 [ -z "$selected" ] && exit 0
 selected_name=$(basename "$selected" | tr . _)
 
-in_tmux="$TMUX"
 tmux_running=$(pgrep tmux)
-if { [ -z "$tmux_running" ] && [ -z "$in_tmux" ]; } ||
-    { [ -z "$in_tmux" ] && [ -z "$(session_exists)" ]; }; then
-    tmux new-session -s "$selected_name" -c "$selected"
-elif [ -z "$in_tmux" ] && [ -n "$(session_exists)" ]; then
-    tmux attach -t "$selected_name"
+session_exists=$(tmux list-sessions | grep "$selected_name")
+if [ -z "$tmux_running" ] || [ -z "$session_exists" ]; then
+	tmux new-session -ds "$selected_name" -c "$selected"
+fi
+
+in_tmux="$TMUX"
+if [ -z "$in_tmux" ]; then
+	tmux attach -t "$selected_name"
 else
-    [ -z "$(session_exists)" ] && tmux new-session -ds "$selected_name" -c "$selected"
-    tmux switch-client -t "$selected_name"
+	tmux switch-client -t "$selected_name"
 fi
