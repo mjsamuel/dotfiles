@@ -1,14 +1,13 @@
 #!/bin/sh
 DEFAULTS="/usr/bin/defaults"
 OSASCIPT="/usr/bin/osascript"
-TMUX="/opt/homebrew/bin/tmux"
 
 changeNvimColors() {
-    $TMUX list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
+    tmux list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
         target="${p%% *}"
         id="${p##* }"
         if [ "$target" = "nvim" ]; then
-            $TMUX send-keys -t "$id" Escape ":set background=$1" C-m
+            tmux send-keys -t "$id" Escape ":set background=$1" C-m
         fi
     done
 }
@@ -22,19 +21,10 @@ toggleSystemColors() {
     changeSystemColors "$color"
 }
 
-# Auto change when dark mode is changed by system
-# 'DARKMODE' set by dark-mode-notify: https://github.com/bouk/dark-mode-notify
-if [ "$DARKMODE" = 1 ]; then
-    changeNvimColors "dark"
-elif [ "$DARKMODE" = 0 ]; then
-    changeNvimColors "light"
-# Manually change colors
+if [ "$1" = "dark" ]; then
+    changeSystemColors "true"
+elif [ "$1" = "light" ]; then
+    changeSystemColors "false"
 else
-    if [ "$1" = "dark" ]; then
-        changeSystemColors "true"
-    elif [ "$1" = "light" ]; then
-        changeSystemColors "false"
-    else
-        toggleSystemColors
-    fi
+    toggleSystemColors
 fi
