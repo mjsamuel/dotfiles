@@ -9,7 +9,6 @@ keymap.set("n", "q", "<nop>")
 
 -- search
 keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
-keymap.set("n", "<Leader>st", "<cmd>Telescope file_browser path=%:p:h<cr>") -- search tree
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
@@ -82,8 +81,7 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
-keymap.set("n", "<Leader>h", "<cmd>Telescope help_tags<cr>")
-
+keymap.set("n", "<leader>.", '<cmd>Oil .<cr>', { silent = true })
 keymap.set("i", "<Tab>", function()
   local cp = require("copilot.suggestion")
   if cp.is_visible() then

@@ -1,12 +1,11 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
-  "nvim-telescope/telescope-file-browser.nvim",
   {
     "ThePrimeagen/harpoon",
     opts = {
       mark_branch = true,
-    }
+    },
   },
   {
     "ThePrimeagen/refactoring.nvim",
@@ -101,5 +100,10 @@ return {
   {
     "folke/trouble.nvim",
     opts = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
+  },
+  {
+    "stevearc/oil.nvim",
+    cmd = "Oil",
+    opts = { default_file_explorer = true },
   },
 }

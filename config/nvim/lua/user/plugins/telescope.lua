@@ -73,20 +73,8 @@ function M.config()
       ["ui-select"] = {
         require("telescope.themes").get_cursor(),
       },
-      file_browser = vim.tbl_extend("force", TelescopeDefaultTheme, {
-        cwd = vim.fn.expand("%:p:h"),
-        git_status = false,
-        hidden = true,
-        select_buffer = true,
-        previewer = false,
-      }),
     },
   })
-
-  local extension = { "fzf", "ui-select", "file_browser" }
-  for _, e in ipairs(extension) do
-    require("telescope").load_extension(e)
-  end
 end
 
 return M
