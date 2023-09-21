@@ -74,6 +74,7 @@ keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
 keymap.set("n", "mm", "<cmd>lua require('harpoon.mark').add_file()<CR>")
 for i, key in ipairs({ "q", "w", "f", "p", "g" }) do
   keymap.set("n", "m" .. key, "<cmd>lua require('harpoon.ui').nav_file(" .. i .. ") <CR>")
+  keymap.set("n", "m" .. i, "<cmd>lua require('harpoon.ui').nav_file(" .. i .. ") <CR>")
 end
 
 -- yank
