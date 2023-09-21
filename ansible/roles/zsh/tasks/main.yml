@@ -1,0 +1,26 @@
+- name: create XDG directories
+  file:
+    path: "{{ ansible_env.HOME }}/{{ item }}"
+    state: directory
+  loop:
+    - .local/share
+    - .cache
+
+- name: symlink .config
+  file:
+    src: "{{ dotfiles_dir }}/config"
+    path: "~/.config"
+    state: link
+
+- name: symlink .zprofile
+  file:
+    src: "{{ dotfiles_dir }}/config/zsh/.zprofile"
+    path: "~/.zprofile"
+    state: link
+
+- name: set deafult shell as zsh
+  user:
+    name: "{{ ansible_env.USER }}"
+    shell:  "{{ zsh_location }}"
+  become: true
+

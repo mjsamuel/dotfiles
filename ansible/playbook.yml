@@ -1,0 +1,14 @@
+- name: Setup local workstation
+  hosts: localhost
+  vars:
+    dotfiles_dir: "{{ ansible_env.PWD }}/.."
+
+  roles:
+    - role: packages
+      tags: ["packages"]
+    - role: zsh
+      tags: ["zsh"]
+    - role: ssh
+      tags: ["ssh"]
+    - role: neovim
+      tags: ["neovim"]

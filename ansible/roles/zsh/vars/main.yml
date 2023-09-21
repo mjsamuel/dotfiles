@@ -1,0 +1,6 @@
+zsh_locations:
+  Darwin: "/bin/zsh"
+  Debian: "/usr/bin/zsh"
+
+zsh_location: "{{ zsh_locations[ansible_os_family] }}"
+

@@ -1,0 +1,9 @@
+- name: install dependencies (macOS)
+  community.general.homebrew:
+    name:
+      - ninja
+      - cmake
+      - gettext
+      - curl
+    state: present
+    update_homebrew: no

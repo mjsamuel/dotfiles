@@ -1,0 +1,7 @@
+- name: Install macOS dependencies
+  import_tasks: macos.yml
+  when: ansible_os_family == "Darwin"
+
+- name: Install debian dependencies
+  import_tasks: debian.yml
+  when: ansible_os_family == 'Debian'

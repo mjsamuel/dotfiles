@@ -1,0 +1,6 @@
+- name: enforce key authentication
+  ansible.builtin.copy:
+    src: '{{ ansible_env.PWD }}/../config/ssh/ssh.conf'
+    dest: '/etc/ssh/sshd_config.d/ssh.conf'
+  become: yes
+  when: ansible_os_family == "Darwin"

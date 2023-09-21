@@ -1,0 +1,29 @@
+- name: install dependencies (macOS)
+  import_tasks: macos.yml
+  when: ansible_os_family == "Darwin"
+
+- name: install dependencies (Debian)
+  import_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: clone repository
+  git:
+    repo: https://github.com/neovim/neovim
+    dest: "{{ workdir }}"
+    force: yes
+    clone: true
+
+- name: build
+  make:
+    chdir: "{{ workdir }}"
+    params:
+      CMAKE_BUILD_TYPE: RelWithDebInfo
+  register: build
+  changed_when: 'build.stdout is search("Using NVIM_VERSION")'
+
+- name: install
+  make:
+    chdir: "{{ workdir }}"
+    target: install
+  become: yes
+  when: build is changed
