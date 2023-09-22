@@ -66,7 +66,7 @@ keymap.set("n", "N", "Nzzzv")
 -- debug
 keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>', { silent = true })
 keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>', { silent = true })
-keymap.set("n", "<leader>dd", 'lua require("dap").toggle_breakpoint()<cr>', { silent = true })
+keymap.set("n", "<leader>dd", ':lua require("dap").toggle_breakpoint()<cr>', { silent = true })
 
 -- harpooon
 keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
@@ -81,7 +81,7 @@ keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- misc
-keymap.set("n", "<leader>.", '<cmd>Oil .<cr>', { silent = true })
+keymap.set("n", "<leader>/", ':lua require("oil").open()<cr>', { silent = true })
 keymap.set("i", "<Tab>", function()
   local cp = require("copilot.suggestion")
   if cp.is_visible() then
