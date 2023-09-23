@@ -117,11 +117,11 @@ function M.config()
       elseif hour < 12 then
         greeting = "  Good morning"
       elseif hour >= 12 and hour < 18 then
-        greeting = "  Good afternoon"
+        greeting = "  Good afternoon"
       elseif hour >= 18 and hour < 21 then
         greeting = "  Good evening"
       elseif hour >= 21 then
-        greeting = "望 Good night"
+        greeting = " Good night"
       end
       return greeting .. ", " .. options.name
     end,
@@ -136,7 +136,7 @@ function M.config()
     val = function()
       local stats = require("lazy").stats()
       return string.format(
-        "%s/%s plugins ﮣ loaded in %.3f seconds",
+        "%s/%s plugins  loaded in %.3f seconds",
         stats.loaded,
         stats.count,
         (stats.startuptime / 1000)
@@ -177,11 +177,10 @@ function M.config()
     val = {
       { type = "text", val = "Quick links", opts = { position = "center" } },
       { type = "padding", val = 1 },
-      dashboard.button("S", "  Open last session", ":SessionManager load_current_dir_session<CR>"),
-      dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
+      dashboard.button("S", "  Open last session", ":SessionManager load_current_dir_session<CR>"),
+      dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
+      dashboard.button("u", "󰄿  Update plugins", ":Lazy update<CR>"),
       dashboard.button("c", "  Configuration", ":e $MYVIMRC | :cd %:p:h <CR>"),
-      dashboard.button("u", "  Update plugins", ":Lazy update<CR>"),
-      dashboard.button("q", "  Quit", ":qa<CR>"),
     },
     position = "center",
   }

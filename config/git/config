@@ -15,6 +15,7 @@
 
 [delta]
     features = decorations
+    syntax-theme = ansi
 
 [delta "interactive"]
     keep-plus-minus-markers = false
