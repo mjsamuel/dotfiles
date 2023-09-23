@@ -2,6 +2,9 @@ local M = {
   "zbirenbaum/copilot.lua",
   cmd = "Copilot",
   event = "VeryLazy",
+  cond = function ()
+    return vim.fn.executable("node") == 1
+  end,
 }
 
 M.opts = {
