@@ -1,0 +1,1 @@
+workdir: "{{ ansible_env.HOME }}/.temp/tmux"

@@ -16,3 +16,5 @@
       tags: ["ssh"]
     - role: neovim
       tags: ["neovim", "nvim"]
+    - role: tmux
+      tags: ["tmux"]

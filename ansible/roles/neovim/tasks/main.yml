@@ -11,13 +11,13 @@
 
 - name: install dependencies (Debian)
   ansible.builtin.apt:
-  name:
-    - ninja-build
-    - gettext
-    - cmake
-    - unzip
-    - curl
-  state: present
+    name:
+      - ninja-build
+      - gettext
+      - cmake
+      - unzip
+      - curl
+    state: present
   become: yes
   when: ansible_os_family == "Debian"
 

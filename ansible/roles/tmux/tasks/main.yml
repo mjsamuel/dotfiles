@@ -1,0 +1,42 @@
+- name: install dependencies (macOS)
+  community.general.homebrew:
+    name:
+      - automake
+      - libevent
+      - ncurses
+      - utf8proc
+    state: present
+    update_homebrew: no
+  when: ansible_os_family == "Darwin"
+
+- name: clone repository
+  git:
+    repo: https://github.com/tmux/tmux.git
+    dest: "{{ workdir }}"
+    force: yes
+    clone: true
+  register: clone
+
+- name: autogen
+  shell:
+    cmd: ./autogen.sh
+    chdir: "{{ workdir }}"
+  when: clone is changed
+
+- name: configure
+  shell:
+    cmd: "./configure {{ '--enable-utf8proc' if ansible_os_family == 'Darwin' }}"
+    chdir: "{{ workdir }}"
+  when: clone is changed
+
+- name: build
+  make:
+    chdir: "{{ workdir }}"
+  when: clone is changed
+
+- name: install
+  make:
+    chdir: "{{ workdir }}"
+    target: install
+  become: yes
+  when: clone is changed
