@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+DOTFILES_DIR="$HOME/Developer/dotfiles"
+OS="$(uname -s)"
+
+[ "$OS" = "Darwin" ] && PATH="/opt/homebrew/bin:$PATH"
+
+# install pip and ansible
+! command -v pip3 && curl https://bootstrap.pypa.io/get-pip.py | python3 -
+! command -v ansible && sudo pip3 install --ignore-installed ansible
+
+# clone dotfiles and run playbook
+[ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
+ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
+ansible-playbook -i "localhost," -c local "$DOTFILES_DIR/ansible/playbook.yml" --ask-become-pass
