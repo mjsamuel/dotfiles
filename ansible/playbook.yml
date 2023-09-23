@@ -1,5 +1,9 @@
 - name: Setup local workstation
   hosts: localhost
+  environment:
+    XDG_CACHE_HOME: "{{ ansible_env.HOME }}/.cache/"
+    XDG_CONFIG_HOME: "{{ ansible_env.HOME }}/.config/"
+    XDG_DATA_HOME: "{{ ansible_env.HOME }}/.local/share"
   vars:
     dotfiles_dir: "{{ ansible_env.PWD }}/.."
 
@@ -11,4 +15,4 @@
     - role: ssh
       tags: ["ssh"]
     - role: neovim
-      tags: ["neovim"]
+      tags: ["neovim", "nvim"]

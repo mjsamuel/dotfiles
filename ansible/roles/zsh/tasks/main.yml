@@ -18,7 +18,7 @@
     path: "~/.zprofile"
     state: link
 
-- name: set deafult shell as zsh
+- name: set zsh as deafult shell
   user:
     name: "{{ ansible_env.USER }}"
     shell:  "{{ zsh_location }}"

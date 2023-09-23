@@ -1,0 +1,56 @@
+homebrew_taps:
+  - homebrew/cask-fonts
+  - homebrew/cask-versions
+  - romkatv/powerlevel10k
+  - teamookla/speedtest
+
+homebrew_installed_packages:
+  - bat # prettier 'cat'
+  - coreutils # those that come with macOS are outdated
+  - exa # prettier 'ls'
+  - fd # faster 'find'
+  - ffmpeg
+  - fnm # node version manager
+  - fzf # fuzzy finder
+  - git
+  - git-delta # prettier diffs
+  - lazygit # 'git' gui
+  - mosh
+  - neofetch
+  - newsboat # rss reader
+  - powerlevel10k
+  - python
+  - ripgrep # faster 'grep'
+  - silicon # code screenshot tool
+  - speedtest
+  - stow
+  - yt-dlp
+  - zlib
+  - zsh
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+
+homebrew_cask_apps:
+  - 1password
+  - alt-tab
+  - bartender
+  - discord
+  - docker
+  - firefox
+  - font-fira-code-nerd-font
+  - google-chrome
+  - iina
+  - transmission
+  - visual-studio-code
+  - wezterm-nightly
+
+mas_installed_apps:
+  - { id: 1438243180, name: "Dark Reader for Safari (1.4.6)" }
+  - { id: 1569813296, name: "1Password for Safari (2.15.1)" }
+  - { id: 1440147259, name: "AdGuard for Safari (1.11.14)" }
+  - { id: 1555925018, name: "Genki Arcade (1.2.3)" }
+  - { id: 1480933944, name: "Vimari (2.1.1)" }
+  - { id: 497799835, name: " Xcode (14.3.1)" }
+  - { id: 409201541, name: " Pages (13.2)" }
+  - { id: 409183694, name: " Keynote (13.2)" }
+  - { id: 1475387142, name: "Tailscale (1.48.2)" }

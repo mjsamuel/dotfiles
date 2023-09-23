@@ -33,7 +33,7 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Plugins/misc
 source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "${HOMEBREW_PREFIX}/opt/powerlevel10k/powerlevel10k.zsh-theme"
+source "${HOMEBREW_PREFIX}/share/powerlevel10k/powerlevel10k.zsh-theme"
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"

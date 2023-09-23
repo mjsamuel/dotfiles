@@ -1,9 +1,24 @@
 - name: install dependencies (macOS)
-  import_tasks: macos.yml
+  community.general.homebrew:
+    name:
+      - ninja
+      - cmake
+      - gettext
+      - curl
+    state: present
+    update_homebrew: no
   when: ansible_os_family == "Darwin"
 
 - name: install dependencies (Debian)
-  import_tasks: debian.yml
+  ansible.builtin.apt:
+  name:
+    - ninja-build
+    - gettext
+    - cmake
+    - unzip
+    - curl
+  state: present
+  become: yes
   when: ansible_os_family == "Debian"
 
 - name: clone repository
@@ -12,18 +27,22 @@
     dest: "{{ workdir }}"
     force: yes
     clone: true
+  register: clone
 
 - name: build
   make:
     chdir: "{{ workdir }}"
     params:
       CMAKE_BUILD_TYPE: RelWithDebInfo
-  register: build
-  changed_when: 'build.stdout is search("Using NVIM_VERSION")'
+  when: clone is changed
 
 - name: install
   make:
     chdir: "{{ workdir }}"
     target: install
   become: yes
-  when: build is changed
+  when: clone is changed
+
+- name: insall plugins
+  shell: nvim --headless "+Lazy! sync" +qa
+  when: clone is changed
