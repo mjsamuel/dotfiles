@@ -1,22 +1,13 @@
 - name: install dependencies (macOS)
   community.general.homebrew:
-    name:
-      - ninja
-      - cmake
-      - gettext
-      - curl
+    name: "{{ dependencies[ansible_os_family] }}"
     state: present
     update_homebrew: no
   when: ansible_os_family == "Darwin"
 
 - name: install dependencies (Debian)
   ansible.builtin.apt:
-    name:
-      - ninja-build
-      - gettext
-      - cmake
-      - unzip
-      - curl
+    name: "{{ dependencies[ansible_os_family] }}"
     state: present
   become: yes
   when: ansible_os_family == "Debian"

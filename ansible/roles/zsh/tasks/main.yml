@@ -21,6 +21,5 @@
 - name: set zsh as deafult shell
   user:
     name: "{{ ansible_env.USER }}"
-    shell:  "{{ zsh_location }}"
+    shell: "{{ zsh_location[ansible_os_family] }}"
   become: true
-

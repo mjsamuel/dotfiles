@@ -1,10 +1,6 @@
 - name: install dependencies (macOS)
   community.general.homebrew:
-    name:
-      - automake
-      - libevent
-      - ncurses
-      - utf8proc
+    name: "{{ dependencies[ansible_os_family] }}"
     state: present
     update_homebrew: no
   when: ansible_os_family == "Darwin"

@@ -1,1 +1,14 @@
 workdir: "{{ ansible_env.HOME }}/.temp/neovim"
+
+dependencies:
+  Darwin:
+    - ninja
+    - cmake
+    - gettext
+    - curl
+  Debian:
+    - ninja-build
+    - gettext
+    - cmake
+    - unzip
+    - curl

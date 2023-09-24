@@ -15,3 +15,5 @@ OS="$(uname -s)"
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
 ansible-playbook -i "localhost," -c local "$DOTFILES_DIR/ansible/playbook.yml" --ask-become-pass
+
+[ $? -eq 0 ] && neofetch && echo "Bootstrap complete!"

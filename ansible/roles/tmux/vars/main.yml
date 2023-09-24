@@ -1,1 +1,12 @@
 workdir: "{{ ansible_env.HOME }}/.temp/tmux"
+
+dependencies:
+  Darwin:
+    - automake
+    - libevent
+    - ncurses
+    - pkg-config
+    - utf8proc
+  Debian:
+    - ncurses
+    - libevent

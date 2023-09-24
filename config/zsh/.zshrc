@@ -39,9 +39,8 @@ source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 
 # fzf
-PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
-[[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
-source "/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
+[[ $- == *i* ]] && source "${HOMEBREW_PREFIX}/opt/fzf/shell/completion.zsh" 2> /dev/null # only enable fzf if interactive shell
+source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"

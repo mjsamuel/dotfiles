@@ -24,7 +24,6 @@ export PATH="$PATH\
 :$HOME/Developer/dotfiles/scripts\
 :/opt/apache-maven/bin\
 :$CARGO_HOME
-:/usr/local/playdate/gcc-arm-none-eabi-9-2019-q4-major/bin:$HOME/Developer/PlaydateSDK/bin\
 "
 
 # misc

@@ -1,6 +1,3 @@
-zsh_locations:
+zsh_location:
   Darwin: "/opt/homebrew/bin/zsh"
   Debian: "/usr/bin/zsh"
-
-zsh_location: "{{ zsh_locations[ansible_os_family] }}"
-
