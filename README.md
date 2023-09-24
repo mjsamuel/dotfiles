@@ -1,17 +1,12 @@
 # Matt's Dotfiles
-![image](images/light.png)
-![image](images/dark.png)
 
 ## Installation
-1. Install macOS Command Line Tools by running:
-   ```bash
+1. For macOS machines only, install Xcode Command Line Tools:
+   ```sh
    xcode-select --install
    ```
-1. Generate ssh key and register with GitHub
-   ```bash
-   ssh-keygen
-   ```
-1. Run the install script
-   ```bash
-   sudo curl -fsSL "https://raw.githubusercontent.com/mjsamuel/dotfiles/master/install.sh" | sh
+1. Clone the repo and run the bootstrap script:
+   ```sh
+   git clone https://github.com/mjsamuel/dotfiles.git $HOME/Developer/dotfiles
+   $HOME/Developer/dotfiles/bootstrap
    ```
