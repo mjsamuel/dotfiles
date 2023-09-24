@@ -10,8 +10,8 @@
   roles:
     - role: packages
       tags: ["packages"]
-    - role: zsh
-      tags: ["zsh"]
+    - role: shell
+      tags: ["shell"]
     - role: ssh
       tags: ["ssh"]
     - role: node

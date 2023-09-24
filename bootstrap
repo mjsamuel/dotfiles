@@ -22,4 +22,4 @@ ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
     --inventory "localhost," \
     --extra-vars "ansible_become_pass=$PASSWORD"
 
-[ $? -eq 0 ] && neofetch && echo "Bootstrap complete!"
+printf "\n%s\n%s\n" "Setup complete\!" "Open a new terminal window to see changes."

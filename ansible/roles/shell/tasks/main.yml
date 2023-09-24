@@ -3,8 +3,8 @@
     path: "{{ ansible_env.HOME }}/{{ item }}"
     state: directory
   loop:
-    - .local/share
-    - .cache
+    - "{{ ansible_env.XDG_CACHE_HOME }}"
+    - "{{ ansible_env.XDG_DATA_HOME }}"
 
 - name: symlink .config
   file:
@@ -23,3 +23,10 @@
     name: "{{ ansible_env.USER }}"
     shell: "{{ zsh_location[ansible_os_family] }}"
   become: true
+
+- name: apply wezterm terminfo
+  shell: |
+    tempfile=$(mktemp) \
+      && curl -o "$tempfile" https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
+      && tic -x -o ~/.terminfo "$tempfile" \
+      && rm "$tempfile"
