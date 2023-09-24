@@ -1,0 +1,10 @@
+- name: download latest lts version
+  shell: fnm install --lts
+  register: install
+  changed_when: 'install.stderr is not search("Version already installed")'
+
+- name: set default node version
+  shell: |
+    eval "$(fnm env)"
+    fnm default lts/latest
+  when: install is changed
