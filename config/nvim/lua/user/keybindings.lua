@@ -12,7 +12,7 @@ keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -54,8 +54,8 @@ keymap.set(
 keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
 
 -- move selected code when in visual mode
-keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv")
-keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv")
+keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
+keymap.set("v", "<S-k>", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- keep cursor in middle when jumping through files
 keymap.set("n", "<C-d>", "<C-d>zz")
@@ -99,4 +99,3 @@ keymap.set("i", "<C-c>", function()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "n", false)
   end
 end)
-
