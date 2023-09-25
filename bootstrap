@@ -23,6 +23,6 @@ ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--inventory "localhost," \
 	--extra-var "ansible_become_pass=$SUDO_PASS" \
 	${VAULT_PASS:+--vault-password-file <(echo $VAULT_PASS)} \
-    "$@"
+	"$@"
 
 [ $? -eq 0 ] && printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."

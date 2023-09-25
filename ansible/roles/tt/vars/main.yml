@@ -1,0 +1,7 @@
+workdir: "{{ ansible_env.HOME }}/.temp/tt"
+
+dependencies:
+  Darwin:
+    - go
+  Debian:
+    - go

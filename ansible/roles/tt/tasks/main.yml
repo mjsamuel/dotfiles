@@ -1,0 +1,33 @@
+- name: install dependencies (macOS)
+  community.general.homebrew:
+    name: "{{ dependencies[ansible_os_family] }}"
+    state: present
+    update_homebrew: no
+  when: ansible_os_family == "Darwin"
+
+- name: install dependencies (Debian)
+  ansible.builtin.apt:
+    name: "{{ dependencies[ansible_os_family] }}"
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: clone repository
+  git:
+    repo: https://github.com/lemnos/tt.git
+    dest: "{{ workdir }}"
+    force: yes
+    clone: true
+  register: clone
+
+- name: build
+  make:
+    chdir: "{{ workdir }}"
+  when: clone is changed
+
+- name: install
+  make:
+    chdir: "{{ workdir }}"
+    target: install
+  become: yes
+  when: clone is changed
