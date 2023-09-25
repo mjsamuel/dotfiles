@@ -7,19 +7,22 @@ OS="$(uname -s)"
 
 [ "$OS" = "Darwin" ] && PATH="/opt/homebrew/bin:$PATH"
 
-# prompt for sudo password once and pass it to commands that need it
-read -rsp 'Password: ' PASSWORD && echo
+# prompt for passwords upfront and pass it to commands that need it
+read -rsp 'sudo password: ' SUDO_PASS && echo
+read -rsp 'vault password (not required): ' VAULT_PASS && echo
 
 # # install pip and ansible
 ! command -v pip3 >/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3 -
-! command -v ansible >/dev/null && (echo "$PASSWORD" | sudo -Skp '' pip3 install --ignore-installed ansible)
+! command -v ansible >/dev/null && (echo "$SUDO_PASS" | sudo -Skp '' pip3 install --ignore-installed ansible)
 
 # clone dotfiles and run playbook
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
 ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
-    --connection "local" \
-    --inventory "localhost," \
-    --extra-vars "ansible_become_pass=$PASSWORD"
+	--connection "local" \
+	--inventory "localhost," \
+	--extra-var "ansible_become_pass=$SUDO_PASS" \
+	${VAULT_PASS:+--vault-password-file <(echo $VAULT_PASS)} \
+    "$@"
 
-printf "\n%s\n%s\n" "Setup complete\!" "Open a new terminal window to see changes."
+[ $? -eq 0 ] && printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."

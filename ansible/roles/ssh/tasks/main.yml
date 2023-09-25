@@ -4,3 +4,18 @@
     dest: '/etc/ssh/sshd_config.d/ssh.conf'
   become: yes
   when: ansible_os_family == "Darwin"
+
+- name: decrypt/copy private key
+  copy:
+    src: "{{ ansible_env.PWD }}/../config/ssh/id_rsa"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+    mode: 0600
+  register: key
+  ignore_errors: true
+
+- name: copy public key
+  copy:
+    src: "{{ ansible_env.PWD }}/../config/ssh/id_rsa.pub"
+    dest: "{{ ansible_env.HOME }}/.ssh/"
+  when: not key.failed
+  ignore_errors: true
