@@ -14,21 +14,19 @@ homebrew_installed_packages:
   - fzf # fuzzy finder
   - git
   - git-delta # prettier diffs
+  - imagemagick
   - lazygit # 'git' gui
   - mosh
   - neofetch
   - newsboat # rss reader
   - powerlevel10k
-  - python
   - ripgrep # faster 'grep'
   - silicon # code screenshot tool
   - speedtest
   - stow
   - yt-dlp
-  - zlib
   - zsh
   - zsh-autosuggestions
-  - zsh-syntax-highlighting
 
 homebrew_cask_apps:
   - 1password
@@ -54,3 +52,24 @@ mas_installed_apps:
   - { id: 409201541, name: " Pages (13.2)" }
   - { id: 409183694, name: " Keynote (13.2)" }
   - { id: 1475387142, name: "Tailscale (1.48.2)" }
+
+apt_installed_packages:
+  - bat
+  - curl
+  - curl
+  - exa
+  - fd-find
+  - ffmpeg
+  - fzf
+  - git
+  - imagemagick
+  - mosh
+  - neofetch
+  - newsboat
+  - ripgrep
+  - stow
+  - sudo
+  - unzip
+  - wget
+  - zsh
+  - zsh-autosuggestions

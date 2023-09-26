@@ -1,10 +1,25 @@
+- name: install dependencies (Debian)
+  ansible.builtin.apt:
+    name: [unzip, curl]
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: install fnm
+  shell: curl -fsSL https://fnm.vercel.app/install | bash
+  when: ansible_os_family == "Debian"
+
 - name: download latest lts version
   shell: fnm install --lts
+  environment:
+    PATH: "{{ XDG_DATA_HOME }}/fnm:{{ lookup('env', 'PATH') }}"
   register: install
   changed_when: 'install.stderr is not search("Version already installed")'
 
-- name: set default node version
+- name: set lts as default node version
   shell: |
     eval "$(fnm env)"
     fnm default lts/latest
+  environment:
+    PATH: "{{ XDG_DATA_HOME }}/fnm:{{ lookup('env', 'PATH') }}"
   when: install is changed

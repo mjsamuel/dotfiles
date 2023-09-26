@@ -4,4 +4,4 @@ dependencies:
   Darwin:
     - go
   Debian:
-    - go
+    - golang-go

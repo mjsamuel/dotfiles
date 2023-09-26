@@ -1,4 +1,4 @@
-- name: install homebrew
+- name: install homebrew packages
   include_role:
     name: geerlingguy.mac.homebrew
   when: ansible_os_family == "Darwin"
@@ -9,3 +9,10 @@
     apply:
       ignore_errors: true
   when: ansible_os_family == "Darwin"
+
+- name: install apt packages (Debian)
+  ansible.builtin.apt:
+    name: "{{ apt_installed_packages }}"
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"

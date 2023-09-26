@@ -5,18 +5,20 @@ set -e
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 OS="$(uname -s)"
 
-[ "$OS" = "Darwin" ] && PATH="/opt/homebrew/bin:$PATH"
-
 # prompt for passwords upfront and pass it to commands that need it
 read -rsp 'sudo password: ' SUDO_PASS && echo
 read -rsp 'vault password (not required): ' VAULT_PASS && echo
 
-# # install pip and ansible
-! command -v pip3 >/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3 -
-! command -v ansible >/dev/null && (echo "$SUDO_PASS" | sudo -Skp '' pip3 install --ignore-installed ansible)
+if [ "$OS" = "Darwin" ]; then # macOS
+	PATH="/opt/homebrew/bin:$PATH"
+	! command -v pip3 >/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3 -
+	! command -v ansible >/dev/null && (echo "$SUDO_PASS" | sudo -Skp '' pip3 install --ignore-installed ansible)
+elif command -v apt >/dev/null; then # debian-based
+	! command -v ansible >/dev/null && (echo "$SUDO_PASS" | sudo -Skp '' apt install -y ansible)
+fi
 
-# clone dotfiles and run playbook
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
+
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
 ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--connection "local" \

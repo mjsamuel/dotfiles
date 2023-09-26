@@ -8,5 +8,9 @@ dependencies:
     - pkg-config
     - utf8proc
   Debian:
-    - ncurses
-    - libevent
+    - automake
+    - libevent-dev
+    - libncurses5-dev
+    - libncursesw5-dev
+    - pkg-config
+    - yacc

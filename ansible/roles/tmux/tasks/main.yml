@@ -5,6 +5,13 @@
     update_homebrew: no
   when: ansible_os_family == "Darwin"
 
+- name: install dependencies (Debian)
+  ansible.builtin.apt:
+    name: "{{ dependencies[ansible_os_family] }}"
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
+
 - name: clone repository
   git:
     repo: https://github.com/tmux/tmux.git
