@@ -25,4 +25,4 @@ export PATH="$PATH\
 "
 
 # misc
-export BAT_THEME="base16-256"
+export BAT_THEME="ansi"

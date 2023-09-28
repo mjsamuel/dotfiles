@@ -3,7 +3,14 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+OS="$(uname -s)"
+if [ "$OS" = "Darwin" ]; then # macOS
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+    ZSH_CUSTOM="${HOMEBREW_PREFIX}/share/"
+else
+    ZSH_CUSTOM="$XDG_DATA_HOME/zsh/custom"
+fi
+
 eval "$(fnm env)"
 
 HISTSIZE=10000
@@ -35,8 +42,8 @@ echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # Plugins/misc
-source "${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "${HOMEBREW_PREFIX}/share/powerlevel10k/powerlevel10k.zsh-theme"
+source "${ZSH_CUSTOM}/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${ZSH_CUSTOM}/powerlevel10k/powerlevel10k.zsh-theme"
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
@@ -51,9 +58,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 
 # keybindings
 bindkey -s '^[S' "tmux-sessionizer\n"
-
-# misc
-BAT_THEME="ansi"
 
 autoload -Uz compinit
 compinit
