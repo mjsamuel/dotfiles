@@ -27,6 +27,13 @@
   loop: "{{ zsh_plugins }}"
   when: ansible_os_family != "Darwin"
 
+- name: download fzf keybindings
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
+    dest: /usr/share/doc/fzf/examples/key-bindings.zsh
+  become: true
+  when: ansible_os_family != "Darwin"
+
 - name: set zsh as deafult shell
   user:
     name: "{{ ansible_env.USER }}"
