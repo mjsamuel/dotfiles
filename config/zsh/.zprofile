@@ -21,8 +21,6 @@ export PLAYDATE_SDK_PATH="$HOME/Developer/PlaydateSDK"
 export PATH="$PATH\
 :$HOME/Developer/dotfiles/scripts\
 :/opt/apache-maven/bin\
-:$CARGO_HOME
+:$CARGO_HOME\
+:$XDG_DATA_HOME/fnm
 "
-
-# misc
-export BAT_THEME="ansi"

@@ -18,6 +18,15 @@
     path: "~/.zprofile"
     state: link
 
+- name: install zsh plugins
+  git:
+    repo: "{{ item.url }}"
+    dest: "{{ zsh_plugins_dir }}/{{ item.name }}"
+    force: yes
+    clone: true
+  loop: "{{ zsh_plugins }}"
+  when: ansible_os_family != "Darwin"
+
 - name: set zsh as deafult shell
   user:
     name: "{{ ansible_env.USER }}"

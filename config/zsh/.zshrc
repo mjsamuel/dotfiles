@@ -6,9 +6,11 @@ fi
 OS="$(uname -s)"
 if [ "$OS" = "Darwin" ]; then # macOS
     eval "$(/opt/homebrew/bin/brew shellenv)"
-    ZSH_CUSTOM="${HOMEBREW_PREFIX}/share/"
+    ZSH_PLUGINS="${HOMEBREW_PREFIX}/share"
+    FZF_KEYBINDINGS="${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
 else
-    ZSH_CUSTOM="$XDG_DATA_HOME/zsh/custom"
+    ZSH_PLUGINS="$XDG_DATA_HOME/zsh/plugins"
+    FZF_KEYBINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
 fi
 
 eval "$(fnm env)"
@@ -41,23 +43,23 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
+# keybindings
+bindkey -s '^[S' "tmux-sessionizer\n"
+
+# fzf
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
+source "$FZF_KEYBINDINGS"
+
 # Plugins/misc
-source "${ZSH_CUSTOM}/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "${ZSH_CUSTOM}/powerlevel10k/powerlevel10k.zsh-theme"
+source "${ZSH_PLUGINS}/zsh-autosuggestions/zsh-autosuggestions.zsh"
+source "${ZSH_PLUGINS}/powerlevel10k/powerlevel10k.zsh-theme"
+
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 
-# fzf
-[[ $- == *i* ]] && source "${HOMEBREW_PREFIX}/opt/fzf/shell/completion.zsh" 2> /dev/null # only enable fzf if interactive shell
-source "${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
-
-# keybindings
-bindkey -s '^[S' "tmux-sessionizer\n"
+export BAT_THEME="ansi"
 
 autoload -Uz compinit
 compinit

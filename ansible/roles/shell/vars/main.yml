@@ -1,3 +1,15 @@
 zsh_location:
   Darwin: "/opt/homebrew/bin/zsh"
   Debian: "/usr/bin/zsh"
+
+zsh_plugins_dir: "{{ XDG_DATA_HOME }}/zsh/plugins"
+
+zsh_plugins:
+  - {
+      name: "zsh-autosuggestions",
+      url: "https://github.com/zsh-users/zsh-autosuggestions",
+    }
+  - {
+      name: "powerlevel10k",
+      url: "https://github.com/romkatv/powerlevel10k.git",
+    }
