@@ -11,7 +11,7 @@ return {
     "ThePrimeagen/refactoring.nvim",
     config = true,
   },
-  { "tpope/vim-fugitive",         cmd = "Git" },
+  { "tpope/vim-fugitive", cmd = "Git" },
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
   {
     "kylechui/nvim-surround",
@@ -89,13 +89,11 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
-    config = function()
-      require("indent_blankline").setup({
-        show_current_context = true,
-        show_current_context_start = true,
-        disable_with_nolist = true,
-      })
-    end,
+    main = "ibl",
+    opts = {
+      indent = { char = "│" },
+      highlight = { "Function"  },
+    },
   },
   {
     "folke/trouble.nvim",

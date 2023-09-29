@@ -75,6 +75,11 @@ function M.config()
       },
     },
   })
+
+  local extension = { "fzf", "ui-select" }
+  for _, e in ipairs(extension) do
+    require("telescope").load_extension(e)
+  end
 end
 
 return M
