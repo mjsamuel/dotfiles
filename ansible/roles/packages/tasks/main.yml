@@ -9,6 +9,7 @@
     apply:
       ignore_errors: true
   when: ansible_os_family == "Darwin"
+  tags: ["mas"]
 
 - name: install apt packages (Debian)
   ansible.builtin.apt:
