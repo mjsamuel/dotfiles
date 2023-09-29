@@ -18,9 +18,9 @@ export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export PLAYDATE_SDK_PATH="$HOME/Developer/PlaydateSDK"
 
 # Path
-export PATH="$PATH\
-:$HOME/Developer/dotfiles/scripts\
+export PATH="$HOME/Developer/dotfiles/scripts\
+:$XDG_DATA_HOME/fnm\
 :/opt/apache-maven/bin\
 :$CARGO_HOME\
-:$XDG_DATA_HOME/fnm
+:$PATH
 "

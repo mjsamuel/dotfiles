@@ -13,7 +13,6 @@ else
     FZF_KEYBINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
 fi
 
-eval "$(fnm env)"
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -59,8 +58,9 @@ source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 
+eval "$(fnm env)"
+
 export BAT_THEME="ansi"
 
 autoload -Uz compinit
 compinit
-
