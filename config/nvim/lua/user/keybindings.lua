@@ -82,20 +82,3 @@ keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"
 
 -- misc
 keymap.set("n", "<leader>/", ':lua require("oil").open()<cr>', { silent = true })
-keymap.set("i", "<Tab>", function()
-  local cp = require("copilot.suggestion")
-  if cp.is_visible() then
-    cp.accept()
-  else
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
-  end
-end)
-
-keymap.set("i", "<C-c>", function()
-  local cp = require("copilot.suggestion")
-  if cp.is_visible() then
-    cp.dismiss()
-  else
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "n", false)
-  end
-end)
