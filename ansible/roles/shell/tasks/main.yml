@@ -4,13 +4,24 @@
     state: directory
   loop:
     - "{{ XDG_CACHE_HOME }}"
+    - "{{ XDG_CONFIG_HOME }}"
     - "{{ XDG_DATA_HOME }}"
+
+- name: find all files in config folder
+  find:
+    paths: "{{ dotfiles_dir }}/config"
+    file_type: "any"
+    recurse: no
+  register: find
 
 - name: symlink .config
   file:
-    src: "{{ dotfiles_dir }}/config"
-    path: "~/.config"
+    src: "{{ item.path }}"
+    path: "{{ XDG_CONFIG_HOME }}/{{ item.path | basename }}"
     state: link
+  loop: "{{ find.files }}"
+  loop_control:
+    label: "{{ item.path }}"
 
 - name: symlink .zprofile
   file:
