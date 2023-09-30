@@ -22,4 +22,7 @@
     - ansible.builtin.import_tasks:
         file: "eza.yml"
       tags: ["eza"]
+    - ansible.builtin.import_tasks:
+        file: "bat.yml"
+      tags: ["bat"]
   when: ansible_os_family != "Darwin"

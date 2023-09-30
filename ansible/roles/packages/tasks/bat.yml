@@ -1,0 +1,35 @@
+- name: bat retrieve release info
+  uri:
+    url: https://api.github.com/repos/sharkdp/bat/releases/latest
+    return_content: true
+  register: response
+
+- name: bat set release facts
+  set_fact:
+    bat_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+    bat_release_name: "{{ release.name[:-7] }}"
+    bat_download_url: "{{ release.browser_download_url }}"
+  vars:
+    pattern: ".*{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: bat ensure directory exists
+  file:
+    path: "{{ bat_path }}"
+    state: directory
+
+- name: bat download release
+  ansible.builtin.unarchive:
+    src: "{{ bat_download_url }}"
+    dest: "{{ bat_path }}"
+    remote_src: yes
+  register: download
+  ignore_errors: true
+
+- name: bat copy to bin
+  copy:
+    src: "{{ bat_path }}/{{ bat_release_name }}/bat"
+    dest: /usr/local/bin/bat
+    mode: "0755"
+  become: true
+  when: not download.failed

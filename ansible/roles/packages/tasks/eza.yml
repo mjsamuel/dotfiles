@@ -9,7 +9,7 @@
     eza_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
     eza_download_url: "{{ release.browser_download_url }}"
   vars:
-    pattern: "eza_{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+    pattern: ".*{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
     release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
 
 - name: eza ensure directory exists
@@ -17,7 +17,7 @@
     path: "{{ eza_path }}"
     state: directory
 
-- name: "eza download release ({{ansible_system}}-{{ansible_architecture}})"
+- name: eza download release
   ansible.builtin.unarchive:
     src: "{{ eza_download_url }}"
     dest: "{{ eza_path }}"

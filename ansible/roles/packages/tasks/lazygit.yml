@@ -18,7 +18,7 @@
     path: "{{ lazygit_path }}"
     state: directory
 
-- name: "lazygit download release ({{ ansible_system }}, {{ ansible_architecture }})"
+- name: lazygit download release
   ansible.builtin.unarchive:
     src: "{{ lazygit_download_url }}"
     dest: "{{ lazygit_path }}"
