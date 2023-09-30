@@ -17,3 +17,9 @@
     state: present
   become: yes
   when: ansible_os_family == "Debian"
+
+- name: install lazygit
+  ansible.builtin.import_tasks:
+    file: "lazygit.yml"
+  when: ansible_os_family != "Darwin"
+  tags: ["lazygit"]

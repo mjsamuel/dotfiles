@@ -1,0 +1,34 @@
+- name: lazygit retrieve release info
+  uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    return_content: true
+  register: response
+
+- name: lazygit set release facts
+  set_fact:
+    lazygit_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+    lazygit_download_url: "{{ release.browser_download_url }}"
+  vars:
+    pattern: ".*_{{ansible_system}}_{{ansible_architecture}}.tar.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: lazygit ensure directory exists
+  file:
+    path: "{{ lazygit_path }}"
+    state: directory
+
+- name: "lazygit download release ({{ ansible_system }}, {{ ansible_architecture }})"
+  ansible.builtin.unarchive:
+    src: "{{ lazygit_download_url }}"
+    dest: "{{ lazygit_path }}"
+    remote_src: yes
+  register: download
+  ignore_errors: true
+
+- name: lazygit copy to bin
+  copy:
+    src: "{{ lazygit_path }}/lazygit"
+    dest: /usr/local/bin/lazygit
+    mode: "0755"
+  become: true
+  when: not download.failed

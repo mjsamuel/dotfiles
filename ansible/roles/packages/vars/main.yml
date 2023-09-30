@@ -14,6 +14,7 @@ homebrew_installed_packages:
   - fzf # fuzzy finder
   - git
   - git-delta # prettier diffs
+  - gnu-tar
   - imagemagick
   - lazygit # 'git' gui
   - mosh
@@ -67,6 +68,7 @@ apt_installed_packages:
   - neofetch
   - newsboat
   - ripgrep
+  - ssh
   - stow
   - sudo
   - unzip
