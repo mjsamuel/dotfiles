@@ -7,7 +7,7 @@ homebrew_taps:
 homebrew_installed_packages:
   - bat # prettier 'cat'
   - coreutils # those that come with macOS are outdated
-  - exa # prettier 'ls'
+  - eza # prettier 'ls'
   - fd # faster 'find'
   - ffmpeg
   - fnm # node version manager

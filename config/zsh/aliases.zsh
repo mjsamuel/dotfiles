@@ -1,6 +1,6 @@
 # misc
 alias c='clear'
-alias ls='exa'
+alias ls='eza'
 alias cat='bat'
 alias rtv='python3 -m rtv'
 alias tt='tt -notheme -showwpm -n 20 -oneshot -noreport'
