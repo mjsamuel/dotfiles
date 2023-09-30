@@ -1,0 +1,34 @@
+- name: eza retrieve release info
+  uri:
+    url: https://api.github.com/repos/eza-community/eza/releases/latest
+    return_content: true
+  register: response
+
+- name: eza set release facts
+  set_fact:
+    eza_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+    eza_download_url: "{{ release.browser_download_url }}"
+  vars:
+    pattern: "eza_{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: eza ensure directory exists
+  file:
+    path: "{{ eza_path }}"
+    state: directory
+
+- name: "eza download release ({{ansible_system}}-{{ansible_architecture}})"
+  ansible.builtin.unarchive:
+    src: "{{ eza_download_url }}"
+    dest: "{{ eza_path }}"
+    remote_src: yes
+  register: download
+  ignore_errors: true
+
+- name: eza copy to bin
+  copy:
+    src: "{{ eza_path }}/eza"
+    dest: /usr/local/bin/eza
+    mode: "0755"
+  become: true
+  when: not download.failed

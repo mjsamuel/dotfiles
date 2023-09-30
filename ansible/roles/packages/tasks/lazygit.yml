@@ -9,7 +9,8 @@
     lazygit_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
     lazygit_download_url: "{{ release.browser_download_url }}"
   vars:
-    pattern: ".*_{{ansible_system}}_{{ansible_architecture}}.tar.gz"
+    architecture: "{{ 'arm64' if ansible_architecture == 'aarch64' else ansible_architecture }}"
+    pattern: ".*_{{ ansible_system }}_{{ architecture }}.tar.gz"
     release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
 
 - name: lazygit ensure directory exists
