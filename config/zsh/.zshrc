@@ -3,8 +3,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-OS="$(uname -s)"
-if [ "$OS" = "Darwin" ]; then # macOS
+if [[ "$OSTYPE" =~ "darwin" ]]; then # macOS
     eval "$(/opt/homebrew/bin/brew shellenv)"
     ZSH_PLUGINS="${HOMEBREW_PREFIX}/share"
     FZF_KEYBINDINGS="${HOMEBREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
@@ -12,7 +11,6 @@ else
     ZSH_PLUGINS="$XDG_DATA_HOME/zsh/plugins"
     FZF_KEYBINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
 fi
-
 
 HISTSIZE=10000
 SAVEHIST=10000
