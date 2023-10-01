@@ -8,6 +8,7 @@ alias v='env TERM=wezterm nvim'
 alias b='brew'
 alias lg='lazygit'
 alias nb='newsboat'
+alias cc='changecolors'
 
 # ssh
 alias s='ssh'

@@ -1,11 +1,12 @@
 #!/bin/sh
-DEFAULTS="/usr/bin/defaults"
-OSASCIPT="/usr/bin/osascript"
+STATE_FILE="$XDG_CACHE_HOME/os_theme"
+OS="$(uname -s)"
 
-changeSystemColors() {
-	darkMode="$([ "$1" = "dark" ] && echo "true" || echo "false")"
-	$OSASCIPT -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = $darkMode" 1>/dev/null
-	changeNvimColors "$1"
+changeThemeMac() {
+	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"
+	/usr/bin/osascript -l JavaScript -e \
+		"Application('System Events').appearancePreferences.darkMode = $darkMode" \
+		>/dev/null 2>&1
 }
 
 changeNvimColors() {
@@ -18,10 +19,19 @@ changeNvimColors() {
 	done
 }
 
-if [ "$1" = "dark" ] || [ "$1" = "light" ]; then
-	changeSystemColors "$1"
+{ [ "$1" = "dark" ] || [ "$1" = "light" ]; } && theme="$1"
+if [ "$OS" = "Darwin" ]; then
+	switcher="changeThemeMac"
+	if [ -z "$theme" ]; then
+		/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
+			theme="light" ||
+			theme="dark"
+	fi
 else
-    # If no argument is given, toggle the current mode
-	color=$(if $DEFAULTS read -g AppleInterfaceStyle >/dev/null 2>&1; then echo "light"; else echo "dark"; fi)
-	changeSystemColors "$color"
+	grep "dark" "$STATE_FILE" >/dev/null && theme="light" || theme="dark"
 fi
+
+$switcher "$theme"
+changeNvimColors "$theme"
+
+echo "$theme" >"$STATE_FILE"
