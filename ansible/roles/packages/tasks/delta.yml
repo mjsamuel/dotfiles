@@ -1,0 +1,35 @@
+- name: delta retrieve release info
+  uri:
+    url: https://api.github.com/repos/dandavison/delta/releases/latest
+    return_content: true
+  register: response
+
+- name: delta set release facts
+  set_fact:
+    delta_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+    delta_release_name: "{{ release.name[:-7] }}"
+    delta_download_url: "{{release.browser_download_url }}"
+  vars:
+    pattern: ".*{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: delta ensure directory exists
+  file:
+    path: "{{ delta_path }}"
+    state: directory
+
+- name: delta download release
+  ansible.builtin.unarchive:
+    src: "{{ delta_download_url }}"
+    dest: "{{ delta_path }}"
+    remote_src: yes
+  register: download
+  ignore_errors: true
+
+- name: delta copy to bin
+  copy:
+    src: "{{ delta_path }}/{{ delta_release_name }}/delta"
+    dest: /usr/local/bin/delta
+    mode: "0755"
+  become: true
+  when: not download.failed

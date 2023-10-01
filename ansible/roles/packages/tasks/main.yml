@@ -25,4 +25,7 @@
     - ansible.builtin.import_tasks:
         file: "bat.yml"
       tags: ["bat"]
+    - ansible.builtin.import_tasks:
+        file: "delta.yml"
+      tags: ["delta"]
   when: ansible_os_family != "Darwin"
