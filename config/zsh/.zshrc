@@ -12,18 +12,6 @@ else
     FZF_KEYBINDINGS="/usr/share/doc/fzf/examples/key-bindings.zsh"
 fi
 
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE="$XDG_CACHE_HOME/zsh/history"
-
-# vi mode
-bindkey -v
-KEYTIMEOUT=1
-
-# Edit line in nvim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
-
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
     case $KEYMAP in
@@ -33,7 +21,6 @@ function zle-keymap-select () {
 }
 zle -N zle-keymap-select
 zle-line-init() {
-    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
     echo -ne "\e[5 q"
 }
 zle -N zle-line-init
@@ -41,24 +28,32 @@ echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 # keybindings
+bindkey -v # vi mode
+bindkey "^?" backward-delete-char # delete with backspace
+bindkey '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line # Edit line in nvim
 bindkey -s '^[S' "tmux-sessionizer\n"
-
-# fzf
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
 source "$FZF_KEYBINDINGS"
 
 # Plugins/misc
 source "${ZSH_PLUGINS}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGINS}/powerlevel10k/powerlevel10k.zsh-theme"
-
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
 source "$XDG_CONFIG_HOME/zsh/aliases.zsh"
 source "$XDG_CONFIG_HOME/zsh/functions.zsh"
 
-eval "$(fnm env)"
-
+export KEYTIMEOUT=1 # waittime for key to be presseded before executing
+export FZF_DEFAULT_COMMAND='rg --files'
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+
+setopt autocd # Automatically cd into typed directory.
+
+eval "$(fnm env)"
 
 autoload -Uz compinit
 compinit
