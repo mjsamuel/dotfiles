@@ -35,11 +35,11 @@ fi
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
-ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
+echo "$VAULT_PASS" | ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--connection "local" \
 	--inventory "localhost," \
 	--extra-var "ansible_become_pass=$SUDO_PASS" \
-	${VAULT_PASS:+--vault-password-file <(echo $VAULT_PASS)} \
+    $( [ -n "$VAULT_PASS" ] && printf -- "--vault-password-file=%s" "/dev/stdin" ) \
 	"$@"
 
 [ $? -eq 0 ] && printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."
