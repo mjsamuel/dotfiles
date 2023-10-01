@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# misc
+alias \
+    c='clear' \
+    ls='eza' \
+    cat='bat' \
+    rtv='python3 -m rtv' \
+    tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
+    v='env TERM=wezterm nvim' \
+    b='brew' \
+    lg='lazygit' \
+    nb='newsboat' \
+    cc='changecolors'
+
+# ssh
+alias \
+    s='ssh'
+
+# youtube-dl
+alias \
+    yt='yt-dlp --no-abort-on-error --embed-metadata -i' \
+    yta="yt-dlp -x -f bestaudio/best"
+
+# tmux
+alias \
+    t="tmux" \
+    ta="tmux attach" \
+    ts="tmux-sessionizer"

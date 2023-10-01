@@ -20,14 +20,12 @@ homebrew_installed_packages:
   - mosh
   - neofetch
   - newsboat # rss reader
-  - powerlevel10k
   - ripgrep # faster 'grep'
   - silicon # code screenshot tool
   - speedtest
   - stow
   - yt-dlp
   - zsh
-  - zsh-autosuggestions
 
 homebrew_cask_apps:
   - 1password

@@ -7,43 +7,51 @@
     - "{{ XDG_CONFIG_HOME }}"
     - "{{ XDG_DATA_HOME }}"
 
-- name: find all files in config folder
-  find:
-    paths: "{{ dotfiles_dir }}/config"
-    file_type: "any"
-    recurse: no
-  register: find
-
-- name: symlink .config
+- name: symlink .zshenv
   file:
-    src: "{{ item.path }}"
-    path: "{{ XDG_CONFIG_HOME }}/{{ item.path | basename }}"
+    src: "{{ dotfiles_dir }}/config/zsh/.zshenv"
+    path: "~/.zshenv"
     state: link
-  loop: "{{ find.files }}"
-  loop_control:
-    label: "{{ item.path }}"
 
-- name: symlink .zprofile
-  file:
-    src: "{{ dotfiles_dir }}/config/zsh/.zprofile"
-    path: "~/.zprofile"
-    state: link
+- block:
+    - name: find all files in config folder
+      find:
+        paths: "{{ dotfiles_dir }}/config"
+        file_type: "any"
+        recurse: no
+      register: find
+
+    - name: symlink .config
+      file:
+        src: "{{ item.path }}"
+        path: "{{ XDG_CONFIG_HOME }}/{{ item.path | basename }}"
+        state: link
+      loop: "{{ find.files }}"
+      loop_control:
+        label: "{{ item.path }}"
 
 - name: install zsh plugins
   git:
     repo: "{{ item.url }}"
     dest: "{{ zsh_plugins_dir }}/{{ item.name }}"
-    force: yes
     clone: true
-  loop: "{{ zsh_plugins }}"
-  when: ansible_os_family != "Darwin"
-
-- name: download fzf keybindings
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
-    dest: /usr/share/doc/fzf/examples/key-bindings.zsh
   become: true
-  when: ansible_os_family != "Darwin"
+  loop: "{{ zsh_plugins }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- block:
+    - name: ensure {{fzf_dir}} exists
+      file:
+        path: "{{ fzf_dir }}"
+        state: directory
+      become: true
+
+    - name: download fzf keybindings
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
+        dest: "{{ fzf_dir }}/key-bindings.zsh"
+      become: true
 
 - name: set zsh as deafult shell
   user:
