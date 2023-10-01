@@ -90,10 +90,7 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPre",
     main = "ibl",
-    opts = {
-      indent = { char = "│" },
-      highlight = { "Function"  },
-    },
+    opts = { indent = { char = "│", tab_char = "│" } },
   },
   {
     "folke/trouble.nvim",
