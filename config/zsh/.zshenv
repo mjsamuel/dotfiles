@@ -19,7 +19,6 @@ export PLAYDATE_SDK_PATH="$HOME/Developer/PlaydateSDK"
 
 # Path
 export PATH="$HOME/Developer/dotfiles/scripts\
-:$XDG_DATA_HOME/fnm\
 :/opt/apache-maven/bin\
 :$CARGO_HOME\
 :$PATH

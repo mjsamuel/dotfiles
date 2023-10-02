@@ -2,9 +2,12 @@
     - name: install homebrew packages
       include_role:
         name: geerlingguy.mac.homebrew
+      tags: ["homebrew"]
     - name: install mac apps
       include_role:
         name: geerlingguy.mac.mas
+        apply:
+          ignore_errors: true
       tags: ["mas"]
   when: ansible_os_family == "Darwin"
 
@@ -14,6 +17,10 @@
     state: present
   become: yes
   when: ansible_os_family == "Debian"
+
+- ansible.builtin.import_tasks:
+    file: "fnm.yml"
+  tags: ["fnm", "node"]
 
 - block:
     - ansible.builtin.import_tasks:

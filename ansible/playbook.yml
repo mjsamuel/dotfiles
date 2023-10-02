@@ -17,8 +17,6 @@
       tags: ["shell"]
     - role: ssh
       tags: ["ssh"]
-    - role: node
-      tags: ["node", "fnm"]
     - role: neovim
       tags: ["neovim", "nvim"]
     - role: tmux

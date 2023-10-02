@@ -35,5 +35,7 @@
   when: clone is changed
 
 - name: insall plugins
-  shell: nvim --headless "+Lazy! sync" +qa
+  shell: |
+    command -v fnm >/dev/null && eval "$(fnm env)"
+    nvim --headless "+Lazy! sync" +qa
   when: clone is changed
