@@ -12,14 +12,14 @@ Thumbs.db
 
 # Vim
 *.swp
-*/nvim/plugin
 */nvim/lazy-lock.json
+
+# Work specific files
+config/shell/work
+config/nvim/lua/user/plugins/work.lua
 
 # Misc files
 .zcompdump
+.zsh_history
 config/workspaces
-*/tt/.errors
-*/lazygit/state.yml
-*/docker
-*/github-copilot
-*/raycast/extensions
+config/lazygit/state.yml

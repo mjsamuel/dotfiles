@@ -9,9 +9,10 @@ source "${ZSH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme"
 
 # Load aliases and functions
-source "$XDG_CONFIG_HOME/shell/aliases"
-source "$XDG_CONFIG_HOME/shell/functions"
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
+for file in "$XDG_CONFIG_HOME/shell/"*; do
+    source "$file"
+done
 
 # Variables
 export HISTSIZE=10000
