@@ -1,12 +1,19 @@
 #!/bin/sh
 STATE_FILE="$XDG_CACHE_HOME/os_theme"
-OS="$(uname -s)"
 
 changeThemeMac() {
 	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"
 	/usr/bin/osascript -l JavaScript -e \
 		"Application('System Events').appearancePreferences.darkMode = $darkMode" \
 		>/dev/null 2>&1
+}
+
+changeThemeWsl() {
+	[ "$1" = "dark" ] && mode="0" || mode="1"
+	powershell.exe 'Set-ItemProperty `
+        -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize `
+        -Name AppsUseLightTheme `
+        -Value' "$mode"
 }
 
 changeNvimColors() {
@@ -20,6 +27,8 @@ changeNvimColors() {
 }
 
 { [ "$1" = "dark" ] || [ "$1" = "light" ]; } && theme="$1"
+
+OS="$(uname -s)"
 if [ "$OS" = "Darwin" ]; then
 	switcher="changeThemeMac"
 	if [ -z "$theme" ]; then
@@ -27,11 +36,18 @@ if [ "$OS" = "Darwin" ]; then
 			theme="light" ||
 			theme="dark"
 	fi
+elif command -v wsl.exe >/dev/null 2>&1 || return; then
+	switcher="changeThemeWsl"
+	powershell.exe 'Get-ItemProperty `
+    -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize `
+    -Name AppsUseLightTheme' | grep 1 >/dev/null 2>&1 &&
+		theme="dark" ||
+		theme="light"
 else
 	grep "dark" "$STATE_FILE" >/dev/null && theme="light" || theme="dark"
 fi
 
-$switcher "$theme"
+[ ! -z "$switcher" ] && $switcher "$theme"
 changeNvimColors "$theme"
 
 echo "$theme" >"$STATE_FILE"
