@@ -29,11 +29,12 @@ if [ "$OS" = "Darwin" ]; then # macOS
 	! command -v pip3 >/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3 -
 	! command -v ansible >/dev/null && run_as_sudo pip3 install ansible
 elif command -v apt >/dev/null; then # debian-based
-	! command -v ansible >/dev/null && run_as_sudo DEBIAN_FRONTEND=noninteractive apt install -y ansible git
+	! command -v ansible >/dev/null && run_as_sudo DEBIAN_FRONTEND=noninteractive apt install -y ansible git python3-pip
 fi
 
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 
+export ANSIBLE_HOME="$HOME/.local/share/ansible"
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
 echo "$VAULT_PASS" | ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--connection "local" \

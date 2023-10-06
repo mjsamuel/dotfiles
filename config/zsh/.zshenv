@@ -7,6 +7,7 @@ export TERM=xterm-256color
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
+export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GOPATH="$XDG_DATA_HOME/go"
 export JAVA_HOME="/usr/java/jdk-11.0.15+10"
