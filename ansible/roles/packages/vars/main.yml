@@ -16,6 +16,7 @@ homebrew_installed_packages:
   - git-delta # prettier diffs
   - gnu-tar
   - imagemagick
+  - jq # json formatter & other utils
   - lazygit # 'git' gui
   - mosh
   - neofetch
@@ -60,9 +61,12 @@ apt_installed_packages:
   - fzf
   - git
   - imagemagick
+  - jq
   - mosh
   - neofetch
   - newsboat
+  - python3-pip
+  - python3-venv
   - ripgrep
   - ssh
   - stow
