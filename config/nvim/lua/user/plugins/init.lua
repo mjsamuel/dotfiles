@@ -94,11 +94,15 @@ return {
   },
   {
     "folke/trouble.nvim",
+    cmd = { "Trouble", "TroubleToggle" },
     opts = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
   },
   {
     "stevearc/oil.nvim",
     cmd = "Oil",
-    opts = { default_file_explorer = true },
+    opts = {
+      default_file_explorer = true,
+      view_options = { show_hidden = true },
+    },
   },
 }

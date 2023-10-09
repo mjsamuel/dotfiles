@@ -3,6 +3,7 @@ local keymap = vim.keymap
 keymap.set("n", " ", "<nop>")
 
 keymap.set({ "n", "v" }, ";", ":")
+keymap.set({ "n", "v" }, ",", ";")
 
 -- turn off vim recording
 keymap.set("n", "q", "<nop>")
@@ -79,6 +80,27 @@ end
 -- yank
 keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
+
+-- make
+local function make(make_args)
+  vim.cmd("w | silent make " .. (make_args or ""))
+  local qflist = vim.fn.getqflist()
+  if #qflist > 0 then
+    for _, v in ipairs(qflist) do
+      v.lnum = v.lnum + vim.g.qf_line_offset
+    end
+    vim.fn.setqflist(qflist)
+    require("trouble").open("quickfix")
+  else
+    require("trouble").close()
+  end
+end
+keymap.set("n", "gmm", function()
+  make()
+end, { silent = true })
+keymap.set("n", "gmr", function()
+  make("run")
+end, { silent = true })
 
 -- misc
 keymap.set("n", "<leader>/", ':lua require("oil").open()<cr>', { silent = true })

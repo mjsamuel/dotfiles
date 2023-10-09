@@ -36,3 +36,13 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.spell = true
   end,
 })
+
+-- error format
+vim.g.qf_line_offset = 0
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "lua" },
+  callback = function()
+    vim.opt.errorformat = "%trror:\\ %f:%l:%m,%-G%.%#"
+    vim.g.qf_line_offset = -1
+  end,
+})

@@ -13,7 +13,7 @@ export GOPATH="$XDG_DATA_HOME/go"
 export JAVA_HOME="/usr/java/jdk-11.0.15+10"
 export LESSHISTFILE="$XDG_DATA_HOME/less_history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export PLAYDATE_SDK_PATH="$HOME/Developer/PlaydateSDK"
+export PLAYDATE_SDK_PATH="$XDG_DATA_HOME/playdate"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
@@ -23,6 +23,7 @@ export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn/v6"
 # Path
 export PATH="$HOME/Developer/dotfiles/scripts\
 :/opt/apache-maven/bin\
+:$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME\
 :$PATH
 "
