@@ -61,6 +61,7 @@ apt_installed_packages:
   - fzf
   - git
   - imagemagick
+  - iputils-ping
   - jq
   - mosh
   - neofetch
@@ -74,6 +75,7 @@ apt_installed_packages:
   - unzip
   - wget
   - zsh
+  - ssh
 
 fnm_build:
   arm: arm32
