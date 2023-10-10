@@ -1,13 +1,6 @@
-function ToggleTheme()
-  vim.o.background = vim.o.background == "dark" and "light" or "dark"
-end
-
 local function get_os_appearance()
-  if vim.fn.has("mac") == 1 then
-    vim.fn.system("defaults read -g AppleInterfaceStyle")
-  else
-    vim.fn.system("grep 'dark' " .. os.getenv("XDG_CACHE_HOME") .. "/os_theme")
-  end
+  local os_theme_file = os.getenv("OS_APPEARANCE_FILE") or os.getenv("HOME") .. "/.cache/os_theme"
+  vim.fn.system("grep 'dark' " .. os_theme_file)
   return vim.v.shell_error == 1 and "light" or "dark"
 end
 

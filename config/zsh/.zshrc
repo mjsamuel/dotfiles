@@ -24,6 +24,7 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
+export OS_APPEARANCE_FILE="$XDG_CACHE_HOME/os_theme"
 
 # Load environment variables for brew and fnm
 command -v brew >/dev/null && eval "$(brew shellenv)" 

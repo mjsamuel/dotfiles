@@ -1,5 +1,5 @@
 #!/bin/sh
-STATE_FILE="$XDG_CACHE_HOME/os_theme"
+OS_APPEARANCE_FILE="${OS_APPEARANCE_FILE:-$XDG_CACHE_HOME/os_theme}"
 
 changeThemeMac() {
 	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"
@@ -26,16 +26,12 @@ changeNvimColors() {
 	done
 }
 
-{ [ "$1" = "dark" ] || [ "$1" = "light" ]; } && theme="$1"
-
 OS="$(uname -s)"
 if [ "$OS" = "Darwin" ]; then
 	switcher="changeThemeMac"
-	if [ -z "$theme" ]; then
-		/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
-			theme="light" ||
-			theme="dark"
-	fi
+	/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
+		theme="light" ||
+		theme="dark"
 elif command -v wsl.exe >/dev/null 2>&1 || return; then
 	switcher="changeThemeWsl"
 	powershell.exe 'Get-ItemProperty `
@@ -44,10 +40,10 @@ elif command -v wsl.exe >/dev/null 2>&1 || return; then
 		theme="dark" ||
 		theme="light"
 else
-	grep "dark" "$STATE_FILE" >/dev/null && theme="light" || theme="dark"
+	grep "dark" "$OS_APPEARANCE_FILE" >/dev/null && theme="light" || theme="dark"
 fi
 
-[ ! -z "$switcher" ] && $switcher "$theme"
+[ -n "$switcher" ] && $switcher "$theme"
 changeNvimColors "$theme"
 
-echo "$theme" >"$STATE_FILE"
+echo "$theme" >"$OS_APPEARANCE_FILE"
