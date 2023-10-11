@@ -18,9 +18,7 @@ M.opts = {
   },
   suggestion = {
     auto_trigger = true,
-    keymap = {
-      accept = "<M-Enter>",
-    },
+    keymap = { accept = false },
   },
 }
 

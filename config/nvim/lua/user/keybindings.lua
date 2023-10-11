@@ -102,5 +102,15 @@ keymap.set("n", "gmr", function()
   make("run")
 end, { silent = true })
 
+-- copilot
+keymap.set("i", "<Right>", function()
+  local cp = require("copilot.suggestion")
+  if cp.is_visible() then
+    cp.accept()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false)
+  end
+end)
+
 -- misc
 keymap.set("n", "<leader>/", ':lua require("oil").open()<cr>', { silent = true })
