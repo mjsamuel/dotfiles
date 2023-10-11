@@ -13,7 +13,7 @@ keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -95,12 +95,9 @@ local function make(make_args)
     require("trouble").close()
   end
 end
-keymap.set("n", "gmm", function()
-  make()
-end, { silent = true })
-keymap.set("n", "gmr", function()
-  make("run")
-end, { silent = true })
+keymap.set("n", "gmm", function() make() end, { silent = true })
+keymap.set("n", "gmc", function() make("compile") end, { silent = true })
+keymap.set("n", "gmr", function() make("run") end, { silent = true })
 
 -- copilot
 keymap.set("i", "<Right>", function()
