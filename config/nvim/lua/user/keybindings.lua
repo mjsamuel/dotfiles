@@ -2,7 +2,6 @@ local keymap = vim.keymap
 
 keymap.set("n", " ", "<nop>")
 
-keymap.set({ "n", "v" }, ";", ":")
 keymap.set({ "n", "v" }, ",", ";")
 
 -- turn off vim recording
@@ -13,7 +12,7 @@ keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -22,37 +21,32 @@ keymap.set("n", "<Leader>ww", "<C-W>w")
 keymap.set("n", "<Leader>wh", "<C-W>s")
 keymap.set("n", "<Leader>wv", "<C-W>v")
 
--- buffer management
-keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
-keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-keymap.set("n", "<Leader>b", "<cmd>Telescope buffers<cr>")
-
 -- git
 keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gb", "<cmd>Git blame<cr>")
 
 -- lsp
-keymap.set("n", "D", "<cmd>lua vim.diagnostic.open_float()<cr>")
-keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>")
-keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>")
-keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>")
+keymap.set("n", "D", function() vim.diagnostic.open_float() end)
+keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
+keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>")
 keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
-keymap.set("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>")
-keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.document_symbol()<cr>")
-keymap.set("n", "gw", "<cmd>lua vim.lsp.buf.workspace_symbol()<cr>")
-keymap.set({ "n", "v" }, "<Leader>f", "<cmd>lua vim.lsp.buf.format()<cr>")
+keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)
+keymap.set("n", "gw", function() vim.lsp.buf.document_symbol() end)
+keymap.set("n", "gw", function() vim.lsp.buf.workspace_symbol() end)
+keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)
 
 -- code refactoring/fixing
-keymap.set("n", "<Leader>ra", ":lua vim.lsp.buf.code_action()<cr>")
+keymap.set("n", "<Leader>ra", function() vim.lsp.buf.code_action() end)
 keymap.set(
   "v",
   "<Leader>ra",
-  ":lua require('refactoring').select_refactor()<CR>",
+  function() require("refactoring").select_refactor() end,
   { noremap = true, silent = true, expr = false }
 )
-keymap.set("n", "<Leader>rr", ":lua vim.lsp.buf.rename()<cr>")
+keymap.set("n", "<Leader>rr", function() vim.lsp.buf.rename() end)
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
@@ -65,16 +59,16 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- debug
-keymap.set("n", "<leader>du", ':lua require("dapui").toggle()<cr>', { silent = true })
-keymap.set("n", "<leader>dc", ':lua require("dap").continue()<cr>', { silent = true })
-keymap.set("n", "<leader>dd", ':lua require("dap").toggle_breakpoint()<cr>', { silent = true })
+keymap.set("n", "<leader>du", function() require("dapui").toggle() end, { silent = true })
+keymap.set("n", "<leader>dc", function() require("dap").continue() end, { silent = true })
+keymap.set("n", "<leader>dd", function() require("dap").toggle_breakpoint() end, { silent = true })
 
 -- harpooon
-keymap.set("n", "M", "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>")
-keymap.set("n", "mm", "<cmd>lua require('harpoon.mark').add_file()<CR>")
-for i, key in ipairs({ "q", "w", "f", "p", "g" }) do
-  keymap.set("n", "m" .. key, "<cmd>lua require('harpoon.ui').nav_file(" .. i .. ") <CR>")
-  keymap.set("n", "m" .. i, "<cmd>lua require('harpoon.ui').nav_file(" .. i .. ") <CR>")
+keymap.set("n", "M", function() require("harpoon.ui").toggle_quick_menu() end)
+keymap.set("n", "mm", function() require("harpoon.mark").add_file() end)
+for i, key in ipairs({ "q", "w", "f", "p", "g" }) do -- map top level symbols in colemak layout (+numbers)
+  keymap.set("n", "m" .. key, function() require("harpoon.ui").nav_file(i) end)
+  keymap.set("n", "m" .. i, function() require("harpoon.ui").nav_file(i) end)
 end
 
 -- yank
@@ -110,4 +104,4 @@ keymap.set("i", "<Right>", function()
 end)
 
 -- misc
-keymap.set("n", "<leader>/", ':lua require("oil").open()<cr>', { silent = true })
+keymap.set("n", "<leader>/", function() require("oil").open() end, { silent = true })
