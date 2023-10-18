@@ -17,6 +17,8 @@ changeThemeWsl() {
 }
 
 changeNvimColors() {
+	tmux_running=$(pgrep tmux)
+    [ -z "$tmux_running" ] && return
 	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
 		target="${p%% *}"
 		id="${p##* }"
