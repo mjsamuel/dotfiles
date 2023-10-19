@@ -18,7 +18,6 @@ M.config = function()
       null_ls.builtins.code_actions.cspell.with({
         filetypes = cspell_filetypes,
       }),
-      null_ls.builtins.code_actions.refactoring,
       -- formatting
       null_ls.builtins.formatting.black,
       null_ls.builtins.formatting.prettierd,

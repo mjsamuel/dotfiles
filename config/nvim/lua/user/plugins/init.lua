@@ -1,18 +1,13 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
+  { "tpope/vim-fugitive", cmd = "Git" },
   {
     "ThePrimeagen/harpoon",
     opts = {
       mark_branch = true,
     },
   },
-  {
-    "ThePrimeagen/refactoring.nvim",
-    config = true,
-  },
-  { "tpope/vim-fugitive", cmd = "Git" },
-  { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
@@ -38,22 +33,6 @@ return {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
     opts = { trouble = false },
-  },
-  {
-    "Shatur/neovim-session-manager",
-    event = "VeryLazy",
-    config = function()
-      require("session_manager").setup({
-        autoload_mode = require("session_manager.config").AutoloadMode.Disabled,
-      })
-    end,
-  },
-  {
-    "ggandor/leap.nvim",
-    keys = { "s", "S" },
-    config = function()
-      require("leap").add_default_mappings()
-    end,
   },
   {
     "j-hui/fidget.nvim",
@@ -85,12 +64,6 @@ return {
         pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
       })
     end,
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPre",
-    main = "ibl",
-    opts = { indent = { char = "│", tab_char = "│" } },
   },
   {
     "folke/trouble.nvim",
