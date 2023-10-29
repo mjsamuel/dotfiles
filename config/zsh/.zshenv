@@ -23,6 +23,6 @@ export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn/v6"
 export PATH="$HOME/Developer/dotfiles/scripts\
 :/opt/apache-maven/bin\
 :$PLAYDATE_SDK_PATH/bin\
-:$CARGO_HOME\
+:$CARGO_HOME/bin\
 :$PATH
 "
