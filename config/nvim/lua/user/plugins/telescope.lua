@@ -35,8 +35,14 @@ function M.config()
       color_devicons = true,
       mappings = {
         -- TODO: trouble is loaded when telescope is, figure out how to lazy load trouble when needed
-        i = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
+        i = {
+          ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble,
+          ["<Tab>"] = require("telescope.actions.layout").toggle_preview,
+        },
         n = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
+      },
+      preview = {
+        hide_on_startup = true,
       },
     },
     pickers = {
