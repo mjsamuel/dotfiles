@@ -104,4 +104,4 @@ keymap.set("i", "<Right>", function()
 end)
 
 -- misc
-keymap.set("n", "<leader>/", function() require("oil").open() end, { silent = true })
+keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
