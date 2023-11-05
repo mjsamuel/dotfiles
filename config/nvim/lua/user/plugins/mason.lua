@@ -22,6 +22,7 @@ return {
         "json-lsp",
         "lua-language-server",
         "marksman",
+        "openscad-lsp",
         "pyright",
         "tailwindcss-language-server",
         "typescript-language-server",

@@ -21,6 +21,7 @@ function M.config()
     marksman = {},
     pyright = {},
     tailwindcss = {},
+    openscad_lsp = {},
     tsserver = {
       typescript = {
         inlayHints = {
