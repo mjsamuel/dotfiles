@@ -12,7 +12,7 @@ keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -77,21 +77,16 @@ keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"
 
 -- make
 local function make(make_args)
+  if not vim.g.makefile_exists then return end
   vim.cmd("w | silent make " .. (make_args or ""))
-  local qflist = vim.fn.getqflist()
-  if #qflist > 0 then
-    for _, v in ipairs(qflist) do
-      v.lnum = v.lnum + vim.g.qf_line_offset
-    end
-    vim.fn.setqflist(qflist)
-    require("trouble").open("quickfix")
+  local trouble = require("trouble")
+  if #vim.fn.getqflist() > 0 then
+    trouble.open("quickfix")
   else
-    require("trouble").close()
+    trouble.close()
   end
 end
-keymap.set("n", "gmm", function() make() end, { silent = true })
-keymap.set("n", "gmc", function() make("compile") end, { silent = true })
-keymap.set("n", "gmr", function() make("run") end, { silent = true })
+keymap.set("n", "gm", function() make() end, { silent = true })
 
 -- copilot
 keymap.set("i", "<Right>", function()

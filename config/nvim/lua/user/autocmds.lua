@@ -3,9 +3,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, { comma
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
+  callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
 -- go to last loc when opening a buffer
@@ -13,9 +11,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
     local lcount = vim.api.nvim_buf_line_count(0)
-    if mark[1] > 0 and mark[1] <= lcount then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
+    if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
   end,
 })
 
@@ -23,9 +19,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = "YankHighlight",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Search", timeout = "200", on_visual = false })
-  end,
+  callback = function() vim.highlight.on_yank({ higroup = "Search", timeout = "200", on_visual = false }) end,
 })
 
 -- enable spell check for specific filetypes
@@ -37,12 +31,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- error format
-vim.g.qf_line_offset = 0
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lua" },
-  callback = function()
+-- error formatting based on project type
+local function dir_changed()
+  -- makefile exists
+  vim.g.makefile_exists = vim.fn.findfile("Makefile") ~= ""
+  -- error format
+  if vim.fn.findfile("source/pdxinfo") ~= "" then -- playdate project
     vim.opt.errorformat = "%trror:\\ %f:%l:%m,%-G%.%#"
-    vim.g.qf_line_offset = -1
-  end,
+  end
+end
+dir_changed()
+vim.api.nvim_create_autocmd("DirChanged", {
+  callback = dir_changed,
 })
