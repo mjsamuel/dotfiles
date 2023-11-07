@@ -20,16 +20,6 @@ return {
     },
   },
   {
-    "RRethy/vim-illuminate",
-    event = "BufReadPost",
-    config = function()
-      require("illuminate").configure({
-        delay = 200,
-        filetypes_denylist = { "TelescopePrompt", "fugitiveblame", "lazy", "mason" },
-      })
-    end,
-  },
-  {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
     opts = { trouble = false },

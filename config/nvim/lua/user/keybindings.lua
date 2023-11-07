@@ -40,12 +40,6 @@ keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)
 
 -- code refactoring/fixing
 keymap.set("n", "<Leader>ra", function() vim.lsp.buf.code_action() end)
-keymap.set(
-  "v",
-  "<Leader>ra",
-  function() require("refactoring").select_refactor() end,
-  { noremap = true, silent = true, expr = false }
-)
 keymap.set("n", "<Leader>rr", function() vim.lsp.buf.rename() end)
 
 -- move selected code when in visual mode
@@ -59,8 +53,8 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- debug
-keymap.set("n", "<leader>du", function() require("dapui").toggle() end, { silent = true })
-keymap.set("n", "<leader>dc", function() require("dap").continue() end, { silent = true })
+keymap.set("n", "<leader>ds", function() require("dapui").toggle() end, { silent = true })
+keymap.set("n", "<leader>dn", function() require("dap").continue() end, { silent = true }) -- next
 keymap.set("n", "<leader>dd", function() require("dap").toggle_breakpoint() end, { silent = true })
 
 -- harpooon
@@ -89,12 +83,13 @@ end
 keymap.set("n", "gm", function() make() end, { silent = true })
 
 -- copilot
+local right_key = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
 keymap.set("i", "<Right>", function()
   local cp = require("copilot.suggestion")
   if cp.is_visible() then
     cp.accept()
   else
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false)
+    vim.api.nvim_feedkeys(right_key, "n", false)
   end
 end)
 
