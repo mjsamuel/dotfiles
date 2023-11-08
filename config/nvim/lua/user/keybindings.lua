@@ -60,7 +60,7 @@ keymap.set("n", "<leader>dd", function() require("dap").toggle_breakpoint() end,
 -- harpooon
 keymap.set("n", "M", function() require("harpoon.ui").toggle_quick_menu() end)
 keymap.set("n", "mm", function() require("harpoon.mark").add_file() end)
-for i, key in ipairs({ "q", "w", "f", "p", "g" }) do -- map top level symbols in colemak layout (+numbers)
+for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do
   keymap.set("n", "m" .. key, function() require("harpoon.ui").nav_file(i) end)
   keymap.set("n", "m" .. i, function() require("harpoon.ui").nav_file(i) end)
 end
