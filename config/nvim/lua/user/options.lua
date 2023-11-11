@@ -7,7 +7,7 @@ set.completeopt = "menuone,noselect"
 set.confirm = true -- confirm to save changes before exiting modified buffer
 set.cursorline = true -- highlight current line
 set.expandtab = true -- insert spaces when tab is pressed
-set.fillchars = { eob = " " }
+set.fillchars = { eob = " " } -- hide tildes at end of file
 set.formatoptions = "jcroqlnt" -- tcqj
 set.hlsearch = false -- disable highlighting search term
 set.ignorecase = true -- ignore case when searching

@@ -12,9 +12,7 @@ function M.config()
   local options = {
     disallowed_file_types = { "gitcommit" },
     recent_files = {
-      number_of_items = function()
-        return math.floor(vim.o.lines / 6)
-      end,
+      number_of_items = function() return math.floor(vim.o.lines / 6) end,
       special_shortcuts = { "a", "r", "s", "t", "d" },
     },
     padding = 2,
@@ -28,9 +26,7 @@ function M.config()
     name = "Matthew",
   }
 
-  local function get_extension(filename)
-    return vim.fn.fnamemodify(filename, ":e")
-  end
+  local function get_extension(filename) return vim.fn.fnamemodify(filename, ":e") end
 
   local function file_button(filename, shortcut, short_function)
     short_function = short_function or filename
@@ -56,17 +52,13 @@ function M.config()
     local current_working_directory = vim.fn.getcwd()
     local recent_files = {}
     for _, file in pairs(vim.v.oldfiles) do
-      if #recent_files == number_of_items then
-        break
-      end
+      if #recent_files == number_of_items then break end
 
       local in_current_working_directory = vim.startswith(file, current_working_directory)
       local readable = vim.fn.filereadable(file) == 1
       local disallowed_type = vim.tbl_contains(options.disallowed_file_types, get_extension(file))
 
-      if readable and in_current_working_directory and not disallowed_type then
-        table.insert(recent_files, file)
-      end
+      if readable and in_current_working_directory and not disallowed_type then table.insert(recent_files, file) end
     end
 
     local target_width = 35
@@ -78,9 +70,7 @@ function M.config()
 
       if #filename_short > target_width then
         filename_short = path.new(filename_short):shorten(1, { -2, -1 })
-        if #filename_short > target_width then
-          filename_short = path.new(filename_short):shorten(1, { -1 })
-        end
+        if #filename_short > target_width then filename_short = path.new(filename_short):shorten(1, { -1 }) end
       end
 
       local shortcut = ""
@@ -210,15 +200,11 @@ function M.config()
   local configured_laststatus = vim.opt_local.laststatus:get()
   vim.api.nvim_create_autocmd("User", {
     pattern = "AlphaReady",
-    callback = function()
-      vim.opt_local.laststatus = 0
-    end,
+    callback = function() vim.opt_local.laststatus = 0 end,
   })
   vim.api.nvim_create_autocmd("User", {
     pattern = "AlphaClosed",
-    callback = function()
-      vim.opt_local.laststatus = configured_laststatus
-    end,
+    callback = function() vim.opt_local.laststatus = configured_laststatus end,
   })
 end
 

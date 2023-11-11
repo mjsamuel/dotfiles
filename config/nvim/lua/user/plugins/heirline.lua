@@ -26,9 +26,7 @@ end
 
 M.segments.mode = function()
   return {
-    init = function(self)
-      self.mode = vim.fn.mode(1)
-    end,
+    init = function(self) self.mode = vim.fn.mode(1) end,
     static = {
       mode_names = {
         n = "NORMAL",
@@ -83,9 +81,7 @@ M.segments.mode = function()
       },
     },
     {
-      provider = function()
-        return "▊"
-      end,
+      provider = function() return "▊" end,
       hl = function(self)
         local mode = self.mode:sub(1, 1) -- get only the first mode character
         return { fg = self.mode_colors[mode], bg = "background" }
@@ -94,9 +90,7 @@ M.segments.mode = function()
     update = {
       "ModeChanged",
       pattern = "*:*",
-      callback = vim.schedule_wrap(function()
-        vim.cmd("redrawstatus")
-      end),
+      callback = vim.schedule_wrap(function() vim.cmd("redrawstatus") end),
     },
   }
 end
@@ -113,26 +107,17 @@ M.segments.file_name = function()
     },
     {
       -- file path
-      condition = function(self)
-        return self.filename ~= ""
-      end,
-      hl = function()
-        return { fg = "comment", bg = "background", italic = true }
-      end,
+      condition = function(self) return self.filename ~= "" end,
+      hl = function() return { fg = "comment", bg = "background", italic = true } end,
       flexible = 1,
       {
-        provider = function(self)
-          return vim.fn.fnamemodify(self.filename, ":.:h") .. "/"
-        end,
+        provider = function(self) return vim.fn.fnamemodify(self.filename, ":.:h") .. "/" end,
       },
       {
         provider = function(self)
           local filename = vim.fn.fnamemodify(self.filename, ":.:h")
           return vim.fn.pathshorten(filename) .. "/"
         end,
-      },
-      {
-        provider = "",
       },
     },
     Space,
@@ -144,19 +129,13 @@ M.segments.file_name = function()
         self.icon, self.icon_color =
             require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
       end,
-      provider = function(self)
-        return self.icon and self.icon
-      end,
-      hl = function(self)
-        return { fg = self.icon_color, bg = "background" }
-      end,
+      provider = function(self) return self.icon and self.icon end,
+      hl = function(self) return { fg = self.icon_color, bg = "background" } end,
     },
     Space,
     {
       -- file name
-      provider = function(self)
-        return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype
-      end,
+      provider = function(self) return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype end,
       hl = function(self)
         if vim.bo.modified and self.filename ~= "" then
           return { fg = "foreground", bg = "background", italic = true }
@@ -170,23 +149,31 @@ M.segments.file_name = function()
 end
 
 M.segments.diagnostics = function()
+  local severities = { "error", "warn", "info", "hint" }
+
   local function create_diagnostic_segment(severity)
     return {
-      condition = function(self)
-        return self.diagnostics[severity] > 0
-      end,
+      condition = function(self) return self.diagnostics[severity] > 0 end,
       provider = function(self)
         return self.icons[severity:gsub("^%l", string.upper)] .. self.diagnostics[severity] .. " "
       end,
-      hl = function()
-        return { fg = "diagnostic_" .. severity, bg = "background" }
+      hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
+    }
+  end
+
+  local function padding()
+    return {
+      provider = function(self)
+        local p = ""
+        for _, severity in ipairs(severities) do
+          if self.diagnostics[severity] == 0 then p = p .. "    " end
+        end
+        return p
       end,
     }
   end
+
   return {
-    condition = function()
-      return vim.api.nvim_buf_get_name(0) ~= ""
-    end,
     static = {
       icons = require("user.misc.opts").signs,
     },
@@ -199,6 +186,7 @@ M.segments.diagnostics = function()
       }
     end,
     update = { "DiagnosticChanged", "BufEnter" },
+    padding(),
     create_diagnostic_segment("error"),
     create_diagnostic_segment("warn"),
     create_diagnostic_segment("info"),
@@ -206,23 +194,19 @@ M.segments.diagnostics = function()
   }
 end
 
-M.segments.git = function()
+M.segments.git_branch = function()
   local conditions = require("heirline.conditions")
   return {
-    condition = conditions.is_git_repo,
     init = function(self)
-      self.status_dict = vim.b.gitsigns_status_dict
-      self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
+      if conditions.is_git_repo() then self.branch = vim.b.gitsigns_status_dict.head end
     end,
-    hl = { fg = "comment", bg = "background" },
+    hl = { fg = "foreground", bg = "background" },
     flexible = 2,
     {
       provider = function(self)
-        return " " .. self.status_dict.head
+        if self.branch == nil then return "" end
+        return " " .. self.branch
       end,
-    },
-    {
-      provider = "",
     },
   }
 end
@@ -237,13 +221,9 @@ M.segments.word_count = function()
       }
       return count[ft] ~= nil
     end,
-    init = function(self)
-      self.word_count = vim.fn.wordcount()["words"]
-    end,
+    init = function(self) self.word_count = vim.fn.wordcount()["words"] end,
     {
-      provider = function(self)
-        return self.word_count .. " words"
-      end,
+      provider = function(self) return self.word_count .. " words" end,
     },
     hl = { fg = "comment", bg = "background" },
   }
@@ -254,9 +234,7 @@ M.config = function()
 
   vim.api.nvim_create_augroup("Heirline", { clear = true })
   vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function()
-      utils.on_colorscheme(M.setup_colors)
-    end,
+    callback = function() utils.on_colorscheme(M.setup_colors) end,
     group = "Heirline",
   })
 
@@ -267,14 +245,11 @@ M.config = function()
     statusline = {
       M.segments.mode(),
       Space,
-      M.segments.file_name(),
-      Space,
-      M.segments.diagnostics(),
+      M.segments.git_branch(),
       Align,
-      M.segments.word_count(),
-      Space,
-      M.segments.git(),
-      Space,
+      M.segments.file_name(),
+      Align,
+      M.segments.diagnostics(),
     },
     opts = { colors = M.setup_colors() },
   })
