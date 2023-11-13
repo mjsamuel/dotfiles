@@ -3,6 +3,10 @@ local M = {
   event = "VeryLazy",
 }
 
+local ALIGN = { provider = "%=" }
+local SPACE = { provider = " " }
+local CUTOFF = { provider = "%<" }
+
 M.segments = {}
 
 M.setup_colors = function()
@@ -95,19 +99,26 @@ M.segments.mode = function()
   }
 end
 
+local show_full_path = false
 M.segments.file_name = function()
   local utils = require("heirline.utils")
-  local Space = { provider = " " }
   return utils.insert(
     {
       init = function(self)
         self.filename = vim.api.nvim_buf_get_name(0)
         self.filetype = vim.bo.filetype
       end,
+      on_click = {
+        callback = function()
+          show_full_path = not show_full_path
+          vim.cmd("redrawstatus")
+        end,
+        name = "toggle_full_path",
+      },
     },
     {
       -- file path
-      condition = function(self) return self.filename ~= "" end,
+      condition = function(self) return show_full_path and self.filename ~= "" end,
       hl = function() return { fg = "comment", bg = "background", italic = true } end,
       flexible = 1,
       {
@@ -120,7 +131,7 @@ M.segments.file_name = function()
         end,
       },
     },
-    Space,
+    SPACE,
     {
       -- file icon
       init = function(self)
@@ -132,7 +143,7 @@ M.segments.file_name = function()
       provider = function(self) return self.icon and self.icon end,
       hl = function(self) return { fg = self.icon_color, bg = "background" } end,
     },
-    Space,
+    SPACE,
     {
       -- file name
       provider = function(self) return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype end,
@@ -144,7 +155,7 @@ M.segments.file_name = function()
         end
       end,
     },
-    { provider = "%<" } -- this means that the statusline is cut here when there's not enough space
+    CUTOFF
   )
 end
 
@@ -238,17 +249,14 @@ M.config = function()
     group = "Heirline",
   })
 
-  local Align = { provider = "%=" }
-  local Space = { provider = " " }
-
   require("heirline").setup({
     statusline = {
       M.segments.mode(),
-      Space,
+      SPACE,
       M.segments.git_branch(),
-      Align,
+      ALIGN,
       M.segments.file_name(),
-      Align,
+      ALIGN,
       M.segments.diagnostics(),
     },
     opts = { colors = M.setup_colors() },
