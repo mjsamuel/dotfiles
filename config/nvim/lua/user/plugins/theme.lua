@@ -14,21 +14,37 @@ return {
       require("tokyonight").setup({
         style = "night",
         light_style = "day",
+        on_highlights = function(hl)
+          print(hl.MiniStatusLineModeNormal)
+          hl.StatuslineModeNormal = hl.MiniStatuslineModeNormal
+          hl.StatuslineModeInsert = hl.MiniStatuslineModeInsert
+          hl.StatuslineModeVisual = hl.MiniStatuslineModeVisual
+          hl.StatuslineModeCommand = hl.MiniStatuslineModeCommand
+          hl.StatuslineModeReplace = hl.MiniStatuslineModeReplace
+          hl.StatuslineModeOther = hl.MiniStatuslineModeOther
+        end,
       })
-      vim.cmd("colorscheme tokyonight")
     end,
   },
   {
     "rose-pine/neovim",
+    lazy = false,
     name = "rose-pine",
     priority = 1000,
     config = function()
       require("rose-pine").setup({
         highlight_groups = {
-          StatusLine = { fg = "love", bg = "love", blend = 10 },
-          StatusLineNC = { fg = "subtle", bg = "surface" },
+          StatusLineModeNormal = { fg = "base", bg = "rose" },
+          StatusLineModeInsert = { fg = "base", bg = "foam" },
+          StatuslineModeVisual = { fg = "base", bg = "iris" },
+          StatuslineModeCommand = { fg = "base", bg = "love" },
+          StatuslineModeReplace = { fg = "base", bg = "pine" },
+          StatuslineModeOther = { fg = "base", bg = "muted" },
         },
+        disable_background = true,
+        disable_float_background = true,
       })
+      vim.cmd("colorscheme rose-pine")
     end,
   },
 }

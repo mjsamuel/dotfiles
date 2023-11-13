@@ -15,7 +15,7 @@ require("lazy").setup("user.plugins", {
   defaults = { lazy = true },
   install = {
     missing = true,
-    colorscheme = { "tokyonight" },
+    colorscheme = { "rose-pine" },
   },
   change_detection = {
     enabled = true,

@@ -19,12 +19,12 @@ M.setup_colors = function()
     diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
     diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
     diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
-    mode_normal = utils.get_highlight("MiniStatuslineModeNormal").bg,
-    mode_insert = utils.get_highlight("MiniStatuslineModeInsert").bg,
-    mode_visual = utils.get_highlight("MiniStatuslineModeVisual").bg,
-    mode_command = utils.get_highlight("MiniStatuslineModeCommand").bg,
-    mode_replace = utils.get_highlight("MiniStatuslineModeReplace").bg,
-    mode_other = utils.get_highlight("MiniStatuslineModeOther").bg,
+    mode_normal = utils.get_highlight("StatuslineModeNormal").bg,
+    mode_insert = utils.get_highlight("StatuslineModeInsert").bg,
+    mode_visual = utils.get_highlight("StatuslineModeVisual").bg,
+    mode_command = utils.get_highlight("StatuslineModeCommand").bg,
+    mode_replace = utils.get_highlight("StatuslineModeReplace").bg,
+    mode_other = utils.get_highlight("StatuslineModeOther").bg,
   }
 end
 
@@ -154,8 +154,7 @@ M.segments.file_name = function()
           return "StatusLine"
         end
       end,
-    },
-    CUTOFF
+    }
   )
 end
 
@@ -257,6 +256,7 @@ M.config = function()
       ALIGN,
       M.segments.file_name(),
       ALIGN,
+      CUTOFF,
       M.segments.diagnostics(),
     },
     opts = { colors = M.setup_colors() },
