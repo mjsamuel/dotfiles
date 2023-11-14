@@ -26,11 +26,16 @@ return {
   },
   {
     "j-hui/fidget.nvim",
-    branch = "legacy",
     opts = {
-      text = {
-        spinner = { "⣷", "⣯", "⣟", "⡿", "⢿", "⣻", "⣽", "⣾" },
-        done = "",
+      progress = {
+        display = {
+          done_icon = "",
+        },
+      },
+      notification = {
+        window = {
+          winblend = 0,
+        },
       },
     },
     event = "LspAttach",
