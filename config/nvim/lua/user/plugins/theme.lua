@@ -7,26 +7,6 @@ vim.o.background = get_os_appearance()
 
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      require("tokyonight").setup({
-        style = "night",
-        light_style = "day",
-        on_highlights = function(hl)
-          print(hl.MiniStatusLineModeNormal)
-          hl.StatuslineModeNormal = hl.MiniStatuslineModeNormal
-          hl.StatuslineModeInsert = hl.MiniStatuslineModeInsert
-          hl.StatuslineModeVisual = hl.MiniStatuslineModeVisual
-          hl.StatuslineModeCommand = hl.MiniStatuslineModeCommand
-          hl.StatuslineModeReplace = hl.MiniStatuslineModeReplace
-          hl.StatuslineModeOther = hl.MiniStatuslineModeOther
-        end,
-      })
-    end,
-  },
-  {
     "rose-pine/neovim",
     lazy = false,
     name = "rose-pine",

@@ -11,7 +11,7 @@ return {
   adjust_window_size_when_changing_font_size = false,
   cursor_blink_rate = 0,
   line_height = 1.1,
-  window_background_opacity = 0.95,
+  window_background_opacity = appearance():find("Dark") and 0.99 or 0.90,
   macos_window_background_blur = 100,
   -- Keybindings
   keys = {

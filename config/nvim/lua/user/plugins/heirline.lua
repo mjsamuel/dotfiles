@@ -134,6 +134,7 @@ M.segments.file_name = function()
     SPACE,
     {
       -- file icon
+      condition = function(self) return self.filename ~= "" end,
       init = function(self)
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ":e")

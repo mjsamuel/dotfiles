@@ -5,15 +5,7 @@ local M = {
     { "hrsh7th/cmp-nvim-lsp" },
     { "hrsh7th/cmp-path" },
     { "onsails/lspkind.nvim" },
-    {
-      "L3MON4D3/LuaSnip",
-      dependencies = {
-        "rafamadriz/friendly-snippets",
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-      },
-    },
+    { "L3MON4D3/LuaSnip" },
   },
 }
 
@@ -40,15 +32,11 @@ function M.config()
     },
     formatting = {
       format = lspkind.cmp_format({
-        before = function(_, vim_item)
-          return vim_item
-        end,
+        before = function(_, vim_item) return vim_item end,
       }),
     },
     snippet = {
-      expand = function(args)
-        require("luasnip").lsp_expand(args.body)
-      end,
+      expand = function(args) require("luasnip").lsp_expand(args.body) end,
     },
     mapping = cmp.mapping.preset.insert({
       ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),

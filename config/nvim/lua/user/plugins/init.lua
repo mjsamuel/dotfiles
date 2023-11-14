@@ -4,9 +4,7 @@ return {
   { "tpope/vim-fugitive", cmd = "Git" },
   {
     "ThePrimeagen/harpoon",
-    opts = {
-      mark_branch = true,
-    },
+    opts = { mark_branch = true },
   },
   {
     "kylechui/nvim-surround",
@@ -27,16 +25,8 @@ return {
   {
     "j-hui/fidget.nvim",
     opts = {
-      progress = {
-        display = {
-          done_icon = "",
-        },
-      },
-      notification = {
-        window = {
-          winblend = 0,
-        },
-      },
+      progress = { display = { done_icon = "" } },
+      notification = { window = { winblend = 0 } },
     },
     event = "LspAttach",
   },
