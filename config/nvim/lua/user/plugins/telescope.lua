@@ -15,6 +15,10 @@ TelescopeDefaultTheme = {
   layout_config = { preview_width = 0.55 },
 }
 
+local function open_with_trouble(prompt_bufnr, _mode)
+  return require("trouble.providers.telescope").open_with_trouble(prompt_bufnr, _mode)
+end
+
 function M.config()
   require("telescope").setup({
     defaults = {
@@ -36,10 +40,10 @@ function M.config()
       mappings = {
         -- TODO: trouble is loaded when telescope is, figure out how to lazy load trouble when needed
         i = {
-          ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble,
+          ["<c-q>"] = open_with_trouble,
           ["<Tab>"] = require("telescope.actions.layout").toggle_preview,
         },
-        n = { ["<c-q>"] = require("trouble.providers.telescope").open_with_trouble },
+        n = { ["<c-q>"] = open_with_trouble },
       },
       preview = {
         hide_on_startup = true,
