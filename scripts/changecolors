@@ -9,16 +9,16 @@ changeThemeMac() {
 }
 
 changeThemeWsl() {
-	[ "$1" = "dark" ] && mode="0" || mode="1"
-	powershell.exe 'Set-ItemProperty `
-        -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize `
-        -Name AppsUseLightTheme `
-        -Value' "$mode"
+	if [ "$1" = "dark" ]; then
+		powershell.exe "C:\Windows\Resources\Themes\dark.theme"
+	else
+		powershell.exe "C:\Windows\Resources\Themes\aero.theme"
+	fi
 }
 
 changeNvimColors() {
 	tmux_running=$(pgrep tmux)
-    [ -z "$tmux_running" ] && return
+	[ -z "$tmux_running" ] && return
 	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
 		target="${p%% *}"
 		id="${p##* }"
@@ -36,12 +36,9 @@ if [ "$OS" = "Darwin" ]; then
 		theme="dark"
 elif command -v wsl.exe >/dev/null 2>&1 || return; then
 	switcher="changeThemeWsl"
-	powershell.exe 'Get-ItemProperty `
-    -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize `
-    -Name AppsUseLightTheme' | grep 1 >/dev/null 2>&1 &&
-		theme="dark" ||
-		theme="light"
-else
+fi
+
+if [ -z "$theme" ]; then
 	grep "dark" "$OS_APPEARANCE_FILE" >/dev/null && theme="light" || theme="dark"
 fi
 
