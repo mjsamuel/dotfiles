@@ -1,0 +1,22 @@
+unmapAll
+
+map h scrollLeft
+map j scrollDown
+map k scrollUp
+map l scrollRight
+
+map gg scrollToTop
+map G scrollToBottom
+
+map gi focusInput
+map <space>y copyCurrentUrl
+
+map s LinkHints.activateMode
+map S LinkHints.activateModeToOpenInNewTab
+
+map <space>ss Vomnibar.activateBookmarksInNewTab
+map <space>sb Vomnibar.activateTabSelection
+
+map / enterFindMode
+map n performFind
+map N performBackwardsFind
