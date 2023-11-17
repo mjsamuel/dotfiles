@@ -7,5 +7,4 @@ alias \
     cmd='/mnt/c/Windows/system32/cmd.exe' \
     open='/mnt/c/Windows/explorer.exe' \
     shutdown="/mnt/c/Windows/system32/shutdown.exe /s /t 0" \
-    wsl="/mnt/c/Windows/wsl.exe" \
-    yarn="/mnt/c/Applications/Yarn/bin/yarn"
+    wsl="/mnt/c/Windows/wsl.exe"
