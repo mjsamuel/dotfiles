@@ -1,0 +1,35 @@
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+
+" options
+set incsearch
+set scrolloff=4
+set ignorecase
+set smartcase
+
+" keybindings
+let mapleader = ' '
+map ' ' <Nop>
+
+map gm <Action>(CompileFile)
+map gM <Action>(Compile)
+
+map <leader>f <Action>(ReformatCode)
+nnoremap <leader>y :let @+=@" cr>
+
+map <leader>ss <Action>(GotoFile)
+map <leader>sr <Action>(FindInPath)
+
+map <leader>ds <Action>(Debug)
+map <leader>dn <Action>(Resume)
+map <leader>dd <Action>(ToggleLineBreakpoint)
+
+map M <Action>(ShowHarpoon)
+map mm <Action>(AddToHarpoon)
+map mw <Action>(GotoHarpoon1)
+map mf <Action>(GotoHarpoon2)
+map mp <Action>(GotoHarpoon3)
+map mr <Action>(GotoHarpoon4)
+map ms <Action>(GotoHarpoon5)
+map mt <Action>(GotoHarpoon6)
+
