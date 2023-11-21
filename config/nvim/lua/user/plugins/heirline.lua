@@ -4,21 +4,15 @@ local M = {
 }
 
 local ALIGN = { provider = "%=" }
+local NULL = { provider = "" }
 local SPACE = { provider = " " }
-local CUTOFF = { provider = "%<" }
 
-M.segments = {}
-
-M.setup_colors = function()
+local setup_colors = function()
   local utils = require("heirline.utils")
   return {
     foreground = utils.get_highlight("StatusLine").fg,
     background = utils.get_highlight("StatusLine").bg,
     comment = utils.get_highlight("Comment").fg,
-    diagnostic_error = utils.get_highlight("DiagnosticError").fg,
-    diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
-    diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
-    diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
     mode_normal = utils.get_highlight("StatuslineModeNormal").bg,
     mode_insert = utils.get_highlight("StatuslineModeInsert").bg,
     mode_visual = utils.get_highlight("StatuslineModeVisual").bg,
@@ -28,46 +22,12 @@ M.setup_colors = function()
   }
 end
 
-M.segments.mode = function()
+local segments = {}
+
+segments.mode = function()
   return {
     init = function(self) self.mode = vim.fn.mode(1) end,
     static = {
-      mode_names = {
-        n = "NORMAL",
-        niI = "NORMAL",
-        niR = "NORMAL",
-        niV = "NORMAL",
-        nt = "NORMAL",
-        no = "O-PENDING",
-        nov = "O-PENDING",
-        noV = "O-PENDING",
-        ["no\22"] = "O-PENDING",
-        v = "VISUAL",
-        vs = "VISUAL",
-        V = "V-LINE",
-        Vs = "V-LINE",
-        ["\22"] = "^V",
-        ["\22s"] = "^V",
-        s = "SUBSTITUTE",
-        S = "S-LINE",
-        ["\19"] = "^S",
-        i = "INSERT",
-        ic = "INSERT",
-        ix = "INSERT",
-        R = "REPLACE",
-        Rc = "REPLACE",
-        Rx = "REPLACE",
-        Rv = "REPLACE",
-        Rvc = "REPLACE",
-        Rvx = "REPLACE",
-        c = "COMMAND",
-        cv = "COMMAND",
-        r = "...",
-        rm = "M",
-        ["r?"] = "?",
-        ["!"] = "!",
-        t = "T",
-      },
       mode_colors = {
         n = "mode_normal",
         i = "mode_insert",
@@ -84,13 +44,11 @@ M.segments.mode = function()
         t = "mode_other",
       },
     },
-    {
-      provider = function() return "▊" end,
-      hl = function(self)
-        local mode = self.mode:sub(1, 1) -- get only the first mode character
-        return { fg = self.mode_colors[mode], bg = "background" }
-      end,
-    },
+    provider = function() return "▊" end,
+    hl = function(self)
+      local mode = self.mode:sub(1, 1) -- get only the first mode character
+      return { fg = self.mode_colors[mode], bg = "background" }
+    end,
     update = {
       "ModeChanged",
       pattern = "*:*",
@@ -100,87 +58,81 @@ M.segments.mode = function()
 end
 
 local show_full_path = false
-M.segments.file_name = function()
+segments.file_info = function()
   local utils = require("heirline.utils")
-  return utils.insert(
-    {
-      init = function(self)
-        self.filename = vim.api.nvim_buf_get_name(0)
-        self.filetype = vim.bo.filetype
+  return utils.insert({
+    init = function(self)
+      self.filename = vim.api.nvim_buf_get_name(0)
+      self.filetype = vim.bo.filetype
+    end,
+    on_click = {
+      callback = function()
+        show_full_path = not show_full_path
+        vim.cmd("redrawstatus")
       end,
-      on_click = {
-        callback = function()
-          show_full_path = not show_full_path
-          vim.cmd("redrawstatus")
-        end,
-        name = "toggle_full_path",
-      },
+      name = "toggle_full_path",
+    },
+  }, {
+    -- file path
+    condition = function() return show_full_path end,
+    flexible = 1,
+    hl = { fg = "comment", bg = "background", italic = true },
+    {
+      provider = function(self)
+        local file_path = vim.fn.fnamemodify(self.filename, ":.:h")
+        return string.format("%s/ ", file_path)
+      end,
     },
     {
-      -- file path
-      condition = function(self) return show_full_path and self.filename ~= "" end,
-      hl = function() return { fg = "comment", bg = "background", italic = true } end,
-      flexible = 1,
-      {
-        provider = function(self) return vim.fn.fnamemodify(self.filename, ":.:h") .. "/" end,
-      },
-      {
-        provider = function(self)
-          local filename = vim.fn.fnamemodify(self.filename, ":.:h")
-          return vim.fn.pathshorten(filename) .. "/"
-        end,
-      },
+      provider = function(self)
+        local file_path_short = vim.fn.fnamemodify(self.filename, ":.:h")
+        return string.format("%s/ ", vim.fn.pathshorten(file_path_short))
+      end,
     },
-    SPACE,
+    NULL,
+  }, {
+    -- file icon
     {
-      -- file icon
       condition = function(self) return self.filename ~= "" end,
       init = function(self)
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ":e")
-        self.icon, self.icon_color =
-            require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+        self.icon = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
       end,
-      provider = function(self) return self.icon and self.icon end,
-      hl = function(self) return { fg = self.icon_color, bg = "background" } end,
+      { provider = function(self) return self.icon end },
+      SPACE,
     },
-    SPACE,
     {
-      -- file name
-      provider = function(self) return self.filename ~= "" and vim.fn.fnamemodify(self.filename, ":t") or self.filetype end,
-      hl = function(self)
-        if vim.bo.modified and self.filename ~= "" then
-          return { fg = "foreground", bg = "background", italic = true }
-        else
-          return "StatusLine"
-        end
-      end,
-    }
-  )
+      condition = function(self) return self.filename == "" end,
+      { provider = function() return "" end },
+      SPACE,
+    },
+  }, {
+    -- file name
+    provider = function(self)
+      local file_name = vim.fn.fnamemodify(self.filename, ":t")
+      if file_name ~= "" then
+        return file_name
+      elseif self.filetype ~= "" then
+        return self.filetype
+      else
+        return "[No Name]"
+      end
+    end,
+    hl = function() return { fg = "foreground", bg = "background", italic = vim.bo.modified } end,
+  })
 end
 
-M.segments.diagnostics = function()
-  local severities = { "error", "warn", "info", "hint" }
-
+segments.diagnostics = function()
   local function create_diagnostic_segment(severity)
     return {
       condition = function(self) return self.diagnostics[severity] > 0 end,
       provider = function(self)
-        return self.icons[severity:gsub("^%l", string.upper)] .. self.diagnostics[severity] .. " "
+        local icon = self.icons[severity:gsub("^%l", string.upper)]
+        local num_errors = self.diagnostics[severity]
+        return string.format("%s %d ", icon, num_errors)
       end,
-      hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
-    }
-  end
-
-  local function padding()
-    return {
-      provider = function(self)
-        local p = ""
-        for _, severity in ipairs(severities) do
-          if self.diagnostics[severity] == 0 then p = p .. "    " end
-        end
-        return p
-      end,
+      hl = { fg = "comment", bg = "background", italic = true },
     }
   end
 
@@ -197,7 +149,6 @@ M.segments.diagnostics = function()
       }
     end,
     update = { "DiagnosticChanged", "BufEnter" },
-    padding(),
     create_diagnostic_segment("error"),
     create_diagnostic_segment("warn"),
     create_diagnostic_segment("info"),
@@ -205,38 +156,12 @@ M.segments.diagnostics = function()
   }
 end
 
-M.segments.git_branch = function()
+segments.git_branch = function()
   local conditions = require("heirline.conditions")
   return {
-    init = function(self)
-      if conditions.is_git_repo() then self.branch = vim.b.gitsigns_status_dict.head end
-    end,
-    hl = { fg = "foreground", bg = "background" },
-    flexible = 2,
-    {
-      provider = function(self)
-        if self.branch == nil then return "" end
-        return " " .. self.branch
-      end,
-    },
-  }
-end
-
-M.segments.word_count = function()
-  return {
-    condition = function()
-      local ft = vim.opt_local.filetype:get()
-      local count = {
-        text = true,
-        markdown = true,
-      }
-      return count[ft] ~= nil
-    end,
-    init = function(self) self.word_count = vim.fn.wordcount()["words"] end,
-    {
-      provider = function(self) return self.word_count .. " words" end,
-    },
-    hl = { fg = "comment", bg = "background" },
+    condition = conditions.is_git_repo,
+    init = function(self) self.status_dict = vim.b.gitsigns_status_dict end,
+    provider = function(self) return " " .. self.status_dict.head end,
   }
 end
 
@@ -245,22 +170,22 @@ M.config = function()
 
   vim.api.nvim_create_augroup("Heirline", { clear = true })
   vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function() utils.on_colorscheme(M.setup_colors) end,
+    callback = function() utils.on_colorscheme(setup_colors) end,
     group = "Heirline",
   })
 
   require("heirline").setup({
     statusline = {
-      M.segments.mode(),
+      segments.mode(),
       SPACE,
-      M.segments.git_branch(),
+      segments.file_info(),
+      SPACE,
+      segments.diagnostics(),
       ALIGN,
-      M.segments.file_name(),
-      ALIGN,
-      CUTOFF,
-      M.segments.diagnostics(),
+      segments.git_branch(),
+      SPACE,
     },
-    opts = { colors = M.setup_colors() },
+    opts = { colors = setup_colors() },
   })
 end
 

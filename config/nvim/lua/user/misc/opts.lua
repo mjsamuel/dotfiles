@@ -1,10 +1,10 @@
 local opts = {}
 
 opts.signs = {
-  Error = " ",
-  Warn = " ",
-  Hint = "󰌶 ",
-  Info = " ",
+  Error = "",
+  Warn = "",
+  Hint = "󰌶",
+  Info = "",
 }
 
 return opts

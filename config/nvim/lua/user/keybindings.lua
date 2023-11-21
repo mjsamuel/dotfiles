@@ -12,19 +12,15 @@ keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
-
--- window management
-keymap.set("n", "<Leader>ww", "<C-W>w")
-keymap.set("n", "<Leader>wh", "<C-W>s")
-keymap.set("n", "<Leader>wv", "<C-W>v")
 
 -- git
 keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
-keymap.set("n", "<Leader>gb", "<cmd>Git blame<cr>")
+keymap.set("n", "<Leader>gd", function() require("gitsigns").diffthis() end)
+keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
 
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)
