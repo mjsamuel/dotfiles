@@ -9,6 +9,7 @@ map gg scrollToTop
 map G scrollToBottom
 
 map gi focusInput
+map gp togglePinTab
 map <space>y copyCurrentUrl
 
 map s LinkHints.activateMode
