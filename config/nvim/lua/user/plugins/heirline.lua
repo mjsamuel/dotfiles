@@ -13,51 +13,16 @@ local setup_colors = function()
     foreground = utils.get_highlight("StatusLine").fg,
     background = utils.get_highlight("StatusLine").bg,
     comment = utils.get_highlight("Comment").fg,
-    mode_normal = utils.get_highlight("StatuslineModeNormal").bg,
-    mode_insert = utils.get_highlight("StatuslineModeInsert").bg,
-    mode_visual = utils.get_highlight("StatuslineModeVisual").bg,
-    mode_command = utils.get_highlight("StatuslineModeCommand").bg,
-    mode_replace = utils.get_highlight("StatuslineModeReplace").bg,
-    mode_other = utils.get_highlight("StatuslineModeOther").bg,
+    diagnostic_error = utils.get_highlight("DiagnosticError").fg,
+    diagnostic_warn = utils.get_highlight("DiagnosticWarn").fg,
+    diagnostic_info = utils.get_highlight("DiagnosticInfo").fg,
+    diagnostic_hint = utils.get_highlight("DiagnosticHint").fg,
   }
 end
 
 local segments = {}
 
-segments.mode = function()
-  return {
-    init = function(self) self.mode = vim.fn.mode(1) end,
-    static = {
-      mode_colors = {
-        n = "mode_normal",
-        i = "mode_insert",
-        v = "mode_visual",
-        V = "mode_visual",
-        ["\22"] = "mode_other",
-        c = "mode_command",
-        s = "mode_other",
-        S = "mode_other",
-        ["\19"] = "mode_other",
-        R = "mode_replace",
-        r = "mode_replace",
-        ["!"] = "mode_other",
-        t = "mode_other",
-      },
-    },
-    provider = function() return "▊" end,
-    hl = function(self)
-      local mode = self.mode:sub(1, 1) -- get only the first mode character
-      return { fg = self.mode_colors[mode], bg = "background" }
-    end,
-    update = {
-      "ModeChanged",
-      pattern = "*:*",
-      callback = vim.schedule_wrap(function() vim.cmd("redrawstatus") end),
-    },
-  }
-end
-
-local show_full_path = false
+local show_full_path = true
 segments.file_info = function()
   local utils = require("heirline.utils")
   return utils.insert({
@@ -116,7 +81,7 @@ segments.file_info = function()
       elseif self.filetype ~= "" then
         return self.filetype
       else
-        return "[No Name]"
+        return "No Name"
       end
     end,
     hl = function() return { fg = "foreground", bg = "background", italic = vim.bo.modified } end,
@@ -127,12 +92,15 @@ segments.diagnostics = function()
   local function create_diagnostic_segment(severity)
     return {
       condition = function(self) return self.diagnostics[severity] > 0 end,
-      provider = function(self)
-        local icon = self.icons[severity:gsub("^%l", string.upper)]
-        local num_errors = self.diagnostics[severity]
-        return string.format("%s %d ", icon, num_errors)
-      end,
-      hl = { fg = "comment", bg = "background", italic = true },
+      {
+        provider = function(self) return self.icons[severity:gsub("^%l", string.upper)] end,
+        hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
+      },
+      SPACE,
+      {
+        provider = function(self) return self.diagnostics[severity] end,
+      },
+      SPACE,
     }
   end
 
@@ -149,10 +117,10 @@ segments.diagnostics = function()
       }
     end,
     update = { "DiagnosticChanged", "BufEnter" },
-    create_diagnostic_segment("error"),
-    create_diagnostic_segment("warn"),
-    create_diagnostic_segment("info"),
     create_diagnostic_segment("hint"),
+    create_diagnostic_segment("info"),
+    create_diagnostic_segment("warn"),
+    create_diagnostic_segment("error"),
   }
 end
 
@@ -176,12 +144,10 @@ M.config = function()
 
   require("heirline").setup({
     statusline = {
-      segments.mode(),
       SPACE,
       segments.file_info(),
-      SPACE,
-      segments.diagnostics(),
       ALIGN,
+      segments.diagnostics(),
       segments.git_branch(),
       SPACE,
     },

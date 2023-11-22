@@ -20,15 +20,23 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    opts = { trouble = false },
+    opts = {},
   },
   {
     "j-hui/fidget.nvim",
+    event = "LspAttach",
     opts = {
-      progress = { display = { done_icon = "" } },
+      progress = {
+        display = {
+          done_icon = "",
+          done_style = "Comment",
+          progress_style = "Comment",
+          group_style = "Comment",
+          icon_style = "Comment",
+        },
+      },
       notification = { window = { winblend = 0 } },
     },
-    event = "LspAttach",
   },
   {
     "windwp/nvim-autopairs",
@@ -62,5 +70,20 @@ return {
       default_file_explorer = true,
       view_options = { show_hidden = true },
     },
+  },
+  {
+    "luukvbaal/statuscol.nvim",
+    lazy = false,
+    config = function()
+      local builtin = require("statuscol.builtin")
+      require("statuscol").setup({
+        setopt = true,
+        segments = {
+          { sign = { name = { "Diagnostic", "Dap*" }, auto = false } },
+          { text = { builtin.lnumfunc, " " } },
+          { sign = { namespace = { "gitsigns" } } },
+        },
+      })
+    end,
   },
 }

@@ -13,14 +13,6 @@ return {
     priority = 1000,
     config = function()
       require("rose-pine").setup({
-        highlight_groups = {
-          StatusLineModeNormal = { fg = "base", bg = "rose" },
-          StatusLineModeInsert = { fg = "base", bg = "foam" },
-          StatuslineModeVisual = { fg = "base", bg = "iris" },
-          StatuslineModeCommand = { fg = "base", bg = "love" },
-          StatuslineModeReplace = { fg = "base", bg = "pine" },
-          StatuslineModeOther = { fg = "base", bg = "muted" },
-        },
         disable_background = true,
         disable_float_background = true,
       })
