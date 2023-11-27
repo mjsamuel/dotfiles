@@ -1,5 +1,6 @@
 #!/bin/sh
-OS_APPEARANCE_FILE="${OS_APPEARANCE_FILE:-$XDG_CACHE_HOME/os_theme}"
+OS="$(uname -s)"
+THEME_FILE_PATH="${THEME_FILE_PATH:-$XDG_CACHE_HOME/os_theme}"
 
 changeThemeMac() {
 	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"
@@ -9,11 +10,8 @@ changeThemeMac() {
 }
 
 changeThemeWsl() {
-	if [ "$1" = "dark" ]; then
-		powershell.exe "C:\Windows\Resources\Themes\dark.theme"
-	else
-		powershell.exe "C:\Windows\Resources\Themes\aero.theme"
-	fi
+	[ "$1" = "dark" ] && winTheme="dark" || winTheme="aero"
+	cmd.exe "/mnt/c/Windows/Resources/Themes/${winTheme}.theme" >/dev/null 2>&1
 }
 
 changeNvimColors() {
@@ -28,7 +26,6 @@ changeNvimColors() {
 	done
 }
 
-OS="$(uname -s)"
 if [ "$OS" = "Darwin" ]; then
 	switcher="changeThemeMac"
 	/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
@@ -36,13 +33,17 @@ if [ "$OS" = "Darwin" ]; then
 		theme="dark"
 elif command -v wsl.exe >/dev/null 2>&1 || return; then
 	switcher="changeThemeWsl"
+	powershell.exe 'Get-ItemProperty `
+    -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize `
+    -Name AppsUseLightTheme' | grep 1 >/dev/null 2>&1 &&
+		theme="dark" ||
+		theme="light"
 fi
 
 if [ -z "$theme" ]; then
-	grep "dark" "$OS_APPEARANCE_FILE" >/dev/null && theme="light" || theme="dark"
+	grep "dark" "$THEME_FILE_PATH" >/dev/null && theme="light" || theme="dark"
 fi
 
 [ -n "$switcher" ] && $switcher "$theme"
 changeNvimColors "$theme"
-
-echo "$theme" >"$OS_APPEARANCE_FILE"
+echo "$theme" >"$THEME_FILE_PATH"
