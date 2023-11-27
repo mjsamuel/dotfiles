@@ -22,7 +22,6 @@ end
 
 local segments = {}
 
-local show_full_path = true
 segments.file_info = function()
   local utils = require("heirline.utils")
   return utils.insert({
@@ -30,16 +29,8 @@ segments.file_info = function()
       self.filename = vim.api.nvim_buf_get_name(0)
       self.filetype = vim.bo.filetype
     end,
-    on_click = {
-      callback = function()
-        show_full_path = not show_full_path
-        vim.cmd("redrawstatus")
-      end,
-      name = "toggle_full_path",
-    },
   }, {
     -- file path
-    condition = function() return show_full_path end,
     flexible = 1,
     hl = { fg = "comment", bg = "background", italic = true },
     {
@@ -129,7 +120,9 @@ segments.git_branch = function()
   return {
     condition = conditions.is_git_repo,
     init = function(self) self.status_dict = vim.b.gitsigns_status_dict end,
-    provider = function(self) return " " .. self.status_dict.head end,
+    { provider = "" },
+    SPACE,
+    { provider = function(self) return self.status_dict.head end },
   }
 end
 

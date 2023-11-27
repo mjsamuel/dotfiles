@@ -78,12 +78,22 @@ return {
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         setopt = true,
+        ft_ignore = { "Trouble", "lazy" },
         segments = {
           { sign = { name = { "Diagnostic", "Dap*" }, auto = false } },
           { text = { builtin.lnumfunc, " " } },
-          { sign = { namespace = { "gitsigns" } } },
+          { sign = { namespace = { "gitsigns" }, auto = false } },
         },
       })
     end,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = "BufReadPost",
+    opts = {
+      indent = { char = "┆", tab_char = "┆" },
+      scope = { char = "│", show_start = false, show_end = false },
+    },
   },
 }
