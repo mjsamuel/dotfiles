@@ -35,5 +35,8 @@ set.timeoutlen = 500 -- time to wait for a mapped sequence to complete (in milli
 set.undofile = true
 set.wrap = false
 
+vim.g.loaded_sql_completion = 0
+vim.g.omni_sql_no_default_maps  = 1
+
 vim.g.editorconfig = true
 vim.g.markdown_recommended_style = 0

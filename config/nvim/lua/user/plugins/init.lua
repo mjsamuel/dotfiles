@@ -73,12 +73,13 @@ return {
   },
   {
     "luukvbaal/statuscol.nvim",
-    lazy = false,
+    event = "BufReadPre",
+    branch = "0.10",
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         setopt = true,
-        ft_ignore = { "Trouble", "lazy" },
+        ft_ignore = { "Trouble", "lazy", "fugitiveblame" },
         segments = {
           { sign = { name = { "Diagnostic", "Dap*" }, auto = false } },
           { text = { builtin.lnumfunc, " " } },
