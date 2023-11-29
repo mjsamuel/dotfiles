@@ -28,7 +28,7 @@ local config = {
 if string.match(wezterm.target_triple, "windows") then
   config.default_prog = { "wsl", "--cd", "~" }
   config.font_size = 14
-  config.window_decorations = "TITLE"
+  config.window_decorations = "TITLE|RESIZE"
   -- Keybindings
   table.insert(config.keys, { key = "F11", action = action.ToggleFullScreen })
   table.insert(config.keys, { key = "v", mods = "CTRL", action = action.PasteFrom("Clipboard") })
