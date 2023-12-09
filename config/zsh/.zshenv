@@ -7,6 +7,10 @@ export TERM=xterm-256color
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export GOPATH="$XDG_DATA_HOME/go"

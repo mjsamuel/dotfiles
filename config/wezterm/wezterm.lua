@@ -21,6 +21,7 @@ local config = {
     { key = "Enter", mods = "ALT", action = action.DisableDefaultAssignment },
     { key = "f", mods = "CMD", action = action.ToggleFullScreen },
     { key = "+", mods = "CMD", action = action.IncreaseFontSize },
+    { key = "=", mods = "CMD", action = action.ResetFontSize },
   },
 }
 
@@ -32,6 +33,7 @@ if string.match(wezterm.target_triple, "windows") then
   -- Keybindings
   table.insert(config.keys, { key = "F11", action = action.ToggleFullScreen })
   table.insert(config.keys, { key = "v", mods = "CTRL", action = action.PasteFrom("Clipboard") })
+  table.insert(config.keys, { key = "=", mods = "CTRL", action = action.ResetFontSize })
 end
 
 return config

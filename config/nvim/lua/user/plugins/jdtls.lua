@@ -9,7 +9,7 @@ function M.config()
 
   local data_home = os.getenv("XDG_DATA_HOME")
   local project_root = vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true })[1])
-  local workspace_dir = os.getenv("XDG_CACHE_HOME") .. "/java-workspaces/" .. string.gsub(project_root:sub(2), "/", ".")
+  local workspace_dir = os.getenv("XDG_CACHE_HOME") .. "/java-workspaces/" .. string.gsub(project_root, "/", ".")
 
   local config = {
     cmd = {
@@ -27,7 +27,7 @@ function M.config()
       "--add-opens",
       "java.base/java.lang=ALL-UNNAMED",
       "-jar",
-      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar",
       "-configuration",
       data_home .. "/nvim/mason/packages/jdtls/config_linux",
       "-data",
@@ -56,9 +56,9 @@ function M.config()
         progressReportProvider = false,
       },
     },
-    on_attach = {
-      jdtls.setup_dap({ hotcodereplace = "auto" }),
-    },
+    -- on_attach = {
+    --   jdtls.setup_dap({ hotcodereplace = "auto" }),
+    -- },
   }
 
   jdtls.start_or_attach(config)
