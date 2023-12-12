@@ -7,7 +7,7 @@ local M = {
   },
 }
 
-TelescopeDefaultTheme = {
+local telescopeDefaultTheme = {
   theme = "ivy",
   prompt_title = false,
   results_title = false,
@@ -50,7 +50,7 @@ function M.config()
       },
     },
     pickers = {
-      buffers = vim.tbl_extend("force", TelescopeDefaultTheme, {
+      buffers = vim.tbl_extend("force", telescopeDefaultTheme, {
         show_all_buffers = true,
         ignore_current_buffer = true,
         sort_lastused = true,
@@ -58,20 +58,20 @@ function M.config()
           i = { [";"] = "delete_buffer" },
         },
       }),
-      diagnostics = TelescopeDefaultTheme,
-      find_files = vim.tbl_extend("force", TelescopeDefaultTheme, { hidden = true }),
-      git_commits = TelescopeDefaultTheme,
-      git_stash = TelescopeDefaultTheme,
-      git_status = TelescopeDefaultTheme,
-      help_tags = TelescopeDefaultTheme,
-      live_grep = TelescopeDefaultTheme,
-      lsp_implementations = vim.tbl_extend("force", TelescopeDefaultTheme, { show_line = false }),
-      lsp_references = vim.tbl_extend("force", TelescopeDefaultTheme, { show_line = false }),
-      registers = TelescopeDefaultTheme,
-      grep_string = TelescopeDefaultTheme,
-      lsp_document_symbols = TelescopeDefaultTheme,
-      lsp_workspace_symbols = TelescopeDefaultTheme,
-      git_bcommits = TelescopeDefaultTheme,
+      diagnostics = telescopeDefaultTheme,
+      find_files = vim.tbl_extend("force", telescopeDefaultTheme, { hidden = true }),
+      git_commits = telescopeDefaultTheme,
+      git_stash = telescopeDefaultTheme,
+      git_status = telescopeDefaultTheme,
+      help_tags = telescopeDefaultTheme,
+      live_grep = telescopeDefaultTheme,
+      lsp_implementations = vim.tbl_extend("force", telescopeDefaultTheme, { show_line = false }),
+      lsp_references = vim.tbl_extend("force", telescopeDefaultTheme, { show_line = false }),
+      registers = telescopeDefaultTheme,
+      grep_string = telescopeDefaultTheme,
+      lsp_document_symbols = telescopeDefaultTheme,
+      lsp_workspace_symbols = telescopeDefaultTheme,
+      git_bcommits = telescopeDefaultTheme,
     },
     extensions = {
       fzf = {
