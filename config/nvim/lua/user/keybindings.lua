@@ -20,6 +20,8 @@ keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word und
 keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gd", function() require("gitsigns").diffthis() end)
+keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end,  { silent = true })
+keymap.set("n", "]g", function() require("gitsigns").next_hunk() end,  { silent = true })
 keymap.set("v", "gr", function() require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
 keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
 
