@@ -19,6 +19,7 @@ function M.config()
     jsonls = {},
     lua_ls = { Lua = { hint = { enable = true } } },
     marksman = {},
+    ocamllsp = {},
     pyright = {},
     tailwindcss = {},
     openscad_lsp = {},

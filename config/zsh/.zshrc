@@ -29,6 +29,7 @@ export OS_APPEARANCE_FILE="$XDG_CACHE_HOME/os_theme"
 # Load environment variables for brew and fnm
 command -v brew >/dev/null && eval "$(brew shellenv)" 
 command -v fnm >/dev/null && eval "$(fnm env)"
+command -v opam >/dev/null && eval "$(opam env)"
 
 # Misc
 setopt autocd # Automatically cd into typed directory.

@@ -22,6 +22,7 @@ return {
         "json-lsp",
         "lua-language-server",
         "marksman",
+        "ocaml-lsp",
         "openscad-lsp",
         "pyright",
         "tailwindcss-language-server",
@@ -32,6 +33,7 @@ return {
         "cspell",
         -- formatters
         "black",
+        "ocamlformat",
         "prettierd",
         "shfmt",
         "sql-formatter",
