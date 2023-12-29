@@ -31,7 +31,7 @@ if [ "$OS" = "Darwin" ]; then
 	/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
 		theme="light" ||
 		theme="dark"
-elif command -v wsl.exe >/dev/null 2>&1 || return; then
+elif command -v wsl.exe >/dev/null 2>&1; then
 	switcher="changeThemeWsl"
 fi
 
