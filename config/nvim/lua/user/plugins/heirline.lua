@@ -35,12 +35,6 @@ segments.file_info = function()
     hl = { fg = "comment", bg = "background", italic = true },
     {
       provider = function(self)
-        local file_path = vim.fn.fnamemodify(self.filename, ":.:h")
-        return string.format("%s/ ", file_path)
-      end,
-    },
-    {
-      provider = function(self)
         local file_path_short = vim.fn.fnamemodify(self.filename, ":.:h")
         return string.format("%s/ ", vim.fn.pathshorten(file_path_short))
       end,

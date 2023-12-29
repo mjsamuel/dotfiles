@@ -1,18 +1,13 @@
 local keymap = vim.keymap
 
-keymap.set("n", " ", "<nop>")
-
-keymap.set({ "n", "v" }, ",", ";")
-
--- turn off vim recording
-keymap.set("n", "q", "<nop>")
+keymap.set("n", " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
 keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
 keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
 keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
 keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>") -- ripgrep
+keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
 
@@ -20,10 +15,11 @@ keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word und
 keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
 keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
 keymap.set("n", "<Leader>gd", function() require("gitsigns").diffthis() end)
-keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end,  { silent = true })
-keymap.set("n", "]g", function() require("gitsigns").next_hunk() end,  { silent = true })
+keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end, { silent = true })
+keymap.set("n", "]g", function() require("gitsigns").next_hunk() end, { silent = true })
 keymap.set("v", "gr", function() require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
 keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
+keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ full = true }) end)
 
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)
@@ -33,8 +29,6 @@ keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>")
 keymap.set("n", "gr", "<cmd>Telescope lsp_references<cr>")
 keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)
-keymap.set("n", "gw", function() vim.lsp.buf.document_symbol() end)
-keymap.set("n", "gw", function() vim.lsp.buf.workspace_symbol() end)
 keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)
 
 -- code refactoring/fixing
@@ -52,8 +46,8 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- debug
-keymap.set("n", "<leader>ds", function() require("dapui").toggle() end, { silent = true })
-keymap.set("n", "<leader>dn", function() require("dap").continue() end, { silent = true }) -- next
+keymap.set("n", "<F8>", function() require("dapui").toggle() end, { silent = true })
+keymap.set("n", "<F9>", function() require("dap").continue() end, { silent = true }) -- next
 keymap.set("n", "<leader>dd", function() require("dap").toggle_breakpoint() end, { silent = true })
 
 -- harpooon
@@ -65,7 +59,6 @@ for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do
 end
 
 -- yank
-keymap.set("n", "Y", "<cmd>Telescope registers<cr>")
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 
 -- make

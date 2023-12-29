@@ -1,7 +1,6 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
-  { "tpope/vim-fugitive", cmd = "Git" },
   {
     "ThePrimeagen/harpoon",
     opts = { mark_branch = true },
@@ -9,13 +8,7 @@ return {
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    opts = {
-      surrounds = {
-        ["("] = { add = { "(", ")" } },
-        ["{"] = { add = { "{", "}" } },
-        ["["] = { add = { "[", "]" } },
-      },
-    },
+    opts = {},
   },
   {
     "lewis6991/gitsigns.nvim",
