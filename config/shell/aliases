@@ -27,3 +27,10 @@ alias \
     t="tmux" \
     ta="tmux attach" \
     ts="tmux-sessionizer"
+
+# docker \
+alias \
+    d='sudo docker' \
+    dc='d compose' \
+    dcc='d container' \
+    dp='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
