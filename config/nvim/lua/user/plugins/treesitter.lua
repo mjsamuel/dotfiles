@@ -12,9 +12,7 @@ function M.config()
     auto_install = true,
     highlight = { enable = true },
     indent = { enable = true },
-    context_commentstring = {
-      enable = true,
-    },
+    context_commentstring = { enable = true },
   })
 end
 
