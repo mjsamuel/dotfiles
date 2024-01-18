@@ -22,6 +22,7 @@ homebrew_installed_packages:
   - neofetch
   - newsboat # rss reader
   - ripgrep # faster 'grep'
+  - rsync
   - silicon # code screenshot tool
   - speedtest
   - stow
@@ -69,6 +70,7 @@ apt_installed_packages:
   - python3-pip
   - python3-venv
   - ripgrep
+  - rsync
   - ssh
   - stow
   - sudo
