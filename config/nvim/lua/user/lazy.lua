@@ -12,7 +12,9 @@ end
 vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup("user.plugins", {
-  defaults = { lazy = true },
+  defaults = {
+    lazy = true,
+  },
   install = {
     missing = true,
     colorscheme = { "rose-pine" },

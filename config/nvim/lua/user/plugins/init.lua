@@ -8,28 +8,17 @@ return {
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    opts = {},
+    opts = {}
   },
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    opts = {},
+    opts = {}
   },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
-    opts = {
-      progress = {
-        display = {
-          done_icon = "",
-          done_style = "Comment",
-          progress_style = "Comment",
-          group_style = "Comment",
-          icon_style = "Comment",
-        },
-      },
-      notification = { window = { winblend = 0 } },
-    },
+    opts = {}
   },
   {
     "windwp/nvim-autopairs",
@@ -42,22 +31,8 @@ return {
     end,
   },
   {
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    opts = { enable_autocmd = false },
-  },
-  {
     "numToStr/Comment.nvim",
     keys = { { "gc" }, { "gc", mode = "v" } },
-    config = function()
-      require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-      })
-    end,
-  },
-  {
-    "folke/trouble.nvim",
-    cmd = { "Trouble", "TroubleToggle" },
-    opts = { signs = { error = "", warning = "", hint = "", information = "", other = "" } },
   },
   {
     "stevearc/oil.nvim",
@@ -68,6 +43,7 @@ return {
     },
   },
   {
+
     "luukvbaal/statuscol.nvim",
     event = "BufReadPre",
     branch = "0.10",
@@ -75,22 +51,13 @@ return {
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         setopt = true,
-        ft_ignore = { "Trouble", "lazy", "fugitiveblame" },
+        ft_ignore = { "lazy", "harpoon" },
         segments = {
-          { sign = { name = { "Diagnostic", "Dap*" }, auto = false } },
+          { sign = { name = { "Diagnostic" }, auto = false } },
           { text = { builtin.lnumfunc, " " } },
           { sign = { namespace = { "gitsigns" }, auto = false } },
         },
       })
     end,
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = "BufReadPost",
-    opts = {
-      indent = { char = "┆", tab_char = "┆" },
-      scope = { char = "│", show_start = false, show_end = false },
-    },
   },
 }

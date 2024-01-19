@@ -18,6 +18,11 @@ function M.config()
   require("luasnip.loaders.from_vscode").lazy_load()
   luasnip.config.setup({})
 
+  local window_opts = {
+    border = "rounded",
+    winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
+  }
+
   cmp.setup({
     snippet = {
       expand = function(args) luasnip.lsp_expand(args.body) end,
@@ -29,14 +34,8 @@ function M.config()
       ghost_text = true,
     },
     window = {
-      completion = {
-        border = "rounded",
-        winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-      },
-      documentation = {
-        border = "rounded",
-        winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-      },
+      completion = window_opts,
+      documentation = window_opts,
     },
     formatting = {
       format = lspkind.cmp_format({

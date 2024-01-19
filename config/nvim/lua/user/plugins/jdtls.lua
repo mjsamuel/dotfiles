@@ -27,7 +27,7 @@ function M.config()
       "--add-opens",
       "java.base/java.lang=ALL-UNNAMED",
       "-jar",
-      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230717-2134.jar",
+      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar",
       "-configuration",
       data_home .. "/nvim/mason/packages/jdtls/config_linux",
       "-data",
@@ -45,20 +45,6 @@ function M.config()
         },
       },
     },
-    init_options = {
-      bundles = {
-        vim.fn.glob(
-          data_home .. "/nvim/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-          1
-        ),
-      },
-      extendedClientCapabilities = {
-        progressReportProvider = false,
-      },
-    },
-    -- on_attach = {
-    --   jdtls.setup_dap({ hotcodereplace = "auto" }),
-    -- },
   }
 
   jdtls.start_or_attach(config)

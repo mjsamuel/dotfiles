@@ -45,11 +45,6 @@ keymap.set("n", "<C-u>", "<C-u>zz")
 keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
--- debug
-keymap.set("n", "<F8>", function() require("dapui").toggle() end, { silent = true })
-keymap.set("n", "<F9>", function() require("dap").continue() end, { silent = true }) -- next
-keymap.set("n", "<leader>dd", function() require("dap").toggle_breakpoint() end, { silent = true })
-
 -- harpooon
 keymap.set("n", "M", function() require("harpoon.ui").toggle_quick_menu() end)
 keymap.set("n", "mm", function() require("harpoon.mark").add_file() end)
