@@ -1,8 +1,10 @@
 #!/bin/sh
 WORKSPACES_FILE="$HOME/.config/workspaces"
-[ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" > "$WORKSPACES_FILE"
+[ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" >"$WORKSPACES_FILE"
 
-selected="$(find $(xargs <$WORKSPACES_FILE) -mindepth 1 -maxdepth 1 -type d | fzf)"
+# shellcheck disable=SC2046
+selected="$(find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d | \
+    fzf --preview 'tree -C {} -L 1 | head -200' --preview-window=right:50% --height=100%)"
 [ -z "$selected" ] && exit 0
 selected_name=$(basename "$selected" | tr . _)
 
@@ -12,9 +14,9 @@ if [ -z "$tmux_running" ] || [ -z "$session_exists" ]; then
 	tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-in_tmux="$TMUX"
-if [ -z "$in_tmux" ]; then
-	tmux attach -t "$selected_name"
-else
+in_tmux="$TMUX" # in tmux if this variable is set
+if [ -n "$in_tmux" ]; then
 	tmux switch-client -t "$selected_name"
+else
+	tmux attach -t "$selected_name"
 fi
