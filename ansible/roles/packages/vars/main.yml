@@ -23,6 +23,7 @@ homebrew_installed_packages:
   - newsboat # rss reader
   - ripgrep # faster 'grep'
   - rsync
+  - tree
   - silicon # code screenshot tool
   - speedtest
   - stow
@@ -74,10 +75,10 @@ apt_installed_packages:
   - ssh
   - stow
   - sudo
+  - tree
   - unzip
   - wget
   - zsh
-  - ssh
 
 fnm_build:
   arm: arm32
