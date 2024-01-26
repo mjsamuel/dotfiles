@@ -8,17 +8,17 @@ return {
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    opts = {}
+    opts = {},
   },
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    opts = {}
+    opts = {},
   },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
-    opts = {}
+    opts = {},
   },
   {
     "windwp/nvim-autopairs",
@@ -60,4 +60,5 @@ return {
       })
     end,
   },
+  { "shortcuts/no-neck-pain.nvim", cmd = "NoNeckPain", opts = {} },
 }

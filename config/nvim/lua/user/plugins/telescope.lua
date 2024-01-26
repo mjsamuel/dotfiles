@@ -38,7 +38,6 @@ function M.config()
         i = {
           ["<Tab>"] = require("telescope.actions.layout").toggle_preview,
         },
-        n = { ["<c-q>"] = open_with_trouble },
       },
       preview = {
         hide_on_startup = true,
