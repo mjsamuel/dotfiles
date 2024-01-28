@@ -59,12 +59,11 @@ keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"
 -- make
 local function make(make_args)
   if not vim.g.makefile_exists then return end
-  vim.cmd("w | silent make " .. (make_args or ""))
-  local trouble = require("trouble")
+  vim.cmd("wa | silent make " .. (make_args or ""))
   if #vim.fn.getqflist() > 0 then
-    trouble.open("quickfix")
+    vim.cmd("copen")
   else
-    trouble.close()
+    vim.cmd("cclose")
   end
 end
 keymap.set("n", "gm", function() make() end, { silent = true })
