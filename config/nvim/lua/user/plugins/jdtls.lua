@@ -10,6 +10,10 @@ function M.config()
   local data_home = os.getenv("XDG_DATA_HOME")
   local project_root = vim.fs.dirname(vim.fs.find({ ".git" }, { upward = true })[1])
   local workspace_dir = os.getenv("XDG_CACHE_HOME") .. "/java-workspaces/" .. string.gsub(project_root, "/", ".")
+  local jar = vim.fs.find(
+    function(name) return name:match("org.eclipse.equinox.launcher_.*.jar") end,
+    { path = data_home .. "/nvim/mason/packages/jdtls/plugins/" }
+  )[1]
 
   local config = {
     cmd = {
@@ -27,7 +31,7 @@ function M.config()
       "--add-opens",
       "java.base/java.lang=ALL-UNNAMED",
       "-jar",
-      data_home .. "/nvim/mason/packages/jdtls/plugins/org.eclipse.equinox.launcher_*.jar",
+      jar,
       "-configuration",
       data_home .. "/nvim/mason/packages/jdtls/config_linux",
       "-data",
