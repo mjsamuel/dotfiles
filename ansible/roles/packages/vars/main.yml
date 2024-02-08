@@ -38,6 +38,7 @@ homebrew_cask_apps:
   - docker
   - firefox
   - font-fira-code-nerd-font
+  - font-jetbrains-mono-nerd-font
   - google-chrome
   - iina
   - transmission
