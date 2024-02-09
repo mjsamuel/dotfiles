@@ -54,7 +54,7 @@ return {
         setopt = true,
         ft_ignore = { "lazy", "harpoon" },
         segments = {
-          { sign = { name = { "Diagnostic" }, auto = false } },
+          { sign = { namespace = { "diagnostic*" }, auto = false } },
           { text = { builtin.lnumfunc, " " } },
           { sign = { namespace = { "gitsigns" }, auto = false } },
         },
