@@ -1,10 +1,8 @@
 #!/bin/sh
 
-command -v wsl.exe >/dev/null 2>&1 || return
+uname -r | grep 'Microsoft' >/dev/null 2>&1 || return
+
+export PATH="/mnt/c/Windows/system32/:$PATH"
 
 alias \
-    clip='/mnt/c/Windows/system32/clip.exe' \
-    cmd='/mnt/c/Windows/system32/cmd.exe' \
-    open='/mnt/c/Windows/explorer.exe' \
-    shutdown="/mnt/c/Windows/system32/shutdown.exe /s /t 0" \
-    wsl="/mnt/c/Windows/wsl.exe"
+	shutdown="/mnt/c/Windows/system32/shutdown.exe /s /t 0"
