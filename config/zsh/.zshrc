@@ -14,7 +14,7 @@ for file in "$XDG_CONFIG_HOME/shell/"*; do
     source "$file"
 done
 
-# Variables
+# Variables/Options
 export HISTSIZE=10000
 export SAVEHIST=10000
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
@@ -25,16 +25,21 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 di
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
 export OS_APPEARANCE_FILE="$XDG_CACHE_HOME/os_theme"
+setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY          # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_DUPS       # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS   # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_FIND_NO_DUPS      # Do not display a line previously found.
+setopt HIST_IGNORE_SPACE      # Don't record an entry starting with a space.
+setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history file.
+setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
+unsetopt autocd beep notify
 
 # Load environment variables for brew and fnm
 command -v brew >/dev/null && eval "$(brew shellenv)" 
 command -v fnm >/dev/null && eval "$(fnm env)"
 command -v opam >/dev/null && eval "$(opam env)"
-
-# Misc
-setopt autocd # Automatically cd into typed directory.
-autoload -Uz compinit
-compinit
 
 # keybindings
 bindkey -v # vi mode
@@ -57,3 +62,6 @@ zle-line-init() {
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+autoload -Uz compinit
+compinit
