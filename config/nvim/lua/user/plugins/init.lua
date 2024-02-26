@@ -21,45 +21,9 @@ return {
     opts = {},
   },
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = function()
-      local autopairs = require("nvim-autopairs")
-      local Rule = require("nvim-autopairs.rule")
-      autopairs.setup()
-      autopairs.add_rules({ Rule("{{", "  }", "html"):set_end_pair_length(2) })
-    end,
-  },
-  {
     "numToStr/Comment.nvim",
     keys = { { "gc" }, { "gc", mode = "v" } },
     opts = {},
   },
-  {
-    "stevearc/oil.nvim",
-    cmd = "Oil",
-    opts = {
-      default_file_explorer = true,
-      view_options = { show_hidden = true },
-    },
-  },
-  {
-
-    "luukvbaal/statuscol.nvim",
-    event = "BufReadPre",
-    branch = "0.10",
-    config = function()
-      local builtin = require("statuscol.builtin")
-      require("statuscol").setup({
-        setopt = true,
-        ft_ignore = { "lazy", "harpoon" },
-        segments = {
-          { sign = { namespace = { "diagnostic*" }, auto = false } },
-          { text = { builtin.lnumfunc, " " } },
-          { sign = { namespace = { "gitsigns" }, auto = false } },
-        },
-      })
-    end,
-  },
-  { "shortcuts/no-neck-pain.nvim", cmd = "NoNeckPain", opts = {} },
+  { "prichrd/netrw.nvim", lazy = false, opts = {} },
 }

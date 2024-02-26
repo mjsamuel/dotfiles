@@ -14,11 +14,9 @@ return {
       local tools = {
         -- lsp
         "bash-language-server",
-        "cmake-language-server",
         "css-lsp",
         "emmet-ls",
         "html-lsp",
-        "jdtls",
         "json-lsp",
         "lua-language-server",
         "marksman",

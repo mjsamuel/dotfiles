@@ -109,17 +109,6 @@ segments.diagnostics = function()
   }
 end
 
-segments.git_branch = function()
-  local conditions = require("heirline.conditions")
-  return {
-    condition = conditions.is_git_repo,
-    init = function(self) self.status_dict = vim.b.gitsigns_status_dict end,
-    { provider = "" },
-    SPACE,
-    { provider = function(self) return self.status_dict.head end },
-  }
-end
-
 M.config = function()
   local utils = require("heirline.utils")
 
@@ -135,7 +124,6 @@ M.config = function()
       segments.file_info(),
       ALIGN,
       segments.diagnostics(),
-      segments.git_branch(),
       SPACE,
     },
     opts = { colors = setup_colors() },
