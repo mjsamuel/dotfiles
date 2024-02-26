@@ -38,7 +38,7 @@ return {
         "shfmt",
         "sql-formatter",
         "stylua",
-        "xmlformatter",
+        "lemminx",
       }
 
       local mr = require("mason-registry")
