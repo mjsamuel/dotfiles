@@ -13,7 +13,6 @@ homebrew_installed_packages:
   - fnm # node version manager
   - fzf # fuzzy finder
   - git
-  - git-delta # prettier diffs
   - gnu-tar
   - imagemagick
   - jq # json formatter & other utils
