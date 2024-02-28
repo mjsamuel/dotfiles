@@ -2,12 +2,29 @@
     name = mjsamuel
     email = matthew.samuel@outlook.com.au
 
+[includeIf "gitdir:~/Work/"]
+    path = ~/Work/.gitconfig
+
 [init]
     defaultBranch = main
+
+[branch]
+    sort = -committerdate
+
+[column]
+    ui = auto
+
+[push]
+    autoSetupRemote = true
 
 [core]
     editor = nvim
     excludesFile = ~/.config/git/gitignore_global
 
+[rerere]
+    enabled = true
+
 [alias]
     delete-merged-branches = "!git branch --merged | egrep -v '(^\\*|master|dev)' | xargs echo git branch -d"
+    b = "blame -w -C -C -C"
+
