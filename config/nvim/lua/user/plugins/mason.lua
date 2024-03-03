@@ -18,6 +18,7 @@ return {
         "emmet-ls",
         "html-lsp",
         "json-lsp",
+        "lemminx",
         "lua-language-server",
         "marksman",
         "ocaml-lsp",
@@ -36,7 +37,6 @@ return {
         "shfmt",
         "sql-formatter",
         "stylua",
-        "lemminx",
       }
 
       local mr = require("mason-registry")

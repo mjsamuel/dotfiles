@@ -17,11 +17,12 @@ function M.config()
     emmet_ls = {},
     html = {},
     jsonls = {},
+    lemminx = {},
     lua_ls = { Lua = { hint = { enable = true } } },
     marksman = {},
     ocamllsp = {},
-    pyright = {},
     openscad_lsp = {},
+    pyright = {},
     tsserver = {},
   }
 
