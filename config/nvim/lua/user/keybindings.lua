@@ -10,6 +10,7 @@ keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
 keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
 keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
 keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
+keymap.set("v", "<Leader>sr", "<cmd>Telescope grep_string<cr>") -- grep visually selected text
 
 -- git
 keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")

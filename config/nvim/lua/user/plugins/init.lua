@@ -1,6 +1,7 @@
 return {
   "nvim-lua/plenary.nvim",
   "kyazdani42/nvim-web-devicons",
+  { "tpope/vim-sleuth",   event = "VeryLazy" },
   {
     "ThePrimeagen/harpoon",
     opts = { mark_branch = true },
@@ -16,16 +17,17 @@ return {
     opts = {},
   },
   {
-    "j-hui/fidget.nvim",
-    event = "LspAttach",
-    opts = {},
-  },
-  {
     "numToStr/Comment.nvim",
     keys = { { "gc" }, { "gc", mode = "v" } },
     opts = {},
   },
-  { "prichrd/netrw.nvim", lazy = false, opts = {} },
+  -- Appearance
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {},
+  },
+  { "prichrd/netrw.nvim", lazy = false,      opts = {} },
   {
     "luukvbaal/statuscol.nvim",
     branch = "0.10",
@@ -38,8 +40,11 @@ return {
         ft_ignore = { "lazy", "harpoon" },
         bt_ignore = { "nofile", "prompt", "quickfix", "help" },
         segments = {
-          { sign = { namespace = { "diagnostic*", "Marks*" }, auto = false, maxwidth = 1, colwidth = 1 } },
-          { text = { " ", builtin.lnumfunc, " " } },
+          { sign = { namespace = { "diagnostic*" }, auto = false, maxwidth = 1, colwidth = 1 } },
+          {
+            text = { " ", builtin.lnumfunc, " " },
+            condition = { true, builtin.not_empty },
+          },
           { sign = { namespace = { "gitsigns" }, auto = false, maxwidth = 1, colwidth = 1 } },
           { text = { " " } },
         },

@@ -16,10 +16,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Highlight on yank
-vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = "YankHighlight",
-  callback = function() vim.highlight.on_yank({ higroup = "Search", timeout = "200", on_visual = false }) end,
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
+  callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = "200", on_visual = false }) end,
 })
 
 -- enable spell check for specific filetypes
@@ -31,16 +31,20 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- error formatting based on project type
-local function dir_changed()
-  -- makefile exists
-  vim.g.makefile_exists = vim.fn.findfile("Makefile") ~= ""
-  -- error format
-  if vim.fn.findfile("source/pdxinfo") ~= "" then -- playdate project
-    vim.opt.errorformat = "%trror:\\ %f:%l:%m,%-G%.%#"
-  end
-end
-dir_changed()
-vim.api.nvim_create_autocmd("DirChanged", {
-  callback = dir_changed,
+-- small statuscol for specific filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "lazy", "harpoon", "qf" },
+  callback = function() vim.opt_local.numberwidth = 3 end,
+})
+
+-- project settings
+vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
+  callback = function()
+    -- makefile exists
+    vim.g.makefile_exists = vim.fn.findfile("Makefile") ~= ""
+    -- error format
+    if vim.fn.findfile("source/pdxinfo") ~= "" then -- playdate project
+      vim.opt.errorformat = "%trror:\\ %f:%l:%m,%-G%.%#"
+    end
+  end,
 })
