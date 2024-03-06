@@ -25,6 +25,8 @@ keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ full = true
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)
 keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true })
+keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true })
 keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
 keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
 keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<cr>")
