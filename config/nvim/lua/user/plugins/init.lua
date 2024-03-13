@@ -1,19 +1,11 @@
 return {
   "nvim-lua/plenary.nvim",
-  "kyazdani42/nvim-web-devicons",
-  { "tpope/vim-sleuth",   event = "VeryLazy" },
-  {
-    "ThePrimeagen/harpoon",
-    opts = { mark_branch = true },
-  },
+  { "tpope/vim-sleuth", event = "VeryLazy" },
+  { "lewis6991/gitsigns.nvim", event = "BufReadPre", opts = {} },
+  { "ThePrimeagen/harpoon", opts = { mark_branch = true } },
   {
     "kylechui/nvim-surround",
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    opts = {},
-  },
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
     opts = {},
   },
   {
@@ -21,13 +13,10 @@ return {
     keys = { { "gc" }, { "gc", mode = "v" } },
     opts = {},
   },
-  -- Appearance
-  {
-    "j-hui/fidget.nvim",
-    event = "LspAttach",
-    opts = {},
-  },
-  { "prichrd/netrw.nvim", lazy = false,      opts = {} },
+  -- Appearance related plugins
+  "kyazdani42/nvim-web-devicons",
+  { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
+  { "prichrd/netrw.nvim", lazy = false, opts = {} },
   {
     "luukvbaal/statuscol.nvim",
     branch = "0.10",
