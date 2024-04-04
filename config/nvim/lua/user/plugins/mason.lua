@@ -16,6 +16,7 @@ return {
         "bash-language-server",
         "css-lsp",
         "emmet-ls",
+        "gopls",
         "html-lsp",
         "json-lsp",
         "lemminx",
@@ -26,8 +27,6 @@ return {
         "pyright",
         "tailwindcss-language-server",
         "typescript-language-server",
-        -- dap
-        "java-debug-adapter",
         -- linters
         "cspell",
         -- formatters

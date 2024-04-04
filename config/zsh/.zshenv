@@ -28,5 +28,6 @@ export PATH="$HOME/Developer/dotfiles/scripts\
 :/opt/apache-maven/bin\
 :$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME/bin\
+:$GOPATH/bin\
 :$PATH
 "

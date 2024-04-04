@@ -40,6 +40,7 @@ unsetopt autocd beep notify
 command -v brew >/dev/null && eval "$(brew shellenv)" 
 command -v fnm >/dev/null && eval "$(fnm env)"
 command -v opam >/dev/null && eval "$(opam env)"
+command -v go >/dev/null && eval "$(go env)"
 
 # keybindings
 bindkey -v # vi mode

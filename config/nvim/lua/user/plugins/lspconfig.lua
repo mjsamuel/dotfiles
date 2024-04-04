@@ -24,6 +24,7 @@ function M.config()
     openscad_lsp = {},
     pyright = {},
     tsserver = {},
+    gopls = {},
   }
 
   for ls, settings in pairs(language_servers) do
