@@ -22,7 +22,7 @@ read_secret() {
 
 # prompt for passwords upfront and pass it to commands that need it
 read_secret 'sudo password: ' SUDO_PASS
-read_secret 'vault password (not required): ' VAULT_PASS
+read_secret 'vault password (optional): ' VAULT_PASS
 
 if [ "$OS" = "Darwin" ]; then # macOS
 	PATH="/opt/homebrew/bin:$PATH"
