@@ -8,11 +8,6 @@ return {
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
     opts = {},
   },
-  {
-    "numToStr/Comment.nvim",
-    keys = { { "gc" }, { "gc", mode = "v" } },
-    opts = {},
-  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
