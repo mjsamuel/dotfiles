@@ -12,7 +12,6 @@ set.fillchars = { eob = " " } -- hide tildes at end of file
 set.formatoptions = "jcroqlnt" -- tcqj
 set.hlsearch = false -- disable highlighting search term
 set.ignorecase = true -- ignore case when searching
-set.inccommand = "split" -- preview subsitiution as you type
 set.laststatus = 3 -- global statusline
 set.list = true -- show invisible characters
 set.listchars = { tab = "  ", trail = "•", extends = "", precedes = "" } -- how to show invisible characters
