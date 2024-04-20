@@ -34,7 +34,7 @@
   become: yes
   when: clone is changed
 
-- name: insall plugins
+- name: install plugins
   shell: |
     command -v fnm >/dev/null && eval "$(fnm env)"
     nvim --headless "+Lazy! sync" +qa
