@@ -3,24 +3,24 @@ local keymap = vim.keymap
 keymap.set("n", " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
-keymap.set("n", "<Leader>s.", "<cmd>Telescope resume<cr>")
-keymap.set("n", "<Leader>sb", "<cmd>Telescope buffers<cr>")
-keymap.set("n", "<Leader>sd", "<cmd>Telescope diagnostics<cr>")
-keymap.set("n", "<Leader>sh", "<cmd>Telescope help_tags<cr>")
-keymap.set("n", "<Leader>sr", "<cmd>Telescope live_grep<cr>")   -- ripgrep
-keymap.set("n", "<Leader>ss", "<cmd>Telescope find_files<cr>")
-keymap.set("n", "<Leader>sw", "<cmd>Telescope grep_string<cr>") -- grep word under cursor
-keymap.set("v", "<Leader>sr", "<cmd>Telescope grep_string<cr>") -- grep visually selected text
+keymap.set("n", "s.", "<cmd>Telescope resume<cr>")      -- [s]earch repeat
+keymap.set("n", "sb", "<cmd>Telescope buffers<cr>")     -- [s]earch [b]uffers
+keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>") -- [s]earch [d]iagnostics
+keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")   -- [s]earch [h]elp
+keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>") -- [s]earch using [r]ipgrep
+keymap.set("n", "ss", "<cmd>Telescope find_files<cr>")
+keymap.set("v", "sr", "<cmd>Telescope grep_string<cr>")
 
 -- git
-keymap.set("n", "<Leader>gh", "<cmd>Telescope git_bcommits<cr>")
-keymap.set("n", "<Leader>gg", "<cmd>Telescope git_status<cr>")
-keymap.set("n", "<Leader>gd", function() require("gitsigns").diffthis() end)
 keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end, { silent = true })
 keymap.set("n", "]g", function() require("gitsigns").next_hunk() end, { silent = true })
 keymap.set("v", "gr", function() require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
 keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
-keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ full = true }) end)
+keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ ignore_whitespace = true, full = true }) end)
+vim.api.nvim_create_user_command("Diff", function()
+  require("gitsigns").diffthis(nil, { split = "botright" })
+  vim.cmd("wincmd w")
+end, { nargs = 0 })
 
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)
@@ -35,7 +35,7 @@ keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)
 keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)
 
 -- code refactoring/fixing
-keymap.set("n", "<Leader>ra", function() vim.lsp.buf.code_action() end)
+keymap.set({ "n", "v" }, "<Leader>ra", function() vim.lsp.buf.code_action() end)
 keymap.set("n", "<Leader>rr", function() vim.lsp.buf.rename() end)
 
 -- move selected code when in visual mode
