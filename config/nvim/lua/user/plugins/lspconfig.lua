@@ -7,32 +7,31 @@ local M = {
 
 function M.config()
   local lspconfig = require("lspconfig")
+  local mason_lspconfig = require("mason-lspconfig")
   local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-  local language_servers = {
-    angularls = {},
-    bashls = {},
-    cmake = {},
-    cssls = {},
-    emmet_ls = {},
-    html = {},
-    jsonls = {},
-    lemminx = {},
-    lua_ls = { Lua = { hint = { enable = true } } },
-    marksman = {},
-    ocamllsp = {},
-    openscad_lsp = {},
-    pyright = {},
-    tsserver = {},
-    gopls = {},
-  }
-
-  for ls, settings in pairs(language_servers) do
-    lspconfig[ls].setup({
-      capabilities = capabilities,
-      settings = settings,
-    })
-  end
+  mason_lspconfig.setup_handlers({
+    function(server_name) -- default handler
+      lspconfig[server_name].setup({ capabilities = capabilities })
+    end,
+    ["tsserver"] = function()
+      -- typescript-tools is used instead
+    end,
+    ["tailwindcss"] = function()
+      lspconfig["tailwindcss"].setup({
+        capabilities = capabilities,
+        root_dir = function(fname)
+          local root_pattern = lspconfig.util.root_pattern(
+            "tailwind.config.js",
+            "tailwind.config.cjs",
+            "tailwind.config.mjs",
+            "tailwind.config.ts"
+          )
+          return root_pattern(fname)
+        end,
+      })
+    end,
+  })
 
   -- appearance tweaks
   require("lspconfig.ui.windows").default_options.border = "rounded"

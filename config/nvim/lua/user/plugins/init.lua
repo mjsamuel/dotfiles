@@ -12,6 +12,11 @@ return {
     keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
     opts = {},
   },
+  {
+    "pmizio/typescript-tools.nvim",
+    ft = { "typescript", "typescriptreact" },
+    opts = {},
+  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
