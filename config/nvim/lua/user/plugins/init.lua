@@ -15,7 +15,13 @@ return {
   {
     "pmizio/typescript-tools.nvim",
     ft = { "typescript", "typescriptreact" },
-    opts = {},
+    opts = {
+      expose_as_code_action = "all",
+      on_attach = function(client)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end,
+    },
   },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
