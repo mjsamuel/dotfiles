@@ -14,7 +14,6 @@ M.config = function()
       null_ls.builtins.formatting.prettierd,
       null_ls.builtins.formatting.shfmt,
       null_ls.builtins.formatting.sql_formatter,
-      null_ls.builtins.formatting.stylua,
     },
   })
 end

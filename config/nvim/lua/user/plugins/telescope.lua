@@ -16,7 +16,8 @@ local telescopeDefaultTheme = {
 }
 
 function M.config()
-  require("telescope").setup({
+  local telescope = require("telescope")
+  telescope.setup({
     defaults = {
       vimgrep_arguments = {
         "rg",
@@ -34,7 +35,6 @@ function M.config()
       winblend = 0,
       color_devicons = true,
       mappings = {
-        -- TODO: trouble is loaded when telescope is, figure out how to lazy load trouble when needed
         i = {
           ["<Tab>"] = require("telescope.actions.layout").toggle_preview,
         },
@@ -75,14 +75,14 @@ function M.config()
         case_mode = "smart_case",
       },
       ["ui-select"] = {
-        require("telescope.themes").get_cursor(),
+        require("telescope.themes").get_cursor({ prompt_title = false }),
       },
     },
   })
 
   local extension = { "fzf", "ui-select" }
   for _, e in ipairs(extension) do
-    require("telescope").load_extension(e)
+    telescope.load_extension(e)
   end
 end
 

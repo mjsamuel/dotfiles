@@ -6,7 +6,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
   callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
--- go to last loc when opening a buffer
+-- go to last locaction when opening a buffer
 vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
