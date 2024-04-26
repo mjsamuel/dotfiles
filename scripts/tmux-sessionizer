@@ -4,7 +4,7 @@ WORKSPACES_FILE="$HOME/.config/workspaces"
 
 # shellcheck disable=SC2046
 selected="$(find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d | \
-    fzf --preview 'tree -C {} -L 1 | head -200' --preview-window=right:50% --height=100%)"
+    fzf --preview 'eza {} --tree --level=1 --icons' --preview-window=right:50% --height=100%)"
 [ -z "$selected" ] && exit 0
 selected_name=$(basename "$selected" | tr . _)
 
