@@ -3,13 +3,13 @@ local keymap = vim.keymap
 keymap.set("n", " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
-keymap.set("n", "s.", "<cmd>Telescope resume<cr>")      -- [s]earch repeat
-keymap.set("n", "sb", "<cmd>Telescope buffers<cr>")     -- [s]earch [b]uffers
+keymap.set("n", "s.", "<cmd>Telescope resume<cr>") -- [s]earch repeat
+keymap.set("n", "sb", "<cmd>Telescope buffers<cr>") -- [s]earch [b]uffers
 keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>") -- [s]earch [d]iagnostics
-keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")   -- [s]earch [h]elp
+keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>") -- [s]earch [h]elp
 keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>") -- [s]earch using [r]ipgrep
 keymap.set("n", "ss", "<cmd>Telescope find_files<cr>")
-keymap.set("v", "sr", "<cmd>Telescope grep_string<cr>")
+keymap.set("v", "sr", '"zy:Telescope live_grep default_text=<C-r>z<cr>') -- [s]earch using [r]ipgrep with visual selection
 
 -- git
 keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end, { silent = true })
