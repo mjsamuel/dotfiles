@@ -9,7 +9,7 @@ keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>")                  -- [s]e
 keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")                    -- [s]earch [h]elp
 keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>")                    -- [s]earch using [r]ipgrep
 keymap.set("n", "ss", "<cmd>Telescope find_files<cr>")
-keymap.set("v", "sr", '"zy:Telescope live_grep default_text=<C-r>z<cr>') -- [s]earch using [r]ipgrep with visual selection
+keymap.set("v", "sr", '"zy:Telescope live_grep<cr><C-r>z') -- [s]earch using [r]ipgrep with visual selection
 
 -- git
 keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end, { silent = true })
