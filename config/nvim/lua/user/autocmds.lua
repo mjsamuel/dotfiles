@@ -31,12 +31,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- small statuscol for specific filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "lazy", "harpoon", "qf" },
-  callback = function() vim.opt_local.numberwidth = 3 end,
-})
-
 -- project settings
 vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
   callback = function()

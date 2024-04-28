@@ -27,27 +27,4 @@ return {
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim",  event = "LspAttach", opts = {} },
   { "prichrd/netrw.nvim", lazy = false,        opts = {} },
-  {
-    "luukvbaal/statuscol.nvim",
-    branch = "0.10",
-    event = "BufReadPost",
-    config = function()
-      vim.opt.numberwidth = 8
-      local builtin = require("statuscol.builtin")
-      require("statuscol").setup({
-        setopt = true,
-        ft_ignore = { "lazy", "harpoon" },
-        bt_ignore = { "nofile", "prompt", "quickfix", "help" },
-        segments = {
-          { sign = { namespace = { "diagnostic*" }, auto = false, maxwidth = 1, colwidth = 1 } },
-          {
-            text = { " ", builtin.lnumfunc, " " },
-            condition = { true, builtin.not_empty },
-          },
-          { sign = { namespace = { "gitsigns" }, auto = false, maxwidth = 1, colwidth = 1 } },
-          { text = { " " } },
-        },
-      })
-    end,
-  },
 }

@@ -36,7 +36,6 @@ set.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milli
 set.undofile = true
 set.updatetime = 250
 set.wrap = false
-set.numberwidth = 6
 
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
