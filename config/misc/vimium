@@ -12,11 +12,11 @@ map gi focusInput
 map gp togglePinTab
 map <space>y copyCurrentUrl
 
-map s LinkHints.activateMode
-map S LinkHints.activateModeToOpenInNewTab
+map t LinkHints.activateMode
+map t LinkHints.activateModeToOpenInNewTab
 
-map <space>ss Vomnibar.activateBookmarksInNewTab
-map <space>sb Vomnibar.activateTabSelection
+map ss Vomnibar.activateBookmarksInNewTab
+map sb Vomnibar.activateTabSelection
 
 map / enterFindMode
 map n performFind

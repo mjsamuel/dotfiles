@@ -6,19 +6,21 @@ set incsearch
 set scrolloff=4
 set ignorecase
 set smartcase
-set timeoutlen=500
+set timeoutlen=300
+set number
+set relativenumber
 
 " keybindings
 let mapleader = ' '
-nmap ' ' <nop>
+map ' ' <nop>
 
 " search
-map <leader>sr <Action>(FindInPath)
-map <leader>ss <Action>(GotoFile)
+map sr <Action>(FindInPath)
+map ss <Action>(GotoFile)
 
 " code refactoring/fixing
-map <leader>ra <Action>(ShowIntentionActions)
-map <leader>rr <Action>(RenameElement)
+map <leader>rr <Action>(ShowIntentionActions)
+map <leader>rn <Action>(RenameElement)
 
 " move selected code when in visual mode
 vmap <S-j> :m '>+1<CR>gv=gv
@@ -31,14 +33,17 @@ map <leader>dd <Action>(ToggleLineBreakpoint)
 map <leader>de <Action>(EvaluateExpression)
 
 " harpoon
-map M <Action>(HarpoonerQuickMenu)
-map mm <Action>(HarpoonerAddFile)
-map mw <Action>(HarpoonerOpenFile0)
-map mf <Action>(HarpoonerOpenFile1)
-map mp <Action>(HarpoonerOpenFile2)
-map mr <Action>(HarpoonerOpenFile3)
-map ms <Action>(HarpoonerOpenFile4)
-map mt <Action>(HarpoonerOpenFile5)
+map M :action HarpoonerQuickMenu<cr>
+map mm :action HarpoonerAddFile<cr>
+map mw :action HarpoonerOpenFile0<cr>
+map mf :action HarpoonerOpenFile1<cr>
+map mp :action HarpoonerOpenFile2<cr>
+map mr :action HarpoonerOpenFile3<cr>
+map ms :action HarpoonerOpenFile4<cr>
+map mt :action HarpoonerOpenFile5<cr>
+map mx :action HarpoonerOpenFile6<cr>
+map mc :action HarpoonerOpenFile7<cr>
+map mv :action HarpoonerOpenFile8<cr>
 
 " make
 map gm <Action>(CompileFile)
