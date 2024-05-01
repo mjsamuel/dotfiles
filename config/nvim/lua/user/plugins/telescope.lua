@@ -22,10 +22,6 @@ function M.config()
       },
       -- apperance
       preview = { hide_on_startup = true },
-      layout_config = {
-        size = { width = "90%", height = "60%" },
-        preview = 60,
-      },
       path_display = { "truncate" },
       color_devicons = true,
       winblend = 0,
@@ -77,6 +73,10 @@ telescopeDefaultTheme = {
   prompt_title = false,
   results_title = false,
   preview_title = false,
+  layout_config = {
+    size = { width = "90%", height = "60%" },
+    preview = 60,
+  },
 }
 
 
