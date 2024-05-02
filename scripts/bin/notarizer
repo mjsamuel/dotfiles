@@ -1,0 +1,20 @@
+#!/bin/sh
+NOTES_DIR="$HOME/Documents/notes"
+[ ! -d "$NOTES_DIR" ] && mkdir -p "$NOTES_DIR"
+
+results="$(
+	find "$NOTES_DIR" -name "*.md" |
+		fzf --preview 'bat {}' --preview-window=right:50% --height=100% \
+			--delimiter / --with-nth -1 --print-query \
+			--bind "ctrl-n:change-query($(date -I))"
+)"
+
+filename=$(echo "$results" | sed -n '2p')
+
+if [ -z "$filename" ]; then
+	query=$(echo "$results" | sed -n '1p')
+	[ -z "$query" ] && exit 0
+	filename="$NOTES_DIR/$query.md"
+fi
+
+nvim +"cd $NOTES_DIR" "$filename"

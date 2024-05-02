@@ -48,6 +48,7 @@ bindkey "^?" backward-delete-char # delete with backspace
 bindkey '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line # Edit line in nvim
 bindkey -s '^[S' "tmux-sessionizer\n"
 source "/usr/local/fzf/key-bindings.zsh"
+bindkey -s '^[N' "notarizer\n"
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
