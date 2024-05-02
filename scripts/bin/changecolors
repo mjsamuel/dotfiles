@@ -1,6 +1,6 @@
 #!/bin/sh
 OS="$(uname -s)"
-THEME_FILE_PATH="${THEME_FILE_PATH:-$XDG_CACHE_HOME/os_theme}"
+THEME_FILE_PATH="${OS_APPEARANCE_FILE:-$XDG_CACHE_HOME/os_theme}"
 
 changeThemeMac() {
 	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"

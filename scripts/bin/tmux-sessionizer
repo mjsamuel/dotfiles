@@ -3,8 +3,12 @@ WORKSPACES_FILE="$HOME/.config/workspaces"
 [ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" >"$WORKSPACES_FILE"
 
 # shellcheck disable=SC2046
-selected="$(find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d | \
-    fzf --preview 'eza {} --tree --level=1 --icons' --preview-window=right:50% --height=100%)"
+selected="$(
+	find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d |
+		fzf --preview 'eza {} --tree --level=1 --icons' \
+			--preview-window=right:50% --height=100% \
+			--bind "enter:accept-non-empty"
+)"
 [ -z "$selected" ] && exit 0
 selected_name=$(basename "$selected" | tr . _)
 

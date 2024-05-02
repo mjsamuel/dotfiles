@@ -39,15 +39,15 @@ unsetopt autocd beep notify
 # Load environment variables for brew and fnm
 command -v brew >/dev/null && eval "$(brew shellenv)" 
 command -v fnm >/dev/null && eval "$(fnm env)"
-command -v opam >/dev/null && eval "$(opam env)"
+command -v fzf >/dev/null && eval "$(fzf --zsh)"
 command -v go >/dev/null && eval "$(go env)"
+command -v opam >/dev/null && eval "$(opam env)"
 
 # keybindings
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
 bindkey '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line # Edit line in nvim
 bindkey -s '^[S' "tmux-sessionizer\n"
-source "/usr/local/fzf/key-bindings.zsh"
 bindkey -s '^[N' "notarizer\n"
 
 # Change cursor shape for different vi modes.

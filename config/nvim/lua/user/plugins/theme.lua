@@ -1,5 +1,5 @@
 local function get_os_appearance()
-  local os_theme_file = os.getenv("THEME_FILE_PATH") or os.getenv("XDG_CACHE_HOME") .. "/os_theme"
+  local os_theme_file = os.getenv("OS_APPEARANCE_FILE") or os.getenv("XDG_CACHE_HOME") .. "/os_theme"
   vim.fn.system("grep 'dark' " .. os_theme_file)
   return vim.v.shell_error == 1 and "light" or "dark"
 end
