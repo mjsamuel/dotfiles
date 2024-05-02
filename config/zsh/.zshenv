@@ -22,12 +22,12 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn/v6"
+export DOTFILES_FOLDER="$HOME/Developer/dotfiles/"
 
 # Path
-export PATH="$HOME/Developer/dotfiles/scripts\
+export PATH="$PATH\
+:$DOTFILES_FOLDER/scripts/bin\
 :/opt/apache-maven/bin\
 :$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME/bin\
-:$GOPATH/bin\
-:$PATH
-"
+:$GOPATH/bin"
