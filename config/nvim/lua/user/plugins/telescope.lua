@@ -15,8 +15,8 @@ function M.config()
     defaults = {
       -- functional
       vimgrep_arguments = { "rg", "--color=never", "--no-heading", "--with-filename", "--line-number", "--column", "--smart-case", },
-      sorting_strategy = "ascending",
       file_ignore_patterns = { ".git/", "node_modules" },
+      sorting_strategy = "ascending",
       mappings = {
         i = { ["<Tab>"] = require("telescope.actions.layout").toggle_preview, },
       },
@@ -27,6 +27,8 @@ function M.config()
       winblend = 0,
     },
     pickers = {
+      find_files = vim.tbl_extend("force", telescopeDefaultTheme, { hidden = true }),
+      live_grep = vim.tbl_extend("force", telescopeDefaultTheme, { preview = { hide_on_startup = false }, }),
       buffers = vim.tbl_extend("force", telescopeDefaultTheme, {
         show_all_buffers = true,
         ignore_current_buffer = true,
@@ -35,10 +37,8 @@ function M.config()
           i = { [";"] = "delete_buffer" },
         },
       }),
+      help_tags = vim.tbl_extend("force", telescopeDefaultTheme, { preview = { hide_on_startup = false }, }),
       diagnostics = telescopeDefaultTheme,
-      find_files = vim.tbl_extend("force", telescopeDefaultTheme, { hidden = true }),
-      help_tags = telescopeDefaultTheme,
-      live_grep = telescopeDefaultTheme,
       lsp_implementations = vim.tbl_extend("force", telescopeDefaultTheme, { show_line = false }),
       lsp_references = vim.tbl_extend("force", telescopeDefaultTheme, { show_line = false }),
       registers = telescopeDefaultTheme,
