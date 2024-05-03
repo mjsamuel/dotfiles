@@ -75,7 +75,3 @@ apt_installed_packages:
   - unzip
   - wget
   - zsh
-
-fnm_build:
-  arm: arm32
-  aarch64: arm64
