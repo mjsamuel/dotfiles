@@ -25,11 +25,14 @@
 - block:
     - ansible.builtin.import_tasks:
         file: "lazygit.yml"
-      tags: ["lazygit"]
+      tags: ["lazygit", "lg"]
     - ansible.builtin.import_tasks:
         file: "eza.yml"
-      tags: ["eza"]
+      tags: ["eza", "exa"]
     - ansible.builtin.import_tasks:
         file: "bat.yml"
       tags: ["bat"]
+    - ansible.builtin.import_tasks:
+        file: "fzf.yml"
+      tags: ["fzf"]
   when: ansible_os_family != "Darwin"

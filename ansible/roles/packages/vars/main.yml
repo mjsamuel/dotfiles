@@ -55,11 +55,9 @@ mas_installed_apps:
   - { id: 1475387142, name: "Tailscale (1.48.2)" }
 
 apt_installed_packages:
-  - bat
   - curl
   - fd-find
   - ffmpeg
-  - fzf
   - git
   - imagemagick
   - iputils-ping

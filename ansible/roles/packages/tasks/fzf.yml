@@ -1,0 +1,41 @@
+- name: fzf retrieve release info
+  uri:
+    url: https://api.github.com/repos/junegunn/fzf/releases/latest
+    return_content: true
+  register: response
+
+- name: fzf set release facts
+  set_fact:
+    fzf_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+    fzf_download_url: "{{ release.browser_download_url }}"
+  vars:
+    architecture: >-
+      {{
+        {
+          "x86_64": "amd64",
+          "aarch64": "arm64"
+        }[ansible_architecture] | default(ansible_architecture)
+      }}
+    pattern: ".*-{{ ansible_system | lower }}_{{ architecture }}.tar.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: fzf ensure directory exists
+  file:
+    path: "{{ fzf_path }}"
+    state: directory
+
+- name: fzf download release
+  ansible.builtin.unarchive:
+    src: "{{ fzf_download_url }}"
+    dest: "{{ fzf_path }}"
+    remote_src: yes
+  register: download
+  ignore_errors: true
+
+- name: fzf copy to bin
+  copy:
+    src: "{{ fzf_path }}/fzf"
+    dest: /usr/local/bin/fzf
+    mode: "0755"
+  become: true
+  when: not download.failed

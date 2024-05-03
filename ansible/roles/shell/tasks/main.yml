@@ -41,19 +41,6 @@
   loop_control:
     label: "{{ item.name }}"
 
-- block:
-    - name: ensure {{fzf_dir}} exists
-      file:
-        path: "{{ fzf_dir }}"
-        state: directory
-      become: true
-
-    - name: download fzf keybindings
-      ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/junegunn/fzf/master/shell/key-bindings.zsh
-        dest: "{{ fzf_dir }}/key-bindings.zsh"
-      become: true
-
 - name: set zsh as deafult shell
   user:
     name: "{{ ansible_env.USER }}"
