@@ -36,8 +36,8 @@ setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history fil
 setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
 unsetopt autocd beep notify
 
-# Load environment variables for brew and fnm
-command -v brew >/dev/null && eval "$(brew shellenv)" 
+# Load environment variables for tools
+command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
 command -v fnm >/dev/null && eval "$(fnm env)"
 command -v fzf >/dev/null && eval "$(fzf --zsh)"
 command -v go >/dev/null && eval "$(go env)"

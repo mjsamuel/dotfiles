@@ -16,9 +16,6 @@
           "aarch64": "arm64"
         }[ansible_architecture] | default('linux')
       }}
-    build: "{{ 'macos'
-      if ansible_os_family == 'Darwin'
-      else fnm_build[ansible_architecture] | default('linux') }}"
     pattern: "fnm-{{ build }}"
     release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
 
