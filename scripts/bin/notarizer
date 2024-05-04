@@ -4,7 +4,7 @@ NOTES_DIR="$HOME/Documents/notes"
 
 results="$(
 	find "$NOTES_DIR" -name "*.md" |
-		fzf --preview 'bat {}' --preview-window=right:50% --height=100% \
+		fzf --preview 'bat {} --color always --style plain' --preview-window=right:50% --height=100% \
 			--delimiter / --with-nth -1 --print-query \
 			--bind "ctrl-n:change-query($(date -I))"
 )"
