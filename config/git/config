@@ -5,6 +5,9 @@
 [includeIf "gitdir:~/Work/"]
     path = ~/Work/.gitconfig
 
+[includeIf "gitdir:/mnt/c/Work/"]
+    path = /mnt/c/Work/.gitconfig
+
 [init]
     defaultBranch = main
 
