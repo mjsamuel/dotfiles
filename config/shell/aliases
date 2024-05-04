@@ -2,35 +2,35 @@
 
 # misc
 alias \
-    c='clear' \
-    ls='eza' \
-    cat='bat' \
-    rtv='python3 -m rtv' \
-    tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
-    v='env TERM=wezterm nvim' \
-    b='brew' \
-    lg='lazygit' \
-    nb='newsboat' \
-    cc='changecolors'
+	c='clear' \
+	cat='bat' \
+	cc='changecolors' \
+	lg='lazygit' \
+	ls='eza' \
+	nb='newsboat' \
+	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
+	v='env TERM=wezterm nvim'
 
 # ssh
-alias \
-    s='ssh'
+s() {
+	selected=$(awk '/^Host / { print $2 }' ~/.ssh/config | fzf)
+	[ -n "$selected" ] && ssh "$selected"
+}
 
 # youtube-dl
 alias \
-    yt='yt-dlp --no-abort-on-error --embed-metadata -i' \
-    yta="yt-dlp -x -f bestaudio/best"
+	yt='yt-dlp --no-abort-on-error --embed-metadata -i' \
+	yta="yt-dlp -x -f bestaudio/best"
 
 # tmux
 alias \
-    t="tmux" \
-    ta="tmux attach" \
-    ts="tmux-sessionizer"
+	t="tmux" \
+	ta="tmux attach" \
+	ts="tmux-sessionizer"
 
 # docker \
 alias \
-    d='sudo docker' \
-    dc='d compose' \
-    dcc='d container' \
-    dp='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
+	d='sudo docker' \
+	dc='d compose' \
+	dC='d container' \
+	dp='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
