@@ -12,8 +12,8 @@ map gi focusInput
 map gp togglePinTab
 map <space>y copyCurrentUrl
 
-map t LinkHints.activateMode
-map t LinkHints.activateModeToOpenInNewTab
+map f LinkHints.activateMode
+map F LinkHints.activateModeToOpenInNewTab
 
 map ss Vomnibar.activateBookmarksInNewTab
 map sb Vomnibar.activateTabSelection
