@@ -25,8 +25,6 @@ end, { nargs = 0 })
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end) -- [D]iagnostics
 keymap.set("n", "K", function() vim.lsp.buf.hover() end)
-keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true })
-keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true })
 keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)                          -- [g]o to [D]eclaration
 keymap.set("n", "gd", function() vim.lsp.buf.definition() end)                           -- [g]o to [d]efinition
 keymap.set("n", "gi", function() require("telescope.builtin").lsp_implementations() end) -- [g]o to [i]mplementation
