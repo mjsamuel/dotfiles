@@ -3,11 +3,11 @@ local keymap = vim.keymap
 keymap.set({ "n", "v" }, " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
-keymap.set("n", "s.", "<cmd>Telescope resume<cr>")                       -- [s]earch repeat
-keymap.set("n", "sb", "<cmd>Telescope buffers<cr>")                      -- [s]earch [b]uffers
-keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>")                  -- [s]earch [d]iagnostics
-keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")                    -- [s]earch [h]elp
-keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>")                    -- [s]earch using [r]ipgrep
+keymap.set("n", "s.", "<cmd>Telescope resume<cr>")         -- [s]earch repeat
+keymap.set("n", "sb", "<cmd>Telescope buffers<cr>")        -- [s]earch [b]uffers
+keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>")    -- [s]earch [d]iagnostics
+keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")      -- [s]earch [h]elp
+keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>")      -- [s]earch using [r]ipgrep
 keymap.set("n", "ss", "<cmd>Telescope find_files<cr>")
 keymap.set("v", "sr", '"zy:Telescope live_grep<cr><C-r>z') -- [s]earch using [r]ipgrep with visual selection
 
@@ -23,8 +23,7 @@ vim.api.nvim_create_user_command("Diff", function()
 end, { nargs = 0 })
 
 -- lsp
-keymap.set("n", "D", function() vim.diagnostic.open_float() end) -- [D]iagnostics
-keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+keymap.set("n", "D", function() vim.diagnostic.open_float() end)                         -- [D]iagnostics
 keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)                          -- [g]o to [D]eclaration
 keymap.set("n", "gd", function() vim.lsp.buf.definition() end)                           -- [g]o to [d]efinition
 keymap.set("n", "gi", function() require("telescope.builtin").lsp_implementations() end) -- [g]o to [i]mplementation
