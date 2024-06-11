@@ -23,8 +23,15 @@ return {
       end,
     },
   },
+  {
+    "stevearc/oil.nvim",
+    cmd = "Oil",
+    opts = {
+      default_file_explorer = true,
+      view_options = { show_hidden = true },
+    },
+  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
-  { "j-hui/fidget.nvim",  event = "LspAttach", opts = {} },
-  { "prichrd/netrw.nvim", lazy = false,        opts = {} },
+  { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
 }

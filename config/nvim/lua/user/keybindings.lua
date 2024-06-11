@@ -78,3 +78,6 @@ keymap.set("i", "<Right>", function()
     vim.api.nvim_feedkeys(right_key, "n", false)
   end
 end)
+
+-- misc
+keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
