@@ -22,8 +22,6 @@ return {
         "lemminx",
         "lua-language-server",
         "marksman",
-        "ocaml-lsp",
-        "openscad-lsp",
         "pyright",
         "tailwindcss-language-server",
         "typescript-language-server",
@@ -31,7 +29,6 @@ return {
         "cspell",
         -- formatters
         "black",
-        "ocamlformat",
         "prettierd",
         "shfmt",
         "sql-formatter",
