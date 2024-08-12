@@ -5,4 +5,6 @@ uname -r | grep 'Microsoft' >/dev/null 2>&1 || return
 export PATH="/mnt/c/Windows/system32/:$PATH"
 
 alias \
-	shutdown="/mnt/c/Windows/system32/shutdown.exe /s /f /t 0 "
+	shutdown="/mnt/c/Windows/system32/shutdown.exe /s /f /t 0 " \
+	reboot="powershell.exe Restart-Computer" \
+	open="/usr/local/bin/wsl-open.sh"
