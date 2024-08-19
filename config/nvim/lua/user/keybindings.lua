@@ -79,5 +79,10 @@ keymap.set("i", "<Right>", function()
   end
 end)
 
+-- guard against typos
+vim.api.nvim_create_user_command("W", function() vim.cmd(":w") end, { nargs = 0 })
+vim.api.nvim_create_user_command("Wa", function() vim.cmd(":wa") end, { nargs = 0 })
+vim.api.nvim_create_user_command("WA", function() vim.cmd(":wa") end, { nargs = 0 })
+
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
