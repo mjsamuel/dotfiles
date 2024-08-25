@@ -22,25 +22,38 @@ end
 
 local segments = {}
 
-segments.file_info = function()
-  local utils = require("heirline.utils")
-  return utils.insert({
-    init = function(self)
-      self.filename = vim.api.nvim_buf_get_name(0)
-      self.filetype = vim.bo.filetype
+local show_full_path = false
+segments.file_info = {
+  init = function(self)
+    self.filename = vim.api.nvim_buf_get_name(0)
+    self.filetype = vim.bo.filetype
+  end,
+  on_click = {
+    callback = function(self, _, _, button)
+      if button == "l" then
+        show_full_path = not show_full_path
+        vim.cmd("redrawstatus")
+      elseif button == "r" then
+        local file_path = vim.fn.fnamemodify(self.filename, ":p:.")
+        vim.cmd('let @+="' .. file_path .. '"')
+        vim.print("Copied filepath to system clipboard")
+      end
     end,
-  }, {
+    name = "handle_filename_click",
+  },
+  {
     -- file path
     flexible = 1,
     hl = { fg = "comment", bg = "background", italic = true },
     {
       provider = function(self)
-        local file_path_short = vim.fn.fnamemodify(self.filename, ":.:h")
-        return string.format("%s/ ", vim.fn.pathshorten(file_path_short))
+        local file_path = vim.fn.fnamemodify(self.filename, ":.:h")
+        return string.format("%s/ ", show_full_path and file_path or vim.fn.pathshorten(file_path))
       end,
     },
     NULL,
-  }, {
+  },
+  {
     -- file icon
     {
       condition = function(self) return self.filename ~= "" end,
@@ -57,7 +70,8 @@ segments.file_info = function()
       { provider = function() return "" end },
       SPACE,
     },
-  }, {
+  },
+  {
     -- file name
     provider = function(self)
       local file_name = vim.fn.fnamemodify(self.filename, ":t")
@@ -70,44 +84,41 @@ segments.file_info = function()
       end
     end,
     hl = function() return { fg = "foreground", bg = "background", italic = vim.bo.modified } end,
-  })
-end
+  }
+}
 
-segments.diagnostics = function()
-  local function create_diagnostic_segment(severity)
-    return {
-      condition = function(self) return self.diagnostics[severity] > 0 end,
-      {
-        provider = function(self) return self.icons[severity:gsub("^%l", string.upper)] end,
-        hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
-      },
-      SPACE,
-      {
-        provider = function(self) return self.diagnostics[severity] end,
-      },
-      SPACE,
-    }
-  end
-
+local function create_diagnostic_segment(severity)
   return {
-    static = {
-      icons = require("user.misc.opts").signs,
+    condition = function(self) return self.diagnostics[severity] > 0 end,
+    {
+      provider = function(self) return self.icons[severity:gsub("^%l", string.upper)] end,
+      hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
     },
-    init = function(self)
-      self.diagnostics = {
-        error = #vim.diagnostic.get(nil, { severity = "error" }),
-        warn = #vim.diagnostic.get(nil, { severity = "warn" }),
-        hint = #vim.diagnostic.get(nil, { severity = "hint" }),
-        info = #vim.diagnostic.get(nil, { severity = "info" }),
-      }
-    end,
-    update = { "DiagnosticChanged", "BufEnter" },
-    create_diagnostic_segment("hint"),
-    create_diagnostic_segment("info"),
-    create_diagnostic_segment("warn"),
-    create_diagnostic_segment("error"),
+    SPACE,
+    {
+      provider = function(self) return self.diagnostics[severity] end,
+    },
+    SPACE,
   }
 end
+segments.diagnostics = {
+  static = {
+    icons = require("user.misc.opts").signs,
+  },
+  init = function(self)
+    self.diagnostics = {
+      error = #vim.diagnostic.get(nil, { severity = "error" }),
+      warn = #vim.diagnostic.get(nil, { severity = "warn" }),
+      hint = #vim.diagnostic.get(nil, { severity = "hint" }),
+      info = #vim.diagnostic.get(nil, { severity = "info" }),
+    }
+  end,
+  update = { "DiagnosticChanged", "BufEnter" },
+  create_diagnostic_segment("hint"),
+  create_diagnostic_segment("info"),
+  create_diagnostic_segment("warn"),
+  create_diagnostic_segment("error"),
+}
 
 M.config = function()
   local utils = require("heirline.utils")
@@ -121,9 +132,9 @@ M.config = function()
   require("heirline").setup({
     statusline = {
       SPACE,
-      segments.file_info(),
+      segments.file_info,
       ALIGN,
-      segments.diagnostics(),
+      segments.diagnostics,
       SPACE,
     },
     opts = { colors = setup_colors() },
