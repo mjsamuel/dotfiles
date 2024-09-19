@@ -14,7 +14,7 @@ function M.config()
     function(server_name) -- default handler
       lspconfig[server_name].setup({ capabilities = capabilities })
     end,
-    ["tsserver"] = function()
+    ["ts_ls"] = function()
       -- typescript-tools is used instead
     end,
     ["tailwindcss"] = function()
