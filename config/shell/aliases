@@ -19,14 +19,13 @@ s() {
 
 # youtube-dl
 alias \
-	yt='yt-dlp --no-abort-on-error --embed-metadata -i' \
-	yta="yt-dlp -x -f bestaudio/best"
+	dl='yt-dlp --no-abort-on-error --embed-metadata -i --write-thumbnail' \
+	dla="yt-dlp -x -f bestaudio/best"
 
 # tmux
 alias \
 	t="tmux" \
-	ta="tmux attach" \
-	ts="tmux-sessionizer"
+	ta="tmux attach"
 
 # docker \
 alias \
