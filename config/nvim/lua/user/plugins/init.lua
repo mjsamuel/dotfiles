@@ -31,6 +31,11 @@ return {
       view_options = { show_hidden = true },
     },
   },
+  {
+    "chrisgrieser/nvim-early-retirement",
+    config = true,
+    event = "VeryLazy",
+  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
