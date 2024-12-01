@@ -46,9 +46,11 @@ command -v opam >/dev/null && eval "$(opam env)"
 # keybindings
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
-bindkey '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line # Edit line in nvim
 bindkey -s '^[S' "tmux-sessionizer\n"
 bindkey -s '^[N' "notarizer\n"
+# Edit current command in nvim
+bindkey -M viins '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
+bindkey -M vicmd '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
