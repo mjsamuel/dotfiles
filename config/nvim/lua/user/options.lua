@@ -42,3 +42,5 @@ vim.g.omni_sql_no_default_maps = 1
 
 vim.g.editorconfig = true
 vim.g.markdown_recommended_style = 0
+
+vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
