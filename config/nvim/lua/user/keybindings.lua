@@ -78,6 +78,7 @@ keymap.set("i", "<Right>", function()
     vim.api.nvim_feedkeys(right_key, "n", false)
   end
 end)
+keymap.set({ "n", "v" }, "<Leader>cc", ":CopilotChat<cr>") -- [C]opilot [C]hat
 
 -- guard against typos
 vim.api.nvim_create_user_command("W", function() vim.cmd(":w") end, { nargs = 0 })
