@@ -17,6 +17,7 @@ keymap.set("n", "]g", function() require("gitsigns").next_hunk() end, { silent =
 keymap.set("v", "gr", function() require("gitsigns").reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end) -- [g]it [r]eset
 keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end) -- [g]it [s]tage
 keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ ignore_whitespace = true, full = true }) end)
+vim.api.nvim_create_user_command("Blame", function() require("gitsigns").blame() end, { nargs = 0 })
 vim.api.nvim_create_user_command("Diff", function()
   require("gitsigns").diffthis(nil, { split = "botright" })
   vim.cmd("wincmd w")
@@ -32,8 +33,12 @@ keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)             
 keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)               -- [f]ormat
 
 -- code [r]efactoring/fixing
-keymap.set("n", "<Leader>rn", function() vim.lsp.buf.rename() end) -- re[n]ame
-keymap.set({ "n", "v" }, "<Leader>rr", function() vim.lsp.buf.code_action() end)
+keymap.set("n", "<Leader>rr", function() vim.lsp.buf.rename() end) -- [r]ename
+keymap.set({ "n", "v" }, "<Leader>ra", function()                  -- [a]ction
+  -- in case telescope has not lazily loaded
+  require("telescope")
+  vim.lsp.buf.code_action()
+end)
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
@@ -69,21 +74,22 @@ end
 keymap.set("n", "gm", function() make() end, { silent = true })
 
 -- copilot
-local right_key = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
+local RIGHT_KEY = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
 keymap.set("i", "<Right>", function()
   local cp = require("copilot.suggestion")
-  if cp.is_visible() then
-    cp.accept()
-  else
-    vim.api.nvim_feedkeys(right_key, "n", false)
+  if not cp.is_visible() then
+    vim.api.nvim_feedkeys(RIGHT_KEY, "n", false)
+    return
   end
+  cp.accept()
 end)
-keymap.set({ "n", "v" }, "<Leader>cc", ":CopilotChat<cr>") -- [C]opilot [C]hat
+vim.api.nvim_create_user_command("Chat", ":CopilotChat<cr>", { nargs = 0, range = true })
 
 -- guard against typos
 vim.api.nvim_create_user_command("W", function() vim.cmd(":w") end, { nargs = 0 })
 vim.api.nvim_create_user_command("Wa", function() vim.cmd(":wa") end, { nargs = 0 })
 vim.api.nvim_create_user_command("WA", function() vim.cmd(":wa") end, { nargs = 0 })
+vim.api.nvim_create_user_command("Wqa", function() vim.cmd(":wqa") end, { nargs = 0 })
 
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
