@@ -56,18 +56,17 @@ segments.file_info = {
   {
     -- file icon
     {
-      condition = function(self) return self.filename ~= "" end,
       init = function(self)
+        if self.filename == "" then
+          self.icon = ""
+          return
+        end
+
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ":e")
         self.icon = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
       end,
       { provider = function(self) return self.icon end },
-      SPACE,
-    },
-    {
-      condition = function(self) return self.filename == "" end,
-      { provider = function() return "" end },
       SPACE,
     },
   },

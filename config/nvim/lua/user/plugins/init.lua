@@ -5,7 +5,10 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    opts = { diff_opts = { vertical = false } },
+    opts = {
+      diff_opts = { vertical = false },
+      preview_config = { border = 'rounded', },
+    },
   },
   {
     "kylechui/nvim-surround",
