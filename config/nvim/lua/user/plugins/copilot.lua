@@ -17,7 +17,13 @@ table.insert(M, suggestions)
 
 local chat = {
   "CopilotC-Nvim/CopilotChat.nvim",
-  dependencies = { "zbirenbaum/copilot.lua" },
+  dependencies = {
+    "zbirenbaum/copilot.lua",
+    {
+      "MeanderingProgrammer/render-markdown.nvim",
+      opts = { file_types = { 'copilot-chat' } }
+    }
+  },
   build = "make tiktoken",
   cmd = "CopilotChat",
   config = function()
@@ -38,12 +44,14 @@ local chat = {
         Wording = "Please improve the grammar and wording of the following text.",
         Concise = "Please rewrite the following text to make it more concise.",
       },
-      question_header = " ",
-      answer_header = " ",
-      error_header = " ",
+      highlight_headers = false,
+      separator = "",
+      question_header = "#  You",
+      answer_header = "##  Copilot",
+      error_header = "##  Error",
+      show_help = false,
       show_folds = false,
       auto_follow_cursor = true,
-      auto_insert_mode = true
     })
 
     vim.api.nvim_create_autocmd('BufEnter', {
