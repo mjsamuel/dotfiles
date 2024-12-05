@@ -1,34 +1,24 @@
-local M = {}
-
-local suggestions = {
-  "zbirenbaum/copilot.lua",
-  cmd = "Copilot",
-  event = "InsertEnter",
-  cond = function() return vim.fn.executable("node") == 1 end,
-  opts = {
-    panel = { enabled = false },
-    suggestion = {
-      auto_trigger = true,
-      keymap = { accept = false },
-    },
-  }
-}
-table.insert(M, suggestions)
-
-local chat = {
-  "CopilotC-Nvim/CopilotChat.nvim",
-  dependencies = {
+local M = {
+  {
     "zbirenbaum/copilot.lua",
-    {
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = { file_types = { 'copilot-chat' } }
+    cmd = "Copilot",
+    event = "InsertEnter",
+    cond = function() return vim.fn.executable("node") == 1 end,
+    opts = {
+      panel = { enabled = false },
+      suggestion = {
+        auto_trigger = true,
+        keymap = { accept = false },
+      },
     }
   },
-  build = "make tiktoken",
-  cmd = "CopilotChat",
-  config = function()
-    require("CopilotChat").setup({
-      prompts = {
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    dependencies = "zbirenbaum/copilot.lua",
+    build = "make tiktoken",
+    cmd = "CopilotChat",
+    config = function()
+      local prompts = {
         -- Code related prompts
         Explain = "Please explain how the following code works.",
         Review = "Please review the following code and provide suggestions for improvement.",
@@ -43,26 +33,29 @@ local chat = {
         Spelling = "Please correct any grammar and spelling errors in the following text.",
         Wording = "Please improve the grammar and wording of the following text.",
         Concise = "Please rewrite the following text to make it more concise.",
-      },
-      highlight_headers = false,
-      separator = "",
-      question_header = "#  You",
-      answer_header = "##  Copilot",
-      error_header = "##  Error",
-      show_help = false,
-      show_folds = false,
-      auto_follow_cursor = true,
-    })
+      }
 
-    vim.api.nvim_create_autocmd('BufEnter', {
-      pattern = 'copilot-*',
-      callback = function()
-        vim.opt_local.number = false
-        vim.opt_local.relativenumber = false
-      end
-    })
-  end
+      require("CopilotChat").setup({
+        prompts = prompts,
+        highlight_headers = false,
+        separator = "",
+        question_header = "#  You",
+        answer_header = "##  Copilot",
+        error_header = "###  Error",
+        show_help = false,
+        show_folds = false,
+        auto_follow_cursor = true,
+      })
+
+      vim.api.nvim_create_autocmd('BufEnter', {
+        pattern = 'copilot-*',
+        callback = function()
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
+        end
+      })
+    end
+  }
 }
-table.insert(M, chat)
 
 return M

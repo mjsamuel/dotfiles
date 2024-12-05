@@ -7,4 +7,4 @@ insert_final_newline = true
 [*.{lua,json}]
 indent_style = space
 indent_size = 2
-
+quote_style = double

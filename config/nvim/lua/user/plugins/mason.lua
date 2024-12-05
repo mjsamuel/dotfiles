@@ -11,7 +11,7 @@ return {
         },
       })
 
-      local tools = {
+      local packages = {
         -- lsp
         "bash-language-server",
         "css-lsp",
@@ -36,15 +36,14 @@ return {
       }
 
       local mr = require("mason-registry")
-      for _, tool in ipairs(tools) do
-        local p = mr.get_package(tool)
-        if not p:is_installed() then p:install() end
+      for _, name in ipairs(packages) do
+        local package = mr.get_package(name)
+        if not package:is_installed() then package:install() end
       end
     end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = "mason.nvim",
-    opts = {},
   },
 }

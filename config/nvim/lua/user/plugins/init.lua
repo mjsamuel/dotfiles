@@ -42,4 +42,18 @@ return {
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "copilot-chat" },
+    opts = {
+      file_types = { "markdown", "copilot-chat" },
+      overrides = {
+        filetype = {
+          ["copilot-chat"] = {
+            heading = { position = "right" }
+          },
+        }
+      }
+    }
+  }
 }
