@@ -25,8 +25,6 @@ end, { nargs = 0 })
 
 -- lsp
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)                         -- [D]iagnostics
-keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)                          -- [g]o to [D]eclaration
-keymap.set("n", "gd", function() vim.lsp.buf.definition() end)                           -- [g]o to [d]efinition
 keymap.set("n", "gi", function() require("telescope.builtin").lsp_implementations() end) -- [g]o to [i]mplementation
 keymap.set("n", "gr", function() require("telescope.builtin").lsp_references() end)      -- [g]o to [r]eferences
 keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)                      -- [g]o to [t]ype definition
