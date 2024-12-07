@@ -15,16 +15,18 @@ homebrew_installed_packages:
   - git
   - gnu-tar
   - imagemagick
+  - jordanbaird-ice
   - jq # json formatter & other utils
   - lazygit # 'git' gui
+  - luarocks
   - mosh
   - neofetch
   - newsboat # rss reader
+  - openscad
   - ripgrep # faster 'grep'
   - rsync
   - silicon # code screenshot tool
   - speedtest
-  - stow
   - yt-dlp
   - zsh
 
