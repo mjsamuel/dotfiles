@@ -27,12 +27,12 @@ return {
         "typescript-language-server",
         -- linters
         "cspell",
+        "checkmake",
         -- formatters
         "black",
         "prettierd",
         "shfmt",
-        "sql-formatter",
-        "stylua",
+        "sql-formatter"
       }
 
       local mr = require("mason-registry")
@@ -46,4 +46,8 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = "mason.nvim",
   },
+  {
+    "jay-babu/mason-null-ls.nvim",
+    dependencies = "mason.nvim",
+  }
 }
