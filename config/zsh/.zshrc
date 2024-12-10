@@ -3,7 +3,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Plugins
+### Plugins
 ZSH_PLUGIN_DIR="/usr/local/zsh/plugins"
 source "${ZSH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme"
@@ -14,7 +14,7 @@ for file in "$XDG_CONFIG_HOME/shell/"*; do
     source "$file"
 done
 
-# Variables/Options
+### Variables/Options
 export HISTSIZE=10000
 export SAVEHIST=10000
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
@@ -43,7 +43,7 @@ command -v fzf >/dev/null && eval "$(fzf --zsh)"
 command -v go >/dev/null && eval "$(go env)"
 command -v opam >/dev/null && eval "$(opam env)"
 
-# keybindings
+### Keybindings
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
 bindkey -s '^[S' "tmux-sessionizer\n"
@@ -66,6 +66,13 @@ zle-line-init() {
 zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+### Completions
+zstyle ':completion:*' menu select # Enable menu selection
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # Highlight the current autocomplete options
+# Disable SSH completion from known_hosts and enforce it to use ~/.ssh/config
+zstyle ':completion:*:ssh:*' hosts $(awk '/^Host / {print $2}' ~/.ssh/config)
 
 autoload -Uz compinit
 compinit
