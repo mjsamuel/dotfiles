@@ -44,13 +44,16 @@ return {
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "copilot-chat" },
+    cmd = "RenderMarkdown",
     opts = {
+      enabled = false, -- disable render by default
       file_types = { "markdown", "copilot-chat" },
       overrides = {
         filetype = {
           ["copilot-chat"] = {
-            heading = { position = "right" }
+            heading = { position = "right" },
+            render_modes = { 'i', 'n', 'c', 't' },
+            anti_conceal = { enabled = false }
           },
         }
       }
