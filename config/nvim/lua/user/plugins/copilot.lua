@@ -39,17 +39,19 @@ local M = {
         prompts = prompts,
         highlight_headers = false,
         separator = "",
-        question_header = "#  You",
-        answer_header = "##  Copilot",
-        error_header = "###  Error",
+        question_header = "#   You",
+        answer_header = "##   Copilot",
+        error_header = "###   Error",
         show_help = false,
         show_folds = false,
         auto_follow_cursor = true,
       })
 
-      vim.api.nvim_create_autocmd('BufEnter', {
+      vim.api.nvim_create_autocmd("BufEnter", {
         pattern = 'copilot-*',
         callback = function()
+          vim.cmd('RenderMarkdown enable')
+          vim.opt_local.signcolumn = "no"
           vim.opt_local.number = false
           vim.opt_local.relativenumber = false
         end
