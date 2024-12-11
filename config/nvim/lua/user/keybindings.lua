@@ -3,13 +3,17 @@ local keymap = vim.keymap
 keymap.set({ "n", "v" }, " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
-keymap.set("n", "s.", "<cmd>Telescope resume<cr>")         -- [s]earch repeat
-keymap.set("n", "sb", "<cmd>Telescope buffers<cr>")        -- [s]earch [b]uffers
-keymap.set("n", "sd", "<cmd>Telescope diagnostics<cr>")    -- [s]earch [d]iagnostics
-keymap.set("n", "sh", "<cmd>Telescope help_tags<cr>")      -- [s]earch [h]elp
-keymap.set("n", "sr", "<cmd>Telescope live_grep<cr>")      -- [s]earch using [r]ipgrep
-keymap.set("n", "ss", "<cmd>Telescope find_files<cr>")
-keymap.set("v", "sr", '"zy:Telescope live_grep<cr><C-r>z') -- [s]earch using [r]ipgrep with visual selection
+keymap.set("n", "s.", function() require("telescope.builtin").resume() end)      -- [s]earch repeat
+keymap.set("n", "sb", function() require("telescope.builtin").buffers() end)     -- [s]earch [b]uffers
+keymap.set("n", "sd", function() require("telescope.builtin").diagnostics() end) -- [s]earch [d]iagnostics
+keymap.set("n", "sh", function() require("telescope.builtin").help_tags() end)   -- [s]earch [h]elp
+keymap.set("n", "sr", function()                                                 -- [s]earch using [r]ipgrep
+  require('telescope').extensions.live_grep_args.live_grep_args()
+end)
+keymap.set("n", "ss", function() require("telescope.builtin").find_files() end)
+keymap.set("v", "sr", function() -- [s]earch using [r]ipgrep with visual selection
+  require("telescope-live-grep-args.shortcuts").grep_visual_selection()
+end)
 
 -- git
 keymap.set("n", "[g", function() require("gitsigns").prev_hunk() end, { silent = true })

@@ -4,6 +4,7 @@ local M = {
   dependencies = {
     "nvim-telescope/telescope-ui-select.nvim",
     "MunifTanjim/nui.nvim",
+    "nvim-telescope/telescope-live-grep-args.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
   },
 }
@@ -48,6 +49,12 @@ function M.config()
       git_bcommits = telescopeDefaultTheme,
     },
     extensions = {
+      live_grep_args = vim.tbl_extend("force", telescopeDefaultTheme, {
+        auto_quoting = true,
+        mappings = {
+          i = { ["<C-space>"] = require("telescope-live-grep-args.actions").quote_prompt({ postfix = " --iglob " }) },
+        }
+      }),
       fzf = {
         fuzzy = true,
         override_generic_sorter = true,
@@ -60,7 +67,7 @@ function M.config()
     },
   })
 
-  local extension = { "fzf", "ui-select" }
+  local extension = { "fzf", "ui-select", "live_grep_args" }
   for _, e in ipairs(extension) do
     telescope.load_extension(e)
   end
