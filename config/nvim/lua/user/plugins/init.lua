@@ -38,6 +38,16 @@ return {
     "chrisgrieser/nvim-early-retirement",
     config = true,
     event = "VeryLazy",
+    opts = { retirementAgeMins = 20 },
+  },
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+      },
+    },
   },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
