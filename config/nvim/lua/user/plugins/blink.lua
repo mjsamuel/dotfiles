@@ -10,16 +10,18 @@ local M = {
       nerd_font_variant = 'mono'
     },
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer' },
+      default = { 'lsp', 'path', 'snippets' },
     },
     completion = {
-      accept = { auto_brackets = { enabled = true } },
+      trigger = {
+        show_on_insert_on_trigger_character = false,
+      },
       menu = {
         border = "rounded",
         winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
-      }
+      },
     },
-    signature = { enabled = true }
+    -- signature = { enabled = true } -- experimental feature
   },
   opts_extend = { "sources.default" }
 }
