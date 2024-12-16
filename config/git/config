@@ -1,6 +1,6 @@
 [user]
     name = mjsamuel
-    email = matthew.samuel@outlook.com.au
+    email = hello@mjsamuel.com
     signingkey = ~/.ssh/id_rsa.pub
 
 [gpg]
