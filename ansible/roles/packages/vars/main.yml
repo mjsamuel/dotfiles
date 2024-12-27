@@ -43,7 +43,6 @@ homebrew_cask_apps:
   - iina
   - transmission
   - visual-studio-code
-  - wezterm
 
 mas_installed_apps:
   - { id: 1438243180, name: "Dark Reader for Safari (1.4.6)" }

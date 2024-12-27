@@ -30,6 +30,7 @@
       loop: "{{ find.files }}"
       loop_control:
         label: "{{ item.path }}"
+  tags: ["config"]
 
 - name: install zsh plugins
   git:
@@ -46,10 +47,3 @@
     name: "{{ ansible_env.USER }}"
     shell: "{{ zsh_location[ansible_os_family] }}"
   become: true
-
-- name: apply wezterm terminfo
-  shell: |
-    tempfile=$(mktemp) \
-      && curl -o "$tempfile" https://raw.githubusercontent.com/wez/wezterm/master/termwiz/data/wezterm.terminfo \
-      && tic -x -o ~/.terminfo "$tempfile" \
-      && rm "$tempfile"

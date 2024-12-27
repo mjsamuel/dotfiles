@@ -9,7 +9,7 @@ alias \
 	ls='eza' \
 	nb='newsboat' \
 	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
-	v='env TERM=wezterm nvim'
+	v='nvim'
 
 # ssh
 s() {

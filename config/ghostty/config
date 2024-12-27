@@ -1,0 +1,18 @@
+font-size = 20
+adjust-cell-height = 10%
+theme = light:rose-pine-dawn,dark:rose-pine
+cursor-style-blink = false
+cursor-click-to-move = true
+mouse-hide-while-typing = true
+scrollback-limit = 0
+window-padding-x = 0
+window-padding-y = 0
+
+keybind = super+f=toggle_fullscreen
+keybind = super+r=reload_config
+
+term = xterm-ghostty
+
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+macos-titlebar-style = hidden
