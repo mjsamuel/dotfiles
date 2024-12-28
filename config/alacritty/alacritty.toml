@@ -1,0 +1,32 @@
+[general]
+import = ["rose-pine.toml"]
+live_config_reload = false
+
+[window]
+title = "alacritty"
+
+[font]
+normal.family = "JetBrainsMono Nerd Font Mono"
+bold.family = "JetBrainsMono Nerd Font Mono"
+italic.family = "JetBrainsMono Nerd Font Mono"
+bold_italic.family = "JetBrainsMono Nerd Font Mono"
+size = 15.0
+
+[scrolling]
+history = 0
+
+[terminal]
+shell.program = "wsl"
+shell.args = ["--cd", "~"]
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [
+    { key = "v", mods = "Control", action = "Paste"},
+    { key = "+", mods = "Control|Shift", action = "IncreaseFontSize"},
+    { key = "=", mods = "Control", action = "ResetFontSize"},
+    { key = "F11", action = "ToggleFullscreen"},
+    { key = "Enter", mods = "Alt", action = "ReceiveChar"}
+]
