@@ -13,7 +13,7 @@ selected="$(
 selected_name=$(basename "$selected" | tr . _)
 
 tmux_running=$(pgrep tmux)
-session_exists=$(tmux list-sessions | grep "$selected_name")
+session_exists=$(tmux list-sessions | grep "^${selected_name}:")
 if [ -z "$tmux_running" ] || [ -z "$session_exists" ]; then
 	tmux new-session -ds "$selected_name" -c "$selected"
 fi
