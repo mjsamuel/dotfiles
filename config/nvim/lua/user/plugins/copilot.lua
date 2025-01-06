@@ -36,6 +36,7 @@ local M = {
       }
 
       require("CopilotChat").setup({
+        model = "claude-3.5-sonnet",
         prompts = prompts,
         highlight_headers = false,
         separator = "",
