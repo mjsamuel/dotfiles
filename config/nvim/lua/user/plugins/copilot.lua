@@ -40,12 +40,13 @@ local M = {
         prompts = prompts,
         highlight_headers = false,
         separator = "",
-        question_header = "#   You",
+        question_header = "#   " .. (vim.env.USER or "User"),
         answer_header = "##   Copilot",
         error_header = "###   Error",
         show_help = false,
         show_folds = false,
         auto_follow_cursor = true,
+        window = { width = 0.4 },
       })
 
       vim.api.nvim_create_autocmd("BufEnter", {
