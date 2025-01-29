@@ -14,6 +14,7 @@ case "$pane_current_command" in
 bat) echo '#[fg=blue]󰄛#[default]' ;;
 docker) echo '#[fg=blue]#[default]' ;;
 go) echo '#[fg=blue]#[default]' ;;
+air) echo '#[fg=blue]#[default]' ;;
 java) echo '#[fg=red]#[default]' ;;
 jira) echo '#[fg=blue]󰌃#[default]' ;;
 man) echo '#[fg=blue]󰈙#[default]' ;;
