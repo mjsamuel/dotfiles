@@ -90,7 +90,7 @@ local function create_diagnostic_segment(severity)
   return {
     condition = function(self) return self.diagnostics[severity] > 0 end,
     {
-      provider = function(self) return self.icons[severity:gsub("^%l", string.upper)] end,
+      provider = function(self) return "" end,
       hl = function() return { fg = "diagnostic_" .. severity, bg = "background" } end,
     },
     SPACE,
@@ -101,9 +101,6 @@ local function create_diagnostic_segment(severity)
   }
 end
 segments.diagnostics = {
-  static = {
-    icons = require("user.misc.opts").signs,
-  },
   init = function(self)
     self.diagnostics = {
       error = #vim.diagnostic.get(nil, { severity = "error" }),
