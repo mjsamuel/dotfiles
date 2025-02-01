@@ -1,4 +1,5 @@
 font-size = 20
+font-family = "JetBrainsMono Nerd Font Mono"
 adjust-cell-height = 10%
 theme = light:rose-pine-dawn,dark:rose-pine
 cursor-style-blink = false
