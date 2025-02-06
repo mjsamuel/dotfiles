@@ -8,13 +8,5 @@ vim.keymap.set("i", "=", function()
     return "="
   end
 
-  local node = vim.treesitter.get_node({ pos = left_of_cursor_range })
-  local nodes_active_in = {
-    "attribute_name",
-  }
-  if not node or not vim.tbl_contains(nodes_active_in, node:type()) then
-    return "="
-  end
-
   return '=""<left>'
 end, { expr = true, buffer = true })
