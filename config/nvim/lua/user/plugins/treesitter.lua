@@ -7,7 +7,9 @@ local M = {
 
 function M.config()
   require("nvim-treesitter.configs").setup({
-    ensure_install = { "go", "html", "java", "json", "lua", "make", "markdown", "python", "typescript", "gotmpl" },
+    modules = {},
+    ignore_install = {},
+    ensure_installed = { "go", "html", "java", "json", "lua", "make", "markdown", "python", "typescript", "gotmpl" },
     sync_install = false,
     auto_install = true,
     highlight = { enable = true },
@@ -15,7 +17,7 @@ function M.config()
     context_commentstring = { enable = true },
   })
   vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
-  vim.filetype.add({ pattern = { [".*/templates/.*.html"] = "gotmpl" } })
+  vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
 end
 
 return M
