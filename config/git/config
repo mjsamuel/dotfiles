@@ -30,6 +30,9 @@
 [push]
     autoSetupRemote = true
 
+[rebase]
+    updateRefs = true
+
 [core]
     editor = nvim
     excludesFile = ~/.config/git/gitignore_global
