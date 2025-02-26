@@ -16,7 +16,7 @@ local M = {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = "zbirenbaum/copilot.lua",
     build = "make tiktoken",
-    cmd = "CopilotChat",
+    cmd = { "CopilotChat", "CopilotChatModels" },
     config = function()
       local prompts = {
         -- Code related prompts
@@ -36,7 +36,7 @@ local M = {
       }
 
       require("CopilotChat").setup({
-        model = "claude-3.5-sonnet",
+        model = "claude-3.7-sonnet",
         prompts = prompts,
         highlight_headers = false,
         separator = "",
