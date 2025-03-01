@@ -30,6 +30,12 @@ function M.config()
         end,
       })
     end,
+    ["emmet_ls"] = function()
+      lspconfig["emmet_ls"].setup({
+        capabilities = capabilities,
+        filetypes = { "gotmpl" }
+      })
+    end,
   })
 
   -- appearance tweaks
