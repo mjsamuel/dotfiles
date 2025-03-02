@@ -3,17 +3,13 @@ local keymap = vim.keymap
 keymap.set({ "n", "v" }, " ", "<nop>") -- leader is space so disabling default behaviour
 
 -- search
-keymap.set("n", "s.", function() require("telescope.builtin").resume() end)      -- [s]earch repeat
-keymap.set("n", "sb", function() require("telescope.builtin").buffers() end)     -- [s]earch [b]uffers
-keymap.set("n", "sd", function() require("telescope.builtin").diagnostics() end) -- [s]earch [d]iagnostics
-keymap.set("n", "sh", function() require("telescope.builtin").help_tags() end)   -- [s]earch [h]elp
-keymap.set("n", "sr", function()                                                 -- [s]earch using [r]ipgrep
-  require('telescope').extensions.live_grep_args.live_grep_args()
-end)
-keymap.set("n", "ss", function() require("telescope.builtin").find_files() end)
-keymap.set("v", "sr", function() -- [s]earch using [r]ipgrep with visual selection
-  require("telescope-live-grep-args.shortcuts").grep_visual_selection()
-end)
+keymap.set("n", "s.", function() require("snacks").picker.resume() end)      -- [s]earch repeat
+keymap.set("n", "sb", function() require("snacks").picker.buffers() end)     -- [s]earch [b]uffers
+keymap.set("n", "sd", function() require("snacks").picker.diagnostics() end) -- [s]earch [d]iagnostics
+keymap.set("n", "sh", function() require("snacks").picker.help() end)        -- [s]earch [h]elp
+keymap.set("n", "sr", function() require("snacks").picker.grep() end)        -- [s]earch using [r]ipgrep
+keymap.set("n", "ss", function() require("snacks").picker.files() end)
+keymap.set("v", "sr", function() require("snacks").picker.grep_word() end)   -- [s]earch using [r]ipgrep with visual selection
 
 -- git
 keymap.set("n", "[g", function() require("gitsigns").nav_hunk('prev') end, { silent = true })
@@ -28,16 +24,16 @@ vim.api.nvim_create_user_command("Diff", function()
 end, { nargs = 0 })
 
 -- lsp
-keymap.set("n", "D", function() vim.diagnostic.open_float() end)           -- [D]iagnostics
-keymap.set("n", "gd", function() vim.lsp.buf.definition() end)             -- [g]o to [d]efinition
-keymap.set("n", "gt", function() vim.lsp.buf.type_definition() end)        -- [g]o to [t]ype definition
-keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end) -- [f]ormat
--- overriding default behaviour with telescope picker
-keymap.set("n", "gri", function() require("telescope.builtin").lsp_implementations() end)
-keymap.set("n", "grr", function() require("telescope.builtin").lsp_references() end)
+keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)            -- [f]ormat
+keymap.set("n", "D", function() vim.diagnostic.open_float() end)                      -- [D]iagnostics
+-- overriding default behaviour with snacks picker
+keymap.set("n", "gd", function() require("snacks").picker.lsp_declarations() end)     -- [g]o to [d]efinition
+keymap.set("n", "gt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
+keymap.set("n", "grr", function() require("snacks").picker.lsp_references() end)
+keymap.set("n", "gri", function() require("snacks").picker.lsp_implementations() end)
 keymap.set({ "n", "v" }, "gra", function() -- [a]ction
-  -- in case telescope has not lazily loaded
-  require("telescope")
+  -- in case snacks has not lazily loaded yet
+  require("snacks")
   vim.lsp.buf.code_action()
 end)
 
