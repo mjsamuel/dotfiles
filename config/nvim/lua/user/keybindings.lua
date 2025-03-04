@@ -27,15 +27,10 @@ end, { nargs = 0 })
 keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)            -- [f]ormat
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)                      -- [D]iagnostics
 -- overriding default behaviour with snacks picker
-keymap.set("n", "gd", function() require("snacks").picker.lsp_declarations() end)     -- [g]o to [d]efinition
+keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
 keymap.set("n", "gt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
 keymap.set("n", "grr", function() require("snacks").picker.lsp_references() end)
 keymap.set("n", "gri", function() require("snacks").picker.lsp_implementations() end)
-keymap.set({ "n", "v" }, "gra", function() -- [a]ction
-  -- in case snacks has not lazily loaded yet
-  require("snacks")
-  vim.lsp.buf.code_action()
-end)
 
 -- move selected code when in visual mode
 keymap.set("v", "<S-j>", ":m '>+1<CR>gv=gv", { silent = true })
