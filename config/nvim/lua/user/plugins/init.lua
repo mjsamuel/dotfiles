@@ -1,7 +1,6 @@
 return {
   "nvim-lua/plenary.nvim",
-  { "tpope/vim-sleuth",     event = "VeryLazy" },
-  { "ThePrimeagen/harpoon", opts = { mark_branch = true } },
+  { "tpope/vim-sleuth",  event = "VeryLazy" },
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",

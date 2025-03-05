@@ -43,12 +43,14 @@ keymap.set("n", "n", "nzzzv")
 keymap.set("n", "N", "Nzzzv")
 
 -- harpooon (supercharged [m]arks)
-keymap.set("n", "M", function() require("harpoon.ui").toggle_quick_menu() end) -- [M]arks
-keymap.set("n", "mm", function() require("harpoon.mark").add_file() end)       -- [m]ake [m]ark
-for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do       -- corresponds to numpad on my keyboard layout
+keymap.set("n", "M", function() -- [M]arks
+  local harpoon = require("harpoon")
+  harpoon.ui:toggle_quick_menu(harpoon:list(), { border = "rounded", title = "" })
+end)
+keymap.set("n", "mm", function() require("harpoon"):list():add() end)    -- [m]ake [m]ark
+for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do -- corresponds to numpad on my keyboard layout
   local f = function()
-    require("harpoon.ui").nav_file(i)
-    vim.cmd("normal! zz")
+    require("harpoon"):list():select(i)
   end
   keymap.set("n", "m" .. key, f)
   keymap.set("n", "m" .. i, f)
