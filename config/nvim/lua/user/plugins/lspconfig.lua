@@ -13,12 +13,12 @@ function M.config()
     function(server_name) -- default handler
       lspconfig[server_name].setup({ capabilities = capabilities })
     end,
-    ["ts_ls"] = function()
-      -- typescript-tools is used instead
-    end,
     ["tailwindcss"] = function()
+      local filetypes = lspconfig["tailwindcss"].config_def.default_config.filetypes
+      table.insert(filetypes, "gotmpl")
       lspconfig["tailwindcss"].setup({
         capabilities = capabilities,
+        filetypes = filetypes,
         root_dir = function(fname)
           local root_pattern = lspconfig.util.root_pattern(
             "tailwind.config.js",
@@ -31,20 +31,14 @@ function M.config()
       })
     end,
     ["emmet_ls"] = function()
+      local filetypes = lspconfig["emmet_ls"].config_def.default_config.filetypes
+      table.insert(filetypes, "gotmpl")
       lspconfig["emmet_ls"].setup({
         capabilities = capabilities,
-        filetypes = { "gotmpl" }
+        filetypes = filetypes,
       })
     end,
   })
-
-  -- appearance tweaks
-  require("lspconfig.ui.windows").default_options.border = "rounded"
-  local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-  function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-    opts = { border = "rounded" }
-    return orig_util_open_floating_preview(contents, syntax, opts, ...)
-  end
 
   vim.diagnostic.config({
     float = { border = "rounded" },
