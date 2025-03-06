@@ -24,7 +24,7 @@ vim.api.nvim_create_user_command("Diff", function()
 end, { nargs = 0 })
 
 -- lsp
-keymap.set({ "n", "v" }, "<Leader>f", function() vim.lsp.buf.format() end)            -- [f]ormat
+keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end)     -- [f]ormat
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)                      -- [D]iagnostics
 -- overriding default behaviour with snacks picker
 keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
