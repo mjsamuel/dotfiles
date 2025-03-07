@@ -28,6 +28,7 @@
     ui = auto
 
 [push]
+    default = current
     autoSetupRemote = true
 
 [rebase]
