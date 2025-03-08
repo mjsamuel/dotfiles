@@ -19,8 +19,8 @@ s() {
 
 # youtube-dl
 alias \
-	dl='yt-dlp --no-abort-on-error --embed-metadata -i --write-thumbnail' \
-	dla="yt-dlp -x -f bestaudio/best"
+	dl='yt-dlp --no-abort-on-error --ignore-errors --embed-metadata --write-thumbnail' \
+	dla="dl --extract-audio --format bestaudio/best"
 
 # tmux
 alias \
