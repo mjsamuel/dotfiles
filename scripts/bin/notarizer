@@ -2,19 +2,26 @@
 NOTES_DIR="$HOME/Documents/notes"
 [ ! -d "$NOTES_DIR" ] && mkdir -p "$NOTES_DIR"
 
-results="$(
-	find "$NOTES_DIR" -name "*.md" |
-		fzf --preview 'bat {} --color always --style plain' --preview-window=right:50% --height=100% \
-			--delimiter / --with-nth -1 --print-query \
-			--bind "ctrl-n:change-query($(date -I))"
+FZF_DEFAULT_COMMAND="find "$NOTES_DIR" -name '*.md'"
+# fzf output is in the format:
+# ```
+# query
+# /path/to/selcted_file.md
+# ```
+result="$(
+	fzf --preview 'bat {} --color always --style plain' \
+		--preview-window=right:50% --height=100% \
+		--delimiter / --with-nth -1 \
+		--print-query \
+		--bind "ctrl-n:change-query($(date -I))" \
+		--bind "ctrl-d:execute-silent(rm '{}')+reload($FZF_DEFAULT_COMMAND)"
 )"
 
-filename=$(echo "$results" | sed -n '2p')
-
-if [ -z "$filename" ]; then
-	query=$(echo "$results" | sed -n '1p')
+filepath=$(echo "$result" | sed -n '2p')
+if [ -z "$filepath" ]; then
+	query=$(echo "$result" | sed -n '1s/ /-/g;1p')
 	[ -z "$query" ] && exit 0
-	filename="$NOTES_DIR/$query.md"
+	filepath="$NOTES_DIR/$query.md"
 fi
 
-nvim +"cd $NOTES_DIR" "$filename"
+nvim +"cd $NOTES_DIR" "$filepath"

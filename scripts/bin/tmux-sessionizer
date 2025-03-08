@@ -2,24 +2,23 @@
 WORKSPACES_FILE="$HOME/.config/workspaces"
 [ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" >"$WORKSPACES_FILE"
 
-# shellcheck disable=SC2046
+FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d"
 selected="$(
-	find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d |
-		fzf --preview 'eza {} --tree --level=1 --icons' \
-			--preview-window=right:50% --height=100% \
-			--bind "enter:accept-non-empty"
-)"
-[ -z "$selected" ] && exit 0
+	fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
+		--preview-window=right:50% --height=100% \
+		--bind "enter:accept-non-empty" \
+		--exit-0
+)" || exit 0
 selected_name=$(basename "$selected" | tr . _)
 
-tmux_running=$(pgrep tmux)
-session_exists=$(tmux list-sessions | grep "^${selected_name}:")
-if [ -z "$tmux_running" ] || [ -z "$session_exists" ]; then
+is_tmux_running=$(pgrep tmux)
+session_exists=$(tmux list-sessions >/dev/null 2>&1 | grep "^${selected_name}:")
+if [ -z "$is_tmux_running" ] || [ -z "$session_exists" ]; then
 	tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-in_tmux="$TMUX" # in tmux if this variable is set
-if [ -n "$in_tmux" ]; then
+is_in_tmux="$TMUX"
+if [ -n "$is_in_tmux" ]; then
 	tmux switch-client -t "$selected_name"
 else
 	tmux attach -t "$selected_name"
