@@ -3,29 +3,22 @@
     email = hello@mjsamuel.com
     signingkey = ~/.ssh/id_rsa.pub
 
-[gpg]
-    format = ssh
-
-[gpg "ssh"]
-    allowedSignersFile = ~/.ssh/allowed_signers
-
-[commit]
-    gpgsign = true
-
-[includeIf "gitdir:~/Work/"]
-    path = ~/Work/.gitconfig
-
-[includeIf "gitdir:/mnt/c/Work/"]
-    path = /mnt/c/Work/.gitconfig
+[core]
+    editor = nvim
+    excludesFile = ~/.config/git/gitignore_global
 
 [init]
     defaultBranch = main
 
-[branch]
-    sort = -committerdate
+[commit]
+    gpgsign = true
 
-[column]
-    ui = auto
+[gpg]
+    format = ssh
+    allowedSignersFile = ~/.ssh/allowed_signers
+
+[pull]
+    ff = only
 
 [push]
     default = current
@@ -34,14 +27,20 @@
 [rebase]
     updateRefs = true
 
-[core]
-    editor = nvim
-    excludesFile = ~/.config/git/gitignore_global
-
 [rerere]
     enabled = true
 
+[branch]
+    sort = -committerdate
+
+[column]
+    ui = auto
+
 [alias]
-    delete-merged-branches = "!git branch --merged | egrep -v '(^\\*|master|dev)' | xargs echo git branch -d"
     b = "blame -w -C -C -C"
 
+[includeIf "gitdir:~/Work/"]
+    path = ~/Work/.gitconfig
+
+[includeIf "gitdir:/mnt/c/Work/"]
+    path = /mnt/c/Work/.gitconfig
