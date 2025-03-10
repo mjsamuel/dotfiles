@@ -8,7 +8,7 @@ keymap.set("n", "sb", function() require("snacks").picker.buffers() end)     -- 
 keymap.set("n", "sd", function() require("snacks").picker.diagnostics() end) -- [s]earch [d]iagnostics
 keymap.set("n", "sh", function() require("snacks").picker.help() end)        -- [s]earch [h]elp
 keymap.set("n", "sr", function() require("snacks").picker.grep() end)        -- [s]earch using [r]ipgrep
-keymap.set("n", "ss", function() require("snacks").picker.files() end)
+keymap.set("n", "ss", function() require("snacks").picker.files({ hidden = true }) end)
 keymap.set("v", "sr", function() require("snacks").picker.grep_word() end)   -- [s]earch using [r]ipgrep with visual selection
 
 -- git
