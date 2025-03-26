@@ -8,4 +8,4 @@ export BROWSER=wsl-open
 alias \
 	shutdown="/mnt/c/Windows/system32/shutdown.exe /s /f /t 0 " \
 	reboot="powershell.exe Restart-Computer" \
-	open="/usr/local/bin/wsl-open.sh"
+	open="/usr/local/bin/wsl-open"
