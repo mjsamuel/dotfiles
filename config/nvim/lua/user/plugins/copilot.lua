@@ -5,11 +5,13 @@ local M = {
     event = "InsertEnter",
     cond = function() return vim.fn.executable("node") == 1 end,
     opts = {
+      copilot_node_command = "fnm exec --using=lts-latest",
       panel = { enabled = false },
       suggestion = {
         auto_trigger = true,
         keymap = { accept = false },
       },
+      server = { type = "binary", },
     }
   },
   {
