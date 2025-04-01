@@ -8,6 +8,7 @@ M.opts = {
   default_format_opts = { lsp_format = "fallback" },
   formatters_by_ft = {
     css = prettier,
+    gotmpl = prettier,
     html = prettier,
     htmlangular = prettier,
     javascript = prettier,
@@ -17,6 +18,8 @@ M.opts = {
     sh = { "shfmt" },
     sql = { "sqlfmt" },
     typescript = prettier,
+    typescriptreact = prettier,
+    vue = prettier,
   },
 }
 
