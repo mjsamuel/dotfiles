@@ -7,7 +7,7 @@ alias \
 	cc='changecolors' \
 	lg='lazygit' \
 	ls='eza' \
-	nb='newsboat' \
+	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
 	v='nvim'
 

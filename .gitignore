@@ -24,3 +24,4 @@ config/nvim/lua/user/plugins/work.lua
 config/workspaces
 config/lazygit/state.yml
 config/zsh/.zsh_sessions
+config/newsboat/private_urls
