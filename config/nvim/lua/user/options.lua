@@ -36,6 +36,7 @@ set.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milli
 set.undofile = true
 set.updatetime = 250
 set.wrap = false
+set.winborder = 'rounded'
 
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
@@ -44,8 +45,6 @@ vim.g.editorconfig = true
 vim.g.markdown_recommended_style = 0
 
 --- override default ui.select with snacks picker
----@diagnostic disable-next-line: duplicate-set-field
 vim.ui.select = function()
----@diagnostic disable-next-line: redundant-return-value
   return require("snacks").picker.select
 end

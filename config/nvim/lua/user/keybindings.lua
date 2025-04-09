@@ -25,8 +25,8 @@ end, { nargs = 0 })
 
 -- lsp
 keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end)      -- [f]ormat
-keymap.set("n", "D", function() vim.diagnostic.open_float({ border = "rounded" }) end) -- [D]iagnostics
-keymap.set("n", "K", function() vim.lsp.buf.hover({ border = "rounded" }) end)
+keymap.set("n", "D", function() vim.diagnostic.open_float() end) -- [D]iagnostics
+keymap.set("n", "K", function() vim.lsp.buf.hover() end)
 -- overriding default behaviour with snacks picker
 keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
 keymap.set("n", "gt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
@@ -46,7 +46,7 @@ keymap.set("n", "N", "Nzzzv")
 -- harpooon (supercharged [m]arks)
 keymap.set("n", "M", function() -- [M]arks
   local harpoon = require("harpoon")
-  harpoon.ui:toggle_quick_menu(harpoon:list(), { border = "rounded", title = "" })
+  harpoon.ui:toggle_quick_menu(harpoon:list(), { title = "" })
 end)
 keymap.set("n", "mm", function() require("harpoon"):list():add() end)    -- [m]ake [m]ark
 for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do -- corresponds to numpad on my keyboard layout
