@@ -13,6 +13,7 @@ M.opts = {
     htmlangular = prettier,
     javascript = prettier,
     json = prettier,
+    markdown = prettier,
     python = { "black" },
     scss = prettier,
     sh = { "shfmt" },
