@@ -11,7 +11,11 @@ changeThemeMac() {
 
 changeThemeWsl() {
 	[ "$1" = "dark" ] && winTheme="dark" || winTheme="aero"
-	cmd.exe "/mnt/c/Windows/Resources/Themes/${winTheme}.theme" >/dev/null 2>&1
+	cmd.exe "/mnt/c/Windows/Resources/Themes/${winTheme}.theme" >/dev/null 2>&1 &
+
+	# Change theme on alacritty
+	[ "$1" = "dark" ] && alacrittyTheme="rose-pine.toml" || alacrittyTheme="rose-pine-dawn.toml"
+	sed -i "s/rose-pine.*\.toml/${alacrittyTheme}/g" "/mnt/c/Users/${USER}/AppData/Roaming/alacritty/alacritty.toml" &
 }
 
 changeNvimColors() {
@@ -26,6 +30,7 @@ changeNvimColors() {
 	done
 }
 
+theme="$1"
 if [ "$OS" = "Darwin" ]; then
 	switcher="changeThemeMac"
 	/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
@@ -39,6 +44,6 @@ if [ -z "$theme" ]; then
 	grep "dark" "$THEME_FILE_PATH" >/dev/null && theme="light" || theme="dark"
 fi
 
-[ -n "$switcher" ] && $switcher "$theme"
-changeNvimColors "$theme"
+[ -n "$switcher" ] && $switcher "$theme" &
+changeNvimColors "$theme" &
 echo "$theme" >"$THEME_FILE_PATH"
