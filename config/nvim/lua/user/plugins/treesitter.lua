@@ -18,6 +18,8 @@ function M.config()
   })
   vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
   vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
+  vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig" } })
+  vim.filetype.add({ pattern = { [".*/git/ignore"] = "gitignore" } })
 end
 
 return M
