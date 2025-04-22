@@ -45,7 +45,9 @@
     autocorrect = prompt
 
 [alias]
-    blame = "blame -w -C -C -C"
+    b = "blame -w -C -C -C --color-lines"
+    lol = "log --oneline --decorate"
+    graph = "log --graph --oneline --decorate"
 
 [includeIf "gitdir:~/Work/"]
     path = ~/Work/.gitconfig
