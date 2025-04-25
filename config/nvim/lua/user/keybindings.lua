@@ -86,6 +86,9 @@ vim.api.nvim_create_user_command("W", function() vim.cmd(":w") end, { nargs = 0 
 vim.api.nvim_create_user_command("Wa", function() vim.cmd(":wa") end, { nargs = 0 })
 vim.api.nvim_create_user_command("WA", function() vim.cmd(":wa") end, { nargs = 0 })
 vim.api.nvim_create_user_command("Wqa", function() vim.cmd(":wqa") end, { nargs = 0 })
+vim.api.nvim_create_user_command("Q", function() vim.cmd(":q") end, { nargs = 0 })
+vim.api.nvim_create_user_command("Qa", function() vim.cmd(":qa") end, { nargs = 0 })
+vim.api.nvim_create_user_command("QA", function() vim.cmd(":qa") end, { nargs = 0 })
 
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
