@@ -48,3 +48,15 @@ vim.g.markdown_recommended_style = 0
 vim.ui.select = function()
   return require("snacks").picker.select
 end
+
+vim.diagnostic.config({
+  float = { border = "rounded" },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "",
+    }
+  }
+})
