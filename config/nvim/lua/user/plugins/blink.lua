@@ -1,6 +1,6 @@
 local M = {
   'saghen/blink.cmp',
-  version = 'v0.*',
+  version = 'v1.*',
   dependencies = 'rafamadriz/friendly-snippets',
   event = "InsertEnter",
   opts = {
