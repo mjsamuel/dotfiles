@@ -21,6 +21,12 @@ return {
       view_options = { show_hidden = true },
     },
   },
+  {
+    "folke/ts-comments.nvim",
+    opts = {},
+    event = "VeryLazy",
+    ft = { "typescriptreact", "javascriptreact" },
+  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },

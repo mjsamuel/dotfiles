@@ -2,7 +2,7 @@ local M = {
   "nvim-treesitter/nvim-treesitter",
   version = false,
   build = ":TSUpdate",
-  event = "BufReadPost",
+  event = "VeryLazy",
   branch = "main",
 }
 
@@ -34,13 +34,12 @@ function M.config()
   vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig" } })
   vim.filetype.add({ pattern = { [".*/git/ignore"] = "gitignore" } })
 
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = { '*' },
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("EnableTreesitterHighlighting", { clear = true }),
+    desc = "Try to enable tree-sitter syntax highlighting",
+    pattern = "*", -- run on *all* filetypes
     callback = function()
-      -- remove error = false when nvim 0.12+ is default
-      if vim.treesitter.get_parser(nil, nil, { error = false }) then
-        vim.treesitter.start()
-      end
+      pcall(function() vim.treesitter.start() end)
     end,
   })
 end
