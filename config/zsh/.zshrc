@@ -26,6 +26,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
 export NODE_COMPILE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/node-compile-cache"
 export OS_APPEARANCE_FILE="$XDG_CACHE_HOME/os_theme"
+unsetopt autocd beep notify
+
+### History Options
 setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY          # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
@@ -35,7 +38,12 @@ setopt HIST_FIND_NO_DUPS      # Do not display a line previously found.
 setopt HIST_IGNORE_SPACE      # Don't record an entry starting with a space.
 setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history file.
 setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
-unsetopt autocd beep notify
+# Remove trailing whitespace from history entries.
+function zshaddhistory() {
+    setopt local_options extended_glob
+    print -Sr -- ${1%%[[:space:]]##}
+    return 1  # suppress default behavior
+}
 
 # Load environment variables for tools
 command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
