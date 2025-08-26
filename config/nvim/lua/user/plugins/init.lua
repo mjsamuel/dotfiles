@@ -1,5 +1,4 @@
 return {
-  "nvim-lua/plenary.nvim",
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
@@ -23,28 +22,10 @@ return {
   },
   {
     "folke/ts-comments.nvim",
-    opts = {},
-    event = "VeryLazy",
     ft = { "typescriptreact", "javascriptreact" },
+    opts = {},
   },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    cmd = "RenderMarkdown",
-    opts = {
-      enabled = false, -- disable render by default
-      file_types = { "markdown", "copilot-chat" },
-      overrides = {
-        filetype = {
-          ["copilot-chat"] = {
-            heading = { position = "right" },
-            render_modes = { 'i', 'n', 'c', 't' },
-            anti_conceal = { enabled = false }
-          },
-        }
-      }
-    }
-  }
 }
