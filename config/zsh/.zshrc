@@ -55,8 +55,8 @@ command -v opam >/dev/null && eval "$(opam env)"
 ### Keybindings
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
-bindkey -s '^[S' "tmux-sessionizer\n"
-bindkey -s '^[N' "notarizer\n"
+bindkey -s '^[S' '^Utmux-sessionizer\n'
+bindkey -s '^[N' '^Unotarizer\n'
 # Edit current command in nvim
 bindkey -M viins '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
