@@ -1,7 +1,7 @@
 font-size = 20
 font-family = "JetBrainsMono Nerd Font Mono"
 adjust-cell-height = 10%
-theme = light:rose-pine-dawn,dark:rose-pine
+theme = light:Rose Pine Dawn,dark:Rose Pine
 cursor-style-blink = false
 cursor-click-to-move = true
 mouse-hide-while-typing = true
