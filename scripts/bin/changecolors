@@ -1,21 +1,11 @@
 #!/bin/sh
-OS="$(uname -s)"
 THEME_FILE_PATH="${OS_APPEARANCE_FILE:-$XDG_CACHE_HOME/os_theme}"
 
-changeThemeMac() {
-	[ "$1" = "dark" ] && darkMode="true" || darkMode="false"
+changeMacColors() {
+	darkMode="$([ "$1" = "dark" ] && echo "true" || echo "false")"
 	/usr/bin/osascript -l JavaScript -e \
 		"Application('System Events').appearancePreferences.darkMode = $darkMode" \
 		>/dev/null 2>&1
-}
-
-changeThemeWsl() {
-	[ "$1" = "dark" ] && winTheme="dark" || winTheme="aero"
-	cmd.exe "/mnt/c/Windows/Resources/Themes/${winTheme}.theme" >/dev/null 2>&1 &
-
-	# Change theme on alacritty
-	[ "$1" = "dark" ] && alacrittyTheme="rose-pine.toml" || alacrittyTheme="rose-pine-dawn.toml"
-	sed -i "s/rose-pine.*\.toml/${alacrittyTheme}/g" "/mnt/c/Users/${USER}/AppData/Roaming/alacritty/alacritty.toml" &
 }
 
 changeNvimColors() {
@@ -30,20 +20,22 @@ changeNvimColors() {
 	done
 }
 
-theme="$1"
-if [ "$OS" = "Darwin" ]; then
-	switcher="changeThemeMac"
-	/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 &&
-		theme="light" ||
-		theme="dark"
-elif command -v wsl.exe >/dev/null 2>&1; then
-	switcher="changeThemeWsl"
+new_colors="$1"
+os="$(uname -s)"
+if [ "$os" = "Darwin" ]; then
+	os_switcher="changeMacColors"
+	new_colors="$(/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 && echo "light" || echo "dark")"
 fi
 
-if [ -z "$theme" ]; then
-	grep "dark" "$THEME_FILE_PATH" >/dev/null && theme="light" || theme="dark"
+# Could not determine theme from OS, so read from file
+if [ -z "$new_colors" ]; then
+	grep "dark" "$THEME_FILE_PATH" >/dev/null && new_colors="light" || new_colors="dark"
 fi
 
-[ -n "$switcher" ] && $switcher "$theme" &
-changeNvimColors "$theme" &
-echo "$theme" >"$THEME_FILE_PATH"
+[ -n "$os_switcher" ] && $os_switcher "$new_colors" &
+changeNvimColors "$new_colors" &
+
+# Update theme file so that other applications like nvim can read it
+echo "$new_colors" > "$THEME_FILE_PATH"
+
+printf "Changed colors to %s\n" "$new_colors"
