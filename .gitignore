@@ -1,27 +1,3 @@
-# Folder view configuration files
-.DS_Store
-Desktop.ini
-
-# Thumbnail cache files
-._*
-Thumbs.db
-
-# Files that might appear on external disks
-.Spotlight-V100
-.Trashes
-
-# Vim
-*.swp
-*/nvim/lazy-lock.json
-
 # Work specific files
 config/shell/work
 config/nvim/lua/user/plugins/work.lua
-
-# Misc files
-.zcompdump
-.zsh_history
-config/workspaces
-config/lazygit/state.yml
-config/zsh/.zsh_sessions
-config/newsboat/private_urls
