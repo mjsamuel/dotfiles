@@ -25,9 +25,8 @@ homebrew_installed_packages:
   - openscad
   - ripgrep # faster 'grep'
   - rsync
-  - silicon # code screenshot tool
   - speedtest
-  - tree-sitter
+  - tree-sitter-cli
   - yt-dlp
   - zsh
 
