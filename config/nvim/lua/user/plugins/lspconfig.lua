@@ -46,14 +46,12 @@ local M = {
 }
 
 function M.config()
-  local lspconfig = require('lspconfig')
-
   local capabilities = require('blink.cmp').get_lsp_capabilities()
   vim.lsp.config("*", { capabilities = capabilities })
 
   -- lsp overrides for go html templates
   for _, ls in ipairs({ "html", "emmet_ls", "tailwindcss" }) do
-    local filetypes = lspconfig[ls].config_def.default_config.filetypes
+    local filetypes = vim.lsp.config[ls].filetypes
     table.insert(filetypes, "gotmpl")
     vim.lsp.config(ls, { filetypes = filetypes })
   end
