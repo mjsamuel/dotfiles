@@ -18,10 +18,12 @@ result="$(
 )"
 
 filepath=$(echo "$result" | sed -n '2p')
-if [ -z "$filepath" ]; then
+if [ ! -z "$filepath" ]; then
+	nvim +"cd $NOTES_DIR" "$filepath"
+else
 	query=$(echo "$result" | sed -n '1s/ /-/g;1p')
 	[ -z "$query" ] && exit 0
+	title="$(echo $query | awk -F'-' '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} {OFS=" "} 1')"
 	filepath="$NOTES_DIR/$query.md"
+	nvim +"cd $NOTES_DIR" -c "norm i # ${title}" "$filepath"
 fi
-
-nvim +"cd $NOTES_DIR" "$filepath"
