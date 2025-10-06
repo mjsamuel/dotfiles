@@ -11,17 +11,21 @@ function M.config()
   local treesitter = require("nvim-treesitter")
 
   local ensureInstalled = {
+    "bash",
     "css",
+    "docker",
     "go",
     "gotmpl",
     "html",
     "java",
     "javascript",
     "json",
+    "jsx",
     "lua",
     "make",
     "markdown",
     "python",
+    "tsx",
     "typescript",
   }
   local alreadyInstalled = require("nvim-treesitter.config").get_installed()

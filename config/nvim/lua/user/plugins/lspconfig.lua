@@ -14,6 +14,7 @@ local M = {
           "bash-language-server",
           "css-lsp",
           "emmet-ls",
+          "eslint-lsp",
           "gopls",
           "html-lsp",
           "json-lsp",
