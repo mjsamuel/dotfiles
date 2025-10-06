@@ -1,8 +1,12 @@
 #!/bin/sh
-NOTES_DIR="$HOME/Documents/notes"
-[ ! -d "$NOTES_DIR" ] && mkdir -p "$NOTES_DIR"
+notes_dir="$HOME/Documents/notes"
+os="$(uname -s)"
+if [ "$os" = "Darwin" ]; then
+	notes_dir="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes"
+fi
+[ ! -d "$notes_dir" ] && mkdir -p "$notes_dir"
 
-FZF_DEFAULT_COMMAND="find "$NOTES_DIR" -name '*.md'"
+FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md'"
 # fzf output is in the format:
 # ```
 # query
@@ -11,19 +15,19 @@ FZF_DEFAULT_COMMAND="find "$NOTES_DIR" -name '*.md'"
 result="$(
 	fzf --preview 'bat {} --color always --style plain' \
 		--preview-window=right:50% --height=100% \
-		--delimiter / --with-nth -1 \
+		--delimiter / --with-nth -2,-1 \
 		--print-query \
 		--bind "ctrl-n:change-query($(date -I))" \
 		--bind "ctrl-d:execute-silent(rm '{}')+reload($FZF_DEFAULT_COMMAND)"
 )"
 
 filepath=$(echo "$result" | sed -n '2p')
-if [ ! -z "$filepath" ]; then
-	nvim +"cd $NOTES_DIR" "$filepath"
+if [ -n "$filepath" ]; then
+	nvim +"cd $notes_dir" "$filepath"
 else
-	query=$(echo "$result" | sed -n '1s/ /-/g;1p')
+	query=$(echo "$result" | awk 'NR==1 { $1=$1; gsub(/ /, "-"); print }')
 	[ -z "$query" ] && exit 0
 	title="$(echo $query | awk -F'-' '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} {OFS=" "} 1')"
-	filepath="$NOTES_DIR/$query.md"
-	nvim +"cd $NOTES_DIR" -c "norm i # ${title}" "$filepath"
+	filepath="$notes_dir/$query.md"
+	nvim +"cd $notes_dir" -c "norm i # ${title}" "$filepath"
 fi
