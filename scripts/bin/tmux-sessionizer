@@ -6,6 +6,7 @@ FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -
 selected="$(
 	fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
 		--preview-window=right:50% --height=100% \
+		--delimiter / --with-nth -2,-1 \
 		--bind "enter:accept-non-empty" \
 		--exit-0
 )" || exit 0
