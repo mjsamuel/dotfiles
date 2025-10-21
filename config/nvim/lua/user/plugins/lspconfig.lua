@@ -24,6 +24,7 @@ local M = {
           "pyright",
           "tailwindcss-language-server",
           "typescript-language-server",
+          "yaml-language-server",
           -- formatters
           "black",
           "prettierd",
