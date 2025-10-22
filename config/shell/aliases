@@ -5,13 +5,14 @@ alias \
 	c='clear' \
 	cat='bat' \
 	cc='changecolors' \
+	claude='npx claude' \
 	lg='lazygit' \
 	ls='eza' \
+	n="notarizer" \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
-	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
-	v='nvim' \
 	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	claude='npx claude'
+	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
+	v='nvim'
 
 # ssh
 s() {
