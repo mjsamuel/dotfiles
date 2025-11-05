@@ -6,7 +6,7 @@ if [ "$os" = "Darwin" ]; then
 fi
 [ ! -d "$notes_dir" ] && mkdir -p "$notes_dir"
 
-FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md'"
+FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md' -print0 | xargs -0 ls -t"
 # fzf output is in the format:
 # ```
 # query
