@@ -18,7 +18,7 @@ result="$(
 		--delimiter / --with-nth -2,-1 \
 		--print-query \
 		--bind "ctrl-n:change-query($(date -I))" \
-		--bind "ctrl-d:execute-silent(rm '{}')+reload($FZF_DEFAULT_COMMAND)"
+		--bind "ctrl-d:execute-silent(rm {})+reload($FZF_DEFAULT_COMMAND)"
 )"
 
 filepath=$(echo "$result" | sed -n '2p')
