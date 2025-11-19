@@ -39,11 +39,6 @@ local M = {
         end
       end,
     },
-    {
-      "williamboman/mason-lspconfig.nvim",
-      dependencies = "mason.nvim",
-      opts = { automatic_enable = true }
-    }
   },
 }
 
@@ -51,12 +46,20 @@ function M.config()
   local capabilities = require('blink.cmp').get_lsp_capabilities()
   vim.lsp.config("*", { capabilities = capabilities })
 
-  -- lsp overrides for go html templates
+  -- override html related lsps to be enabled for go templates
   for _, ls in ipairs({ "html", "emmet_ls", "tailwindcss" }) do
     local filetypes = vim.lsp.config[ls].filetypes
     table.insert(filetypes, "gotmpl")
     vim.lsp.config(ls, { filetypes = filetypes })
   end
+
+  -- enable all lsp servers installed via mason
+  local installed_packages = require("mason-registry").get_installed_packages()
+  local lsp_config_names = vim.iter(installed_packages):fold({}, function(acc, pack)
+    table.insert(acc, pack.spec.neovim and pack.spec.neovim.lspconfig)
+    return acc
+  end)
+  vim.lsp.enable(lsp_config_names)
 end
 
 return M
