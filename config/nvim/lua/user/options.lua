@@ -38,6 +38,9 @@ set.updatetime = 250
 set.wrap = false
 set.winborder = 'rounded'
 
+set.exrc = true -- enable execution of project specific config (.nvimrc, .nvim.lua)
+set.secure = true -- disable potentially harmful commands in project config files
+
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
 
