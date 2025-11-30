@@ -12,6 +12,7 @@ function M.config()
 
   local ensureInstalled = {
     "bash",
+    "caddy",
     "css",
     "docker",
     "go",
@@ -38,6 +39,7 @@ function M.config()
   vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
   vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig" } })
   vim.filetype.add({ pattern = { [".*/git/ignore"] = "gitignore" } })
+  vim.filetype.add({ pattern = { ["Caddyfile"] = "caddy" } })
 
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("EnableTreesitterHighlighting", { clear = true }),
