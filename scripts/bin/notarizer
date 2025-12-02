@@ -6,28 +6,36 @@ if [ "$os" = "Darwin" ]; then
 fi
 [ ! -d "$notes_dir" ] && mkdir -p "$notes_dir"
 
-FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md' -print0 | xargs -0 ls -t"
+FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md' -print0 | xargs -0 ls -t | sed 's#${notes_dir}/##'"
 # fzf output is in the format:
 # ```
 # query
 # /path/to/selcted_file.md
 # ```
 result="$(
-	fzf --preview 'bat {} --color always --style plain' \
+	fzf --preview "bat '${notes_dir}/{}' --color always --style plain" \
 		--preview-window=right:50% --height=100% \
-		--delimiter / --with-nth -2,-1 \
 		--print-query \
-		--bind "ctrl-n:change-query($(date -I))" \
+		--bind "ctrl-n:print-query+abort" \
 		--bind "ctrl-d:execute-silent(rm {})+reload($FZF_DEFAULT_COMMAND)"
 )"
 
-filepath=$(echo "$result" | sed -n '2p')
-if [ -n "$filepath" ]; then
-	nvim +"cd $notes_dir" "$filepath"
+exit_code="$?"
+if [ "$exit_code" -eq 130 ]; then
+	exit 0
+fi
+
+note_path="$(echo "$result" | sed -n '2p')"
+if [ -n "$note_path" ]; then
+	nvim +"cd $notes_dir" "${notes_dir}/${note_path}"
 else
-	query=$(echo "$result" | awk 'NR==1 { $1=$1; gsub(/ /, "-"); print }')
-	[ -z "$query" ] && exit 0
-	title="$(echo $query | awk -F'-' '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} {OFS=" "} 1')"
-	filepath="$notes_dir/$query.md"
-	nvim +"cd $notes_dir" -c "norm i # ${title}" "$filepath"
+	query=$(echo "$result" | head -n1)
+	if [ -n "$query" ]; then
+		filename="$(echo "$query" | sed 's/^[[:space:]]*//; s/ /-/g')" # Trim leading spaces and replace spaces with hyphens
+		title="$(echo "$query" | perl -pe 's/(\w+)/\u\L$1/g')"         # Capitalize each word
+	else
+		filename="$(date -I)"
+		title="$(date '+%B %d, %Y')"
+	fi
+	nvim +"cd $notes_dir" -c "norm i # ${title}" -c "startinsert" "${notes_dir}/${filename}.md"
 fi
