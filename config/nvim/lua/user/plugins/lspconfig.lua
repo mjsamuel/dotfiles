@@ -23,6 +23,7 @@ local M = {
           "marksman",
           "pyright",
           "tailwindcss-language-server",
+          "tsgo",
           "typescript-language-server",
           "yaml-language-server",
           -- formatters
@@ -55,10 +56,22 @@ function M.config()
 
   -- enable all lsp servers installed via mason
   local installed_packages = require("mason-registry").get_installed_packages()
-  local lsp_config_names = vim.iter(installed_packages):fold({}, function(acc, pack)
-    table.insert(acc, pack.spec.neovim and pack.spec.neovim.lspconfig)
-    return acc
-  end)
+  local lsp_config_names = vim.iter(installed_packages)
+      :map(function(pack)
+        if not pack.spec.neovim then
+          return nil
+        end
+        return pack.spec.neovim.lspconfig
+      end)
+      :filter(function(name)
+        if not name then return false end
+        -- TODO: find a better way to enable tsgo and disable ts_ls per-project
+        if TS_GO_ENABLED then
+          return name ~= "ts_ls"
+        end
+        return name ~= "tsgo"
+      end)
+      :totable()
   vim.lsp.enable(lsp_config_names)
 end
 
