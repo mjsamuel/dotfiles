@@ -25,6 +25,11 @@ return {
     ft = { "typescriptreact", "javascriptreact" },
     opts = {},
   },
+  {
+    "folke/trouble.nvim",
+    opts = {},
+    cmd = "Trouble",
+  },
   -- Appearance related plugins
   "kyazdani42/nvim-web-devicons",
   { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
