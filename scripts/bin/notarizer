@@ -4,7 +4,10 @@ os="$(uname -s)"
 if [ "$os" = "Darwin" ]; then
 	notes_dir="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes"
 fi
-[ ! -d "$notes_dir" ] && mkdir -p "$notes_dir"
+if [ ! -d "$notes_dir" ]; then
+	mkdir -p "$notes_dir"
+	git init
+fi
 
 FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md' -print0 | xargs -0 ls -t | sed 's#${notes_dir}/##'"
 # fzf output is in the format:
@@ -17,7 +20,7 @@ result="$(
 		--preview-window=right:50% --height=100% \
 		--print-query \
 		--bind "ctrl-n:print-query+abort" \
-		--bind "ctrl-d:execute-silent(rm {})+reload($FZF_DEFAULT_COMMAND)"
+		--bind "ctrl-d:execute(rm -i '${notes_dir}/{}')+reload(${FZF_DEFAULT_COMMAND})"
 )"
 
 exit_code="$?"
@@ -28,6 +31,7 @@ fi
 note_path="$(echo "$result" | sed -n '2p')"
 if [ -n "$note_path" ]; then
 	nvim +"cd $notes_dir" "${notes_dir}/${note_path}"
+	commit_message="Update note: $(basename "${note_path}".md)"
 else
 	query=$(echo "$result" | head -n1)
 	if [ -n "$query" ]; then
@@ -38,4 +42,12 @@ else
 		title="$(date '+%B %d, %Y')"
 	fi
 	nvim +"cd $notes_dir" -c "norm i # ${title}" -c "startinsert" "${notes_dir}/${filename}.md"
+	commit_message="Add note: ${filename}"
 fi
+
+# Using git as a mechansim to backup and track changes to notes
+backup() {
+	git -C "$notes_dir" add -A >/dev/null 2>&1
+	git -C "$notes_dir" commit -am "$commit_message" --no-gpg-sign >/dev/null 2>&1
+}
+backup &
