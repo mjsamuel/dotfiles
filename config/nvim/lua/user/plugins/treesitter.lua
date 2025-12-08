@@ -14,6 +14,7 @@ function M.config()
     "bash",
     "caddy",
     "css",
+    "diff",
     "docker",
     "go",
     "gotmpl",
