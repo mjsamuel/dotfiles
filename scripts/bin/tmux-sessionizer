@@ -2,7 +2,7 @@
 WORKSPACES_FILE="$HOME/.config/workspaces"
 [ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" >"$WORKSPACES_FILE"
 
-FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d"
+FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'"
 selected="$(
 	fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
 		--preview-window=right:50% --height=100% \
