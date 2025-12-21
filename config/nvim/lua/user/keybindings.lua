@@ -22,10 +22,20 @@ vim.api.nvim_create_user_command("Diff", function()
   require("gitsigns").diffthis(nil, { split = "botright" })
   vim.cmd("wincmd w")
 end, { nargs = 0 })
+vim.api.nvim_create_user_command("Github", function(args)
+  local opts = {}
+  if args.range > 0 then
+    opts = {
+      line_start = args.line1,
+      line_end = args.line2,
+    }
+  end
+  require("snacks").gitbrowse.open(opts)
+end, { nargs = 0, range = true })
 
 -- lsp
-keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end)      -- [f]ormat
-keymap.set("n", "D", function() vim.diagnostic.open_float() end) -- [D]iagnostics
+keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end) -- [f]ormat
+keymap.set("n", "D", function() vim.diagnostic.open_float() end)                  -- [D]iagnostics
 keymap.set("n", "K", function() vim.lsp.buf.hover() end)
 -- overriding default behaviour with snacks picker
 keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
