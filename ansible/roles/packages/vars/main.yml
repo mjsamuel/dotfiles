@@ -25,6 +25,7 @@ homebrew_installed_packages:
   - openscad
   - ripgrep # faster grep
   - rsync
+  - scroll-reverser # different scroll directions for mouse and trackpad
   - speedtest
   - tree-sitter-cli
   - yt-dlp
