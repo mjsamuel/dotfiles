@@ -15,7 +15,7 @@ function M.config()
     "caddy",
     "css",
     "diff",
-    "docker",
+    "dockerfile",
     "go",
     "gotmpl",
     "html",
