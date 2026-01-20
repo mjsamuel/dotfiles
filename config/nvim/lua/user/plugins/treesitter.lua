@@ -36,11 +36,12 @@ function M.config()
       :totable()
   treesitter.install(parsersToInstall)
 
-  vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
+  vim.filetype.add({ filename = { ["Caddyfile"] = "caddy" } })
   vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
   vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig" } })
   vim.filetype.add({ pattern = { [".*/git/ignore"] = "gitignore" } })
-  vim.filetype.add({ pattern = { ["Caddyfile"] = "caddy" } })
+  vim.filetype.add({ pattern = { [".*mdx"] = "markdown" } })
+  vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
 
   vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("EnableTreesitterHighlighting", { clear = true }),
