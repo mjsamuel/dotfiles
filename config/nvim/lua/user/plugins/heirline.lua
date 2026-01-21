@@ -22,7 +22,7 @@ end
 
 local segments = {}
 
-local show_full_path = false
+local show_full_path = true
 segments.file_info = {
   init = function(self)
     self.filename = vim.api.nvim_buf_get_name(0)

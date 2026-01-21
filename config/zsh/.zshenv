@@ -25,8 +25,8 @@ export DOTFILES_FOLDER="$HOME/Developer/dotfiles/"
 
 # Path
 export PATH="$PATH\
+:$HOME/.local/bin\
 :$DOTFILES_FOLDER/scripts/bin\
-:/opt/apache-maven/bin\
 :$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME/bin\
 :$GOPATH/bin"

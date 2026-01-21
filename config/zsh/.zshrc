@@ -47,7 +47,7 @@ function zshaddhistory() {
 
 # Load environment variables for tools
 command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
-command -v fnm >/dev/null && eval "$(fnm env)"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
 command -v fzf >/dev/null && eval "$(fzf --zsh)"
 command -v go >/dev/null && eval "$(go env)"
 command -v opam >/dev/null && eval "$(opam env)"

@@ -3,18 +3,15 @@
 # misc
 alias \
 	ai='npx claude' \
-	c='clear' \
 	cat='bat' \
-	cc='changecolors' \
-	claude='npx claude' \
 	lg='lazygit' \
 	ls='eza' \
-	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	n="notarizer" \
+	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
+    c='clear' \
 	notes="notarizer" \
 	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	tt='tt -notheme -showwpm -n 20 -oneshot -noreport' \
 	v='nvim'
 
 # ssh
@@ -23,19 +20,39 @@ s() {
 	[ -n "$selected" ] && ssh "$selected"
 }
 
+# git
+g() {
+	if [ "$#" -ne 0 ]; then
+		git "$@"
+	else
+		git status
+	fi
+}
+
+# tmux
+alias \
+	ta="tmux attach"
+
+t() {
+	if [ "$#" -ne 0 ]; then
+		tmux "$@"
+	else
+		tmux-sessionizer
+	fi
+}
+
 # youtube-dl
 alias \
 	dl='yt-dlp --no-abort-on-error --ignore-errors --embed-metadata --write-thumbnail' \
 	dla="dl --extract-audio --format bestaudio/best"
 
-# tmux
-alias \
-	t="tmux" \
-	ta="tmux attach"
-
 # docker \
 alias \
 	d='sudo docker' \
-	dc='d compose' \
-	dC='d container' \
-	dp='d ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
+	dc='sudo docker compose' \
+	dp='sudo docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
+
+# typo guards
+alias \
+    eixt='exit' \
+    celar='clear'
