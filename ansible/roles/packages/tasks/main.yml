@@ -11,11 +11,12 @@
       tags: ["mas"]
   when: ansible_os_family == "Darwin"
 
-- name: install apt packages (Debian)
-  ansible.builtin.apt:
-    name: "{{ apt_installed_packages }}"
-    state: present
-  become: yes
+- block:
+    - name: install apt packages (Debian)
+      ansible.builtin.apt:
+        name: "{{ apt_installed_packages }}"
+        state: present
+      become: true
   when: ansible_os_family == "Debian"
 
 - ansible.builtin.import_tasks:

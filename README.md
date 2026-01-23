@@ -40,6 +40,6 @@ To make sure the bootstrap process works as expected after any major changes,
 create and run a docker image with the following commands:
 
 ```sh
-docker build . -t dotfiles -f docker/Dockerfile.debian
+docker build . -t dotfiles -f docker/debian.Dockerfile
 docker run --rm -it dotfiles
 ```

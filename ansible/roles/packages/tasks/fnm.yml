@@ -1,44 +1,42 @@
-- name: fnm retrieve release info
-  uri:
-    url: https://api.github.com/repos/Schniz/fnm/releases/latest
-    return_content: true
-  register: response
-
-- name: fnm set release facts
-  set_fact:
-    fnm_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
-    fnm_download_url: "{{ release.browser_download_url }}"
-  vars:
-    build: >-
-      {{ 'macos' if ansible_os_family == 'Darwin' else
-        {
-          "arm": "arm32",
-          "aarch64": "arm64"
-        }[ansible_architecture] | default('linux')
-      }}
-    pattern: "fnm-{{ build }}"
-    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
-
-- name: fnm ensure directory exists
-  file:
-    path: "{{ fnm_path }}"
-    state: directory
-
-- name: fnm download release
-  ansible.builtin.unarchive:
-    src: "{{ fnm_download_url }}"
-    dest: "{{ fnm_path }}"
-    remote_src: yes
-  register: download
-  ignore_errors: true
-
-- name: fnm copy to bin
-  copy:
-    src: "{{ fnm_path }}/fnm"
-    dest: /usr/local/bin/fnm
-    mode: "0755"
-  become: true
-  when: not download.failed
+- block:
+    - name: fnm retrieve release info
+      uri:
+        url: https://api.github.com/repos/Schniz/fnm/releases/latest
+        return_content: true
+      register: response
+    - name: fnm set release facts
+      vars:
+        build: >-
+          {{
+            {
+              "arm": "arm32",
+              "aarch64": "arm64"
+            }[ansible_architecture] | default('linux')
+          }}
+        pattern: "fnm-{{ build }}"
+        release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+      set_fact:
+        fnm_path: "{{ ansible_env.HOME }}/.temp/{{ release.name }}"
+        fnm_download_url: "{{ release.browser_download_url }}"
+    - name: fnm ensure directory exists
+      file:
+        path: "{{ fnm_path }}"
+        state: directory
+    - name: fnm download release
+      ansible.builtin.unarchive:
+        src: "{{ fnm_download_url }}"
+        dest: "{{ fnm_path }}"
+        remote_src: yes
+      register: download
+      ignore_errors: true
+    - name: fnm copy to bin
+      copy:
+        src: "{{ fnm_path }}/fnm"
+        dest: /usr/local/bin/fnm
+        mode: "0755"
+      become: true
+      when: not download.failed
+  when: ansible_os_family != "Darwin"
 
 - name: fnm download latest lts version
   shell: fnm install --lts
