@@ -7,6 +7,9 @@ M.opts = {
   bigfile = {},
   quickfile = {},
   gitbrowse = {},
+  explorer = {
+    trash = true,
+  },
 }
 
 return M

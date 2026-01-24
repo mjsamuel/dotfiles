@@ -102,4 +102,5 @@ vim.api.nvim_create_user_command("QA", function() vim.cmd(":qa") end, { nargs = 
 
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
+keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { silent = true })
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
