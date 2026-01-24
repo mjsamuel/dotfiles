@@ -1,41 +1,85 @@
 #!/bin/sh
-THEME_FILE_PATH="${OS_APPEARANCE_FILE:-$XDG_CACHE_HOME/os_theme}"
+set -e
+set -u
 
-changeMacColors() {
-	darkMode="$([ "$1" = "dark" ] && echo "true" || echo "false")"
+# Configuration
+readonly THEME_FILE_PATH="${OS_APPEARANCE_FILE:-${XDG_CACHE_HOME:-$HOME/.cache}/os_theme}"
+
+# Change macOS system appearance
+change_mac_colors() {
+	local theme="$1"
+	local dark_mode
+
+	if [ "$theme" = "dark" ]; then
+		dark_mode="true"
+	else
+		dark_mode="false"
+	fi
+
 	/usr/bin/osascript -l JavaScript -e \
-		"Application('System Events').appearancePreferences.darkMode = $darkMode" \
+		"Application('System Events').appearancePreferences.darkMode = $dark_mode" \
 		>/dev/null 2>&1
 }
 
-changeNvimColors() {
-	tmux_running=$(pgrep tmux)
-	[ -z "$tmux_running" ] && return
-	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' | while read -r p; do
-		target="${p%% *}"
-		id="${p##* }"
-		if [ "$target" = "nvim" ]; then
-			tmux send-keys -t "$id" Escape ":set background=$1" C-m
-		fi
-	done
+# Update neovim color scheme in tmux panes
+change_nvim_colors() {
+	local theme="$1"
+
+	if ! pgrep -q tmux; then
+		return 0
+	fi
+
+	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
+		while IFS=' ' read -r command pane_id; do
+			if [ "$command" = "nvim" ]; then
+				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m
+			fi
+		done
 }
 
-new_colors="$1"
-os="$(uname -s)"
-if [ "$os" = "Darwin" ]; then
-	os_switcher="changeMacColors"
-	new_colors="$(/usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1 && echo "light" || echo "dark")"
-fi
+# Detect current macOS theme
+get_mac_theme() {
+	if /usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
+        echo "light"
+	else
+		echo "dark"
+	fi
+}
 
-# Could not determine theme from OS, so read from file
-if [ -z "$new_colors" ]; then
-	grep "dark" "$THEME_FILE_PATH" >/dev/null && new_colors="light" || new_colors="dark"
-fi
+# Read theme from file
+get_theme_from_file() {
+	if [ -f "$THEME_FILE_PATH" ] && grep -q "dark" "$THEME_FILE_PATH" 2>/dev/null; then
+		echo "light"
+	else
+		echo "dark"
+	fi
+}
 
-[ -n "$os_switcher" ] && $os_switcher "$new_colors" &
-changeNvimColors "$new_colors" &
+# Main logic
+main() {
+	local new_theme="$1"
+	local os
 
-# Update theme file so that other applications like nvim can read it
-echo "$new_colors" > "$THEME_FILE_PATH"
+	os="$(uname -s)"
 
-printf "Changed colors to %s\n" "$new_colors"
+	# Determine theme based on OS or arguments
+	if [ "$os" = "Darwin" ]; then
+		if [ -z "$new_theme" ]; then
+			new_theme="$(get_mac_theme)"
+		fi
+		change_mac_colors "$new_theme" &
+	elif [ -z "$new_theme" ]; then
+		new_theme="$(get_theme_from_file)"
+	fi
+
+	# Update neovim instances
+	change_nvim_colors "$new_theme" &
+
+	# Persist theme to file
+	mkdir -p "$(dirname "$THEME_FILE_PATH")"
+	echo "$new_theme" >"$THEME_FILE_PATH"
+
+	printf "Changed colors to %s\n" "$new_theme"
+}
+
+main "${1:-}"
