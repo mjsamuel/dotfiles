@@ -1,16 +1,19 @@
 [user]
     name = mjsamuel
     email = hello@mjsamuel.com
-    signingkey = ~/.ssh/id_rsa.pub
-
-[gpg]
-    format = ssh
-    allowedSignersFile = ~/.ssh/allowed_signers
-[commit]
-    gpgsign = true
 
 [core]
     editor = nvim
+
+# commit signing config
+[gpg]
+    format = ssh
+[gpg "ssh"]
+    program ="git-signing-program"
+    defaultKeyCommand = "git-signing-key"
+    allowedSignersFile = ~/.ssh/allowed_signers
+[commit]
+    gpgsign = true
 
 [column]
     ui = auto

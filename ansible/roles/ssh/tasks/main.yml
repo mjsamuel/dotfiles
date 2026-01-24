@@ -1,21 +1,18 @@
 - name: enforce key authentication
   ansible.builtin.copy:
-    src: '{{ ansible_env.PWD }}/../config/ssh/ssh.conf'
-    dest: '/etc/ssh/sshd_config.d/ssh.conf'
-  become: yes
+    src: "{{ ansible_env.PWD }}/../config/ssh/ssh.conf"
+    dest: "/etc/ssh/sshd_config.d/ssh.conf"
+  become: true
   when: ansible_os_family == "Darwin"
 
-- name: decrypt/copy private key
-  copy:
-    src: "{{ ansible_env.PWD }}/../config/ssh/id_rsa"
-    dest: "{{ ansible_env.HOME }}/.ssh/"
-    mode: 0600
-  register: key
-  ignore_errors: true
+- name: symlink authorized keys
+  file:
+    src: "{{ dotfiles_dir }}/config/ssh/authorized_keys"
+    path: "~/.ssh/authorized_keys"
+    state: link
 
-- name: copy public key
-  copy:
-    src: "{{ ansible_env.PWD }}/../config/ssh/id_rsa.pub"
-    dest: "{{ ansible_env.HOME }}/.ssh/"
-  when: not key.failed
-  ignore_errors: true
+- name: symlink allowed signers
+  file:
+    src: "{{ dotfiles_dir }}/config/ssh/allowed_signers"
+    path: "~/.ssh/allowed_signers"
+    state: link
