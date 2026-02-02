@@ -2,7 +2,7 @@
 
 # misc
 alias \
-	ai='npx claude' \
+	ai='claude' \
 	cat='bat' \
 	lg='lazygit' \
 	ls='eza' \
