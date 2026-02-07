@@ -1,7 +1,4 @@
-local M = {
-  "rebelot/heirline.nvim",
-  event = "VeryLazy",
-}
+vim.pack.add({ "https://github.com/rebelot/heirline.nvim" })
 
 local ALIGN = { provider = "%=" }
 local NULL = { provider = "" }
@@ -116,25 +113,21 @@ segments.diagnostics = {
   create_diagnostic_segment("error"),
 }
 
-M.config = function()
-  local utils = require("heirline.utils")
+local utils = require("heirline.utils")
 
-  vim.api.nvim_create_augroup("Heirline", { clear = true })
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function() utils.on_colorscheme(setup_colors) end,
-    group = "Heirline",
-  })
+vim.api.nvim_create_augroup("Heirline", { clear = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function() utils.on_colorscheme(setup_colors) end,
+  group = "Heirline",
+})
 
-  require("heirline").setup({
-    statusline = {
-      SPACE,
-      segments.file_info,
-      ALIGN,
-      segments.diagnostics,
-      SPACE,
-    },
-    opts = { colors = setup_colors() },
-  })
-end
-
-return M
+require("heirline").setup({
+  statusline = {
+    SPACE,
+    segments.file_info,
+    ALIGN,
+    segments.diagnostics,
+    SPACE,
+  },
+  opts = { colors = setup_colors() },
+})

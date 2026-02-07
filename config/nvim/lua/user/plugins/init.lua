@@ -1,42 +1,6 @@
-return {
-  {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
-    opts = {
-      diff_opts = { vertical = false },
-      preview_config = { border = 'rounded', },
-    },
-  },
-  {
-    "kylechui/nvim-surround",
-    keys = { { "ys" }, { "cs" }, { "ds" }, { "S", mode = "v" } },
-    opts = {},
-  },
-  {
-    "stevearc/oil.nvim",
-    cmd = "Oil",
-    opts = {
-      default_file_explorer = true,
-      view_options = { show_hidden = true },
-    },
-  },
-  {
-    "folke/ts-comments.nvim",
-    ft = { "typescriptreact", "javascriptreact" },
-    opts = {},
-  },
-  {
-    "folke/trouble.nvim",
-    opts = {},
-    cmd = "Trouble",
-  },
-  {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function() vim.fn["mkdp#util#install"]() end,
-  },
-  -- Appearance related plugins
-  "kyazdani42/nvim-web-devicons",
-  { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
-}
+local PLUGIN_DIR = vim.fn.stdpath("config") .. "/lua/user/plugins"
+
+vim.iter(vim.fs.dir(PLUGIN_DIR))
+   :filter(function(filename) return filename ~= "init.lua" end)
+   :map(function(filename) return filename:gsub("%.lua$", "") end)
+   :each(function(name) require("user.plugins." .. name) end)

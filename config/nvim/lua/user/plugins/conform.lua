@@ -1,10 +1,7 @@
-local M = {
-  'stevearc/conform.nvim',
-}
+vim.pack.add({ "https://github.com/stevearc/conform.nvim" })
 
 local prettier = { "prettierd", lsp_format = "fallback", stop_after_first = true }
-
-M.opts = {
+require("conform").setup({
   default_format_opts = { lsp_format = "fallback" },
   formatters_by_ft = {
     css = prettier,
@@ -22,6 +19,4 @@ M.opts = {
     typescriptreact = prettier,
     vue = prettier,
   },
-}
-
-return M
+})

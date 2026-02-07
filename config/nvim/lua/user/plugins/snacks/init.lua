@@ -1,8 +1,6 @@
-local M = {
-  "folke/snacks.nvim",
-}
+vim.pack.add({ "https://github.com/folke/snacks.nvim" })
 
-M.opts = {
+require("snacks").setup({
   picker = require("user.plugins.snacks.picker"),
   bigfile = {},
   quickfile = {},
@@ -10,6 +8,4 @@ M.opts = {
   explorer = {
     trash = true,
   },
-}
-
-return M
+})
