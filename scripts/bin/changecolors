@@ -7,8 +7,8 @@ readonly THEME_FILE_PATH="${OS_APPEARANCE_FILE:-${XDG_CACHE_HOME:-$HOME/.cache}/
 
 # Change macOS system appearance
 change_mac_colors() {
-	local theme="$1"
-	local dark_mode
+	theme="$1"
+	dark_mode=""
 
 	if [ "$theme" = "dark" ]; then
 		dark_mode="true"
@@ -23,7 +23,7 @@ change_mac_colors() {
 
 # Update neovim color scheme in tmux panes
 change_nvim_colors() {
-	local theme="$1"
+	theme="$1"
 
 	if ! pgrep -q tmux; then
 		return 0
@@ -40,7 +40,7 @@ change_nvim_colors() {
 # Detect current macOS theme
 get_mac_theme() {
 	if /usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
-        echo "light"
+		echo "light"
 	else
 		echo "dark"
 	fi
@@ -55,11 +55,15 @@ get_theme_from_file() {
 	fi
 }
 
+persist_theme() {
+    theme="$1"
+    mkdir -p "$(dirname "$THEME_FILE_PATH")"
+    echo "$theme" >"$THEME_FILE_PATH"
+}
+
 # Main logic
 main() {
-	local new_theme="$1"
-	local os
-
+	new_theme="$1"
 	os="$(uname -s)"
 
 	# Determine theme based on OS or arguments
@@ -72,12 +76,8 @@ main() {
 		new_theme="$(get_theme_from_file)"
 	fi
 
-	# Update neovim instances
 	change_nvim_colors "$new_theme" &
-
-	# Persist theme to file
-	mkdir -p "$(dirname "$THEME_FILE_PATH")"
-	echo "$new_theme" >"$THEME_FILE_PATH"
+    persist_theme "$new_theme" &
 
 	printf "Changed colors to %s\n" "$new_theme"
 }
