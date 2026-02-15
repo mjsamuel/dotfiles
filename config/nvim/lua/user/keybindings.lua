@@ -104,3 +104,12 @@ vim.api.nvim_create_user_command("QA", function() vim.cmd(":qa") end, { nargs = 
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
 keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { silent = true })
 keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
+
+-- copy the absolute or relative path of the current file to the clipboard
+vim.api.nvim_create_user_command("Path", function(opts)
+  local file_path = vim.api.nvim_buf_get_name(0)
+  local get_full_path = opts.args == "full"
+  local requested_path = get_full_path and file_path or vim.fn.fnamemodify(file_path, ":p:.")
+  local cmd = string.format('let @+="%s"', requested_path)
+  vim.cmd(cmd)
+end, { nargs = "?" })
