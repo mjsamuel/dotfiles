@@ -17,7 +17,6 @@ RUN mkdir -p "Developer/dotfiles"
 COPY . ./Developer/dotfiles/
 RUN ./Developer/dotfiles/bootstrap <<EOF
 $password
-
 EOF
 
 CMD "/bin/zsh"

@@ -21,5 +21,3 @@
       tags: ["neovim", "nvim"]
     - role: tmux
       tags: ["tmux"]
-    - role: tt
-      tags: ["tt"]

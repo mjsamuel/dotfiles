@@ -69,9 +69,7 @@ apt_installed_packages:
   - ripgrep
   - rsync
   - ssh
-  - stow
   - sudo
-  - tree-sitter-cli
   - unzip
   - wget
   - zsh

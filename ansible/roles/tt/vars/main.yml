@@ -1,7 +1,0 @@
-workdir: "{{ ansible_env.HOME }}/.temp/tt"
-
-dependencies:
-  Darwin:
-    - go
-  Debian:
-    - golang-go

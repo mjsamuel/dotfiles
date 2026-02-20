@@ -36,4 +36,7 @@
     - ansible.builtin.import_tasks:
         file: "fzf.yml"
       tags: ["fzf"]
+    - ansible.builtin.import_tasks:
+        file: "tree-sitter.yml"
+      tags: ["treesitter", "tree-sitter"]
   when: ansible_os_family != "Darwin"

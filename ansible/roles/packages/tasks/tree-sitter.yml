@@ -1,0 +1,36 @@
+- name: tree-sitter retrieve release info
+  uri:
+    url: https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest
+    return_content: true
+  register: response
+
+- name: tree-sitter set release facts
+  set_fact:
+    tree_sitter_path: "{{ ansible_env.HOME }}/.temp/{{ response.json.tag_name }}"
+    tree_sitter_download_url: "{{ release.browser_download_url }}"
+  vars:
+    architecture: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+    pattern: ".*-{{ ansible_system | lower }}-{{ architecture }}.gz"
+    release: "{{ response.json.assets | selectattr('name', 'match', pattern) | first }}"
+
+- name: tree-sitter ensure directory exists
+  file:
+    path: "{{ tree_sitter_path }}"
+    state: directory
+
+- name: tree-sitter download release
+  get_url:
+    url: "{{ tree_sitter_download_url }}"
+    dest: "{{ tree_sitter_path }}/tree-sitter.gz"
+
+- name: tree-sitter decompress
+  command:
+    cmd: "gunzip -kf {{ tree_sitter_path }}/tree-sitter.gz"
+    creates: "{{ tree_sitter_path }}/tree-sitter"
+
+- name: tree-sitter copy to bin
+  copy:
+    src: "{{ tree_sitter_path }}/tree-sitter"
+    dest: /usr/local/bin/tree-sitter
+    mode: "0755"
+  become: true

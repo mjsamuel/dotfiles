@@ -1,12 +1,11 @@
 #!/bin/sh
-
 set -e
 
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 OS="$(uname -s)"
 
 run_as_sudo() {
-	echo "$SUDO_PASS" | sudo --stdin -k --prompt '' "$@"
+	printf '%s\n' "$SUDO_PASS" | sudo --stdin -k --prompt '' "$@"
 }
 
 read_secret() {
@@ -23,15 +22,13 @@ read_secret() {
 # prompt for passwords upfront and pass it to commands that need it
 if [ -t 0 ]; then
 	read_secret 'sudo password: ' SUDO_PASS
-	read_secret 'vault password (optional): ' VAULT_PASS
 else
 	read -r SUDO_PASS
-	read -r VAULT_PASS
 fi
 
 if [ "$OS" = "Darwin" ]; then # macOS
 	PATH="/opt/homebrew/bin:$PATH"
-	! command -v pip3 >/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3 -
+	! command -v pip3 >/dev/null && curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3 -
 	! command -v ansible >/dev/null && run_as_sudo pip3 install ansible
 elif command -v apt >/dev/null; then # debian-based
 	! command -v ansible >/dev/null && run_as_sudo DEBIAN_FRONTEND=noninteractive apt install -y ansible git python3-pip
@@ -41,11 +38,11 @@ fi
 
 export ANSIBLE_HOME="$HOME/.local/share/ansible"
 ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
-echo "$VAULT_PASS" | ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
+
+printf '%s\n' "$VAULT_PASS" | ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--connection "local" \
 	--inventory "localhost," \
 	--extra-var "ansible_become_pass=$SUDO_PASS" \
-	$([ -n "$VAULT_PASS" ] && printf -- "--vault-password-file=%s" "/dev/stdin") \
 	"$@"
 
-[ $? -eq 0 ] && printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."
+printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."

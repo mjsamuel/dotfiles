@@ -37,5 +37,5 @@
 - name: install plugins
   shell: |
     command -v fnm >/dev/null && eval "$(fnm env)"
-    nvim --headless "+Lazy! sync" +qa
+    nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "quitall"
   when: clone is changed

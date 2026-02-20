@@ -5,6 +5,11 @@
   become: true
   when: ansible_os_family == "Darwin"
 
+- name: create .ssh folder
+  ansible.builtin.file:
+    path: "~/.ssh"
+    state: directory
+
 - name: symlink authorized keys
   file:
     src: "{{ dotfiles_dir }}/config/ssh/authorized_keys"
