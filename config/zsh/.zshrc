@@ -3,16 +3,20 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+### Completions
+zstyle ':completion:*' menu select # Enable menu selection
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # Highlight the current autocomplete options
+# Disable SSH completion from known_hosts and enforce it to use ~/.ssh/config
+zstyle ':completion:*:ssh:*' hosts $(awk '/^Host / {print $2}' ~/.ssh/config)
+
+autoload -Uz compinit
+compinit
+
 ### Plugins
 ZSH_PLUGIN_DIR="/usr/local/zsh/plugins"
 source "${ZSH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme"
-
-# Load aliases and functions
-source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
-for file in "$XDG_CONFIG_HOME/shell/"*; do
-    source "$file"
-done
 
 ### Variables/Options
 export HISTSIZE=10000
@@ -45,13 +49,6 @@ function zshaddhistory() {
     return 1  # suppress default behavior
 }
 
-# Load environment variables for tools
-command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
-command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
-command -v fzf >/dev/null && eval "$(fzf --zsh)"
-command -v go >/dev/null && eval "$(go env)"
-command -v opam >/dev/null && eval "$(opam env)"
-
 ### Keybindings
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
@@ -76,12 +73,17 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-### Completions
-zstyle ':completion:*' menu select # Enable menu selection
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' # Case-insensitive completion
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # Highlight the current autocomplete options
-# Disable SSH completion from known_hosts and enforce it to use ~/.ssh/config
-zstyle ':completion:*:ssh:*' hosts $(awk '/^Host / {print $2}' ~/.ssh/config)
+### Misc
 
-autoload -Uz compinit
-compinit
+# Load environment variables for tools
+command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
+command -v fzf >/dev/null && eval "$(fzf --zsh)"
+command -v go >/dev/null && eval "$(go env)"
+command -v opam >/dev/null && eval "$(opam env)"
+
+# Load aliases and functions
+source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"
+for file in "$XDG_CONFIG_HOME/shell/"*; do
+    source "$file"
+done
