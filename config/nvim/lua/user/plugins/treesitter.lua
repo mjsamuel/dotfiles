@@ -34,10 +34,11 @@ treesitter.install(parsersToInstall)
 
 vim.filetype.add({ filename = { ["Caddyfile"] = "caddy" } })
 vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
-vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig" } })
-vim.filetype.add({ pattern = { [".*/git/ignore"] = "gitignore" } })
-vim.filetype.add({ pattern = { [".*mdx"] = "markdown" } })
-vim.filetype.add({ pattern = { [".*zsh"] = "sh" } })
+vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig", [".*/git/ignore"] = "gitignore" } })
+vim.filetype.add({ extension = { mdx = 'mdx' } })
+
+vim.treesitter.language.register('markdown', 'mdx')
+vim.treesitter.language.register('bash', 'zsh')
 
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("EnableTreesitterHighlighting", { clear = true }),
