@@ -1,6 +1,11 @@
 #!/bin/sh
 WORKSPACES_FILE="$HOME/.config/workspaces"
-[ ! -f "$WORKSPACES_FILE" ] && echo "$HOME/Developer" >"$WORKSPACES_FILE"
+if [ ! -f "$WORKSPACES_FILE" ]; then
+	cat <<-EOF >"$WORKSPACES_FILE"
+		${HOME}/Developer
+		${HOME}/Work
+	EOF
+fi
 
 FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'"
 selected="$(
