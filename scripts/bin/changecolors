@@ -25,9 +25,9 @@ change_mac_colors() {
 change_nvim_colors() {
 	theme="$1"
 
-	if ! pgrep -q tmux; then
-		return 0
-	fi
+    if ! pgrep tmux > /dev/null 2>&1; then
+        return
+    fi
 
 	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
 		while IFS=' ' read -r command pane_id; do
