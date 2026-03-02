@@ -1,6 +1,6 @@
 - name: tree-sitter retrieve release info
   uri:
-    url: https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest
+    url: https://api.github.com/repos/tree-sitter/tree-sitter/releases/tags/v0.24.7
     return_content: true
   register: response
 
