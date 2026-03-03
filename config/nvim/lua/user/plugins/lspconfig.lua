@@ -53,13 +53,6 @@ local lsp_config_names = vim.iter(installed_packages)
       end
       return pack.spec.neovim.lspconfig
     end)
-    :filter(function(name)
-      if not name then return false end
-      -- TODO: find a better way to enable tsgo and disable ts_ls per-project
-      if TS_GO_ENABLED then
-        return name ~= "ts_ls"
-      end
-      return name ~= "tsgo"
-    end)
     :totable()
 vim.lsp.enable(lsp_config_names)
+vim.lsp.enable('tsgo', false)
