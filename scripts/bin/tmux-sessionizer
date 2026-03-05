@@ -2,8 +2,8 @@
 WORKSPACES_FILE="$HOME/.config/workspaces"
 if [ ! -f "$WORKSPACES_FILE" ]; then
 	cat <<-EOF >"$WORKSPACES_FILE"
-		${HOME}/Developer
-		${HOME}/Work
+        ${HOME}/[Dd]eveloper
+        ${HOME}/[Ww]ork
 	EOF
 fi
 

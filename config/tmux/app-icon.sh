@@ -4,11 +4,12 @@
 window_name="$1"
 pane_current_command="$2"
 is_selected="$3"
+is_last="$4"
 
 return_app() {
 	app_icon="$1"
 	color="$2"
-	if [ "$is_selected" -eq 0 ]; then
+	if [ "$is_selected" -eq 0 ] && [ "$is_last" -eq 0 ]; then
 		color="gray"
 	fi
 	printf "#[fg=%s]%s#[default]" "$color" "$app_icon"
