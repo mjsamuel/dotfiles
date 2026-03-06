@@ -6,6 +6,7 @@ homebrew_taps:
 
 homebrew_installed_packages:
   - bat # prettier 'cat'
+  - claude-code
   - coreutils # those that come with macOS are outdated
   - eza # prettier 'ls'
   - fd # faster 'find'
@@ -19,14 +20,12 @@ homebrew_installed_packages:
   - jq # json formatter & other utils
   - lazygit # git gui
   - luarocks
-  - mosh
   - neofetch
   - newsboat # rss reader
-  - openscad
+  - opencode
   - ripgrep # faster grep
   - rsync
   - scroll-reverser # different scroll directions for mouse and trackpad
-  - speedtest
   - tree-sitter-cli
   - yt-dlp
   - zsh
