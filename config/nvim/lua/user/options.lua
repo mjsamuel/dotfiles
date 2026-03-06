@@ -44,9 +44,6 @@ set.secure = true -- disable potentially harmful commands in project config file
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
 
-vim.g.editorconfig = true
-vim.g.markdown_recommended_style = 0
-
 --- override default ui.select with snacks picker
 vim.ui.select = function()
   return require("snacks").picker.select

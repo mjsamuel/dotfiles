@@ -77,13 +77,9 @@ M = {
         hidden = {}, -- show preview by default
       }
     },
-    diagnostics = {
-      win = {
-        input = {
-          keys = {
-            ["<C-t>"] = { "trouble_open_diagnostics", mode = { "i", "n" } },
-          }
-        }
+    git_status = {
+      layout = {
+        hidden = {}, -- show preview by default
       }
     },
   },
