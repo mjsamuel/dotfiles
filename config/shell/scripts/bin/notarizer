@@ -16,9 +16,11 @@ FZF_DEFAULT_COMMAND="find '$notes_dir' -name '*.md' -print0 | xargs -0 ls -t | s
 result="$(
 	fzf --preview "bat '${notes_dir}/{}' --color always --style plain" \
 		--preview-window=right:50% --height=100% \
+		--prompt "note: " \
 		--print-query \
 		--bind "ctrl-n:print-query+abort" \
-		--bind "ctrl-d:execute(rm -i '${notes_dir}/{}')+reload(${FZF_DEFAULT_COMMAND})"
+		--bind "ctrl-d:execute(rm -i '${notes_dir}/{}')+reload(${FZF_DEFAULT_COMMAND})" \
+		--bind "ctrl-o:execute(open '${notes_dir}')+abort"
 )"
 
 exit_code="$?"

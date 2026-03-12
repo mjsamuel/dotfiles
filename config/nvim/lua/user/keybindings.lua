@@ -99,7 +99,6 @@ keymap.set("i", "<Right>", function()
   end
   cp.accept()
 end)
-command.set("Chat", ":CopilotChat<cr>", { nargs = 0, range = true })
 
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })

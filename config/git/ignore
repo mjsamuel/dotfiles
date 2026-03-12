@@ -16,4 +16,4 @@ Thumbs.db
 .nvimrc
 
 # Per-project tmux script to arrange tabs/panes
-.tmux
+.tmux.conf

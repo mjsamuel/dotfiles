@@ -50,6 +50,7 @@ function zshaddhistory() {
 }
 
 ### Keybindings
+disable r
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
 bindkey -s '^[S' '^Utmux-sessionizer\n'

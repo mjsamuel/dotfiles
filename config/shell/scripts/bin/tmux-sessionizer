@@ -7,9 +7,10 @@ if [ ! -f "$WORKSPACES_FILE" ]; then
 	EOF
 fi
 
-FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'"
 selected="$(
-	fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
+	FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'" \
+		fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
+		--prompt "session: " \
 		--preview-window=right:50% --height=100% \
 		--delimiter / --with-nth -2,-1 \
 		--bind "enter:accept-non-empty" \
@@ -17,14 +18,11 @@ selected="$(
 )" || exit 0
 selected_name=$(basename "$selected" | tr '.' '-')
 
-is_tmux_running=$(pgrep tmux)
-session_exists=$(tmux list-sessions >/dev/null 2>&1 | grep "^${selected_name}:")
-if [ -z "$is_tmux_running" ] || [ -z "$session_exists" ]; then
+if ! tmux has-session -t "$selected_name" 2>/dev/null; then
 	tmux new-session -ds "$selected_name" -c "$selected"
 fi
 
-is_in_tmux="$TMUX"
-if [ -n "$is_in_tmux" ]; then
+if [ -n "$TMUX" ]; then
 	tmux switch-client -t "$selected_name"
 else
 	tmux attach -t "$selected_name"
