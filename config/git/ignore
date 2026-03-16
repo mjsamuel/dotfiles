@@ -17,3 +17,6 @@ Thumbs.db
 
 # Per-project tmux script to arrange tabs/panes
 .tmux.conf
+
+# AI assistant settings
+**/.claude/settings.local.json

@@ -32,6 +32,19 @@
         label: "{{ item.path }}"
   tags: ["config"]
 
+- block:
+    - name: create .claude directory
+      file:
+        path: "~/.claude"
+        state: directory
+
+    - name: symlink claude settings
+      file:
+        src: "{{ dotfiles_dir }}/config/claude/settings.json"
+        path: "~/.claude/settings.json"
+        state: link
+  tags: ["claude"]
+
 - name: install zsh plugins
   git:
     repo: "{{ item.url }}"
