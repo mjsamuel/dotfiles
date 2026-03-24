@@ -9,7 +9,7 @@ return_app() {
 	app_icon="$1"
 	color="$2"
 	if [ "$is_selected" -eq 0 ]; then
-		color="gray"
+		color="default"
 	fi
 	printf "#[fg=%s]%s#[default]" "$color" "$app_icon"
 	exit 0
