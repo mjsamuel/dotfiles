@@ -24,7 +24,7 @@ export SAVEHIST=10000
 export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 export KEYTIMEOUT=1 # waittime for key to be presseded before executing
 export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --color 16"
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --pointer='>' --color 16 --color='fg:gray,bg+:black,hl:cyan,hl+:cyan,info:blue,prompt:white,pointer:magenta'"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
