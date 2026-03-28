@@ -19,24 +19,21 @@
       become: true
   when: ansible_os_family == "Debian"
 
-- ansible.builtin.import_tasks:
-    file: "fnm.yml"
-  tags: ["fnm", "node"]
-
-- block:
-    - ansible.builtin.import_tasks:
-        file: "lazygit.yml"
-      tags: ["lazygit", "lg"]
-    - ansible.builtin.import_tasks:
-        file: "eza.yml"
-      tags: ["eza", "exa"]
-    - ansible.builtin.import_tasks:
-        file: "bat.yml"
-      tags: ["bat"]
-    - ansible.builtin.import_tasks:
-        file: "fzf.yml"
-      tags: ["fzf"]
-    - ansible.builtin.import_tasks:
-        file: "tree-sitter.yml"
-      tags: ["treesitter", "tree-sitter"]
+- name: install github release binaries
+  include_tasks: github_release.yml
+  loop: "{{ github_releases }}"
+  loop_control:
+    loop_var: pkg
+    label: "{{ pkg.binary }}"
   when: ansible_os_family != "Darwin"
+
+- name: fnm install latest lts
+  shell: fnm install --lts
+  register: fnm_install
+  changed_when: 'fnm_install.stderr is not search("Version already installed")'
+
+- name: fnm set lts as default
+  shell: |
+    eval "$(fnm env)"
+    fnm default lts/latest
+  when: fnm_install is changed

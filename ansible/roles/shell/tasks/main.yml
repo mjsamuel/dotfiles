@@ -42,7 +42,7 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: set zsh as deafult shell
+- name: set zsh as default shell
   user:
     name: "{{ ansible_env.USER }}"
     shell: "{{ zsh_location[ansible_os_family] }}"

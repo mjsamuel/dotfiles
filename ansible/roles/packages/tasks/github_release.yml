@@ -1,0 +1,64 @@
+- name: "{{ pkg.binary }} - fetch release"
+  uri:
+    url: "https://api.github.com/repos/{{ pkg.repo }}/releases/{{ 'tags/' ~ pkg.version if pkg.version is defined else 'latest' }}"
+    return_content: true
+  register: _release
+
+- name: "{{ pkg.binary }} - resolve asset"
+  set_fact:
+    _asset_url: "{{ asset.browser_download_url }}"
+    _staging_dir: "{{ ansible_env.HOME }}/.temp/{{ pkg.binary }}-{{ _release.json.tag_name }}"
+  vars:
+    asset: "{{ _release.json.assets | selectattr('name', 'match', pkg.pattern) | first }}"
+
+- name: "{{ pkg.binary }} - create staging dir"
+  file:
+    path: "{{ _staging_dir }}"
+    state: directory
+
+- block:
+    - name: "{{ pkg.binary }} - download and extract"
+      unarchive:
+        src: "{{ _asset_url }}"
+        dest: "{{ _staging_dir }}"
+        remote_src: true
+      register: _download
+      ignore_errors: true
+
+    - name: "{{ pkg.binary }} - find binary"
+      find:
+        paths: "{{ _staging_dir }}"
+        patterns: "{{ pkg.binary }}"
+        recurse: true
+        file_type: file
+      register: _found
+      when: not _download.failed
+
+    - name: "{{ pkg.binary }} - install"
+      copy:
+        src: "{{ _found.files[0].path }}"
+        dest: "/usr/local/bin/{{ pkg.binary }}"
+        mode: "0755"
+      become: true
+      when: not _download.failed
+  when: pkg.archive_type | default('tar') == 'tar'
+
+# tree-sitter ships as a raw .gz (not a tarball)
+- block:
+    - name: "{{ pkg.binary }} - download gz"
+      get_url:
+        url: "{{ _asset_url }}"
+        dest: "{{ _staging_dir }}/{{ pkg.binary }}.gz"
+
+    - name: "{{ pkg.binary }} - decompress"
+      command:
+        cmd: "gunzip -kf {{ _staging_dir }}/{{ pkg.binary }}.gz"
+        creates: "{{ _staging_dir }}/{{ pkg.binary }}"
+
+    - name: "{{ pkg.binary }} - install"
+      copy:
+        src: "{{ _staging_dir }}/{{ pkg.binary }}"
+        dest: "/usr/local/bin/{{ pkg.binary }}"
+        mode: "0755"
+      become: true
+  when: pkg.archive_type | default('tar') == 'gz'

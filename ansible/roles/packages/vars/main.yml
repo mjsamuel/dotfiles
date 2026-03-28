@@ -53,6 +53,28 @@ mas_installed_apps:
   - { id: 409201541, name: " Pages (13.2)" }
   - { id: 497799835, name: " Xcode (14.3.1)" }
 
+github_releases:
+  - repo: Schniz/fnm
+    binary: fnm
+    pattern: "fnm-{{ {'arm': 'arm32', 'aarch64': 'arm64'}[ansible_architecture] | default('linux') }}"
+  - repo: jesseduffield/lazygit
+    binary: lazygit
+    pattern: ".*_{{ ansible_system | lower }}_{{ 'arm64' if ansible_architecture == 'aarch64' else ansible_architecture }}.tar.gz"
+  - repo: eza-community/eza
+    binary: eza
+    pattern: ".*{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+  - repo: sharkdp/bat
+    binary: bat
+    pattern: ".*{{ ansible_architecture }}-unknown-{{ ansible_system | lower }}-.*\\.tar\\.gz"
+  - repo: junegunn/fzf
+    binary: fzf
+    pattern: ".*-{{ ansible_system | lower }}_{{ {'x86_64': 'amd64', 'aarch64': 'arm64'}[ansible_architecture] | default(ansible_architecture) }}.tar.gz"
+  - repo: tree-sitter/tree-sitter
+    binary: tree-sitter
+    version: v0.24.7
+    pattern: ".*-{{ ansible_system | lower }}-{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' if ansible_architecture == 'x86_64' else ansible_architecture }}.gz"
+    archive_type: gz
+
 apt_installed_packages:
   - curl
   - fd-find
