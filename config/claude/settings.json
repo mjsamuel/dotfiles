@@ -29,6 +29,7 @@
       "Bash(git branch *)"
     ],
     "deny": [
+      "Bash(git push *)",
       "Bash(curl *)",
       "Read(./.env)",
       "Read(./.env.*)",

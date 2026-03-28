@@ -1,0 +1,22 @@
+- name: create .claude directory
+  file:
+    path: "~/.claude"
+    state: directory
+
+- name: symlink claude settings
+  file:
+    src: "{{ dotfiles_dir }}/config/claude/settings.json"
+    path: "~/.claude/settings.json"
+    state: link
+
+- name: symlink claude CLAUDE.md
+  file:
+    src: "{{ dotfiles_dir }}/config/claude/CLAUDE.md"
+    path: "~/.claude/CLAUDE.md"
+    state: link
+
+- name: symlink claude skills
+  file:
+    src: "{{ dotfiles_dir }}/config/claude/skills"
+    path: "~/.claude/skills"
+    state: link

@@ -21,3 +21,5 @@
       tags: ["neovim", "nvim"]
     - role: tmux
       tags: ["tmux"]
+    - role: claude
+      tags: ["claude"]
