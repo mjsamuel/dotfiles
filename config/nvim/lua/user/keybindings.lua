@@ -16,9 +16,8 @@ keymap.set("n", "ss", function() require("snacks").picker.files({ hidden = true 
 keymap.set("v", "sr", function() require("snacks").picker.grep_word() end)              -- [s]earch using [r]ipgrep with visual selection
 keymap.set("v", "ss", function()
   local visual = require("snacks").picker.util.visual()
-  if visual then
-    require("snacks").picker.files({ search = visual.text:gsub("\n", " ") })
-  end
+  if not visual then return end
+  require("snacks").picker.files({ search = visual.text:gsub("\n", " ") })
 end) -- [s]earch files with visual selection
 
 -- git
@@ -103,8 +102,34 @@ end)
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
 keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { silent = true })
-keymap.set("n", "<leader>y", '<cmd>let @+=@" | echo "Copied to system clipboard"<cr>', { silent = true })
 command.set("PackUpdate", function() vim.pack.update() end, { nargs = 0 })
+
+-- copy to system clipboard
+local function copy_to_system_clipboard(text)
+  vim.fn.setreg("+", text)
+  print("Copied to system clipboard")
+end
+keymap.set("n", "<leader>y", function()
+  copy_to_system_clipboard(vim.fn.getreg("\""))
+end, { silent = true })
+keymap.set("v", "<leader>y", function()
+  local visual = require("snacks").picker.util.visual()
+  if not visual then return end
+  copy_to_system_clipboard(visual.text)
+end, { silent = true })
+
+-- copy the current file path and line number to the system clipboard in a
+-- format easier ai code assistants to understand
+keymap.set("v", "ai", function()
+  local visual = require("snacks").picker.util.visual()
+  if not visual then return end
+  local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  local abs_path = vim.api.nvim_buf_get_name(0)
+  local rel_path = abs_path:sub(#git_root + 2)
+  local ext = vim.fn.fnamemodify(abs_path, ":e")
+  local result = string.format("@%s:%d-%d\n```%s\n%s\n```", rel_path, visual.pos[1], visual.end_pos[1], ext, visual.text)
+  copy_to_system_clipboard(result)
+end)
 
 -- copy the absolute or relative path of the current file to the clipboard
 command.set("Path", function(opts)
@@ -123,4 +148,3 @@ command.set("W", function() vim.cmd(":w") end, { nargs = 0 })
 command.set("WA", function() vim.cmd(":wa") end, { nargs = 0 })
 command.set("Wa", function() vim.cmd(":wa") end, { nargs = 0 })
 command.set("Wqa", function() vim.cmd(":wqa") end, { nargs = 0 })
-
