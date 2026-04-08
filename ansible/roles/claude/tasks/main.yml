@@ -15,6 +15,12 @@
     path: "~/.claude/CLAUDE.md"
     state: link
 
+- name: symlink claude keybindings
+  file:
+    src: "{{ dotfiles_dir }}/config/claude/keybindings.json"
+    path: "~/.claude/keybindings.json"
+    state: link
+
 - name: symlink claude skills
   file:
     src: "{{ dotfiles_dir }}/config/claude/skills"
