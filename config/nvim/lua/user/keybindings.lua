@@ -109,12 +109,13 @@ local function copy_to_system_clipboard(text)
   vim.fn.setreg("+", text)
   print("Copied to system clipboard")
 end
-keymap.set("n", "<leader>y", function()
+keymap.set("n", "Y", function()
   copy_to_system_clipboard(vim.fn.getreg("\""))
 end, { silent = true })
-keymap.set("v", "<leader>y", function()
+keymap.set("v", "Y", function()
   local visual = require("snacks").picker.util.visual()
   if not visual then return end
+  vim.fn.setreg("\"", visual.text)
   copy_to_system_clipboard(visual.text)
 end, { silent = true })
 
