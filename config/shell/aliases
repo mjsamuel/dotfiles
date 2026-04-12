@@ -2,7 +2,7 @@
 
 # misc
 alias \
-	ai='claude' \
+	ai='claude --dangerously-skip-permissions' \
 	cat='bat' \
 	lg='lazygit' \
 	ls='eza' \
