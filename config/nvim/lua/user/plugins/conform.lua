@@ -4,6 +4,7 @@ local prettier = { "prettierd", lsp_format = "fallback", stop_after_first = true
 require("conform").setup({
   default_format_opts = { lsp_format = "fallback" },
   formatters_by_ft = {
+    astro = prettier,
     css = prettier,
     gotmpl = prettier,
     html = prettier,
