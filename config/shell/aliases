@@ -3,16 +3,18 @@
 # misc
 alias \
 	ai='claude --dangerously-skip-permissions' \
+	c='clear' \
 	cat='bat' \
+	e='$EDITOR' \
 	lg='lazygit' \
 	ls='eza' \
 	n="notarizer" \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
-    c='clear' \
 	notes="notarizer" \
 	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	v='nvim'
+	v='nvim' \
+	pr='gh pr view --web'
 
 # ssh
 s() {
@@ -54,5 +56,5 @@ alias \
 
 # typo guards
 alias \
-    eixt='exit' \
-    celar='clear'
+	eixt='exit' \
+	celar='clear'
