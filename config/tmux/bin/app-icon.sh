@@ -39,5 +39,6 @@ ssh) return_app "󰌘" "white" ;;
 tt) return_app "󰌌" "white" ;;
 vim) return_app "" "green" ;;
 yt-dl*) return_app "󰇚" "green" ;;
+claude*) return_app '󰫢' 'orange' ;;
 *) return_app "" "orange" ;;
 esac
