@@ -6,8 +6,8 @@ cursor-style-blink = false
 cursor-click-to-move = true
 mouse-hide-while-typing = true
 scrollback-limit = 0
-window-padding-x = 0
-window-padding-y = 0
+window-padding-x = 16
+window-padding-y = 12
 bell-features = system
 
 keybind = super+f=toggle_fullscreen
