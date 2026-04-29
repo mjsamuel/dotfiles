@@ -137,8 +137,7 @@ command.set("Path", function(opts)
   local file_path = vim.api.nvim_buf_get_name(0)
   local get_full_path = opts.args == "full"
   local requested_path = get_full_path and file_path or vim.fn.fnamemodify(file_path, ":p:.")
-  local cmd = string.format('let @+="%s"', requested_path)
-  vim.cmd(cmd)
+  copy_to_system_clipboard(requested_path)
 end, { nargs = "?" })
 
 -- typo guards
