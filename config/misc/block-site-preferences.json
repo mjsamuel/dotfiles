@@ -1,0 +1,55 @@
+{
+  "blocked": [
+    "R:^https?:\\/\\/(?:www\\.)?reddit\\.com\\/?$"
+  ],
+  "close": 0,
+  "contextmenu-frame": true,
+  "contextmenu-pause": true,
+  "contextmenu-resume": true,
+  "contextmenu-top": true,
+  "contexts": [
+    "main_frame",
+    "sub_frame"
+  ],
+  "crate": 1,
+  "css": "",
+  "disable-actions-options": true,
+  "disable-actions-page": true,
+  "initialBlock": true,
+  "initialBlockCurrent": true,
+  "last-update": 1777862139113,
+  "map": {},
+  "message": "",
+  "no-password-on-add": false,
+  "notes": {
+    "R:^https?:\\/\\/(?:www\\.)?reddit\\.com\\/?$": {
+      "date": 1777862694646,
+      "origin": "options",
+      "count": 1
+    }
+  },
+  "notification": true,
+  "pause-periods": [
+    5,
+    10,
+    15,
+    30,
+    60,
+    360,
+    1440,
+    -1
+  ],
+  "redirect": "",
+  "reverse": false,
+  "schedule": {
+    "times": {}
+  },
+  "schedule-offset": 0,
+  "schedules": {},
+  "sha256": "",
+  "timeout": 60,
+  "title": true,
+  "wrong": 1,
+  "managed.storage.overwrite.on.start": false,
+  "guid": "c0ca8271-419a-4afc-8961-759f17c18ae8"
+}
