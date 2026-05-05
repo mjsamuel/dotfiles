@@ -1,10 +1,5 @@
 #!/bin/sh
-os="$(uname -s)"
-notes_dir=$(
-	[ "$os" = "Darwin" ] &&
-		echo "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes" ||
-		echo "$HOME/Documents/notes"
-)
+notes_dir="${NOTES_DIR:-$HOME/Documents/notes}"
 
 # Ensure notes directory exists and is a git repository
 if [ ! -d "$notes_dir" ]; then

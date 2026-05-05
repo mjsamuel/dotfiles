@@ -29,7 +29,13 @@ export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 di
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
 export BAT_THEME="ansi"
 export NODE_COMPILE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/node-compile-cache"
-export OS_APPEARANCE_FILE="$XDG_CACHE_HOME/os_theme"
+export OS_APPEARANCE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/os_theme"
+export NOTES_DIR="$(
+    [ $(uname -s) = "Darwin" ] &&
+        echo "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes" ||
+        echo "$HOME/Documents/notes"
+    )"
+
 unsetopt autocd beep notify
 
 ### History Options
