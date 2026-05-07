@@ -12,13 +12,12 @@ alias \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
 	notes="notarizer" \
-	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	v='nvim' \
-	pr='gh pr view --web'
+	pr='gh pr view --web' \
+	tree='eza --tree --icons --group-directories-first --git-ignore'
 
 # ssh
 s() {
-	selected=$(awk '/^Host / { print $2 }' ~/.ssh/config | fzf)
+	selected=$(awk '/^Host / { print $2 }' ~/.ssh/config | grep -v '\*' | fzf)
 	[ -n "$selected" ] && ssh "$selected"
 }
 

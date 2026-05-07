@@ -19,14 +19,14 @@ source "${ZSH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme"
 
 ### Variables/Options
-export HISTSIZE=10000
-export SAVEHIST=10000
-export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 export KEYTIMEOUT=1 # waittime for key to be presseded before executing
+
 export FZF_DEFAULT_COMMAND='rg --files'
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --pointer='>' --color 16 --color='fg:gray,bg+:black,hl:cyan,hl+:cyan,info:blue,prompt:white,pointer:magenta'"
 export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
+export FZF_COMPLETION_TRIGGER='@'
+
 export BAT_THEME="ansi"
 export NODE_COMPILE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/node-compile-cache"
 export OS_APPEARANCE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/os_theme"
@@ -39,6 +39,10 @@ export NOTES_DIR="$(
 unsetopt autocd beep notify
 
 ### History Options
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
+
 setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY          # Share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
@@ -48,6 +52,7 @@ setopt HIST_FIND_NO_DUPS      # Do not display a line previously found.
 setopt HIST_IGNORE_SPACE      # Don't record an entry starting with a space.
 setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history file.
 setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
+
 # Remove trailing whitespace from history entries.
 function zshaddhistory() {
     setopt local_options extended_glob
@@ -61,6 +66,7 @@ bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
 bindkey -s '^[S' '^Utmux-sessionizer\n'
 bindkey -s '^[N' '^Unotarizer\n'
+
 # Edit current command in nvim
 bindkey -M viins '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
@@ -81,7 +87,6 @@ echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 ### Misc
-
 # Load environment variables for tools
 command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
 command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
