@@ -18,6 +18,7 @@ return_app() {
 case "$window_name" in
 logs) return_app '' 'white' ;;
 ai | claude*) return_app '󰫢' 'orange' ;;
+note*) return_app '' 'yellow' ;;
 *capture) return_app '󰆟' 'blue' ;;
 esac
 
