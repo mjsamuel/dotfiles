@@ -35,19 +35,21 @@ set.termguicolors = true -- true color support
 set.timeoutlen = 300 -- time to wait for a mapped sequence to complete (in milliseconds)
 set.undofile = true
 set.updatetime = 250
+set.winborder = "rounded"
 set.wrap = false
-set.winborder = 'rounded'
 
-set.exrc = true -- enable execution of project specific config (.nvimrc, .nvim.lua)
+-- fold settings
+set.foldmethod = "expr"
+set.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+set.foldtext = "v:lua.vim.lsp.foldtext()"
+set.foldlevelstart = 99
+
+-- enable project specific config
+set.exrc = true   -- enable execution of project specific config (.nvimrc, .nvim.lua)
 set.secure = true -- disable potentially harmful commands in project config files
 
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
-
---- override default ui.select with snacks picker
-vim.ui.select = function()
-  return require("snacks").picker.select
-end
 
 vim.diagnostic.config({
   severity_sort = true,
@@ -61,3 +63,11 @@ vim.diagnostic.config({
     }
   }
 })
+
+-- set background based on os theme
+local function get_os_appearance()
+  local os_theme_file = os.getenv("OS_APPEARANCE_FILE") or os.getenv("XDG_CACHE_HOME") .. "/os_theme"
+  vim.fn.system("grep 'dark' " .. os_theme_file)
+  return vim.v.shell_error == 1 and "light" or "dark"
+end
+vim.o.background = get_os_appearance()

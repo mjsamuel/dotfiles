@@ -3,6 +3,15 @@ vim.pack.add({ {
   version = "main"
 } })
 
+vim.api.nvim_create_autocmd('PackChanged', {
+  desc = 'Update Tree-sitter parsers after plugin update',
+  callback = function(ev)
+    if ev.data.spec.name == 'nvim-treesitter' then
+      vim.cmd('TSUpdate')
+    end
+  end,
+})
+
 local treesitter = require("nvim-treesitter")
 
 local ensureInstalled = {

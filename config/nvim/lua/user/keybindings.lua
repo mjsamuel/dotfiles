@@ -125,10 +125,11 @@ keymap.set("v", "ai", function()
   local visual = require("snacks").picker.util.visual()
   if not visual then return end
   local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-  local abs_path = vim.api.nvim_buf_get_name(0)
-  local rel_path = abs_path:sub(#git_root + 2)
-  local ext = vim.fn.fnamemodify(abs_path, ":e")
-  local result = string.format("@%s:%d-%d\n```%s\n%s\n```", rel_path, visual.pos[1], visual.end_pos[1], ext, visual.text)
+  local absolute_path = vim.api.nvim_buf_get_name(0)
+  local relative_path = absolute_path:sub(#git_root + 2)
+  local extension = vim.fn.fnamemodify(absolute_path, ":e")
+  local result = string.format("@%s:%d-%d\n```%s\n%s\n```", relative_path, visual.pos[1], visual.end_pos[1], extension,
+    visual.text)
   copy_to_system_clipboard(result)
 end)
 
