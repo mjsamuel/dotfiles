@@ -18,4 +18,4 @@ term = xterm-ghostty
 
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
-macos-titlebar-style = hidden
+macos-titlebar-style = transparent
