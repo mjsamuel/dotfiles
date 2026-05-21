@@ -23,7 +23,7 @@ Look at the current repo to understand its starting state. Read whatever exists;
 - `git remote -v` and `.git/config` — is this a GitHub repo? Which one?
 - `CLAUDE.local.md` at the repo root — does it exist? Is there already an `## Agent skills` section in it?
 - `.mjsamuel/CONTEXT.md` and `.mjsamuel/CONTEXT-MAP.md` at the repo root
-- `docs/adr/` and any `src/*/docs/adr/` directories
+- `.mjsamuel/adr/` and any `src/*/.mjsamuel/adr/` directories
 - `.mjsamuel/agents/` — does this skill's prior output already exist?
 - `.mjsamuel/scratch/` — sign that a local-markdown issue tracker convention is already in use
 
@@ -39,6 +39,7 @@ Assume the user does not know what these terms mean. Each section starts with a 
 
 Default posture: these skills were designed for GitHub. If a `git remote` points at GitHub, propose that. If a `git remote` points at GitLab (`gitlab.com` or a self-hosted host), propose GitLab. Otherwise (or if the user prefers), offer:
 
+- **Beads** — issues live in a [`Dolt`](https://github.com/dolthub/dolt) database (uses the [`bd`](https://github.com/gastownhall/beads) CLI)
 - **GitHub** — issues live in the repo's GitHub Issues (uses the `gh` CLI)
 - **GitLab** — issues live in the repo's GitLab Issues (uses the [`glab`](https://gitlab.com/gitlab-org/cli) CLI)
 - **Local markdown** — issues live as files under `.mjsamuel/scratch/<feature>/` in this repo (good for solo projects or repos without a remote)
@@ -60,11 +61,11 @@ Default: each role's string equals its name. Ask the user if they want to overri
 
 **Section C — Domain docs.**
 
-> Explainer: Some skills (`improve-codebase-architecture`, `diagnose`, `tdd`) read a `.mjsamuel/CONTEXT.md` file to learn the project's domain language, and `docs/adr/` for past architectural decisions. They need to know whether the repo has one global context or multiple (e.g. a monorepo with separate frontend/backend contexts) so they look in the right place.
+> Explainer: Some skills (`improve-codebase-architecture`, `diagnose`, `tdd`) read a `.mjsamuel/CONTEXT.md` file to learn the project's domain language, and `.mjsamuel/adr/` for past architectural decisions. They need to know whether the repo has one global context or multiple (e.g. a monorepo with separate frontend/backend contexts) so they look in the right place.
 
 Confirm the layout:
 
-- **Single-context** — one `.mjsamuel/CONTEXT.md` + `docs/adr/` at the repo root. Most repos are this.
+- **Single-context** — one `.mjsamuel/CONTEXT.md` + `.mjsamuel/adr/` at the repo root. Most repos are this.
 - **Multi-context** — `.mjsamuel/CONTEXT-MAP.md` at the root pointing to per-context `.mjsamuel/CONTEXT.md` files (typically a monorepo).
 
 ### 3. Confirm and edit
@@ -98,13 +99,13 @@ The block:
 [one-line summary of layout — "single-context" or "multi-context"]. See `.mjsamuel/agents/domain.md`.
 ```
 
-Then write the three docs files using the seed templates in this skill folder as a starting point:
+Then write the three docs files using the seed templates in `$HOME/.config/agent-scaffold/agents` as a starting point:
 
-- [issue-tracker-github.md](./issue-tracker-github.md) — GitHub issue tracker
-- [issue-tracker-gitlab.md](./issue-tracker-gitlab.md) — GitLab issue tracker
-- [issue-tracker-local.md](./issue-tracker-local.md) — local-markdown issue tracker
-- [triage-labels.md](./triage-labels.md) — label mapping
-- [domain.md](./domain.md) — domain doc consumer rules + layout
+- [issue-tracker-beads.md]($HOME/.config/agent-scaffold/agents/issue-tracker-beads.md) — Beads issue tracker
+- [issue-tracker-github.md]($HOME/.config/agent-scaffold/agents/issue-tracker-github.md) — GitHub issue tracker
+- [issue-tracker-local.md]($HOME/.config/agent-scaffold/agents/issue-tracker-local.md) — local-markdown issue tracker
+- [triage-labels.md]($HOME/.config/agent-scaffold/agents/triage-labels.md) — label mapping
+- [domain.md]($HOME/.config/agent-scaffold/agents/domain.md) — domain doc consumer rules + layout
 
 For "other" issue trackers, write `.mjsamuel/agents/issue-tracker.md` from scratch using the user's description.
 

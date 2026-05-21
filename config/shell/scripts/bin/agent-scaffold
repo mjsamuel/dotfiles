@@ -1,0 +1,25 @@
+#!/bin/sh
+
+git_root="$(git rev-parse --show-toplevel)"
+if [ ! -d "${git_root}" ]; then
+	echo "Error: Not inside a git repository."
+	exit 1
+fi
+
+# copy over context files
+config_dir="${git_root}/.mjsamuel"
+support_folder="${XDG_CONFIG_HOME:-$HOME/.config}/agent-scaffold"
+cp -r "${support_folder}" "${config_dir}"
+
+# init issue tracker - [Beads](https://github.com/gastownhall/beads)
+bd init \
+	--non-interactive \
+	--skip-agents \
+	--skip-hooks \
+	--stealth
+
+# init sandcastle
+NODE="fnm exec --using=lts-latest"
+$NODE npm install --save-dev @ai-hero/sandcastle --prefix .mjsamuel
+
+printf "\nFinish setup by generating an API token via: claude setup-token\n"
