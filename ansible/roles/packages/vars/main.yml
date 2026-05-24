@@ -1,11 +1,13 @@
 homebrew_taps:
   - homebrew/cask-fonts
   - homebrew/cask-versions
+  - oven-sh/bun
   - romkatv/powerlevel10k
   - teamookla/speedtest
 
 homebrew_installed_packages:
   - bat # prettier 'cat'
+  - bun
   - claude-code
   - coreutils # those that come with macOS are outdated
   - eza # prettier 'ls'

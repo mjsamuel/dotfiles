@@ -21,6 +21,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn/v6"
+export BUN_HOME="$XDG_CACHE_HOME/.bun"
 
 # Path
 export PATH="$PATH\
@@ -28,4 +29,5 @@ export PATH="$PATH\
 :$XDG_CONFIG_HOME/shell/scripts/bin\
 :$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME/bin\
-:$GOPATH/bin"
+:$GOPATH/bin\
+:$BUN_HOME/bin"
