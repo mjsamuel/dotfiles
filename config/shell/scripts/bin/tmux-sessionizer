@@ -2,13 +2,19 @@
 WORKSPACES_FILE="$HOME/.config/workspaces"
 if [ ! -f "$WORKSPACES_FILE" ]; then
 	cat <<-EOF >"$WORKSPACES_FILE"
-        ${HOME}/[Dd]eveloper
-        ${HOME}/[Ww]ork
+		${HOME}/[Dd]eveloper
+		${HOME}/[Ww]ork
 	EOF
 fi
 
+# filter out non-existent directories
+workspaces_roots=""
+for dir in $(xargs <"$WORKSPACES_FILE"); do
+	[ -d "$dir" ] && workspaces_roots="$workspaces_roots $dir"
+done
+
 selected="$(
-	FZF_DEFAULT_COMMAND="find $(xargs <"$WORKSPACES_FILE") -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'" \
+	FZF_DEFAULT_COMMAND="find $workspaces_roots -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'" \
 		fzf --preview 'eza {} --tree --level=1 --icons --color=always' \
 		--prompt "session: " \
 		--preview-window=right:50% --height=100% \
