@@ -21,8 +21,26 @@
     path: "~/.claude/keybindings.json"
     state: link
 
-- name: symlink claude skills
-  file:
-    src: "{{ dotfiles_dir }}/config/claude/skills"
-    path: "~/.claude/skills"
-    state: link
+
+- block:
+    - name: create .claude/skills directory
+      file:
+        path: "~/.claude/skills"
+        state: directory
+
+    - name: find all skills in dotfiles
+      find:
+        paths: "{{ dotfiles_dir }}/config/claude/skills"
+        file_type: directory
+        recurse: no
+      register: find
+
+    - name: symlink skills
+      file:
+        src: "{{ item.path }}"
+        path: "~/.claude/skills/{{ item.path | basename }}"
+        state: link
+      loop: "{{ find.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+  tags: ["skills"]
