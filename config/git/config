@@ -52,5 +52,5 @@
     graph = "log --graph --oneline --decorate"
     oops = "!git log --pretty=format:%B -1 | osc52 && git reset HEAD~1"
 
-[includeIf "gitdir:~/Work/"]
-    path = ~/Work/.gitconfig
+[includeIf "gitdir/i:~/work/"]
+    path = ~/work/.gitconfig
