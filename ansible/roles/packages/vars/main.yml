@@ -43,6 +43,7 @@ homebrew_cask_apps:
   - iina
   - tailscale
   - transmission
+  - typewhisper/tap/typewhisper
   - visual-studio-code
   - zen
 
