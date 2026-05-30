@@ -12,7 +12,6 @@ alias \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
 	notes="notarizer" \
-	pr='gh pr view --web' \
 	tree='eza --tree --icons --group-directories-first --git-ignore'
 
 # ssh
@@ -22,6 +21,10 @@ s() {
 }
 
 # git
+alias \
+	pr='gh pr view --web' \
+    repo='gh repo view --web'
+
 g() {
 	if [ "$#" -ne 0 ]; then
 		git "$@"
