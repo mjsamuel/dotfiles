@@ -11,7 +11,16 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # Highlight the current 
 zstyle ':completion:*:ssh:*' hosts $(awk '/^Host / {print $2}' ~/.ssh/config)
 
 autoload -Uz compinit
-compinit
+# Rebuild $ZDOTDIR/.zcompdump at most once per day; otherwise skip the audit and
+# load the cached dump via `compinit -C` for a faster startup.
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+_zcompdump_stale=("$_zcompdump"(N.mh+24))
+if [[ ! -e "$_zcompdump" || ${#_zcompdump_stale[@]} -gt 0 ]]; then
+    compinit
+else
+    compinit -C
+fi
+unset _zcompdump _zcompdump_stale
 
 ### Plugins
 ZSH_PLUGIN_DIR="/usr/local/zsh/plugins"
@@ -91,8 +100,6 @@ preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
 command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
 command -v fzf >/dev/null && eval "$(fzf --zsh)"
-command -v go >/dev/null && eval "$(go env)"
-command -v opam >/dev/null && eval "$(opam env)"
 
 # Load aliases and functions
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"

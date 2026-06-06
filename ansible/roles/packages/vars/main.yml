@@ -3,7 +3,6 @@ homebrew_taps:
   - homebrew/cask-versions
   - oven-sh/bun
   - romkatv/powerlevel10k
-  - teamookla/speedtest
 
 homebrew_installed_packages:
   - bat # prettier 'cat'

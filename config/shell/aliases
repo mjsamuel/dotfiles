@@ -55,5 +55,6 @@ alias \
 
 # typo guards
 alias \
-	eixt='exit' \
-	celar='clear'
+	celar='clear' \
+	claer='clear' \
+	eixt='exit'

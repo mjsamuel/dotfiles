@@ -31,7 +31,6 @@ keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ ignore_whit
 command.set("Blame", function() require("gitsigns").blame() end, { nargs = 0 })
 command.set("Diff", function()
   require("gitsigns").diffthis(nil, { split = "botright" })
-  vim.cmd("wincmd w")
 end, { nargs = 0 })
 command.set("Github", function(args)
   local opts = {}
