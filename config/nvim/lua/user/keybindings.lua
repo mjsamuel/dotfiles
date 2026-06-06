@@ -1,3 +1,5 @@
+local utils = require("user.utils")
+
 local keymap = vim.keymap
 local command = { set = vim.api.nvim_create_user_command }
 
@@ -105,32 +107,35 @@ keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { s
 command.set("PackUpdate", function() vim.pack.update() end, { nargs = 0 })
 
 -- copy to system clipboard
-local function copy_to_system_clipboard(text)
-  vim.fn.setreg("+", text)
-  print("Copied to system clipboard")
-end
 keymap.set("n", "Y", function()
-  copy_to_system_clipboard(vim.fn.getreg("\""))
+  utils.copy_to_system_clipboard(vim.fn.getreg("\""))
 end, { silent = true })
 keymap.set("v", "Y", function()
-  local visual = require("snacks").picker.util.visual()
+  local visual = utils.get_visual_selection()
   if not visual then return end
-  vim.fn.setreg("\"", visual.text)
-  copy_to_system_clipboard(visual.text)
+  local text = visual.text
+  vim.fn.setreg("\"", text)
+  utils.copy_to_system_clipboard(text)
 end, { silent = true })
 
 -- copy the current file path and line number to the system clipboard in a
 -- format easier ai code assistants to understand
 keymap.set("v", "ai", function()
-  local visual = require("snacks").picker.util.visual()
-  if not visual then return end
+  local text = utils.get_visual_selection()
+  if not text then return end
   local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
   local absolute_path = vim.api.nvim_buf_get_name(0)
   local relative_path = absolute_path:sub(#git_root + 2)
   local extension = vim.fn.fnamemodify(absolute_path, ":e")
-  local result = string.format("@%s:%d-%d\n```%s\n%s\n```", relative_path, visual.pos[1], visual.end_pos[1], extension,
-    visual.text)
-  copy_to_system_clipboard(result)
+  local result = string.format(
+    "@%s:%d-%d\n```%s\n%s\n```",
+    relative_path,
+    text.pos[1],
+    text.end_pos[1],
+    extension,
+    text.text
+  )
+  utils.copy_to_system_clipboard(result)
 end)
 
 -- copy the absolute or relative path of the current file to the clipboard
@@ -138,7 +143,7 @@ command.set("Path", function(opts)
   local file_path = vim.api.nvim_buf_get_name(0)
   local get_full_path = opts.args == "full"
   local requested_path = get_full_path and file_path or vim.fn.fnamemodify(file_path, ":p:.")
-  copy_to_system_clipboard(requested_path)
+  utils.copy_to_system_clipboard(requested_path)
 end, { nargs = "?" })
 
 -- typo guards
