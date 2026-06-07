@@ -8,6 +8,7 @@
     src: "{{ dotfiles_dir }}/config/claude/settings.json"
     path: "~/.claude/settings.json"
     state: link
+  tags: ["claude-settings"]
 
 - name: symlink claude CLAUDE.md
   file:
@@ -20,7 +21,6 @@
     src: "{{ dotfiles_dir }}/config/claude/keybindings.json"
     path: "~/.claude/keybindings.json"
     state: link
-
 
 - block:
     - name: create .claude/skills directory
