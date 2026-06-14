@@ -2,6 +2,21 @@
 
 Issues and PRDs for this repo live in a [Beads](https://github.com/gastownhall/beads) issue database backed by [Dolt](https://github.com/dolthub/dolt). Use the `bd` CLI for all operations.
 
+## Initialization
+
+If `.beads/` does not yet exist at the repo root, initialize the Beads database:
+
+```sh
+bd init --non-interactive --skip-agents --skip-hooks --stealth
+```
+
+Flags:
+
+- `--non-interactive` — no prompts; safe to run from a skill
+- `--skip-agents` — don't write `AGENTS.md` (this repo manages agent docs under `.mjsamuel/`)
+- `--skip-hooks` — don't install git hooks
+- `--stealth` — don't add `.beads/` entries to `.gitignore` (managed elsewhere)
+
 ## Conventions
 
 - **Create an issue**: `bd create "..." --description "..." -t bug|feature|task|epic|chore|decision -p 0-4 --json`. Use `--deps discovered-from:<issue-id>` when creating newly discovered follow-up work.

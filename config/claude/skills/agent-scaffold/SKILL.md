@@ -1,10 +1,10 @@
 ---
-name: setup-matt-pocock-skills
+name: agent-scaffold
 description: Sets up an `## Agent skills` block in `CLAUDE.local.md` and `.mjsamuel/agents/` so the engineering skills know this repo's issue tracker (GitHub or local markdown), triage label vocabulary, and domain doc layout. Run before first use of `to-issues`, `to-prd`, `triage`, `diagnose`, `tdd`, `improve-codebase-architecture`, or `zoom-out` — or if those skills appear to be missing context about the issue tracker, triage labels, or domain docs.
 disable-model-invocation: true
 ---
 
-# Setup Matt Pocock's Skills
+# Setup Agent Scaffold
 
 Scaffold the per-repo configuration that the engineering skills assume:
 
@@ -99,16 +99,20 @@ The block:
 [one-line summary of layout — "single-context" or "multi-context"]. See `.mjsamuel/agents/domain.md`.
 ```
 
-Then write the three docs files using the seed templates in `$HOME/.config/agent-scaffold/agents` as a starting point:
+Then write the three docs files using the seed templates that ship alongside this `SKILL.md` (in the same directory) as a starting point:
 
-- [issue-tracker-beads.md]($HOME/.config/agent-scaffold/agents/issue-tracker-beads.md) — Beads issue tracker
-- [issue-tracker-github.md]($HOME/.config/agent-scaffold/agents/issue-tracker-github.md) — GitHub issue tracker
-- [issue-tracker-local.md]($HOME/.config/agent-scaffold/agents/issue-tracker-local.md) — local-markdown issue tracker
-- [triage-labels.md]($HOME/.config/agent-scaffold/agents/triage-labels.md) — label mapping
-- [domain.md]($HOME/.config/agent-scaffold/agents/domain.md) — domain doc consumer rules + layout
+- `issue-tracker-beads.md` — Beads issue tracker
+- `issue-tracker-github.md` — GitHub issue tracker
+- `issue-tracker-local.md` — local-markdown issue tracker
+- `triage-labels.md` — label mapping
+- `domain.md` — domain doc consumer rules + layout
 
 For "other" issue trackers, write `.mjsamuel/agents/issue-tracker.md` from scratch using the user's description.
 
-### 5. Done
+### 5. Initialize tracker
+
+If the chosen tracker has an `## Initialization` section in its seed template (e.g. Beads needs `bd init`), run those commands now. Skip if the tracker is already initialized.
+
+### 6. Done
 
 Tell the user the setup is complete and which engineering skills will now read from these files. Mention they can edit `.mjsamuel/agents/*.md` directly later — re-running this skill is only necessary if they want to switch issue trackers or restart from scratch.
