@@ -27,26 +27,6 @@ ZSH_PLUGIN_DIR="/usr/local/zsh/plugins"
 source "${ZSH_PLUGIN_DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh"
 source "${ZSH_PLUGIN_DIR}/powerlevel10k/powerlevel10k.zsh-theme"
 
-### Variables/Options
-export KEYTIMEOUT=1 # waittime for key to be presseded before executing
-
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --layout=reverse --height=50% --pointer='>' --color 16 --color='fg:gray,bg+:black,hl:cyan,hl+:cyan,info:blue,prompt:white,pointer:magenta'"
-export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND --null 2> /dev/null | xargs -0 dirname | sort | uniq"
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND 2> /dev/null"
-export FZF_COMPLETION_TRIGGER='@'
-
-export BAT_THEME="ansi"
-export NODE_COMPILE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/node-compile-cache"
-export OS_APPEARANCE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/os_theme"
-export NOTES_DIR="$(
-    [ $(uname -s) = "Darwin" ] &&
-        echo "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes" ||
-        echo "$HOME/Documents/notes"
-    )"
-
-unsetopt autocd beep notify
-
 ### History Options
 export HISTSIZE=10000
 export SAVEHIST=10000
@@ -80,6 +60,9 @@ bindkey -s '^[N' '^Unotarizer\n'
 bindkey -M viins '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 
+### Vim mode
+export KEYTIMEOUT=1 # waittime for key to be presseded before executing
+
 # Change cursor shape for different vi modes.
 function zle-keymap-select () {
     case $KEYMAP in
@@ -96,10 +79,7 @@ echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
 ### Misc
-# Load environment variables for tools
-command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
-command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
-command -v fzf >/dev/null && eval "$(fzf --zsh)"
+unsetopt autocd beep notify
 
 # Load aliases and functions
 source "$XDG_CONFIG_HOME/zsh/powerlevel10k.zsh"

@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$XDG_CONFIG_HOME/tmux/bin/alert-bell.sh"
+            "command": "$XDG_CONFIG_HOME/claude/bin/alert-bell.sh"
           }
         ]
       }
