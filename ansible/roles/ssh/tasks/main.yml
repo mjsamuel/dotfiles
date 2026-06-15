@@ -15,9 +15,3 @@
     src: "{{ dotfiles_dir }}/config/ssh/authorized_keys"
     path: "~/.ssh/authorized_keys"
     state: link
-
-- name: symlink allowed signers
-  file:
-    src: "{{ dotfiles_dir }}/config/ssh/allowed_signers"
-    path: "~/.ssh/allowed_signers"
-    state: link

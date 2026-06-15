@@ -2,7 +2,7 @@
 
 set -u # Exit on undefined variables
 
-ALLOWED_SIGNERS="${HOME}/.ssh/allowed_signers"
+ALLOWED_SIGNERS="${XDG_CONFIG_HOME:-$HOME/.config}/git/allowed_signers"
 DEFAULT_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHwY8TMNibwrhKckE/dzJIaSzflrBN0K/tNRpzHkeev3"
 
 # Cleanup function
