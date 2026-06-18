@@ -11,7 +11,7 @@ export BAT_THEME="ansi"
 export NODE_COMPILE_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/node-compile-cache"
 export OS_APPEARANCE_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/os_theme"
 export NOTES_DIR="$(
-	[ $(uname -s) = "Darwin" ] &&
+	[ "$(uname -s)" = "Darwin" ] &&
 		echo "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notes" ||
 		echo "$HOME/Documents/notes"
 )"
@@ -22,7 +22,6 @@ command -v fzf >/dev/null && eval "$(fzf --zsh)"
 
 ### Aliases
 alias \
-	ai='claude' \
 	c='clear' \
 	cat='bat' \
 	e='$EDITOR' \
@@ -75,6 +74,17 @@ alias \
 	d='sudo docker' \
 	dc='sudo docker compose' \
 	dp='sudo docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Networks}}\t{{.State}}\t{{.RunningFor}}"'
+
+# ai junk
+alias \
+    cursor='cursor-agent'
+
+ai() {
+	cat <<-EOF | fzf | sh
+		claude
+		cursor-agent
+	EOF
+}
 
 # typo guards
 alias \
