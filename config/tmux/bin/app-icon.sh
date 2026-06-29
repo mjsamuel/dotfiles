@@ -16,22 +16,24 @@ return_app() {
 }
 
 case "$window_name" in
-logs) return_app '' 'white' ;;
-ai | claude*) return_app '󰫢' 'orange' ;;
-note*) return_app '' 'yellow' ;;
 *capture) return_app '󰆟' 'blue' ;;
+ai | claude*) return_app '󰫢' 'orange' ;;
+cursor) return_app "󰆧" "white" ;;
+logs) return_app '' 'white' ;;
+note*) return_app '' 'yellow' ;;
 esac
 
 case "$pane_current_command" in
 *git*) return_app "" "red" ;;
 air) return_app "" "blue" ;;
 bat) return_app "󰄛" "blue" ;;
+claude*) return_app '󰫢' 'orange' ;;
 docker) return_app "" "blue" ;;
 go) return_app "" "blue" ;;
 java) return_app "" "red" ;;
 jira) return_app "󰌃" "blue" ;;
 man) return_app "󰈙" "blue" ;;
-newsboat) return_app "" "orange" ;;
+newsboat) return_app "󰑫" "orange" ;;
 node | npm) return_app "󰆧" "green" ;;
 nvim) return_app "" "green" ;;
 python) return_app "" "yellow" ;;
@@ -40,6 +42,5 @@ ssh) return_app "󰌘" "white" ;;
 tt) return_app "󰌌" "white" ;;
 vim) return_app "" "green" ;;
 yt-dl*) return_app "󰇚" "green" ;;
-claude*) return_app '󰫢' 'orange' ;;
 *) return_app "" "orange" ;;
 esac
