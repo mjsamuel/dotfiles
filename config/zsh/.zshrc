@@ -57,8 +57,8 @@ bindkey -s '^[S' '^Utmux-sessionizer\n'
 bindkey -s '^[N' '^Unotarizer\n'
 
 # Edit current command in nvim
-bindkey -M viins '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
-bindkey -M vicmd '^e' edit-command-line; autoload edit-command-line; zle -N edit-command-line
+bindkey -M viins '^g' edit-command-line; autoload edit-command-line; zle -N edit-command-line
+bindkey -M vicmd '^g' edit-command-line; autoload edit-command-line; zle -N edit-command-line
 
 ### Vim mode
 export KEYTIMEOUT=1 # waittime for key to be presseded before executing
