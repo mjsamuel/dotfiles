@@ -8,7 +8,7 @@ local packages = {
   "bash-language-server",
   "css-lsp",
   "emmet-ls",
-  "eslint-lsp",
+  "eslint_d",
   "gopls",
   "html-lsp",
   "json-lsp",
@@ -48,10 +48,9 @@ end
 local installed_packages = require("mason-registry").get_installed_packages()
 local lsp_config_names = vim.iter(installed_packages)
     :map(function(pack)
-      if not pack.spec.neovim then
-        return nil
+      if pack.spec.neovim then
+        return pack.spec.neovim.lspconfig
       end
-      return pack.spec.neovim.lspconfig
     end)
     :totable()
 vim.lsp.enable(lsp_config_names)
