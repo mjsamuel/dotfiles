@@ -9,6 +9,7 @@ homebrew_installed_packages:
   - bun
   - claude-code
   - coreutils # those that come with macOS are outdated
+  - direnv
   - eza # prettier 'ls'
   - fd # faster 'find'
   - ffmpeg
@@ -79,6 +80,7 @@ github_releases:
 
 apt_installed_packages:
   - curl
+  - direnv
   - fd-find
   - ffmpeg
   - git
