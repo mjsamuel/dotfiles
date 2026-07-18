@@ -19,7 +19,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking (copying) text",
   group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
-  callback = function() vim.highlight.on_yank({ higroup = "Visual", timeout = "200", on_visual = false }) end,
+  callback = function()
+    vim.hl.hl_op({ higroup = "Visual", timeout = "200", on_visual = false })
+  end,
 })
 
 -- enable spell check for specific filetypes
