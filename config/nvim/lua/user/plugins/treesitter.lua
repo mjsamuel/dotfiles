@@ -30,7 +30,9 @@ local ensureInstalled = {
   "lua",
   "make",
   "markdown",
+  "mermaid",
   "python",
+  "terraform",
   "tsx",
   "typescript",
   "yaml",
@@ -41,10 +43,15 @@ local parsersToInstall = vim.iter(ensureInstalled)
     :totable()
 treesitter.install(parsersToInstall)
 
-vim.filetype.add({ filename = { ["Caddyfile"] = "caddy" } })
-vim.filetype.add({ pattern = { [".*%.tmpl%..*"] = "gotmpl" } })
-vim.filetype.add({ pattern = { [".*/git/config"] = "gitconfig", [".*/git/ignore"] = "gitignore" } })
-vim.filetype.add({ extension = { mdx = 'mdx' } })
+vim.filetype.add({
+  filename = { ["Caddyfile"] = "caddy" },
+  pattern = {
+    [".*%.tmpl%..*"] = "gotmpl",
+    [".*/git/config"] = "gitconfig",
+    [".*/git/ignore"] = "gitignore"
+  },
+  extension = { mdx = 'mdx' }
+})
 
 vim.treesitter.language.register('markdown', 'mdx')
 vim.treesitter.language.register('bash', 'zsh')
