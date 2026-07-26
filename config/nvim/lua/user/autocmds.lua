@@ -24,16 +24,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
--- enable spell check for specific filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "gitcommit", "markdown" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-    vim.opt_local.textwidth = 80
-  end,
-})
-
 -- project settings
 vim.api.nvim_create_autocmd({ "VimEnter", "DirChanged" }, {
   callback = function()
