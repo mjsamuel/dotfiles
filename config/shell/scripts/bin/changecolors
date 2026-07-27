@@ -32,7 +32,7 @@ change_nvim_colors() {
 	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
 		while IFS=' ' read -r command pane_id; do
 			if [ "$command" = "nvim" ]; then
-				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m
+				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m &
 			fi
 		done
 }
@@ -61,7 +61,6 @@ persist_theme() {
     echo "$theme" >"$THEME_FILE_PATH"
 }
 
-# Main logic
 main() {
 	new_theme="$1"
 	os="$(uname -s)"
