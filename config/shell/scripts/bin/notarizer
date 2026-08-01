@@ -29,20 +29,22 @@ fi
 # /path/to/selcted_file.md
 # ```
 note_path="$(echo "$result" | sed -n '2p')"
+commit_message=""
 if [ -n "$note_path" ]; then
-	nvim +"cd $notes_dir" "${notes_dir}/${note_path}"
 	commit_message="Update note: $(basename "${note_path}".md)"
+	nvim +"cd $notes_dir" "${notes_dir}/${note_path}"
 else
-	query=$(echo "$result" | head -n1)
+	# Normalize whitespace: trim the ends, collapse runs, so neither filename nor title inherits it
+	query=$(echo "$result" | head -n1 | sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s/[[:space:]][[:space:]]*/ /g')
 	if [ -n "$query" ]; then
-		filename="$(echo "$query" | sed 's/^[[:space:]]*//; s/ /-/g')" # Trim leading spaces and replace spaces with hyphens
-		title="$(echo "$query" | perl -pe 's/(\w+)/\u\L$1/g')"         # Capitalize each word
+		filename="temp/$(echo "$query" | tr '[:upper:] ' '[:lower:]-')" # Lowercase and hyphenate
+		title="$(echo "$query" | perl -pe 's/(\w+)/\u\L$1/g')"          # Capitalize each word
 	else
-		filename="$(date -I)"
+		filename="todo/$(date -I)"
 		title="$(date '+%B %d, %Y')"
 	fi
-	nvim +"cd $notes_dir" -c "norm i # ${title}" "${notes_dir}/${filename}.md"
 	commit_message="Add note: ${filename}"
+	nvim +"cd $notes_dir" -c "norm i # ${title}" "${notes_dir}/${filename}.md"
 fi
 
 # Using git as a mechansim to backup and track changes to notes
