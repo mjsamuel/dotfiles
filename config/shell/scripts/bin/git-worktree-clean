@@ -1,0 +1,25 @@
+#!/bin/sh
+# Remove all git worktrees (except the main one), with confirmation.
+
+worktrees=$(git worktree list --porcelain | grep '^worktree' | awk '{print $2}' | tail -n +2)
+
+if [ -z "$worktrees" ]; then
+	echo "No worktrees to remove."
+	exit 0
+fi
+
+echo "The following worktrees will be removed:"
+echo "$worktrees"
+
+printf "Proceed? [y/N] "
+read -r answer
+
+case "$answer" in
+y | Y | yes | YES) ;;
+*)
+	echo "Aborted."
+	exit 0
+	;;
+esac
+
+echo "$worktrees" | xargs -I {} git worktree remove {}
