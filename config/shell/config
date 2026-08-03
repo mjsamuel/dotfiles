@@ -78,7 +78,7 @@ alias \
 
 # ai junk
 alias \
-    cursor='cursor-agent'
+	cursor='cursor-agent'
 
 ai() {
 	cat <<-EOF | fzf | sh
@@ -91,4 +91,5 @@ ai() {
 alias \
 	celar='clear' \
 	claer='clear' \
-	eixt='exit'
+	eixt='exit' \
+	exti='exit'
