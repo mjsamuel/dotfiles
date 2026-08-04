@@ -7,7 +7,7 @@
 - name: "{{ pkg.binary }} - resolve asset"
   set_fact:
     _asset_url: "{{ asset.browser_download_url }}"
-    _staging_dir: "{{ ansible_env.HOME }}/.temp/{{ pkg.binary }}-{{ _release.json.tag_name }}"
+    _staging_dir: "{{ tmp_dir }}/{{ pkg.binary }}-{{ _release.json.tag_name }}"
   vars:
     asset: "{{ _release.json.assets | selectattr('name', 'match', pkg.pattern) | first }}"
 

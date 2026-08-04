@@ -1,4 +1,4 @@
-workdir: "{{ ansible_env.HOME }}/.temp/neovim"
+workdir: "{{ tmp_dir }}/neovim"
 
 dependencies:
   Darwin:

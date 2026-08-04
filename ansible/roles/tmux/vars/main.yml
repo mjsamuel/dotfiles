@@ -1,4 +1,4 @@
-workdir: "{{ ansible_env.HOME }}/.temp/tmux"
+workdir: "{{ tmp_dir }}/tmux"
 
 dependencies:
   Darwin:

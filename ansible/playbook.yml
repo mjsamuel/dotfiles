@@ -6,6 +6,7 @@
     XDG_DATA_HOME: "{{ XDG_DATA_HOME }}"
   vars:
     dotfiles_dir: "{{ ansible_env.PWD | dirname }}"
+    tmp_dir: "{{ [ansible_env.TMPDIR | default('/tmp', true), 'bootstrap'] | path_join }}"
     XDG_CACHE_HOME: "{{ ansible_env.HOME }}/.cache/"
     XDG_CONFIG_HOME: "{{ ansible_env.HOME }}/.config/"
     XDG_DATA_HOME: "{{ ansible_env.HOME }}/.local/share"
