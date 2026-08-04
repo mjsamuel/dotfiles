@@ -1,2 +1,5 @@
+# Compiled spellfile cache
+spell/*.spl
+
 # Work specific config
 lua/user/plugins/work.lua

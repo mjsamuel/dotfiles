@@ -27,6 +27,7 @@ set.signcolumn = "yes" -- always show sign column
 set.smartcase = true -- dont ignore case with capitals
 set.smartindent = true -- insert indents automatically
 set.spelllang = { "en_au" } -- set preferred locale for trsttspelling
+set.spellfile = vim.fn.stdpath("config") .. "/spell/en.utf-8.add" -- store custom words in dotfiles instead of stdpath("data")
 set.splitbelow = true -- put new windows below current
 set.splitkeep = "screen"
 set.splitright = true -- put new windows right of current
