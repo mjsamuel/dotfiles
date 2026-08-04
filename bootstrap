@@ -26,6 +26,11 @@ else
 	read -r SUDO_PASS
 fi
 
+if ! run_as_sudo -v >/dev/null 2>&1; then
+	echo "Incorrect sudo password" >&2
+	exit 1
+fi
+
 if [ "$OS" = "Darwin" ]; then # macOS
 	PATH="/opt/homebrew/bin:$PATH"
 	! command -v pip3 >/dev/null && curl -fsSL https://bootstrap.pypa.io/get-pip.py | python3 -
