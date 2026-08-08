@@ -19,7 +19,7 @@ export NOTES_DIR="$(
 command -v /opt/homebrew/bin/brew >/dev/null && eval "$(/opt/homebrew/bin/brew shellenv)"
 command -v fnm >/dev/null && eval "$(fnm env --use-on-cd)"
 command -v fzf >/dev/null && eval "$(fzf --zsh)"
-command -v fzf >/dev/null && eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
 ### Aliases
 alias \
@@ -32,7 +32,8 @@ alias \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
 	notes="notarizer" \
-	tree='eza --tree --icons --group-directories-first --git-ignore'
+	tree='eza --tree --icons --group-directories-first --git-ignore' \
+	tf="terraform"
 
 # ssh
 s() {
