@@ -54,16 +54,24 @@ g() {
 	fi
 }
 
+# herdr
+alias \
+	ha="herdr"
+
+h() {
+	if [ "$#" -ne 0 ]; then
+		herdr "$@"
+	else
+		herdr-sessionizer
+	fi
+}
+
 # tmux
 alias \
-	ta="tmux attach"
+	ta="herdr"
 
 t() {
-	if [ "$#" -ne 0 ]; then
-		tmux "$@"
-	else
-		tmux-sessionizer
-	fi
+	h "$@"
 }
 
 # youtube-dl

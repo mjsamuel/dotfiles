@@ -1,0 +1,78 @@
+onboarding = false
+
+[theme]
+auto_switch = true
+dark_name = "rose-pine"
+light_name = "rose-pine-dawn"
+
+[ui]
+mouse_capture       = true
+pane_borders        = true
+pane_gaps           = false
+prompt_new_tab_name = false
+accent              = "blue"
+tab_bar_position    = "top"
+
+[ui.toast]
+herdr.position = "top-right"
+clipboard.enabled = false
+
+[keys]
+prefix = "ctrl+b" # unused here; kept as the default fallback chord
+
+# Misc
+reload_config       = "alt+shift+r"
+rename_tab          = "alt+comma"
+new_tab             = "alt+n"
+detach              = "alt+d"
+workspace_picker    = "alt+s"
+close_pane          = "alt+shift+x"
+zoom                = "alt+z"
+edit_scrollback     = "alt+shift+k"
+toggle_sidebar      = "alt+;"
+
+# Splits
+split_horizontal = "alt+h"
+split_vertical   = "alt+v"
+
+# Switching panes
+focus_pane_left  = "alt+b"
+focus_pane_right = "alt+f"
+focus_pane_up    = "alt+up"
+focus_pane_down  = "alt+down"
+swap_pane_up     = "alt+shift+["
+swap_pane_down   = "alt+shift+]"
+
+# Switching tabs/windows
+switch_tab = "alt+1..9"
+
+# Copy mode
+copy_mode = "alt+["
+
+[[keys.command]]
+key         = "alt+shift+s"
+type        = "popup"
+command     = "herdr-sessionizer"
+description = "herdr-sessionizer"
+width       = "80%"
+height      = "80%"
+
+[[keys.command]]
+key         = "alt+shift+n"
+type        = "popup"
+command     = "notarizer"
+description = "notarizer"
+width       = "80%"
+height      = "80%"
+
+[[keys.command]]
+key         = "alt+l"
+type        = "shell"
+command     = "herdr plugin action invoke toggle-tab --plugin mjsamuel.last-focus"
+description = "toggle last tab"
+
+[[keys.command]]
+key         = "alt+shift+l"
+type        = "shell"
+command     = "herdr plugin action invoke toggle-workspace --plugin mjsamuel.last-focus"
+description = "toggle last workspace"

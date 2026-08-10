@@ -1,0 +1,35 @@
+#!/bin/sh
+WORKSPACES_FILE="$HOME/.config/workspaces"
+if [ ! -f "$WORKSPACES_FILE" ]; then
+	cat <<-EOF >"$WORKSPACES_FILE"
+		${HOME}/[Dd]eveloper
+		${HOME}/[Ww]ork
+	EOF
+fi
+
+# filter out non-existent directories
+workspaces_roots=""
+for dir in $(xargs <"$WORKSPACES_FILE"); do
+	[ -d "$dir" ] && workspaces_roots="$workspaces_roots $dir"
+done
+
+selected="$(
+	FZF_DEFAULT_COMMAND="find $workspaces_roots -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'" \
+		fzf --preview 'eza {} --tree --level=1 --icons' \
+		--prompt "space: " \
+		--preview-window=right:50% --height=100% \
+		--delimiter / --with-nth -2,-1 \
+		--bind "enter:accept-non-empty" \
+		--exit-0
+)" || exit 0
+selected_name=$(basename "$selected" | tr '.' '-')
+
+workspace_id=$(herdr workspace list | jq -r --arg n "$selected_name" '.result.workspaces[] | select(.label == $n) | .workspace_id' | head -n1)
+
+if [ -n "$workspace_id" ]; then
+	herdr workspace focus "$workspace_id" >/dev/null
+else
+	herdr workspace create --cwd "$selected" --label "$selected_name" --focus >/dev/null
+fi
+
+[ -n "$HERDR_ENV" ] || herdr

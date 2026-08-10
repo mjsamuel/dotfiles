@@ -58,20 +58,16 @@ get_theme_from_file() {
 	fi
 }
 
-# Update neovim color scheme in tmux panes
 change_nvim_colors() {
 	theme="$1"
 
-	if ! pgrep tmux >/dev/null 2>&1; then
-		return
-	fi
-
-	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
-		while IFS=' ' read -r command pane_id; do
-			if [ "$command" = "nvim" ]; then
-				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m &
-			fi
+	for run_dir in "${XDG_RUNTIME_DIR:-}" "${TMPDIR:-}" /tmp; do
+		[ -n "$run_dir" ] && [ -d "$run_dir" ] || continue
+		for sock in "$run_dir/nvim.$(whoami)"/*/nvim.*.0; do
+			[ -S "$sock" ] || continue
+			nvim --server "$sock" --remote-expr "execute('set background=$theme')" >/dev/null 2>&1 &
 		done
+	done
 }
 
 persist_theme() {

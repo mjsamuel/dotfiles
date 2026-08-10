@@ -62,3 +62,19 @@
         mode: "0755"
       become: true
   when: pkg.archive_type | default('tar') == 'gz'
+
+# Herdr ships its release artifact as an uncompressed executable.
+- block:
+    - name: "{{ pkg.binary }} - download binary"
+      get_url:
+        url: "{{ _asset_url }}"
+        dest: "{{ _staging_dir }}/{{ pkg.binary }}"
+        mode: "0755"
+
+    - name: "{{ pkg.binary }} - install"
+      copy:
+        src: "{{ _staging_dir }}/{{ pkg.binary }}"
+        dest: "/usr/local/bin/{{ pkg.binary }}"
+        mode: "0755"
+      become: true
+  when: pkg.archive_type | default('tar') == 'raw'

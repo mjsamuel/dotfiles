@@ -17,6 +17,7 @@ homebrew_installed_packages:
   - fzf # fuzzy finder
   - git
   - gnu-tar
+  - herdr # agent multiplexer
   - imagemagick
   - jordanbaird-ice # menu bar manager
   - jq # json formatter & other utils
@@ -57,6 +58,10 @@ mas_installed_apps:
   - { id: 497799835, name: " Xcode (14.3.1)" }
 
 github_releases:
+  - repo: herdrdev/herdr
+    binary: herdr
+    pattern: "^herdr-{{ ansible_system | lower }}-{{ ansible_architecture }}$"
+    archive_type: raw
   - repo: Schniz/fnm
     binary: fnm
     pattern: "fnm-{{ {'arm': 'arm32', 'aarch64': 'arm64'}[ansible_architecture] | default('linux') }}"
