@@ -2,8 +2,36 @@
 set -e
 set -u
 
-# Configuration
 readonly THEME_FILE_PATH="${OS_APPEARANCE_FILE:-${XDG_CACHE_HOME:-$HOME/.cache}/os_theme}"
+
+main() {
+	new_theme="$1"
+	os="$(uname -s)"
+
+	# Determine theme based on OS or arguments
+	if [ "$os" = "Darwin" ]; then
+		if [ -z "$new_theme" ]; then
+			new_theme="$(get_mac_theme)"
+		fi
+		change_mac_colors "$new_theme" &
+	elif [ -z "$new_theme" ]; then
+		new_theme="$(get_theme_from_file)"
+	fi
+
+	change_nvim_colors "$new_theme" &
+	persist_theme "$new_theme" &
+
+	printf "Changed colors to %s\n" "$new_theme"
+}
+
+# Detect current macOS theme
+get_mac_theme() {
+	if /usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
+		echo "light"
+	else
+		echo "dark"
+	fi
+}
 
 # Change macOS system appearance
 change_mac_colors() {
@@ -21,31 +49,6 @@ change_mac_colors() {
 		>/dev/null 2>&1
 }
 
-# Update neovim color scheme in tmux panes
-change_nvim_colors() {
-	theme="$1"
-
-    if ! pgrep tmux > /dev/null 2>&1; then
-        return
-    fi
-
-	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
-		while IFS=' ' read -r command pane_id; do
-			if [ "$command" = "nvim" ]; then
-				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m &
-			fi
-		done
-}
-
-# Detect current macOS theme
-get_mac_theme() {
-	if /usr/bin/defaults read -g AppleInterfaceStyle >/dev/null 2>&1; then
-		echo "light"
-	else
-		echo "dark"
-	fi
-}
-
 # Read theme from file
 get_theme_from_file() {
 	if [ -f "$THEME_FILE_PATH" ] && grep -q "dark" "$THEME_FILE_PATH" 2>/dev/null; then
@@ -55,30 +58,26 @@ get_theme_from_file() {
 	fi
 }
 
-persist_theme() {
-    theme="$1"
-    mkdir -p "$(dirname "$THEME_FILE_PATH")"
-    echo "$theme" >"$THEME_FILE_PATH"
-}
+# Update neovim color scheme in tmux panes
+change_nvim_colors() {
+	theme="$1"
 
-main() {
-	new_theme="$1"
-	os="$(uname -s)"
-
-	# Determine theme based on OS or arguments
-	if [ "$os" = "Darwin" ]; then
-		if [ -z "$new_theme" ]; then
-			new_theme="$(get_mac_theme)"
-		fi
-		change_mac_colors "$new_theme" &
-	elif [ -z "$new_theme" ]; then
-		new_theme="$(get_theme_from_file)"
+	if ! pgrep tmux >/dev/null 2>&1; then
+		return
 	fi
 
-	change_nvim_colors "$new_theme" &
-    persist_theme "$new_theme" &
+	tmux list-panes -a -F '#{pane_current_command} #{pane_id}' 2>/dev/null |
+		while IFS=' ' read -r command pane_id; do
+			if [ "$command" = "nvim" ]; then
+				tmux send-keys -t "$pane_id" Escape ":set background=$theme" C-m &
+			fi
+		done
+}
 
-	printf "Changed colors to %s\n" "$new_theme"
+persist_theme() {
+	theme="$1"
+	mkdir -p "$(dirname "$THEME_FILE_PATH")"
+	echo "$theme" >"$THEME_FILE_PATH"
 }
 
 main "${1:-}"

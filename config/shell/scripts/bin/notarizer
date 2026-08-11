@@ -9,9 +9,13 @@ main() {
 
 	todays_todo="$notes_dir/todo/$(date -I).md"
 	if [ ! -f "$todays_todo" ]; then
-		echo "# $(pretty_date)" >"$todays_todo"
+		cat <<-EOF >"$todays_todo"
+			# $(pretty_date)
+
+			- [ ] Write to-do list
+		EOF
 	fi
-    nvim +"cd $notes_dir" "$todays_todo"
+	nvim +"cd $notes_dir" "$todays_todo"
 }
 
 pretty_date() {

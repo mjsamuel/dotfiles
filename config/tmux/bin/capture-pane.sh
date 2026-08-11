@@ -9,5 +9,5 @@ file="/tmp/tmux_buffer_${timestamp}_${pane_info}"
 tmux save-buffer "$file"
 
 if [ "$1" = "--open-in-nvim" ]; then
-    tmux new-window -n "capture" "cat $file | nvim"
+	tmux new-window -n "capture" "cat $file | nvim"
 fi

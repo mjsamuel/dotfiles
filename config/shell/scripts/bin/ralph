@@ -36,7 +36,7 @@ run_agent() {
 }
 
 for ((i = 1; i <= "$iterations"; i++)); do
-	run_agent ".mjsamuel/agents/plan-prompt.md" 1 # planner
+	run_agent ".mjsamuel/agents/plan-prompt.md" 1        # planner
 	run_agent ".mjsamuel/agents/implement-prompt.md" 100 # implementor
-	run_agent ".mjsamuel/agents/plan-prompt.md" 100 # implementor
+	run_agent ".mjsamuel/agents/plan-prompt.md" 100      # implementor
 done
