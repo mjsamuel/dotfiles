@@ -1,3 +1,5 @@
+.mjsamuel
+
 # Folder view configuration files
 .DS_Store
 Desktop.ini
@@ -18,9 +20,8 @@ Thumbs.db
 # Per-project tmux script to arrange tabs/panes
 .tmux.conf
 
-# AI tooling
-.beads
+# ai junk
 .claude/settings.local.json
 .claude/worktrees
-.mjsamuel
 CLAUDE.local.md
+AGENTS.local.md

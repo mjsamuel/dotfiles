@@ -7,7 +7,6 @@ homebrew_taps:
 homebrew_installed_packages:
   - bat # prettier 'cat'
   - bun
-  - claude-code
   - coreutils # those that come with macOS are outdated
   - direnv
   - eza # prettier 'ls'
@@ -26,7 +25,6 @@ homebrew_installed_packages:
   - neofetch
   - newsboat # rss reader
   - pi-coding-agent
-  - opencode
   - ripgrep # faster grep
   - rsync
   - scroll-reverser # different scroll directions for mouse and trackpad
