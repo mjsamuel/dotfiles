@@ -1,0 +1,6 @@
+sessions/
+auth.json
+models-store.json
+trust.json
+
+!settings.json

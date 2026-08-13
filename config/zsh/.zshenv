@@ -20,6 +20,7 @@ export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite_history"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn/v6"
 export BUN_HOME="$XDG_CACHE_HOME/.bun"
+export PI_CODING_AGENT_DIR="$XDG_CONFIG_HOME/pi"
 
 # Path
 export PATH="$PATH\
@@ -28,4 +29,5 @@ export PATH="$PATH\
 :$PLAYDATE_SDK_PATH/bin\
 :$CARGO_HOME/bin\
 :$GOPATH/bin\
+:$XDG_DATA_HOME/npm/bin\
 :$BUN_HOME/bin"

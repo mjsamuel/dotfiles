@@ -25,6 +25,7 @@ homebrew_installed_packages:
   - luarocks
   - neofetch
   - newsboat # rss reader
+  - pi-coding-agent
   - opencode
   - ripgrep # faster grep
   - rsync
@@ -62,6 +63,9 @@ github_releases:
     binary: herdr
     pattern: "^herdr-{{ ansible_system | lower }}-{{ ansible_architecture }}$"
     archive_type: raw
+  - repo: earendil-works/pi
+    binary: pi
+    pattern: "^pi-{{ ansible_system | lower }}-{{ {'x86_64': 'x64', 'aarch64': 'arm64'}[ansible_architecture] | default(ansible_architecture) }}\\.tar\\.gz$"
   - repo: Schniz/fnm
     binary: fnm
     pattern: "fnm-{{ {'arm': 'arm32', 'aarch64': 'arm64'}[ansible_architecture] | default('linux') }}"
