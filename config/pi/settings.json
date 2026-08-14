@@ -4,5 +4,16 @@
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "medium",
   "theme": "rose-pine-dawn/rose-pine",
-  "skills": ["~/.config/agents/skills"]
+  "skills": [
+    "~/.config/agents/skills"
+  ],
+  "enabledModels": [
+    "openai-codex/gpt-5.6-sol",
+    "openai-codex/gpt-5.6-terra",
+    "openai-codex/gpt-5.6-luna",
+    "anthropic/claude-fable-5"
+  ],
+  "packages": [
+    "npm:@plannotator/pi-extension"
+  ]
 }

@@ -1,4 +1,4 @@
-import type { ExtensionAPI, ExtensionContext, Theme } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext, Theme, ThemeColor } from "@earendil-works/pi-coding-agent";
 import {
   Key,
   matchesKey,
@@ -13,23 +13,64 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DAY = 86_400_000;
-// Theme palette slots ordered for maximum contrast between adjacent series.
-const CHART_COLORS = [
+
+// A fixed, colorblind-checked categorical palette for chart series — same hue
+// order in both variants, values chosen for contrast against a dark vs a light
+// terminal background respectively. This is a different job than the four-ish
+// *state* colors (accent/success/error/warning) a theme is actually designed
+// around, so it's rendered directly as truecolor rather than through a theme
+// role: see CHART_COLORS_FALLBACK below for terminals that can't do truecolor.
+//
+// The light variant is darkened from the generic reference palette (tuned
+// against a near-white #fcfcfb surface) to clear 3:1 contrast against
+// rose-pine-dawn's actual cream background (#faf4ed) — checked with the
+// dataviz skill's validator: orange/aqua/yellow/magenta all landed under 3:1
+// (yellow as low as 1.98:1) against the real, warmer surface. Same hue and
+// saturation, just darker; re-run the validator against your own theme's
+// surface if you retheme this.
+const SERIES_HEX_DARK = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9"];
+const SERIES_HEX_LIGHT = ["#2a78d6", "#e9561c", "#18996b", "#b67b00", "#e15389", "#008300", "#4a3aa7"];
+
+// Fallback for 256-color terminals, where an exact hex can't be rendered
+// faithfully anyway: candidate theme roles, roughly ordered by how likely a
+// theme is to give them genuinely distinct colors (state colors first, then
+// syntax colors, which by convention span a wide range for readability, then
+// more decorative roles last). Many themes alias several of these to the same
+// underlying color (e.g. rose-pine's mdLink/success/toolDiffAdded/thinkingMedium
+// are all "foam"), so this list is deliberately longer than the number of
+// series we expect to render — rebuildColors() below dedupes by resolved
+// color, not by role name, and only as many roles as are actually distinct
+// in the active theme get used.
+const CHART_COLORS_FALLBACK: ThemeColor[] = [
   "accent",
-  "warning",
   "success",
   "error",
-  "mdLink",
-  "syntaxString",
-  "syntaxNumber",
+  "warning",
+  "syntaxFunction",
+  "syntaxKeyword",
   "syntaxType",
-] as const;
+  "syntaxNumber",
+  "syntaxString",
+  "mdLink",
+  "toolDiffAdded",
+  "toolDiffRemoved",
+  "thinkingHigh",
+  "thinkingMedium",
+];
 const PARTIAL_BLOCKS = "▁▂▃▄▅▆▇█";
 const MOUSE_ENABLE = "\x1b[?1000h\x1b[?1006h";
 const MOUSE_DISABLE = "\x1b[?1006l\x1b[?1000l";
 const SGR_MOUSE = /^\x1b\[<(\d+);(\d+);(\d+)([Mm])$/;
 
-type ChartColor = (typeof CHART_COLORS)[number];
+/** Wrap text in a 24-bit foreground color, resetting only the foreground. */
+function fgHex(hex: string, text: string): string {
+  const r = Number.parseInt(hex.slice(1, 3), 16);
+  const g = Number.parseInt(hex.slice(3, 5), 16);
+  const b = Number.parseInt(hex.slice(5, 7), 16);
+  return `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m`;
+}
+
+type Paint = (text: string) => string;
 type Granularity = "daily" | "weekly";
 type Grouping = "model" | "provider";
 type Action = "daily" | "weekly" | "group" | "prev" | "next" | "today" | "refresh" | "close";
@@ -221,13 +262,18 @@ function formatShortDate(timestamp: number): string {
   return `${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
 }
 
-/** Round up to a "nice" chart ceiling (1/2/2.5/5 × 10^n). */
+// 1/2/2.5/5/10 leaves a gap between 2.5 and 5 where a bar just over 2.5×base
+// (e.g. 26 rounding to 50) fills only half the chart. This ladder caps the
+// worst case at 20% headroom instead of 50%.
+const NICE_STEPS = [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+
+/** Round up to a "nice" chart ceiling. */
 function niceCeil(value: number): number {
   if (value <= 0) return 1;
   const exponent = Math.floor(Math.log10(value));
   const base = 10 ** exponent;
   const mantissa = value / base;
-  const nice = mantissa <= 1 ? 1 : mantissa <= 2 ? 2 : mantissa <= 2.5 ? 2.5 : mantissa <= 5 ? 5 : 10;
+  const nice = NICE_STEPS.find((step) => mantissa <= step) ?? 10;
   return nice * base;
 }
 
@@ -266,7 +312,7 @@ class UsageDashboard implements Component {
   private loading = false;
   private error: string | undefined;
   private regions: ClickRegion[] = [];
-  private colorMap = new Map<string, ChartColor>();
+  private colorMap = new Map<string, Paint>();
   private readonly mouseCapable: boolean;
   private disposed = false;
 
@@ -288,6 +334,17 @@ class UsageDashboard implements Component {
   /**
    * Canonical colors: assign the palette by all-time spend rank so a model
    * keeps its color while navigating periods, instead of reshuffling per view.
+   *
+   * Truecolor terminals get the fixed SERIES_HEX palette, picked for the light
+   * or dark variant by isLightBackground(). 256-color terminals can't render
+   * an exact hex faithfully, so they fall back to theme roles instead — but
+   * role names alone don't guarantee distinct colors (themes are free to alias
+   * several roles to the same underlying color; rose-pine's bundled theme
+   * gives only 6 distinct hues across the 14 fallback role names), so that
+   * path resolves each candidate through the active theme and dedupes by the
+   * rendered ANSI sequence. Either way, whatever doesn't fit in the palette's
+   * budget of distinct colors falls back to a shared "dim" bucket rather than
+   * silently reusing another series' color.
    */
   private rebuildColors(): void {
     const totals = new Map<string, number>();
@@ -296,7 +353,44 @@ class UsageDashboard implements Component {
       totals.set(key, (totals.get(key) ?? 0) + record.cost);
     }
     const keys = [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([key]) => key);
-    this.colorMap = new Map(keys.map((key, index) => [key, CHART_COLORS[index % CHART_COLORS.length]!]));
+    const dim: Paint = (text) => this.theme.fg("dim", text);
+
+    this.colorMap = new Map();
+
+    if (this.theme.getColorMode() === "truecolor") {
+      const palette = this.isLightBackground() ? SERIES_HEX_LIGHT : SERIES_HEX_DARK;
+      keys.forEach((key, index) => {
+        const hex = palette[index];
+        this.colorMap.set(key, hex ? (text) => fgHex(hex, text) : dim);
+      });
+      return;
+    }
+
+    const seenAnsi = new Set<string>();
+    const distinctColors: ThemeColor[] = [];
+    for (const color of CHART_COLORS_FALLBACK) {
+      const ansi = this.theme.getFgAnsi(color);
+      if (seenAnsi.has(ansi)) continue;
+      seenAnsi.add(ansi);
+      distinctColors.push(color);
+    }
+    keys.forEach((key, index) => {
+      const role = distinctColors[index];
+      this.colorMap.set(key, role ? (text) => this.theme.fg(role, text) : dim);
+    });
+  }
+
+  /**
+   * No public API exposes a theme's light/dark polarity directly. A theme's
+   * own text color has to contrast its background, so infer it from that:
+   * dark text implies a light surface, light text implies a dark one.
+   */
+  private isLightBackground(): boolean {
+    const match = /38;2;(\d+);(\d+);(\d+)/.exec(this.theme.getFgAnsi("text"));
+    if (!match) return false;
+    const [r, g, b] = [Number(match[1]), Number(match[2]), Number(match[3])];
+    const textLuminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return textLuminance < 0.5;
   }
 
   dispose(): void {
@@ -381,8 +475,9 @@ class UsageDashboard implements Component {
     return { buckets, groups, total: groups.reduce((sum, group) => sum + group.cost, 0) };
   }
 
-  private colorFor(key: string): ChartColor {
-    return this.colorMap.get(key) ?? CHART_COLORS[0]!;
+  private paint(key: string, text: string): string {
+    const paint = this.colorMap.get(key) ?? ((t: string) => this.theme.fg("dim", t));
+    return paint(text);
   }
 
   private groupAt(bucket: Bucket, groups: GroupTotal[], value: number): string | undefined {
@@ -402,6 +497,16 @@ class UsageDashboard implements Component {
     const max = Math.max(...buckets.map((bucket) => bucket.total), 0);
     const niceMax = niceCeil(max);
     const lines: string[] = [];
+
+    // Dotted horizontal gridlines at intermediate y-axis ticks, drawn behind bars.
+    const divisions = chartHeight >= 8 ? 4 : 2;
+    const gridRows = new Map<number, number>(); // rowFromBottom -> tick value
+    for (let k = 1; k < divisions; k++) {
+      const rowFromBottom = Math.round((k / divisions) * chartHeight) - 1;
+      if (rowFromBottom > 0 && rowFromBottom < chartHeight - 1) {
+        gridRows.set(rowFromBottom, (niceMax * k) / divisions);
+      }
+    }
 
     // Pass 1: cell ownership per bucket, indexed by row-from-bottom.
     const columns = buckets.map((bucket) => {
@@ -454,34 +559,42 @@ class UsageDashboard implements Component {
 
     for (let row = 0; row < chartHeight; row++) {
       const rowFromBottom = chartHeight - 1 - row;
+      const gridValue = gridRows.get(rowFromBottom);
       const yLabel = row === 0
         ? padLeft(formatAxisMoney(niceMax), labelWidth - 2) + " │"
-        : " ".repeat(labelWidth - 1) + "│";
+        : gridValue !== undefined
+          ? this.theme.fg("dim", padLeft(formatAxisMoney(gridValue), labelWidth - 2)) + " │"
+          : " ".repeat(labelWidth - 1) + "│";
+      const blank = (count: number) => count <= 0
+        ? ""
+        : gridValue !== undefined
+          ? this.theme.fg("dim", "┄".repeat(count))
+          : " ".repeat(count);
       let plot = "";
       for (let index = 0; index < buckets.length; index++) {
         const cell = columns[index]![rowFromBottom]!;
         if (cell.fill <= 0.01 || !cell.key) {
-          plot += " ".repeat(barWidth);
+          plot += blank(barWidth);
         } else {
-          const color = this.colorFor(cell.key);
           const name = inBarLabels[index]!.get(rowFromBottom);
           if (name) {
             // Reverse video cuts the name out of the bar in the segment color.
             const pad = barWidth - visibleWidth(name);
             const left = Math.floor(pad / 2);
-            plot += this.theme.fg(
-              color,
+            plot += this.paint(
+              cell.key,
               `${"█".repeat(left)}\x1b[7m${name}\x1b[27m${"█".repeat(pad - left)}`,
             );
           } else {
             const glyph = cell.fill >= 0.99
               ? "█"
               : PARTIAL_BLOCKS[Math.max(0, Math.min(7, Math.round(cell.fill * 8) - 1))]!;
-            plot += this.theme.fg(color, glyph.repeat(barWidth));
+            plot += this.paint(cell.key, glyph.repeat(barWidth));
           }
         }
-        plot += " ".repeat(Math.max(0, slotWidth - barWidth));
+        plot += blank(Math.max(0, slotWidth - barWidth));
       }
+      plot += blank(plotWidth - slotWidth * buckets.length);
       lines.push(truncateToWidth(yLabel + plot, width, ""));
     }
 
@@ -497,7 +610,7 @@ class UsageDashboard implements Component {
     const lines: string[] = [];
     let line = "";
     for (const group of groups) {
-      const item = `${this.theme.fg(this.colorFor(group.key), "●")} ${group.key}  `;
+      const item = `${this.paint(group.key, "●")} ${group.key}  `;
       if (line && visibleWidth(line + item) > width) {
         lines.push(truncateToWidth(line, width, ""));
         line = "";
@@ -601,8 +714,7 @@ class UsageDashboard implements Component {
       const header = `${padRight(this.grouping === "model" ? "Model" : "Provider", modelWidth)} ${padLeft("Spend", 11)} ${padLeft("% total", 9)} ${padLeft("vs prior", 10)} ${padLeft("Input", 7)} ${padLeft("Output", 7)}`;
       lines.push(this.theme.fg("muted", truncateToWidth(header, width, "")));
       for (const group of groups.slice(0, tableRows)) {
-        const color = this.colorFor(group.key);
-        const label = `${this.theme.fg(color, "●")} ${group.key}`;
+        const label = `${this.paint(group.key, "●")} ${group.key}`;
         const share = total ? `${(group.cost / total * 100).toFixed(1)}%` : "0.0%";
         const change = this.changeText(group);
         const styledChange = change === "new" || change === "—"
@@ -619,12 +731,11 @@ class UsageDashboard implements Component {
     } else {
       lines.push(this.theme.fg("muted", `Spend by ${this.grouping} · share · vs prior`));
       for (const group of groups.slice(0, tableRows)) {
-        const color = this.colorFor(group.key);
         const change = this.changeText(group);
         const suffix = `${formatMoney(group.cost)} ${(total ? group.cost / total * 100 : 0).toFixed(1)}% ${change}`;
         const nameWidth = Math.max(8, width - visibleWidth(suffix) - 3);
         lines.push(truncateToWidth(
-          `${this.theme.fg(color, "●")} ${padRight(group.key, nameWidth)} ${suffix}`,
+          `${this.paint(group.key, "●")} ${padRight(group.key, nameWidth)} ${suffix}`,
           width,
           "",
         ));
