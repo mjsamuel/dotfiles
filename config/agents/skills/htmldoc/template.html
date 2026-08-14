@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- SLOT:title — "Headline · repo · htmldoc" -->
+<title>Consolidate config loading · dotfiles · htmldoc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   htmldoc — DO NOT MODIFY STYLES OR SCRIPT. Content slots only.
+   Drafting-sheet system: vellum paper + faint grid, Prussian
+   blue structure, redline red for anything proposed/warned.
+   Dark mode is a cyanotype (blue paper, pale ink).
+   Archivo carries display (expanded) and body; Plex Mono, code.
+   ============================================================ */
+:root {
+  /* palette: Vellum #F3F5F6 · Ink #16242F · Prussian #1F5B8A · Redline #C13B26 · Panel #E8EDF1 */
+  --display: "Archivo", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --surround: #d8dfe4;
+  --bg: #f3f5f6;
+  --grid: rgba(31, 91, 138, .07);
+  --frame: #a9bac6;
+  --card: #fafbfc;
+  --card-2: #e8edf1;
+  --line: #c3cfd8;
+  --line-soft: #d8e0e6;
+  --text: #16242f;
+  --muted: #52616e;
+  --faint: #74828e;
+  --accent: #1f5b8a;
+  --accent-strong: #174a72;
+  --accent-ink: #f2f7fb;
+  --redline: #c13b26;
+  --tldr-bg: #143349;
+  --tldr-ink: #e3eef6;
+  --tldr-muted: #8fb0c6;
+  --tldr-grid: rgba(227, 238, 246, .06);
+  --code-bg: #eaeff2;
+  --add-bg: #dce9da;
+  --add-ink: #33582f;
+  --del-bg: #f4ded7;
+  --del-ink: #a03a22;
+  --hunk-ink: #74828e;
+  --tok-kw: #1d5a89;
+  --tok-str: #3e7052;
+  --tok-com: #7a8791;
+  --tok-num: #8a5b24;
+  --tok-fn: #16242f;
+  --shadow: 0 1px 2px rgba(22, 36, 47, .06), 0 20px 50px -32px rgba(22, 36, 47, .35);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surround: #060f16;
+    --bg: #0e1e2c;
+    --grid: rgba(140, 190, 225, .055);
+    --frame: #2c4a63;
+    --card: #122536;
+    --card-2: #1a3046;
+    --line: #2c4a63;
+    --line-soft: #1f3850;
+    --text: #d9e6f0;
+    --muted: #93aabc;
+    --faint: #6c8499;
+    --accent: #77b6e0;
+    --accent-strong: #9ccbec;
+    --accent-ink: #0a1826;
+    --redline: #ec8a6d;
+    --tldr-bg: #e9f0f5;
+    --tldr-ink: #14293c;
+    --tldr-muted: #4e6b82;
+    --tldr-grid: rgba(20, 41, 60, .07);
+    --code-bg: #0a1826;
+    --add-bg: #17301f;
+    --add-ink: #93c39b;
+    --del-bg: #3a1c14;
+    --del-ink: #eba48d;
+    --hunk-ink: #6c8499;
+    --tok-kw: #7fbae4;
+    --tok-str: #92c7a3;
+    --tok-com: #5f7488;
+    --tok-num: #d9b47f;
+    --tok-fn: #d9e6f0;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 20px 50px -30px rgba(0, 0, 0, .7);
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--surround);
+  color: var(--text);
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+/* the sheet: framed drafting paper with a faint grid */
+.page {
+  max-width: 960px; margin: 2.5rem auto; padding: 2.5rem 3rem 2.25rem;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  border: 1px solid var(--frame);
+  box-shadow: var(--shadow);
+}
+a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+a:hover { text-decoration-color: var(--accent); }
+code, pre, .mono { font-family: var(--mono); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- top bar ---- */
+.topbar {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0 0 .75rem; margin-bottom: 2.5rem;
+  border-bottom: 2px solid var(--text);
+}
+.brand { font-weight: 700; font-stretch: 112%; letter-spacing: .01em; }
+.brand span { color: var(--muted); font-weight: 450; font-stretch: 100%; }
+.topbar-meta { color: var(--muted); font-family: var(--mono); font-size: .74rem; }
+
+/* ---- pills (stamps) ---- */
+.pill {
+  display: inline-block; padding: .18rem .6rem;
+  border: 1px solid var(--line); border-radius: 4px;
+  background: var(--card); color: var(--muted);
+  font-size: .72rem; font-weight: 550; letter-spacing: .02em;
+  white-space: nowrap; text-decoration: none;
+}
+.pill-type {
+  background: var(--accent); border-color: var(--accent); color: var(--accent-ink);
+  text-transform: uppercase; letter-spacing: .12em; font-size: .64rem; font-weight: 700;
+  padding: .28rem .7rem; font-stretch: 110%;
+}
+.pill-loc { font-family: var(--mono); font-size: .68rem; }
+.pill-actual {
+  background: var(--card-2); border-color: var(--line); color: var(--text);
+  text-transform: uppercase; letter-spacing: .09em; font-size: .6rem; font-weight: 700;
+}
+.pill-proposed {
+  color: var(--redline); border: 1.5px dashed var(--redline); background: transparent;
+  text-transform: uppercase; letter-spacing: .09em; font-size: .6rem; font-weight: 700;
+}
+
+/* ---- document head ---- */
+.doc-head { margin-bottom: 1.75rem; }
+.doc-head .pill-type { margin-bottom: 1rem; }
+h1 {
+  margin: .6rem 0 .9rem; font-size: 2.55rem; line-height: 1.08;
+  font-stretch: 116%; font-weight: 660; letter-spacing: -.015em;
+}
+h1 em { font-style: normal; color: var(--redline); }
+.standfirst { margin: 0; max-width: 58ch; color: var(--muted); font-size: 1.04rem; }
+
+/* ---- TL;DR card (cyanotype panel) ---- */
+.tldr {
+  margin: 2rem 0; padding: 1.4rem 1.6rem 1.5rem;
+  background-color: var(--tldr-bg); color: var(--tldr-ink);
+  background-image:
+    linear-gradient(var(--tldr-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--tldr-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  border-radius: 6px; box-shadow: var(--shadow);
+}
+.tldr .pill { background: transparent; border-color: color-mix(in srgb, var(--tldr-ink) 35%, transparent); color: var(--tldr-muted); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; font-weight: 700; }
+.tldr h2 { margin: .9rem 0 .5rem; font-size: 1.45rem; font-stretch: 110%; font-weight: 650; letter-spacing: -.008em; line-height: 1.25; }
+.tldr p { margin: .4rem 0 0; color: color-mix(in srgb, var(--tldr-ink) 84%, var(--tldr-bg)); }
+.tldr strong { color: var(--tldr-ink); }
+.tldr code { background: color-mix(in srgb, var(--tldr-ink) 12%, transparent); padding: .05rem .3rem; border-radius: 4px; font-size: .85em; }
+
+/* ---- TOC + controls ---- */
+.toc-row { display: flex; flex-wrap: wrap; gap: .45rem 1rem; align-items: center; margin: 1.5rem 0 2.75rem; }
+.toc { display: flex; flex-wrap: wrap; gap: .45rem; }
+.ctl-row { display: flex; gap: .45rem; margin-left: auto; }
+.toc-row a.pill:hover { color: var(--accent); border-color: var(--accent); }
+.ctl {
+  border: 1px solid var(--line); border-radius: 4px; background: transparent;
+  color: var(--muted); font: inherit; font-size: .72rem; padding: .18rem .6rem; cursor: pointer;
+}
+.ctl:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---- sections ---- */
+.sec { margin: 3rem 0; }
+.sec-head {
+  display: flex; align-items: baseline; gap: .85rem;
+  border-bottom: 1px solid var(--line); padding-bottom: .55rem; margin-bottom: 1.1rem;
+}
+.sec-num { font-stretch: 118%; font-weight: 750; font-size: .95rem; color: var(--accent); letter-spacing: .08em; }
+.sec h2 { margin: 0; font-size: 1.4rem; font-stretch: 110%; font-weight: 640; letter-spacing: -.008em; }
+.sec h3 { font-size: 1rem; font-weight: 680; margin: 1.6rem 0 .5rem; }
+.sec p { max-width: 68ch; }
+.sec ul, .sec ol:not(.stepper) { padding-left: 1.3rem; max-width: 66ch; }
+.sec li { margin: .3rem 0; }
+.sec li::marker { color: var(--accent); }
+
+/* ---- multi-column rows ---- */
+.cols {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem; align-items: start; margin: 1.25rem 0;
+}
+.cols.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cols > * { margin: 0; min-width: 0; }
+@media (max-width: 720px) {
+  .cols, .cols.cols-3 { grid-template-columns: 1fr; }
+}
+
+/* ---- inline code / tables ---- */
+p code, li code, td code {
+  background: var(--card-2); border: 1px solid var(--line-soft);
+  padding: .04rem .32rem; border-radius: 4px; font-size: .82em;
+}
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+th { text-align: left; color: var(--faint); font-weight: 700; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; }
+th, td { padding: .5rem .75rem; border-bottom: 1px solid var(--line-soft); }
+thead th { border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: none; }
+
+/* ---- callouts ---- */
+.callout {
+  margin: 1.25rem 0; padding: .95rem 1.2rem;
+  background: var(--card-2); border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0;
+}
+.callout .label { display: block; font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
+.callout.warn { border-left-color: var(--redline); }
+.callout.warn .label { color: var(--redline); }
+.callout p { margin: 0; }
+
+/* ---- code blocks ---- */
+.codeblock { margin: 1.25rem 0; }
+.codeblock figcaption { margin-bottom: .5rem; }
+pre.code {
+  position: relative; margin: 0;
+  background: var(--code-bg); border: 1px solid var(--line-soft); border-radius: 6px;
+  padding: 1rem 1.15rem; overflow-x: auto;
+  font-size: .8rem; line-height: 1.6;
+}
+pre.code button.copy {
+  position: absolute; top: .5rem; right: .5rem;
+  border: 1px solid var(--line); border-radius: 4px; background: var(--card);
+  color: var(--muted); font: inherit; font-size: .68rem; padding: .15rem .55rem; cursor: pointer;
+  opacity: 0; transition: opacity .15s;
+}
+pre.code:hover button.copy,
+pre.code button.copy:focus-visible { opacity: 1; }
+pre.code button.copy:hover { color: var(--accent); border-color: var(--accent); }
+/* highlight.js token mapping — no external theme; palette-synced via --tok-* */
+pre.code code.hljs { background: transparent; padding: 0; }
+.hljs-keyword, .hljs-literal, .hljs-built_in, .hljs-type, .hljs-selector-tag { color: var(--tok-kw); font-weight: 600; }
+.hljs-string, .hljs-regexp, .hljs-template-tag, .hljs-symbol { color: var(--tok-str); }
+.hljs-comment, .hljs-quote { color: var(--tok-com); font-style: italic; }
+.hljs-number, .hljs-attr, .hljs-attribute, .hljs-variable, .hljs-selector-attr { color: var(--tok-num); }
+.hljs-title, .hljs-title.function_, .hljs-title.class_, .hljs-name, .hljs-section { color: var(--tok-fn); font-weight: 600; }
+.hljs-meta, .hljs-doctag { color: var(--hunk-ink); }
+
+/* ---- diffs ---- */
+details.diff { margin: 1.25rem 0; border: 1px solid var(--line-soft); border-radius: 6px; background: var(--card); overflow: hidden; }
+details.diff > summary {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .6rem 1rem; cursor: pointer; list-style: none; user-select: none;
+}
+details.diff > summary::-webkit-details-marker { display: none; }
+details.diff > summary::before { content: "▸"; color: var(--faint); font-size: .8rem; transition: transform .15s; }
+details.diff[open] > summary::before { transform: rotate(90deg); }
+.diff-file { font-family: var(--mono); font-size: .78rem; font-weight: 600; }
+.diff-body { border-top: 1px solid var(--line-soft); background: var(--code-bg); overflow-x: auto; padding: .5rem 0; }
+.dline { padding: .06rem 1rem; font-family: var(--mono); font-size: .78rem; line-height: 1.6; white-space: pre; }
+.dline.add { background: var(--add-bg); color: var(--add-ink); }
+.dline.del { background: var(--del-bg); color: var(--del-ink); }
+.dline.hunk { color: var(--hunk-ink); padding-top: .4rem; padding-bottom: .2rem; }
+.dline.ctx { color: var(--muted); }
+
+/* ---- stepper (detail callouts) ---- */
+ol.stepper { list-style: none; counter-reset: step; margin: 1.5rem 0; padding: 0; }
+ol.stepper > li.step {
+  counter-increment: step;
+  position: relative; margin: 0 0 1.25rem; padding: 1.15rem 1.4rem 1.25rem 4.5rem;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: 8px;
+}
+ol.stepper > li.step::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute; left: 1.15rem; top: 1.15rem;
+  width: 2.15rem; height: 2.15rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent);
+  display: grid; place-items: center;
+  font-size: .74rem; font-weight: 700; font-stretch: 110%; letter-spacing: .04em;
+}
+ol.stepper > li.step:not(:last-child)::after {
+  content: ""; position: absolute; left: 2.22rem; top: calc(100% + 1px);
+  height: 1.25rem; border-left: 1px solid var(--line);
+}
+.step-head { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: .3rem; min-height: 2.15rem; }
+.step-head h3 { margin: 0; font-size: 1rem; font-weight: 680; }
+.step > p { margin: .3rem 0 .6rem; color: var(--muted); font-size: .95rem; max-width: 62ch; }
+.step .callout { background: var(--card-2); }
+.step details.diff { background: var(--card-2); border-color: transparent; }
+
+/* ---- I/O blocks ---- */
+details.io { margin: .5rem 0; border: none; border-radius: 6px; background: var(--card-2); overflow: hidden; }
+details.io > summary {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .45rem .85rem; cursor: pointer; list-style: none; user-select: none;
+  font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+}
+details.io > summary::-webkit-details-marker { display: none; }
+details.io > summary::before { content: "▸"; font-size: .75rem; transition: transform .15s; }
+details.io[open] > summary::before { transform: rotate(90deg); }
+details.io.io-in > summary { color: var(--muted); }
+details.io.io-out > summary { color: var(--accent); }
+details.io pre.code { border: none; border-radius: 0; }
+
+/* ---- footer (title block) ---- */
+.foot {
+  margin-top: 4rem;
+  display: flex; flex-wrap: wrap;
+  border: 1px solid var(--line);
+  color: var(--text); font-family: var(--mono); font-size: .76rem;
+}
+.foot span { flex: 1 1 12rem; padding: .5rem .85rem .55rem; border-right: 1px solid var(--line); }
+.foot span:last-child { border-right: none; }
+.foot b {
+  display: block; margin-bottom: .1rem;
+  font-family: var(--display); font-size: .58rem; font-weight: 700;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--faint);
+}
+
+@media (max-width: 720px) {
+  .page { margin: 0; padding: 1.5rem 1.25rem 2rem; border-left: none; border-right: none; }
+}
+@media (max-width: 560px) {
+  h1 { font-size: 1.9rem; }
+  ol.stepper > li.step { padding-left: 1.4rem; padding-top: 3.1rem; }
+  ol.stepper > li.step:not(:last-child)::after { left: 2.2rem; }
+  .foot span { flex-basis: 100%; border-right: none; border-bottom: 1px solid var(--line); }
+  .foot span:last-child { border-bottom: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}
+
+@media print {
+  :root {
+    --surround: #ffffff;
+    --bg: #ffffff;
+    --grid: transparent;
+    --frame: #ffffff;
+    --card: #ffffff;
+    --card-2: #edf1f4;
+    --line: #b9c6d0;
+    --line-soft: #d3dce2;
+    --text: #16242f;
+    --muted: #44535f;
+    --faint: #5e6d79;
+    --accent: #174a72;
+    --accent-strong: #123a5a;
+    --accent-ink: #ffffff;
+    --redline: #a03220;
+    --tldr-bg: #143349;
+    --tldr-ink: #e3eef6;
+    --tldr-muted: #8fb0c6;
+    --tldr-grid: transparent;
+    --code-bg: #eff3f5;
+    --add-bg: #dce9da;
+    --add-ink: #33582f;
+    --del-bg: #f4ded7;
+    --del-ink: #a03a22;
+    --hunk-ink: #5e6d79;
+    --tok-kw: #174a72;
+    --tok-str: #356046;
+    --tok-com: #66727c;
+    --tok-num: #75491a;
+    --tok-fn: #16242f;
+    --shadow: none;
+  }
+  body { background: #fff; }
+  .page { margin: 0; border: none; box-shadow: none; background-image: none; max-width: none; }
+  .ctl-row, pre.code button.copy { display: none; }
+  .tldr, .callout, ol.stepper > li.step, details.diff, figure.codeblock { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- SLOT:topbar — project/repo name + date -->
+  <header class="topbar">
+    <div class="brand">dotfiles<span> · htmldoc</span></div>
+    <div class="topbar-meta">2025-01-01</div>
+  </header>
+
+  <main>
+    <!-- SLOT:doc-head — pill is Plan | Research | Walkthrough -->
+    <div class="doc-head">
+      <span class="pill pill-type">Plan</span>
+      <h1>Consolidate config loading into <em>one pipeline</em></h1>
+      <p class="standfirst">Three loaders parse the same files with subtly different precedence. This plan merges them behind a single resolver.</p>
+    </div>
+
+    <!-- SLOT:tldr — mandatory. The one thing that matters. -->
+    <section class="tldr">
+      <span class="pill">TL;DR</span>
+      <h2>Replace the three loaders with a single <code>resolveConfig()</code></h2>
+      <p><strong>Recommendation:</strong> introduce the resolver alongside the old paths, migrate call sites one-by-one, then delete the legacy loaders. Two-day effort, no behavior change intended.</p>
+    </section>
+
+    <!-- SLOT:toc — omit the <nav> when fewer than 4 sections; ALWAYS keep .ctl-row -->
+    <div class="toc-row">
+      <nav class="toc">
+        <a class="pill" href="#s01">01 · Current state</a>
+        <a class="pill" href="#s02">02 · Walkthrough</a>
+        <a class="pill" href="#s03">03 · Proposed change</a>
+        <a class="pill" href="#s04">04 · Risks</a>
+      </nav>
+      <div class="ctl-row">
+        <button class="ctl" id="expand-all">Expand all</button>
+        <button class="ctl" id="collapse-all">Collapse all</button>
+      </div>
+    </div>
+
+    <!-- SLOT:sections — repeat .sec; bodies are freeform.
+         Wrap sibling blocks in .cols (or .cols.cols-3) to place them side by side —
+         best for paired callouts, input/output blocks, or code + notes.
+         Collapses to one column on narrow screens; never put long prose in columns. -->
+    <section class="sec" id="s01">
+      <div class="sec-head"><span class="sec-num">01</span><h2>Current state</h2></div>
+      <p>Config is parsed in three places, each with its own precedence rules. The <code>env</code> loader silently wins today.</p>
+      <ul>
+        <li><code>loadEnvConfig()</code> — env vars, called first</li>
+        <li><code>loadFileConfig()</code> — YAML on disk</li>
+        <li><code>loadFlagConfig()</code> — CLI flags, applied last but only partially</li>
+      </ul>
+      <div class="cols">
+        <aside class="callout">
+          <span class="label">Note</span>
+          <p>Only <code>loadFileConfig</code> has tests. The other two are exercised indirectly.</p>
+        </aside>
+        <aside class="callout warn">
+          <span class="label">Warning</span>
+          <p>Flag precedence differs between dev and prod builds — this is the bug that motivated the plan.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="sec" id="s02">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Walkthrough: how a flag gets lost</h2></div>
+      <p>Tracing <code>--verbose</code> from the CLI to the point where it is dropped.</p>
+
+      <ol class="stepper">
+        <li class="step">
+          <div class="step-head">
+            <h3><code>main</code> parses argv</h3>
+            <span class="pill pill-loc">src/cli.ts:18</span>
+          </div>
+          <p>Raw argv is split into flags and positionals. Nothing wrong yet.</p>
+          <div class="cols">
+            <details class="io io-in" open>
+              <summary>Input</summary>
+              <pre class="code"><code class="language-json">["node", "cli.js", "--verbose", "build"]</code></pre>
+            </details>
+            <details class="io io-out" open>
+              <summary>Output</summary>
+              <pre class="code"><code class="language-javascript">{ flags: { verbose: true }, cmd: "build" }</code></pre>
+            </details>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="step-head">
+            <h3><code>mergeConfig</code> overwrites flags with env</h3>
+            <span class="pill pill-loc">src/config/merge.ts:44</span>
+          </div>
+          <p>The spread order puts <code>envConfig</code> last, so it clobbers the flag. This is the defect.</p>
+          <div class="cols">
+            <details class="io io-in" open>
+              <summary>Input</summary>
+              <pre class="code"><code class="language-javascript">flags = { verbose: true }
+env   = { verbose: false }  // injected by prod wrapper</code></pre>
+            </details>
+            <details class="io io-out" open>
+              <summary>Output</summary>
+              <pre class="code"><code class="language-javascript">{ verbose: false }  // flag lost</code></pre>
+            </details>
+          </div>
+          <details class="diff">
+            <summary><span class="diff-file">src/config/merge.ts</span><span class="pill pill-actual">actual</span></summary>
+            <div class="diff-body">
+<div class="dline hunk">@@ -42,4 +42,4 @@</div>
+<div class="dline ctx">  function mergeConfig(flags, file, env) {</div>
+<div class="dline del">-   return { ...flags, ...file, ...env };</div>
+<div class="dline add">+   return { ...env, ...file, ...flags };</div>
+<div class="dline ctx">  }</div>
+            </div>
+          </details>
+        </li>
+      </ol>
+    </section>
+
+    <section class="sec" id="s03">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Proposed change</h2></div>
+      <p>One resolver, explicit precedence, single exit point.</p>
+      <figure class="codeblock">
+        <figcaption><span class="pill pill-loc">src/config/resolve.ts (new)</span></figcaption>
+        <pre class="code"><code class="language-typescript">export function resolveConfig(sources: Source[]): Config {
+  // precedence: flags &gt; file &gt; env
+  const ordered = sortBy(sources, s =&gt; PRECEDENCE[s.kind]);
+  return ordered.reduce(merge, DEFAULTS);
+}</code></pre>
+      </figure>
+      <details class="diff" open>
+        <summary><span class="diff-file">src/cli.ts</span><span class="pill pill-proposed">proposed</span></summary>
+        <div class="diff-body">
+<div class="dline hunk">@@ -16,6 +16,5 @@</div>
+<div class="dline ctx">  const argv = parseArgv(process.argv);</div>
+<div class="dline del">- const cfg = mergeConfig(argv.flags, loadFileConfig(), loadEnvConfig());</div>
+<div class="dline add">+ const cfg = resolveConfig(gatherSources(argv));</div>
+<div class="dline ctx">  run(argv.cmd, cfg);</div>
+        </div>
+      </details>
+    </section>
+
+    <section class="sec" id="s04">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Risks</h2></div>
+      <table>
+        <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>Hidden env-precedence dependents</td><td>Medium</td><td>Migrate call sites one at a time</td></tr>
+          <tr><td>Untested loaders regress</td><td>Low</td><td>Snapshot resolved config before/after</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- SLOT:footer — provenance only; the date lives in the topbar -->
+  <footer class="foot">
+    <span><b>repo</b> dotfiles @ main</span>
+    <span><b>model</b> claude</span>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+if (window.hljs) {
+  hljs.configure({ cssSelector: 'pre code[class*="language-"]' });
+  hljs.highlightAll();
+}
+document.querySelectorAll("pre.code").forEach(pre => {
+  const b = document.createElement("button");
+  b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+  b.addEventListener("click", async () => {
+    const code = pre.querySelector("code");
+    await navigator.clipboard.writeText((code ?? pre).innerText);
+    b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200);
+  });
+  pre.appendChild(b);
+});
+const setAll = open => document.querySelectorAll("details").forEach(d => (d.open = open));
+document.getElementById("expand-all")?.addEventListener("click", () => setAll(true));
+document.getElementById("collapse-all")?.addEventListener("click", () => setAll(false));
+let printState = null;
+window.addEventListener("beforeprint", () => {
+  printState = [...document.querySelectorAll("details")].map(d => d.open);
+  setAll(true);
+});
+window.addEventListener("afterprint", () => {
+  if (printState) document.querySelectorAll("details").forEach((d, i) => (d.open = printState[i]));
+  printState = null;
+});
+</script>
+</body>
+</html>
