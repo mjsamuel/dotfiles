@@ -10,9 +10,9 @@
     state: link
   tags: ["claude-settings"]
 
-- name: symlink claude CLAUDE.md
+- name: symlink AGENTS.md as claude CLAUDE.md
   file:
-    src: "{{ dotfiles_dir }}/config/claude/CLAUDE.md"
+    src: "{{ dotfiles_dir }}/config/agents/AGENTS.md"
     path: "~/.claude/CLAUDE.md"
     state: link
 
@@ -30,7 +30,7 @@
 
     - name: find all skills in dotfiles
       find:
-        paths: "{{ dotfiles_dir }}/config/claude/skills"
+        paths: "{{ dotfiles_dir }}/config/agents/skills"
         file_type: directory
         recurse: no
       register: find
