@@ -1,5 +1,35 @@
 [
   {
+    "plugin_id": "mjsamuel.even-panes",
+    "name": "Even Panes",
+    "version": "0.1.0",
+    "min_herdr_version": "0.8.0",
+    "description": "Evenly distribute panes in the active tab, like tmux select-layout -E",
+    "manifest_path": "/Users/mattsamuel/Developer/dotfiles/config/herdr/plugins/even-panes/herdr-plugin.toml",
+    "plugin_root": "/Users/mattsamuel/Developer/dotfiles/config/herdr/plugins/even-panes",
+    "enabled": true,
+    "platforms": [
+      "linux",
+      "macos"
+    ],
+    "actions": [
+      {
+        "id": "even-panes",
+        "title": "Evenly Resize Panes",
+        "contexts": [
+          "workspace"
+        ],
+        "command": [
+          "lua",
+          "even-panes.lua"
+        ]
+      }
+    ],
+    "source": {
+      "kind": "local"
+    }
+  },
+  {
     "plugin_id": "mjsamuel.last-focus",
     "name": "Last Focus",
     "version": "0.1.0",

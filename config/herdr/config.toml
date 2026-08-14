@@ -43,11 +43,21 @@ focus_pane_down  = "alt+down"
 swap_pane_up     = "alt+shift+["
 swap_pane_down   = "alt+shift+]"
 
+# Navigate mode
+navigate_workspace_down = "j"
+navigate_workspace_up = "k"
+
 # Switching tabs/windows
 switch_tab = "alt+1..9"
 
 # Copy mode
 copy_mode = "alt+["
+
+[[keys.command]]
+key         = "alt+o"
+type        = "plugin_action"
+command     = "mjsamuel.even-panes.even-panes"
+description = "evenly resize panes"
 
 [[keys.command]]
 key         = "alt+shift+s"
