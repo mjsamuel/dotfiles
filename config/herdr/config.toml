@@ -2,17 +2,19 @@ onboarding = false
 
 [theme]
 auto_switch = true
-dark_name = "rose-pine"
-light_name = "rose-pine-dawn"
+dark_name   = "rose-pine"
+light_name  = "rose-pine-dawn"
 
 [ui]
-mouse_capture       = true
-pane_borders        = true
-pane_gaps           = false
-prompt_new_tab_name = false
-accent              = "blue"
-tab_bar_position    = "top"
-agent_panel_sort = "priority"
+mouse_capture                    = true
+pane_borders                     = true
+pane_gaps                        = false
+prompt_new_tab_name              = true
+prompt_new_workspace_name        = true
+accent                           = "blue"
+tab_bar_position                 = "top"
+agent_panel_sort                 = "priority"
+right_click_passthrough_modifier = "alt"
 
 [ui.toast]
 herdr.position = "top-right"
@@ -22,15 +24,22 @@ clipboard.enabled = false
 prefix = "ctrl+b" # unused here; kept as the default fallback chord
 
 # Misc
-reload_config       = "alt+shift+r"
-rename_tab          = "alt+comma"
-new_tab             = "alt+n"
-detach              = "alt+d"
-workspace_picker    = "alt+s"
-close_pane          = "alt+shift+x"
-zoom                = "alt+z"
-edit_scrollback     = "alt+shift+k"
-toggle_sidebar      = "alt+;"
+reload_config    = "alt+shift+r"
+rename_tab       = "alt+comma"
+new_tab          = "alt+c"
+new_workspace    = "alt+shift+c"
+detach           = "alt+d"
+workspace_picker = "alt+s"
+close_pane       = "alt+shift+x"
+zoom             = "alt+z"
+edit_scrollback  = "alt+shift+k"
+toggle_sidebar   = "alt+;"
+copy_mode        = "alt+["
+help             = "alt+?"
+
+# Switching tabs/windows
+switch_tab = "alt+1..9"
+last_pane  = "alt+l"
 
 # Splits
 split_horizontal = "alt+h"
@@ -45,20 +54,12 @@ swap_pane_up     = "alt+shift+["
 swap_pane_down   = "alt+shift+]"
 
 # Navigate mode
-navigate_workspace_down = "j"
-navigate_workspace_up = "k"
+# navigate_workspace_down = "j"
+# navigate_workspace_up   = "k"
 
-# Switching tabs/windows
-switch_tab = "alt+1..9"
-
-# Copy mode
-copy_mode = "alt+["
-
-[[keys.command]]
-key         = "alt+o"
-type        = "plugin_action"
-command     = "mjsamuel.even-panes.even-panes"
-description = "evenly resize panes"
+# Worktrees
+new_worktree  = "alt+shift+w"
+open_worktree = "alt+w"
 
 [[keys.command]]
 key         = "alt+shift+s"
@@ -76,14 +77,5 @@ description = "notarizer"
 width       = "80%"
 height      = "80%"
 
-[[keys.command]]
-key         = "alt+l"
-type        = "shell"
-command     = "herdr plugin action invoke toggle-tab --plugin mjsamuel.last-focus"
-description = "toggle last tab"
-
-[[keys.command]]
-key         = "alt+shift+l"
-type        = "shell"
-command     = "herdr plugin action invoke toggle-workspace --plugin mjsamuel.last-focus"
-description = "toggle last workspace"
+[worktrees]
+directory = "~/.local/share/worktrees"
