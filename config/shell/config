@@ -66,14 +66,6 @@ h() {
 	fi
 }
 
-# tmux
-alias \
-	ta="herdr"
-
-t() {
-	h "$@"
-}
-
 # youtube-dl
 alias \
 	dl='yt-dlp --no-abort-on-error --ignore-errors --embed-metadata --write-thumbnail' \

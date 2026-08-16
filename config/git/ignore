@@ -16,9 +16,6 @@ __pycache__/
 .nvim.lua
 .nvimrc
 
-# Per-project tmux script to arrange tabs/panes
-.tmux.conf
-
 # AI junk
 .claude/settings.local.json
 .claude/worktrees
