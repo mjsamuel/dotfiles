@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- SLOT:title — "Headline · repo · htmldoc" -->
-<title>Consolidate config loading · dotfiles · htmldoc</title>
+<title><!-- HTMLDOC_TITLE --></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -258,6 +257,15 @@ pre.code code.hljs { background: transparent; padding: 0; }
 .hljs-title, .hljs-title.function_, .hljs-title.class_, .hljs-name, .hljs-section { color: var(--tok-fn); font-weight: 600; }
 .hljs-meta, .hljs-doctag { color: var(--hunk-ink); }
 
+/* ---- mermaid diagrams ---- */
+figure { margin: 1.25rem 0; }
+figure figcaption { margin-bottom: .5rem; color: var(--muted); font-size: .82rem; }
+pre.mermaid {
+  margin: 0; background: var(--card); border: 1px solid var(--line-soft); border-radius: 6px;
+  padding: 1rem; overflow-x: auto; text-align: center;
+}
+pre.mermaid svg { max-width: 100%; height: auto; }
+
 /* ---- diffs ---- */
 details.diff { margin: 1.25rem 0; border: 1px solid var(--line-soft); border-radius: 6px; background: var(--card); overflow: hidden; }
 details.diff > summary {
@@ -388,160 +396,7 @@ details.io pre.code { border: none; border-radius: 0; }
 </head>
 <body>
 <div class="page">
-
-  <!-- SLOT:topbar — project/repo name + date -->
-  <header class="topbar">
-    <div class="brand">dotfiles<span> · htmldoc</span></div>
-    <div class="topbar-meta">2025-01-01</div>
-  </header>
-
-  <main>
-    <!-- SLOT:doc-head — pill is Plan | Research | Walkthrough -->
-    <div class="doc-head">
-      <span class="pill pill-type">Plan</span>
-      <h1>Consolidate config loading into <em>one pipeline</em></h1>
-      <p class="standfirst">Three loaders parse the same files with subtly different precedence. This plan merges them behind a single resolver.</p>
-    </div>
-
-    <!-- SLOT:tldr — mandatory. The one thing that matters. -->
-    <section class="tldr">
-      <span class="pill">TL;DR</span>
-      <h2>Replace the three loaders with a single <code>resolveConfig()</code></h2>
-      <p><strong>Recommendation:</strong> introduce the resolver alongside the old paths, migrate call sites one-by-one, then delete the legacy loaders. Two-day effort, no behavior change intended.</p>
-    </section>
-
-    <!-- SLOT:toc — omit the <nav> when fewer than 4 sections; ALWAYS keep .ctl-row -->
-    <div class="toc-row">
-      <nav class="toc">
-        <a class="pill" href="#s01">01 · Current state</a>
-        <a class="pill" href="#s02">02 · Walkthrough</a>
-        <a class="pill" href="#s03">03 · Proposed change</a>
-        <a class="pill" href="#s04">04 · Risks</a>
-      </nav>
-      <div class="ctl-row">
-        <button class="ctl" id="expand-all">Expand all</button>
-        <button class="ctl" id="collapse-all">Collapse all</button>
-      </div>
-    </div>
-
-    <!-- SLOT:sections — repeat .sec; bodies are freeform.
-         Wrap sibling blocks in .cols (or .cols.cols-3) to place them side by side —
-         best for paired callouts, input/output blocks, or code + notes.
-         Collapses to one column on narrow screens; never put long prose in columns. -->
-    <section class="sec" id="s01">
-      <div class="sec-head"><span class="sec-num">01</span><h2>Current state</h2></div>
-      <p>Config is parsed in three places, each with its own precedence rules. The <code>env</code> loader silently wins today.</p>
-      <ul>
-        <li><code>loadEnvConfig()</code> — env vars, called first</li>
-        <li><code>loadFileConfig()</code> — YAML on disk</li>
-        <li><code>loadFlagConfig()</code> — CLI flags, applied last but only partially</li>
-      </ul>
-      <div class="cols">
-        <aside class="callout">
-          <span class="label">Note</span>
-          <p>Only <code>loadFileConfig</code> has tests. The other two are exercised indirectly.</p>
-        </aside>
-        <aside class="callout warn">
-          <span class="label">Warning</span>
-          <p>Flag precedence differs between dev and prod builds — this is the bug that motivated the plan.</p>
-        </aside>
-      </div>
-    </section>
-
-    <section class="sec" id="s02">
-      <div class="sec-head"><span class="sec-num">02</span><h2>Walkthrough: how a flag gets lost</h2></div>
-      <p>Tracing <code>--verbose</code> from the CLI to the point where it is dropped.</p>
-
-      <ol class="stepper">
-        <li class="step">
-          <div class="step-head">
-            <h3><code>main</code> parses argv</h3>
-            <span class="pill pill-loc">src/cli.ts:18</span>
-          </div>
-          <p>Raw argv is split into flags and positionals. Nothing wrong yet.</p>
-          <div class="cols">
-            <details class="io io-in" open>
-              <summary>Input</summary>
-              <pre class="code"><code class="language-json">["node", "cli.js", "--verbose", "build"]</code></pre>
-            </details>
-            <details class="io io-out" open>
-              <summary>Output</summary>
-              <pre class="code"><code class="language-javascript">{ flags: { verbose: true }, cmd: "build" }</code></pre>
-            </details>
-          </div>
-        </li>
-
-        <li class="step">
-          <div class="step-head">
-            <h3><code>mergeConfig</code> overwrites flags with env</h3>
-            <span class="pill pill-loc">src/config/merge.ts:44</span>
-          </div>
-          <p>The spread order puts <code>envConfig</code> last, so it clobbers the flag. This is the defect.</p>
-          <div class="cols">
-            <details class="io io-in" open>
-              <summary>Input</summary>
-              <pre class="code"><code class="language-javascript">flags = { verbose: true }
-env   = { verbose: false }  // injected by prod wrapper</code></pre>
-            </details>
-            <details class="io io-out" open>
-              <summary>Output</summary>
-              <pre class="code"><code class="language-javascript">{ verbose: false }  // flag lost</code></pre>
-            </details>
-          </div>
-          <details class="diff">
-            <summary><span class="diff-file">src/config/merge.ts</span><span class="pill pill-actual">actual</span></summary>
-            <div class="diff-body">
-<div class="dline hunk">@@ -42,4 +42,4 @@</div>
-<div class="dline ctx">  function mergeConfig(flags, file, env) {</div>
-<div class="dline del">-   return { ...flags, ...file, ...env };</div>
-<div class="dline add">+   return { ...env, ...file, ...flags };</div>
-<div class="dline ctx">  }</div>
-            </div>
-          </details>
-        </li>
-      </ol>
-    </section>
-
-    <section class="sec" id="s03">
-      <div class="sec-head"><span class="sec-num">03</span><h2>Proposed change</h2></div>
-      <p>One resolver, explicit precedence, single exit point.</p>
-      <figure class="codeblock">
-        <figcaption><span class="pill pill-loc">src/config/resolve.ts (new)</span></figcaption>
-        <pre class="code"><code class="language-typescript">export function resolveConfig(sources: Source[]): Config {
-  // precedence: flags &gt; file &gt; env
-  const ordered = sortBy(sources, s =&gt; PRECEDENCE[s.kind]);
-  return ordered.reduce(merge, DEFAULTS);
-}</code></pre>
-      </figure>
-      <details class="diff" open>
-        <summary><span class="diff-file">src/cli.ts</span><span class="pill pill-proposed">proposed</span></summary>
-        <div class="diff-body">
-<div class="dline hunk">@@ -16,6 +16,5 @@</div>
-<div class="dline ctx">  const argv = parseArgv(process.argv);</div>
-<div class="dline del">- const cfg = mergeConfig(argv.flags, loadFileConfig(), loadEnvConfig());</div>
-<div class="dline add">+ const cfg = resolveConfig(gatherSources(argv));</div>
-<div class="dline ctx">  run(argv.cmd, cfg);</div>
-        </div>
-      </details>
-    </section>
-
-    <section class="sec" id="s04">
-      <div class="sec-head"><span class="sec-num">04</span><h2>Risks</h2></div>
-      <table>
-        <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
-        <tbody>
-          <tr><td>Hidden env-precedence dependents</td><td>Medium</td><td>Migrate call sites one at a time</td></tr>
-          <tr><td>Untested loaders regress</td><td>Low</td><td>Snapshot resolved config before/after</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
-
-  <!-- SLOT:footer — provenance only; the date lives in the topbar -->
-  <footer class="foot">
-    <span><b>repo</b> dotfiles @ main</span>
-    <span><b>model</b> claude</span>
-  </footer>
+<!-- HTMLDOC_CONTENT -->
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -572,6 +427,54 @@ window.addEventListener("afterprint", () => {
   if (printState) document.querySelectorAll("details").forEach((d, i) => (d.open = printState[i]));
   printState = null;
 });
+</script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  const cs = getComputedStyle(document.documentElement);
+  const v = name => cs.getPropertyValue(name).trim();
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: "strict",
+    theme: "base",
+    themeVariables: {
+      fontFamily: v("--mono"),
+      fontSize: "14px",
+      background: v("--card"),
+      mainBkg: v("--card-2"),
+      textColor: v("--text"),
+      primaryColor: v("--card-2"),
+      primaryTextColor: v("--text"),
+      primaryBorderColor: v("--accent"),
+      secondaryColor: v("--card"),
+      secondaryBorderColor: v("--line-soft"),
+      tertiaryColor: v("--card"),
+      tertiaryBorderColor: v("--line-soft"),
+      lineColor: v("--accent"),
+      edgeLabelBackground: v("--bg"),
+      clusterBkg: v("--bg"),
+      clusterBorder: v("--line"),
+      titleColor: v("--text"),
+      noteBkgColor: v("--card-2"),
+      noteTextColor: v("--text"),
+      noteBorderColor: v("--line"),
+      errorBkgColor: v("--del-bg"),
+      errorTextColor: v("--del-ink"),
+      actorBkg: v("--card-2"),
+      actorBorder: v("--accent"),
+      actorTextColor: v("--text"),
+      actorLineColor: v("--line"),
+      signalColor: v("--muted"),
+      signalTextColor: v("--text"),
+      labelBoxBkgColor: v("--card-2"),
+      labelBoxBorderColor: v("--line"),
+      labelTextColor: v("--text"),
+      loopTextColor: v("--text"),
+      activationBkgColor: v("--card-2"),
+      activationBorderColor: v("--accent"),
+      sequenceNumberColor: v("--accent-ink"),
+      pieOpacity: "0.9",
+    },
+  });
 </script>
 </body>
 </html>

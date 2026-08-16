@@ -3,54 +3,59 @@ name: htmldoc
 description: Render a document as a self-contained HTML page. Use only when the user explicitly asks for a HTML document/writeup (e.g. "present this as html"). Do not use for ordinary text responses.
 ---
 
-Render the document as HTML based on `template.html` in this skill's directory.
+Render with this skill's `render.py`. **Do not read `template.html`**: it is an opaque shell that the renderer adds around your content.
 
 ## Procedure
 
-1. Read `template.html` in full.
-2. Compute the output path:
+1. Determine repo, branch, date, model, and a short kebab-case topic slug.
+2. Write a temporary HTML fragment containing the mandatory frame below and the document content.
+3. Render and remove the fragment:
    ```bash
    repo=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-   mkdir -p ~/.cache/htmldoc
-   # ~/.cache/htmldoc/<repo>-<slug>-<YYYY-MM-DD>.html   (slug: short kebab-case topic)
+   out="$HOME/.cache/htmldoc/${repo}-<slug>-$(date +%F).html"
+   mkdir -p "$(dirname "$out")"
+   python3 <skill-dir>/render.py <fragment> "$out" && rm <fragment>
    ```
-3. Write the document. **Do not open it.** End your response with the absolute file path on its own line so it can be copied into a browser.
+4. **Do not open the result.** End with its absolute path on its own line.
 
-## Hard rules
+## Rules
 
-- **Never modify** the `<style>` block, the `<script>` blocks, or the `<link>`/CDN tags. Copy them byte-for-byte.
-- **Always HTML-escape** code and diff content (`<` → `&lt;`, `&` → `&amp;`).
-- Use only the components below. No new classes, no inline styles.
-- The template's example content is placeholder — replace all of it.
+- Write content only: no `<html>`, `<head>`, `<body>`, `<style>`, `<script>`, `<link>`, new classes, or inline styles. Approved shell scripts such as Mermaid and Highlight.js are supplied by the template, never by fragments.
+- The output is a single HTML page but may load approved libraries from a CDN when opened.
+- HTML-escape code, diffs, and Mermaid labels containing HTML-significant characters (`&` first, then `<`: `&amp;`, `&lt;`).
+- Replace all placeholders; keep prose concise and lead with conclusions.
+
+## Mandatory frame
+
+```html
+<header class="topbar">
+  <div class="brand">REPO<span> · htmldoc</span></div><div class="topbar-meta">YYYY-MM-DD</div>
+</header>
+<main>
+  <div class="doc-head"><span class="pill pill-type">TYPE</span><h1>HEADING</h1><p class="standfirst">SUMMARY</p></div>
+  DOCUMENT
+</main>
+<footer class="foot"><span><b>repo</b> REPO @ BRANCH</span><span><b>model</b> MODEL</span></footer>
+```
+
+`TYPE` is normally Plan, Research, or Walkthrough. An `<em>` may accent one phrase in `<h1>`.
 
 ## Structure
 
-**Mandatory frame** (keeps provenance consistent):
-- `header.topbar` — repo/project name + date
-- `.doc-head` — doc-type pill (e.g. `Plan`, `Research`, `Walkthrough`), `<h1>` (may use one `<em>` for an accented word), `.standfirst` (1–2 sentences)
-- `footer.foot` — repo @ branch, model
+Everything between `.doc-head` and the footer is freeform: add, remove, reorder, or omit sections and components to fit the document. The fragment is an injection boundary, not a fixed schema.
 
-**Everything in between is freeform** — structure the document however best serves the content. Defaults, not rules:
+- Default to `<section class="tldr"><span class="pill">TL;DR</span><h2>CONCLUSION</h2><p>ANSWER</p></section>`; omit only for purely descriptive reference.
+- Use `<section class="sec" id="s01"><div class="sec-head"><span class="sec-num">01</span><h2>TITLE</h2></div>…</section>`. Number only when order matters.
+- For 4+ sections add `.toc-row` containing `nav.toc` links (`a.pill`). If any `<details>` exist, also include `.ctl-row` with buttons `id="expand-all"` and `id="collapse-all"`.
 
-- `section.tldr` — **include by default**; omit only for purely descriptive reference material. Lead with the conclusion/answer.
-- `.toc-row` with `nav.toc` pills — when the doc is long (4+ sections). Always keep the `.ctl-row` expand/collapse buttons if the doc contains `<details>`.
-- `section.sec` with `.sec-num` + `<h2>` — number sections when there's a reading order; skip numbering when there isn't.
+## Components
 
-## Components (live examples of each are in the template)
+- Prose: `<p>`, lists, `<table>`, inline `<code>`.
+- Callout: `<aside class="callout">` (or `callout warn`) with `<span class="label">LABEL</span><p>…</p>`.
+- Columns: `<div class="cols">` or `cols cols-3` around short sibling blocks only.
+- Code: `<figure class="codeblock"><figcaption><span class="pill pill-loc">PATH</span></figcaption><pre class="code"><code class="language-LANG">ESCAPED CODE</code></pre></figure>`. Omit language for logs/output; never add token spans.
+- Mermaid diagram: `<figure><figcaption>CAPTION</figcaption><pre class="mermaid">MERMAID SOURCE</pre></figure>`. Mermaid is rendered live by the shell; include source only, without initialization scripts. Prefer diagrams when relationships or flow are clearer visually than in prose.
+- Sequence: `<ol class="stepper"><li class="step"><div class="step-head"><h3>TITLE</h3><span class="pill pill-loc">LOC</span></div><p>…</p></li></ol>`. Optional I/O: `<details class="io io-in|io-out" open><summary>Input|Output</summary><pre class="code"><code>…</code></pre></details>`; collapse long blocks.
+- Unified diff: `<details class="diff" open><summary><span class="diff-file">PATH</span><span class="pill pill-proposed">proposed</span></summary><div class="diff-body"><div class="dline hunk|ctx|del|add">LINE</div></div></details>`. Use `pill-actual`/`actual` for git diffs; always label which. Preserve leading `+`, `-`, or space; collapse long/secondary diffs.
 
-- **Prose**: `<p>`, `<ul>`/`<ol>`, `<table>` (comparisons, risks), inline `<code>`.
-- **Callout**: `<aside class="callout">` (or `callout warn`) with `<span class="label">Note</span>` + `<p>`.
-- **Columns**: wrap sibling blocks in `<div class="cols">` (or `cols cols-3`) to place them side by side — paired callouts, input/output, code + notes. Never long prose.
-- **Code block**: `<figure class="codeblock">` with optional `<figcaption><span class="pill pill-loc">path/file.ts</span></figcaption>` and `<pre class="code"><code class="language-ts">…</code></pre>`.
-- **Stepper** (walkthroughs, call stacks, sequences): `<ol class="stepper">` of `<li class="step">`, each with `.step-head` (`<h3>` + `<span class="pill pill-loc">file.ts:42</span>`), one short `<p>`, and optional I/O blocks: `<details class="io io-in">`/`<details class="io io-out">` with `<summary>Input</summary>` + a `pre.code`. Add `open` to short/important blocks; leave long ones collapsed. A step's output may be a diff — embed it directly.
-- **Diff** (unified only): `<details class="diff" open>` with `<summary><span class="diff-file">path</span><span class="pill pill-proposed">proposed</span></summary>` (`pill-actual`/`actual` for real diffs from git — **always label which**), then `.diff-body` of `.dline` rows: `hunk`, `ctx`, `del`, `add`. Keep leading `+`/`-`/space. Collapse long or secondary diffs.
-
-## Code highlighting
-
-highlight.js runs from CDN — write **plain escaped code**, never manual token spans. Add `class="language-x"` on the `<code>` element to opt in (`language-typescript`, `language-python`, `language-bash`, `language-json`, …). Omit the class for output dumps, logs, or anything that isn't real code.
-
-## Writing style
-
-- Lead with conclusions; a TL;DR must stand alone.
-- Tight sections — this is a document to scan, not a transcript.
-- Prefer a stepper for anything sequential, a table for anything comparative, a diff for anything that changes code.
+Prefer steppers for sequences, tables for comparisons/risks, and diffs for code changes.

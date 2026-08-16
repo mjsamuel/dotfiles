@@ -1,16 +1,15 @@
 .mjsamuel
 
-# Folder view configuration files
+# OS junk
 .DS_Store
 Desktop.ini
-
-# Thumbnail cache files
 ._*
 Thumbs.db
-
-# Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+# Python
+__pycache__/
 
 # Vim
 *.swp
@@ -20,7 +19,7 @@ Thumbs.db
 # Per-project tmux script to arrange tabs/panes
 .tmux.conf
 
-# ai junk
+# AI junk
 .claude/settings.local.json
 .claude/worktrees
 CLAUDE.local.md
