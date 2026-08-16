@@ -1,0 +1,23 @@
+- name: create agent directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "~/.agents"
+    - "~/.agents/skills"
+
+- name: find all agent skills in dotfiles
+  find:
+    paths: "{{ dotfiles_dir }}/agents/skills"
+    file_type: directory
+    recurse: no
+  register: agent_skills
+
+- name: symlink agent skills
+  file:
+    src: "{{ item.path }}"
+    path: "~/.agents/skills/{{ item.path | basename }}"
+    state: link
+  loop: "{{ agent_skills.files }}"
+  loop_control:
+    label: "{{ item.path }}"

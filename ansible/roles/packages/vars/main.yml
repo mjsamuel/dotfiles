@@ -1,8 +1,5 @@
 homebrew_taps:
-  - homebrew/cask-fonts
-  - homebrew/cask-versions
   - oven-sh/bun
-  - romkatv/powerlevel10k
 
 homebrew_installed_packages:
   - bat # prettier 'cat'
