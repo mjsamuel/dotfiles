@@ -5,6 +5,17 @@
   loop:
     - "~/.agents"
     - "~/.agents/skills"
+    - "~/.config/agents"
+    - "~/.config/agents/skills"
+
+- name: symlink agent instructions
+  file:
+    src: "{{ dotfiles_dir }}/agents/AGENTS.md"
+    path: "{{ item }}/AGENTS.md"
+    state: link
+  loop:
+    - "~/.agents"
+    - "~/.config/agents"
 
 - name: find all agent skills in dotfiles
   find:
@@ -15,9 +26,9 @@
 
 - name: symlink agent skills
   file:
-    src: "{{ item.path }}"
-    path: "~/.agents/skills/{{ item.path | basename }}"
+    src: "{{ item.1.path }}"
+    path: "{{ item.0 }}/{{ item.1.path | basename }}"
     state: link
-  loop: "{{ agent_skills.files }}"
+  loop: "{{ ['~/.agents/skills', '~/.config/agents/skills'] | product(agent_skills.files) | list }}"
   loop_control:
-    label: "{{ item.path }}"
+    label: "{{ item.0 }}/{{ item.1.path | basename }}"

@@ -3,7 +3,7 @@
       include_role:
         name: geerlingguy.mac.homebrew
       tags: ["homebrew"]
-    - name: install mac apps
+    - name: install macOS appstore apps
       include_role:
         name: geerlingguy.mac.mas
         apply:

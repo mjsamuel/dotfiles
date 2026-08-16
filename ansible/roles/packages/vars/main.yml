@@ -1,9 +1,6 @@
-homebrew_taps:
-  - oven-sh/bun
-
 homebrew_installed_packages:
   - bat # prettier 'cat'
-  - bun
+  - oven-sh/bun/bun
   - coreutils # those that come with macOS are outdated
   - direnv
   - eza # prettier 'ls'
@@ -30,19 +27,19 @@ homebrew_installed_packages:
   - zsh
 
 homebrew_cask_apps:
-  - 1password
-  - alt-tab
-  - discord
-  - docker
-  - font-jetbrains-mono-nerd-font
-  - ghostty
-  - google-chrome
-  - iina
-  - tailscale
-  - transmission
-  - typewhisper/tap/typewhisper
-  - visual-studio-code
-  - zen
+  - { name: 1password, install_options: [adopt] }
+  - { name: alt-tab, install_options: [adopt] }
+  - { name: discord, install_options: [adopt] }
+  - { name: docker, install_options: [adopt] }
+  - { name: font-jetbrains-mono-nerd-font, install_options: [adopt] }
+  - { name: ghostty, install_options: [adopt] }
+  - { name: google-chrome, install_options: [adopt] }
+  - { name: iina, install_options: [adopt] }
+  - { name: tailscale, install_options: [adopt] }
+  - { name: transmission, install_options: [adopt] }
+  - { name: typewhisper/tap/typewhisper, install_options: [adopt] }
+  - { name: visual-studio-code, install_options: [adopt] }
+  - { name: zen, install_options: [adopt] }
 
 mas_installed_apps:
   - { id: 1438243180, name: "Dark Reader for Safari (1.4.6)" }

@@ -42,12 +42,12 @@ fi
 [ ! -d "$DOTFILES_DIR" ] && git clone "https://github.com/mjsamuel/dotfiles.git" "$DOTFILES_DIR"
 
 export ANSIBLE_HOME="$HOME/.local/share/ansible"
-ansible-galaxy install -r "$DOTFILES_DIR/ansible/requirements.yml"
+ansible-galaxy collection install --upgrade -r "$DOTFILES_DIR/ansible/requirements.yml"
 
 printf '%s\n' "$VAULT_PASS" | ansible-playbook "$DOTFILES_DIR/ansible/playbook.yml" \
 	--connection "local" \
 	--inventory "localhost," \
-	--extra-var "ansible_become_pass=$SUDO_PASS" \
+	--extra-var "ansible_become_password=$SUDO_PASS" \
 	"$@"
 
 printf "%s\n%s\n" "Setup complete!" "Open a new terminal window to see changes."
