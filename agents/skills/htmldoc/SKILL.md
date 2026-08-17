@@ -3,59 +3,47 @@ name: htmldoc
 description: Render a document as a self-contained HTML page. Use only when the user explicitly asks for a HTML document/writeup (e.g. "present this as html"). Do not use for ordinary text responses.
 ---
 
-Render with this skill's `render.py`. **Do not read `template.html`**: it is an opaque shell that the renderer adds around your content.
+Write a semantic fragment, then render it. **Do not read `template.html`**: the renderer wraps your fragment in it.
 
 ## Procedure
 
-1. Determine repo, branch, date, model, and a short kebab-case topic slug.
-2. Write a temporary HTML fragment containing the mandatory frame below and the document content.
-3. Render and remove the fragment:
+1. Write the fragment to a temporary file.
+2. Render it, then remove the fragment:
    ```bash
-   repo=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-   out="$HOME/.cache/htmldoc/${repo}-<slug>-$(date +%F).html"
-   mkdir -p "$(dirname "$out")"
-   python3 <skill-dir>/render.py <fragment> "$out" && rm <fragment>
+   python3 <skill-dir>/render.py <fragment> --type Plan --slug <kebab-topic> --model <model> && rm <fragment>
    ```
-4. **Do not open the result.** End with its absolute path on its own line.
+   Repo, branch, date, title, and output path are derived. `--type` is normally Plan, Research, or Walkthrough.
+3. **Do not open the result.** End with the path it printed, on its own line.
 
 ## Rules
 
-- Write content only: no `<html>`, `<head>`, `<body>`, `<style>`, `<script>`, `<link>`, new classes, or inline styles. Approved shell scripts such as Mermaid and Highlight.js are supplied by the template, never by fragments.
-- The output is a single HTML page but may load approved libraries from a CDN when opened.
-- HTML-escape code, diffs, and Mermaid labels containing HTML-significant characters (`&` first, then `<`: `&amp;`, `&lt;`).
-- Replace all placeholders; keep prose concise and lead with conclusions.
+- Write code, diffs, and Mermaid literally — the renderer escapes and dedents them. Escape `&` and `<` in ordinary prose.
+- No `<html>`, `<head>`, `<body>`, `<style>`, `<script>`, `<link>`, inline styles, or invented classes. The renderer rejects them with a line number.
+- Replace every placeholder; keep prose concise and lead with conclusions.
 
-## Mandatory frame
+## Skeleton
 
 ```html
-<header class="topbar">
-  <div class="brand">REPO<span> · htmldoc</span></div><div class="topbar-meta">YYYY-MM-DD</div>
-</header>
-<main>
-  <div class="doc-head"><span class="pill pill-type">TYPE</span><h1>HEADING</h1><p class="standfirst">SUMMARY</p></div>
-  DOCUMENT
-</main>
-<footer class="foot"><span><b>repo</b> REPO @ BRANCH</span><span><b>model</b> MODEL</span></footer>
+<doc>
+  <h1>HEADING</h1>
+  <standfirst>SUMMARY</standfirst>
+  <tldr><h2>CONCLUSION</h2><p>ANSWER</p></tldr>
+  <sec title="TITLE">…</sec>
+</doc>
 ```
 
-`TYPE` is normally Plan, Research, or Walkthrough. An `<em>` may accent one phrase in `<h1>`.
+An `<em>` may accent one phrase in `<h1>`. Include the `<tldr>`; omit it only for purely descriptive reference.
 
-## Structure
+Everything inside `<doc>` is freeform — add, remove, reorder, or omit to fit the document. It is an injection boundary, not a fixed schema. Ordinary HTML (`<p>`, lists, `<table>`, `<h3>`, `<a>`, `<code>`, `<details>`) passes through, as does anything using the shell's own classes. The tags below are shorthand for the common shapes; nest them freely.
 
-Everything between `.doc-head` and the footer is freeform: add, remove, reorder, or omit sections and components to fit the document. The fragment is an injection boundary, not a fixed schema.
+## Elements
 
-- Default to `<section class="tldr"><span class="pill">TL;DR</span><h2>CONCLUSION</h2><p>ANSWER</p></section>`; omit only for purely descriptive reference.
-- Use `<section class="sec" id="s01"><div class="sec-head"><span class="sec-num">01</span><h2>TITLE</h2></div>…</section>`. Number only when order matters.
-- For 4+ sections add `.toc-row` containing `nav.toc` links (`a.pill`). If any `<details>` exist, also include `.ctl-row` with buttons `id="expand-all"` and `id="collapse-all"`.
+- `<sec title="T">` — section. Id, number, and a contents row (at 4+ sections) are added for you; override with `<doc numbering="off">`, `<doc toc="off|on">`, or a `<toc/>` marker placing the row.
+- `<callout label="L" [warn]>` — aside; `warn` for risks and caveats.
+- `<cols [n="3"]>` — 2- or 3-up row, short sibling blocks only.
+- `<codeblock [lang="ts"] [loc="src/a.ts"]>` — omit `lang` for logs and command output.
+- `<mermaid [caption="C"]>` — source only, rendered live. Prefer a diagram when relationships or flow read better than prose.
+- `<diff file="P" kind="proposed|actual" [closed]>` — paste a unified diff; lines are classified. Always label which kind.
+- `<stepper>` with `<step title="T" [loc="P"]>` — a sequence. Inside a step, `<in>`/`<out>` show its I/O; add `closed` to collapse.
 
-## Components
-
-- Prose: `<p>`, lists, `<table>`, inline `<code>`.
-- Callout: `<aside class="callout">` (or `callout warn`) with `<span class="label">LABEL</span><p>…</p>`.
-- Columns: `<div class="cols">` or `cols cols-3` around short sibling blocks only.
-- Code: `<figure class="codeblock"><figcaption><span class="pill pill-loc">PATH</span></figcaption><pre class="code"><code class="language-LANG">ESCAPED CODE</code></pre></figure>`. Omit language for logs/output; never add token spans.
-- Mermaid diagram: `<figure><figcaption>CAPTION</figcaption><pre class="mermaid">MERMAID SOURCE</pre></figure>`. Mermaid is rendered live by the shell; include source only, without initialization scripts. Prefer diagrams when relationships or flow are clearer visually than in prose.
-- Sequence: `<ol class="stepper"><li class="step"><div class="step-head"><h3>TITLE</h3><span class="pill pill-loc">LOC</span></div><p>…</p></li></ol>`. Optional I/O: `<details class="io io-in|io-out" open><summary>Input|Output</summary><pre class="code"><code>…</code></pre></details>`; collapse long blocks.
-- Unified diff: `<details class="diff" open><summary><span class="diff-file">PATH</span><span class="pill pill-proposed">proposed</span></summary><div class="diff-body"><div class="dline hunk|ctx|del|add">LINE</div></div></details>`. Use `pill-actual`/`actual` for git diffs; always label which. Preserve leading `+`, `-`, or space; collapse long/secondary diffs.
-
-Prefer steppers for sequences, tables for comparisons/risks, and diffs for code changes.
+Prefer steppers for sequences, tables for comparisons and risks, diffs for code changes. `sample.html` is a worked example using every element.
