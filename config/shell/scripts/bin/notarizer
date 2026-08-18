@@ -9,13 +9,18 @@ main() {
 
 	todays_todo="$notes_dir/todo/$(date -I).md"
 	if [ ! -f "$todays_todo" ]; then
-		cat <<-EOF >"$todays_todo"
-			# $(pretty_date)
-
-			- [ ] Write to-do list
-		EOF
+		create_new_note "$todays_todo"
 	fi
-	nvim +"cd $notes_dir" "$todays_todo"
+	cd "$notes_dir" && exec nvim "$todays_todo"
+}
+
+create_new_note() {
+	filepath="$1"
+	cat <<-EOF >"$filepath"
+		# $(pretty_date)
+
+		- [ ] Write to-do list
+	EOF
 }
 
 pretty_date() {
