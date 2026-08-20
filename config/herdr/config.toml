@@ -1,5 +1,8 @@
 onboarding = false
 
+[terminal]
+new_cwd = "follow"
+
 [theme]
 auto_switch = true
 dark_name   = "rose-pine"
@@ -8,54 +11,38 @@ light_name  = "rose-pine-dawn"
 [ui]
 mouse_capture                    = true
 pane_borders                     = true
+pane_outer_borders               = false
 pane_gaps                        = false
 prompt_new_tab_name              = true
 prompt_new_workspace_name        = true
 accent                           = "blue"
 tab_bar_position                 = "top"
-agent_panel_sort                 = "priority"
+agent_panel_sort                 = "spaces"
 right_click_passthrough_modifier = "alt"
+status_indicators                = "symbols"
 
 [ui.toast]
-herdr.position = "top-right"
+herdr.position    = "top-right"
 clipboard.enabled = false
 
 [keys]
-prefix = "ctrl+b" # unused here; kept as the default fallback chord
+prefix = "ctrl+b"
 
-# Misc
-reload_config    = "alt+shift+r"
-rename_tab       = "alt+comma"
-new_tab          = "alt+c"
-new_workspace    = "alt+shift+c"
-detach           = "alt+d"
-workspace_picker = "alt+s"
-close_pane       = "alt+shift+x"
-zoom             = "alt+z"
-edit_scrollback  = "alt+shift+k"
-toggle_sidebar   = "alt+;"
-copy_mode        = "alt+["
-help             = "alt+?"
+# Workspaces
+navigate_workspace_down = "j"
+navigate_workspace_up   = "k"
+new_workspace           = "prefix+shift+c"
 
-# Switching tabs/windows
-switch_tab = "alt+1..9"
-last_pane  = "alt+l"
+# Agents
+next_agent     = "alt+j"
+previous_agent = "alt+k"
 
-# Splits
-split_horizontal = "alt+h"
-split_vertical   = "alt+v"
+# Tabs
+move_tab_previous = "alt+<"
+move_tab_next     = "alt+>"
 
-# Switching panes
-focus_pane_left  = "alt+b"
-focus_pane_right = "alt+f"
-focus_pane_up    = "alt+up"
-focus_pane_down  = "alt+down"
-swap_pane_up     = "alt+shift+["
-swap_pane_down   = "alt+shift+]"
-
-# Navigate mode
-# navigate_workspace_down = "j"
-# navigate_workspace_up   = "k"
+# Panes
+last_pane        = "alt+l"
 
 # Worktrees
 new_worktree  = "alt+shift+w"
