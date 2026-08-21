@@ -140,11 +140,17 @@ def render_literal(tag, attrs, body):
     loc = attrs.get("loc", "")
     head = f'\n      <figcaption><span class="pill pill-loc">{loc}</span></figcaption>' if loc else ""
     cls = f' class="language-{lang}"' if lang else ""
-    return (
-        f'<figure class="codeblock">{head}\n'
-        f'      <pre class="code"><code{cls}>{text}</code></pre>\n'
-        f"    </figure>"
-    )
+    line_count = text.count("\n") + 1
+    pre = f'<pre class="code"><code{cls}>{text}</code></pre>'
+    if line_count > 1:
+        gutter = "\n".join(str(n) for n in range(1, line_count + 1))
+        pre = (
+            '<div class="code-frame">\n'
+            f'        <pre class="code-gutter" aria-hidden="true">{gutter}</pre>\n'
+            f"        {pre}\n"
+            "      </div>"
+        )
+    return f'<figure class="codeblock">{head}\n' f"      {pre}\n" f"    </figure>"
 
 
 def render_diff(attrs, body):
@@ -250,7 +256,11 @@ def expand(shell, numbering):
     rules = [
         (r"<sec\b((?:\"[^\"]*\"|'[^']*'|[^>])*)>", open_sec),
         (r"</sec\s*>", "</section>"),
-        (r"<tldr\s*>", '<section class="tldr">\n    <span class="pill">TL;DR</span>'),
+        (
+            r"<tldr\s*>",
+            '<section class="tldr">\n    <span class="tldr-guy" aria-hidden="true"></span>'
+            '\n    <span class="pill">TL;DR</span>',
+        ),
         (r"</tldr\s*>", "</section>\n\n  " + AUTO_SLOT),
         (r"<callout\b((?:\"[^\"]*\"|'[^']*'|[^>])*)>", open_callout),
         (r"</callout\s*>", "</aside>"),
