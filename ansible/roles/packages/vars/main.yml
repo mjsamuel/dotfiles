@@ -33,7 +33,7 @@ homebrew_cask_apps:
   - { name: docker, install_options: [adopt] }
   - { name: font-jetbrains-mono-nerd-font, install_options: [adopt] }
   - { name: ghostty, install_options: [adopt] }
-  - { name: google-chrome, install_options: [adopt] }
+  - { name: helium-browser, install_options: [adopt] }
   - { name: iina, install_options: [adopt] }
   - { name: tailscale, install_options: [adopt] }
   - { name: transmission, install_options: [adopt] }
