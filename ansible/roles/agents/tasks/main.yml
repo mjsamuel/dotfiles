@@ -10,7 +10,7 @@
 
 - name: symlink agent instructions
   file:
-    src: "{{ dotfiles_dir }}/agents/AGENTS.md"
+    src: "{{ dotfiles_dir }}/config/pi/AGENTS.md"
     path: "{{ item }}/AGENTS.md"
     state: link
   loop:
@@ -19,7 +19,7 @@
 
 - name: find all agent skills in dotfiles
   find:
-    paths: "{{ dotfiles_dir }}/agents/skills"
+    paths: "{{ dotfiles_dir }}/config/pi/skills"
     file_type: directory
     recurse: no
   register: agent_skills
