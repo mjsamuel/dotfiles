@@ -32,8 +32,9 @@ alias \
 	nb='newsboat -u <(cat ~/.config/newsboat/*url*)' \
 	note="notarizer" \
 	notes="notarizer" \
+	tf="terraform" \
 	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	tf="terraform"
+	h='herdr'
 
 # ssh
 s() {
@@ -51,18 +52,6 @@ g() {
 		git "$@"
 	else
 		git status
-	fi
-}
-
-# herdr
-alias \
-	ha="herdr"
-
-h() {
-	if [ "$#" -ne 0 ]; then
-		herdr "$@"
-	else
-		herdr-sessionizer
 	fi
 }
 
