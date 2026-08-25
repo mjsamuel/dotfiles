@@ -6,3 +6,6 @@ OAuth
 AOCS
 apps
 terraform
+fallback
+metadata
+DCR
