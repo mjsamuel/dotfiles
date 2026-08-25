@@ -12,8 +12,6 @@ import { readFile, readdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const DAY = 86_400_000;
-
 // A fixed, colorblind-checked categorical palette for chart series — same hue
 // order in both variants, values chosen for contrast against a dark vs a light
 // terminal background respectively. This is a different job than the four-ish
@@ -238,20 +236,25 @@ async function loadUsage(): Promise<UsageRecord[]> {
   return records.sort((a, b) => a.timestamp - b.timestamp);
 }
 
-function utcDayStart(timestamp: number): number {
+function localDayStart(timestamp: number): number {
   const date = new Date(timestamp);
-  return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
 }
 
-function utcWeekStart(timestamp: number): number {
-  const day = utcDayStart(timestamp);
-  const weekday = new Date(day).getUTCDay();
-  return day - ((weekday + 6) % 7) * DAY;
+/** Move between local calendar dates without assuming that every day is 24 hours. */
+function addLocalDays(timestamp: number, days: number): number {
+  const date = new Date(timestamp);
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days).getTime();
+}
+
+function localWeekStart(timestamp: number): number {
+  const day = localDayStart(timestamp);
+  const weekday = new Date(day).getDay();
+  return addLocalDays(day, -((weekday + 6) % 7));
 }
 
 function formatDate(timestamp: number): string {
   return new Date(timestamp).toLocaleDateString("en", {
-    timeZone: "UTC",
     month: "short",
     day: "numeric",
   });
@@ -259,7 +262,7 @@ function formatDate(timestamp: number): string {
 
 function formatShortDate(timestamp: number): string {
   const date = new Date(timestamp);
-  return `${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
+  return `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 // 1/2/2.5/5/10 leaves a gap between 2.5 and 5 where a bar just over 2.5×base
@@ -411,20 +414,26 @@ class UsageDashboard implements Component {
     return Math.max(1, Math.min(7, Math.floor(availableWidth / 9)));
   }
 
-  private period(count: number): { start: number; end: number; step: number; count: number } {
-    const step = this.granularity === "daily" ? DAY : 7 * DAY;
-    const current = this.granularity === "daily" ? utcDayStart(Date.now()) : utcWeekStart(Date.now());
-    const end = current + step - this.offset * count * step;
-    return { start: end - count * step, end, step, count };
+  private period(count: number): { start: number; end: number; priorStart: number; boundaries: number[] } {
+    const daysPerBucket = this.granularity === "daily" ? 1 : 7;
+    const current = this.granularity === "daily" ? localDayStart(Date.now()) : localWeekStart(Date.now());
+    const end = addLocalDays(current, daysPerBucket * (1 - this.offset * count));
+    const start = addLocalDays(end, -daysPerBucket * count);
+    const priorStart = addLocalDays(start, -daysPerBucket * count);
+    const boundaries = Array.from(
+      { length: count + 1 },
+      (_, index) => addLocalDays(start, index * daysPerBucket),
+    );
+    return { start, end, priorStart, boundaries };
   }
 
   private data(count: number): { buckets: Bucket[]; groups: GroupTotal[]; total: number } {
-    const { start, end, step } = this.period(count);
+    const { start, end, priorStart, boundaries } = this.period(count);
     const buckets: Bucket[] = Array.from({ length: count }, (_, index) => {
-      const bucketStart = start + index * step;
+      const bucketStart = boundaries[index]!;
       return {
         start: bucketStart,
-        end: bucketStart + step,
+        end: boundaries[index + 1]!,
         label: formatShortDate(bucketStart),
         values: new Map<string, number>(),
         total: 0,
@@ -435,8 +444,9 @@ class UsageDashboard implements Component {
     for (const record of this.records) {
       const key = this.groupKey(record);
       if (record.timestamp >= start && record.timestamp < end) {
-        const index = Math.floor((record.timestamp - start) / step);
-        const bucket = buckets[index];
+        const bucket = buckets.find(({ start: bucketStart, end: bucketEnd }) =>
+          record.timestamp >= bucketStart && record.timestamp < bucketEnd
+        );
         if (bucket) {
           bucket.values.set(key, (bucket.values.get(key) ?? 0) + record.cost);
           bucket.total += record.cost;
@@ -456,7 +466,7 @@ class UsageDashboard implements Component {
         total.cacheRead += record.cacheRead;
         total.cacheWrite += record.cacheWrite;
         totals.set(key, total);
-      } else if (record.timestamp >= start - (end - start) && record.timestamp < start) {
+      } else if (record.timestamp >= priorStart && record.timestamp < start) {
         const total = totals.get(key) ?? {
           key,
           cost: 0,
@@ -695,7 +705,7 @@ class UsageDashboard implements Component {
     const periodSegments: Segment[] = [
       { text: this.theme.fg("muted", "‹ "), action: "prev" },
       {
-        text: `${this.theme.fg("accent", `${formatDate(start)} – ${formatDate(end - 1)}`)} ${this.theme.fg("dim", "(UTC)")}`,
+        text: `${this.theme.fg("accent", `${formatDate(start)} – ${formatDate(end - 1)}`)} ${this.theme.fg("dim", "(local)")}`,
       },
       { text: this.theme.fg("muted", " ›"), action: "next" },
       { text: `  ${this.theme.bold(formatMoney(total))}` },
@@ -845,10 +855,16 @@ function sessionCost(ctx: ExtensionContext): number {
 }
 
 export default function modelUsage(pi: ExtensionAPI) {
+  pi.registerFlag("usage", {
+    description: "Open the model usage and cost dashboard",
+    type: "boolean",
+    default: false,
+  });
+
   const updateStatus = async (ctx: ExtensionContext, pendingCost = 0) => {
     if (!ctx.hasUI) return;
     const records = await loadUsage();
-    const today = utcDayStart(Date.now());
+    const today = localDayStart(Date.now());
     const todayCost = records
       .filter((record) => record.timestamp >= today)
       .reduce((sum, record) => sum + record.cost, 0) + pendingCost;
@@ -858,8 +874,24 @@ export default function modelUsage(pi: ExtensionAPI) {
     );
   };
 
+  const openDashboard = async (ctx: ExtensionContext) => {
+    if (ctx.mode !== "tui") {
+      ctx.ui.notify("The usage dashboard is available in TUI mode.", "warning");
+      return;
+    }
+
+    const records = await loadUsage();
+    // Fullscreen overlay anchored at (0, 0): mouse coordinates map 1:1 to
+    // rendered rows, which makes the click regions reliable.
+    await ctx.ui.custom<void>(
+      (tui, theme, _keybindings, done) => new UsageDashboard(records, tui, theme, done),
+      { overlay: true, overlayOptions: { row: 0, col: 0, width: "100%" } },
+    );
+  };
+
   pi.on("session_start", async (_event, ctx) => {
     await updateStatus(ctx).catch(() => undefined);
+    if (pi.getFlag("usage") === true) await openDashboard(ctx);
   });
 
   pi.on("message_end", async (event, ctx) => {
@@ -875,18 +907,6 @@ export default function modelUsage(pi: ExtensionAPI) {
 
   pi.registerCommand("usage", {
     description: "Show model usage and cost dashboard",
-    handler: async (_args, ctx) => {
-      if (ctx.mode !== "tui") {
-        ctx.ui.notify("The usage dashboard is available in TUI mode.", "warning");
-        return;
-      }
-      const records = await loadUsage();
-      // Fullscreen overlay anchored at (0, 0): mouse coordinates map 1:1 to
-      // rendered rows, which makes the click regions reliable.
-      await ctx.ui.custom<void>(
-        (tui, theme, _keybindings, done) => new UsageDashboard(records, tui, theme, done),
-        { overlay: true, overlayOptions: { row: 0, col: 0, width: "100%" } },
-      );
-    },
+    handler: async (_args, ctx) => openDashboard(ctx),
   });
 }

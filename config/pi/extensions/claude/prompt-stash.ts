@@ -1,6 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-export default function promptStash(pi: ExtensionAPI) {
+export function registerPromptStash(pi: ExtensionAPI) {
   let stashedPrompt: string | undefined;
 
   pi.registerShortcut("ctrl+shift+s", {

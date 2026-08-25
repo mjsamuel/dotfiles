@@ -74,6 +74,7 @@ ai() {
 	cat <<-EOF | fzf | sh
 		claude
 		cursor-agent
+		pi
 	EOF
 }
 
