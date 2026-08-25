@@ -1,57 +1,108 @@
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
+Plug 'machakann/vim-highlightedyank'
 
-" options
-set incsearch
-set scrolloff=4
+" match Neovim's yank highlight timeout
+let g:highlightedyank_highlight_duration = "200"
+
+" options supported by both Neovim and IdeaVim
+set breakindent
+set cursorline
+set foldlevel=99
 set ignorecase
-set smartcase
-set timeoutlen=300
+set incsearch
+set list
+set nohlsearch
+set nowrap
 set number
 set relativenumber
+set scrolloff=4
+set showmode
+set sidescrolloff=8
+set smartcase
+set timeoutlen=300
 
-" keybindings
-let mapleader = ' '
-map ' ' <nop>
+let mapleader = " "
+nnoremap <Space> <Nop>
+vnoremap <Space> <Nop>
 
+" IdeaVim requires recursive mappings to expand <Action> targets.
 " search
-map sr <Action>(FindInPath)
-map ss <Action>(GotoFile)
+nmap s. <Action>(SearchEverywhere)
+nmap sb <Action>(RecentFiles)
+nmap sd <Action>(ActivateProblemsViewToolWindow)
+nmap sgg <Action>(ActivateCommitToolWindow)
+nmap sgb <Action>(Git.Branches)
+nmap sgl <Action>(Vcs.ShowHistoryForBlock)
+nmap sh <Action>(HelpTopics)
+nmap sr <Action>(FindInPath)
+nmap ss <Action>(GotoFile)
+vmap sr <Action>(FindSelectionInPath)
+vmap ss <Action>(GotoFile)
 
-" code refactoring/fixing
-map <leader>rr <Action>(ShowIntentionActions)
-map <leader>rn <Action>(RenameElement)
+" git
+nmap [g <Action>(VcsShowPrevChangeMarker)
+nmap ]g <Action>(VcsShowNextChangeMarker)
+vmap gr <Action>(Vcs.RollbackChangedLines)
+vmap gs <Action>(Git.Stage.Add)
+nmap <C-g> <Action>(Annotate)
 
-" move selected code when in visual mode
-vmap <S-j> :m '>+1<CR>gv=gv
-vmap <S-k> :m '<-2<CR>gv=gv
+" language features
+nmap D <Action>(ShowErrorDescription)
+nmap K <Action>(QuickJavaDoc)
+nmap gd <Action>(GotoDeclaration)
+nmap gt <Action>(GotoTypeDeclaration)
+nmap grr <Action>(ShowUsages)
+nmap gri <Action>(GotoImplementation)
+nmap gra <Action>(ShowIntentionActions)
+vmap gra <Action>(ShowIntentionActions)
+nmap grn <Action>(RenameElement)
 
-" debug
-map <leader>ds <Action>(Debug)
-map <leader>dn <Action>(Resume)
-map <leader>dd <Action>(ToggleLineBreakpoint)
-map <leader>de <Action>(EvaluateExpression)
+" move selected code in visual mode
+vnoremap <S-j> :m '>+1<CR>gv=gv
+vnoremap <S-k> :m '<-2<CR>gv=gv
+
+" keep the cursor centred while moving through a file
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " harpoon
-map M :action HarpoonerQuickMenu<cr>
-map mm :action HarpoonerAddFile<cr>
-map mw :action HarpoonerOpenFile0<cr>
-map mf :action HarpoonerOpenFile1<cr>
-map mp :action HarpoonerOpenFile2<cr>
-map mr :action HarpoonerOpenFile3<cr>
-map ms :action HarpoonerOpenFile4<cr>
-map mt :action HarpoonerOpenFile5<cr>
-map mx :action HarpoonerOpenFile6<cr>
-map mc :action HarpoonerOpenFile7<cr>
-map mv :action HarpoonerOpenFile8<cr>
+nnoremap M :action HarpoonerQuickMenu<CR>
+nnoremap mm :action HarpoonerAddFile<CR>
+nnoremap mw :action HarpoonerOpenFile0<CR>
+nnoremap mf :action HarpoonerOpenFile1<CR>
+nnoremap mp :action HarpoonerOpenFile2<CR>
+nnoremap mr :action HarpoonerOpenFile3<CR>
+nnoremap ms :action HarpoonerOpenFile4<CR>
+nnoremap mt :action HarpoonerOpenFile5<CR>
+nnoremap mx :action HarpoonerOpenFile6<CR>
+nnoremap mc :action HarpoonerOpenFile7<CR>
+nnoremap mv :action HarpoonerOpenFile8<CR>
+nnoremap m1 :action HarpoonerOpenFile0<CR>
+nnoremap m2 :action HarpoonerOpenFile1<CR>
+nnoremap m3 :action HarpoonerOpenFile2<CR>
+nnoremap m4 :action HarpoonerOpenFile3<CR>
+nnoremap m5 :action HarpoonerOpenFile4<CR>
+nnoremap m6 :action HarpoonerOpenFile5<CR>
+nnoremap m7 :action HarpoonerOpenFile6<CR>
+nnoremap m8 :action HarpoonerOpenFile7<CR>
+nnoremap m9 :action HarpoonerOpenFile8<CR>
 
 " make
-map gm <Action>(CompileFile)
-map gM <Action>(Compile)
+nmap gm <Action>(Compile)
 
 " copilot
-imap <right> <Action>(copilot.applyInlays)
+imap <Right> <Action>(copilot.applyInlays)
 
-" misc
-map <leader>f <Action>(ReformatCode)
-map <leader>y :let @+=@"<cr>
+" IDE equivalents for Oil and Snacks explorer
+nmap <Bslash> <Action>(ActivateProjectToolWindow)
+nmap <C-e> <Action>(SelectInProjectView)
+
+" format
+nmap <leader>f <Action>(ReformatCode)
+vmap <leader>f <Action>(ReformatCode)
+
+" copy to the system clipboard
+nnoremap Y :let @+=@"<CR>
+vnoremap Y y:let @+=@"<CR>
