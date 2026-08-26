@@ -17,9 +17,15 @@ prompt_new_tab_name              = false
 prompt_new_workspace_name        = true
 accent                           = "blue"
 tab_bar_position                 = "top"
-agent_panel_sort                 = "spaces"
+agent_panel_sort = "spaces"
 right_click_passthrough_modifier = "alt"
-status_indicators                = "symbols"
+status_indicators = "dots"
+
+[ui.sidebar.agents.rows_by_agent]
+pi = [
+    ["state_icon", "workspace", "tab"],
+    ["$summary"],
+]
 
 [ui.toast]
 herdr.position    = "top-right"
