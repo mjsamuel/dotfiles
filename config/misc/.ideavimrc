@@ -45,6 +45,7 @@ nmap ]g <Action>(VcsShowNextChangeMarker)
 vmap gr <Action>(Vcs.RollbackChangedLines)
 vmap gs <Action>(Git.Stage.Add)
 nmap <C-g> <Action>(Annotate)
+command! Blame action Annotate
 
 " language features
 nmap D <Action>(ShowErrorDescription)
@@ -98,6 +99,7 @@ imap <Right> <Action>(copilot.applyInlays)
 " IDE equivalents for Oil and Snacks explorer
 nmap <Bslash> <Action>(ActivateProjectToolWindow)
 nmap <C-e> <Action>(SelectInProjectView)
+command! Path action CopyPaths
 
 " format
 nmap <leader>f <Action>(ReformatCode)
