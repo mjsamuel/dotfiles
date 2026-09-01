@@ -40,7 +40,31 @@
         dest: "/usr/local/bin/{{ pkg.binary }}"
         mode: "0755"
       become: true
-      when: not _download.failed
+      when:
+        - not _download.failed
+        - not (pkg.install_bundle | default(false))
+
+    # Some executables load resources shipped beside them in the release archive.
+    - name: "{{ pkg.binary }} - install bundle"
+      copy:
+        src: "{{ _found.files[0].path | dirname }}/"
+        dest: "/usr/local/lib/{{ pkg.binary }}/"
+        mode: preserve
+      become: true
+      when:
+        - not _download.failed
+        - pkg.install_bundle | default(false)
+
+    - name: "{{ pkg.binary }} - link bundled executable"
+      file:
+        src: "/usr/local/lib/{{ pkg.binary }}/{{ pkg.binary }}"
+        dest: "/usr/local/bin/{{ pkg.binary }}"
+        state: link
+        force: true
+      become: true
+      when:
+        - not _download.failed
+        - pkg.install_bundle | default(false)
   when: pkg.archive_type | default('tar') == 'tar'
 
 # tree-sitter ships as a raw .gz (not a tarball)

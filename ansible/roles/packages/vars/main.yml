@@ -58,6 +58,7 @@ github_releases:
   - repo: earendil-works/pi
     binary: pi
     pattern: "^pi-{{ ansible_system | lower }}-{{ {'x86_64': 'x64', 'aarch64': 'arm64'}[ansible_architecture] | default(ansible_architecture) }}\\.tar\\.gz$"
+    install_bundle: true # Pi loads themes and other resources relative to its executable.
   - repo: Schniz/fnm
     binary: fnm
     pattern: "fnm-{{ {'arm': 'arm32', 'aarch64': 'arm64'}[ansible_architecture] | default('linux') }}"
