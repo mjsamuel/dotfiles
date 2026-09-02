@@ -17,7 +17,6 @@ local packages = {
   "marksman",
   "pyright",
   "tailwindcss-language-server",
-  "tsgo",
   "typescript-language-server",
   "yaml-language-server",
   -- formatters
@@ -54,4 +53,3 @@ local lsp_config_names = vim.iter(installed_packages)
     end)
     :totable()
 vim.lsp.enable(lsp_config_names)
-vim.lsp.enable('tsgo', false)
