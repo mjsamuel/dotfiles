@@ -7,27 +7,51 @@ main() {
 		exit 1
 	fi
 
-	todays_todo="$notes_dir/todo/$(date -I).md"
-	if [ ! -f "$todays_todo" ]; then
-		create_new_note "$todays_todo"
-	fi
-	cd "$notes_dir" && exec nvim "$todays_todo"
+	today=$(date +%F)
+	tomorrow=$(date -v+1d +%F 2>/dev/null || date -d tomorrow +%F)
+	create_tomorrows_note "$tomorrow" &
+
+	todays_todo="$notes_dir/todo/$today.md"
+	create_new_note "$todays_todo" "$today"
+	ln -sfn "$today.md" "$notes_dir/todo/today.md"
+
+	cd "$notes_dir" && exec nvim "todo/today.md"
 }
 
 create_new_note() {
 	filepath="$1"
+	note_date="$2"
+	if [ -e "$filepath" ]; then
+		return
+	fi
+
 	cat <<-EOF >"$filepath"
-		# $(pretty_date)
+		# $(pretty_date "$note_date")
 
 		- [ ] Write to-do list
 	EOF
 }
 
+create_tomorrows_note() {
+	tomorrow="$1"
+	tomorrows_todo="$notes_dir/todo/$tomorrow.md"
+	create_new_note "$tomorrows_todo" "$tomorrow"
+	ln -sfn "$tomorrow.md" "$notes_dir/todo/tomorrow.md"
+}
+
 pretty_date() {
-	weekday=$(date +%A)
-	month=$(date +%B)
-	year=$(date +%Y)
-	day=$(date +%e | tr -d ' ')
+	note_date="$1"
+	if date -j -f %F "$note_date" +%A >/dev/null 2>&1; then
+		weekday=$(date -j -f %F "$note_date" +%A)
+		month=$(date -j -f %F "$note_date" +%B)
+		year=$(date -j -f %F "$note_date" +%Y)
+		day=$(date -j -f %F "$note_date" +%e | tr -d ' ')
+	else
+		weekday=$(date -d "$note_date" +%A)
+		month=$(date -d "$note_date" +%B)
+		year=$(date -d "$note_date" +%Y)
+		day=$(date -d "$note_date" +%e | tr -d ' ')
+	fi
 	case $day in
 	1 | 21 | 31) suf=st ;;
 	2 | 22) suf=nd ;;
