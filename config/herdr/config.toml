@@ -57,6 +57,12 @@ new_worktree  = "alt+shift+w"
 open_worktree = "alt+w"
 
 [[keys.command]]
+key         = "alt+o"
+type        = "plugin_action"
+command     = "mjsamuel.even-panes.even-panes"
+description = "evenly resize panes"
+
+[[keys.command]]
 key         = "alt+shift+s"
 type        = "popup"
 command     = "herdr-sessionizer"
