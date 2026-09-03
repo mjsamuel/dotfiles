@@ -6,15 +6,9 @@
 <title><!-- HTMLDOC_TITLE --></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&display=swap"></noscript>
 <style>
-/* ============================================================
-   htmldoc — DO NOT MODIFY STYLES OR SCRIPT. Content slots only.
-   Playful deck system: warm off-white sheet, chunky rounded
-   cards (one corner squared), tangerine / violet / lime chips,
-   ink-black hero panel, friendly geometric sans + mono details.
-   Dark mode keeps the candy accents on a soft charcoal sheet.
-   ============================================================ */
 :root {
   /* palette: Paper #F7F5F1 · Ink #171514 · Tangerine #EE6416 · Violet #8B5CF6 · Lime #C9F04D */
   --display: "Poppins", -apple-system, "Helvetica Neue", Arial, sans-serif;
@@ -196,7 +190,7 @@ h1 em { font-style: normal; color: var(--pop); }
   border-radius: 24px 24px 24px 6px; box-shadow: var(--shadow);
 }
 .tldr .pill { background: var(--lime); color: var(--lime-ink); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; font-weight: 700; }
-.tldr h2 { margin: .95rem 0 .5rem; font-size: 1.5rem; font-weight: 650; letter-spacing: -.012em; line-height: 1.28; }
+.tldr h2 { margin: .95rem 0 .5rem; font-size: 1.5rem; font-weight: 600; letter-spacing: -.012em; line-height: 1.28; }
 .tldr p { margin: .4rem 0 0; color: var(--tldr-muted); }
 .tldr strong { color: var(--tldr-ink); }
 .tldr code { background: color-mix(in srgb, var(--tldr-ink) 14%, transparent); padding: .05rem .3rem; border-radius: 6px; font-size: .85em; }
@@ -229,8 +223,8 @@ h1 em { font-style: normal; color: var(--pop); }
   background: var(--accent); color: var(--accent-ink);
   font-size: .78rem; font-weight: 700; letter-spacing: 0;
 }
-.sec h2 { margin: 0; font-size: 1.4rem; font-weight: 650; letter-spacing: -.01em; }
-.sec h3 { font-size: 1rem; font-weight: 650; margin: 1.6rem 0 .5rem; }
+.sec h2 { margin: 0; font-size: 1.4rem; font-weight: 600; letter-spacing: -.01em; }
+.sec h3 { font-size: 1rem; font-weight: 600; margin: 1.6rem 0 .5rem; }
 .sec p { max-width: 68ch; }
 .sec ul, .sec ol:not(.stepper) { padding-left: 1.3rem; max-width: 66ch; }
 .sec li { margin: .3rem 0; }
@@ -248,7 +242,8 @@ h1 em { font-style: normal; color: var(--pop); }
 }
 
 /* ---- inline code / tables ---- */
-p code, li code, td code {
+/* direct children only, so a <pre> inside a list item keeps its own styling */
+:is(p, li, td, th, dt, dd, summary) > code {
   background: var(--card-2); border: 1px solid var(--line-soft);
   padding: .04rem .34rem; border-radius: 6px; font-size: .82em;
 }
@@ -317,6 +312,18 @@ pre.mermaid {
 }
 pre.mermaid svg { max-width: 100%; height: auto; }
 
+/* ---- plain <details> written in a fragment ---- */
+details:not([class]) { margin: 1.25rem 0; padding: 0 1.05rem; border: 1px solid var(--line-soft); border-radius: 16px; background: var(--card); }
+details:not([class]) > summary {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .65rem 0; cursor: pointer; list-style: none; user-select: none; font-weight: 600; font-size: .95rem;
+}
+details:not([class]) > summary::-webkit-details-marker { display: none; }
+details:not([class]) > summary::before { content: "▸"; color: var(--pop); font-size: .8rem; transition: transform .15s; }
+details:not([class])[open] > summary::before { transform: rotate(90deg); }
+details:not([class])[open] { padding-bottom: .9rem; }
+details:not([class])[open] > summary { border-bottom: 1px solid var(--line-soft); margin-bottom: .6rem; }
+
 /* ---- diffs ---- */
 details.diff { margin: 1.25rem 0; border: 1px solid var(--line-soft); border-radius: 16px; background: var(--card); overflow: hidden; }
 details.diff > summary {
@@ -327,7 +334,14 @@ details.diff > summary::-webkit-details-marker { display: none; }
 details.diff > summary::before { content: "▸"; color: var(--pop); font-size: .8rem; transition: transform .15s; }
 details.diff[open] > summary::before { transform: rotate(90deg); }
 .diff-file { font-family: var(--mono); font-size: .78rem; font-weight: 600; }
-.diff-body { border-top: 1px solid var(--line-soft); background: var(--code-bg); overflow-x: auto; padding: .5rem 0; }
+.diff-body { position: relative; border-top: 1px solid var(--line-soft); background: var(--code-bg); }
+.diff-scroll { overflow-x: auto; padding: .5rem 0; }
+/* right-edge fade; the script sets .has-more only while there is more to scroll to */
+.diff-body::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 3rem; pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--code-bg)); opacity: 0; transition: opacity .15s;
+}
+.diff-body.has-more::after { opacity: 1; }
 .dline { padding: .06rem 1rem; font-family: var(--mono); font-size: .78rem; line-height: 1.6; white-space: pre; }
 .dline.add { background: var(--add-bg); color: var(--add-ink); }
 .dline.del { background: var(--del-bg); color: var(--del-ink); }
@@ -357,24 +371,43 @@ ol.stepper > li.step:not(:last-child)::after {
   height: 1.25rem; border-left: 2px dotted var(--faint);
 }
 .step-head { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: .3rem; min-height: 2.15rem; }
-.step-head h3 { margin: 0; font-size: 1rem; font-weight: 650; }
+.step-head h3 { margin: 0; font-size: 1rem; font-weight: 600; }
 .step > p { margin: .3rem 0 .6rem; color: var(--muted); font-size: .95rem; max-width: 62ch; }
 .step .callout { background: color-mix(in srgb, var(--accent) 10%, var(--card)); }
 .step details.diff { background: var(--card-2); border-color: transparent; }
 
-/* ---- I/O blocks ---- */
-details.io { margin: .5rem 0; border: none; border-radius: 14px; background: var(--card-2); overflow: hidden; }
-details.io > summary {
-  display: flex; align-items: center; gap: .5rem;
-  padding: .45rem .9rem; cursor: pointer; list-style: none; user-select: none;
-  font-size: .64rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+/* ---- I/O ledger: adjacent <in>/<out>/<err> rows share one frame ---- */
+.io {
+  --io-gutter: 3.8rem;
+  margin: .75rem 0; overflow: hidden;
+  border: 1px solid var(--line-soft); border-radius: 14px; background: var(--code-bg);
 }
-details.io > summary::-webkit-details-marker { display: none; }
-details.io > summary::before { content: "▸"; font-size: .75rem; transition: transform .15s; }
-details.io[open] > summary::before { transform: rotate(90deg); }
-details.io.io-in > summary { color: var(--muted); }
-details.io.io-out > summary { color: var(--accent-strong); }
-details.io pre.code { border: none; border-radius: 0; }
+.io.io-wide { --io-gutter: 6rem; }
+.io-row { display: flex; align-items: flex-start; }
+.io-row + .io-row { border-top: 1px dashed var(--line); }
+.io-tag {
+  flex: none; width: var(--io-gutter); padding: .78rem 0 0 1rem;
+  font-size: .58rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--faint); line-height: 1.6;
+}
+.io-out { background: color-mix(in srgb, var(--accent) 7%, var(--code-bg)); }
+.io-out .io-tag { color: var(--accent-strong); }
+.io-err { background: color-mix(in srgb, var(--del-bg) 55%, var(--code-bg)); }
+.io-err .io-tag { color: var(--del-ink); }
+.io pre.code, .io pre.io-peek {
+  flex: 1 1 auto; min-width: 0; margin: 0; padding: .7rem 1rem .7rem 0;
+  background: transparent; border: none; border-radius: 0;
+  font-size: .8rem; line-height: 1.6; overflow-x: auto;
+}
+.io pre.io-peek { color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+details.io-row { display: block; }
+details.io-row > summary { display: flex; align-items: flex-start; cursor: pointer; list-style: none; user-select: none; }
+details.io-row > summary::-webkit-details-marker { display: none; }
+details.io-row .io-tag::before { content: "▸ "; }
+details.io-row[open] .io-tag::before { content: "▾ "; }
+details.io-row[open] > summary .io-peek { display: none; }
+.io-count { flex: none; align-self: center; margin: 0 .9rem 0 auto; }
+details.io-row > pre.code { padding-left: var(--io-gutter); }
 
 /* ---- footer (title block) ---- */
 .foot {
@@ -448,7 +481,7 @@ details.io pre.code { border: none; border-radius: 0; }
   body { background: #fff; }
   .page { margin: 0; border: none; border-radius: 0; box-shadow: none; background-image: none; max-width: none; }
   .ctl-row, pre.code button.copy, .tldr::after { display: none; }
-  .tldr, .callout, ol.stepper > li.step, details.diff, figure.codeblock { break-inside: avoid; }
+  .tldr, .callout, ol.stepper > li.step, details.diff, figure.codeblock, .io { break-inside: avoid; }
 }
 </style>
 </head>
@@ -457,11 +490,13 @@ details.io pre.code { border: none; border-radius: 0; }
 <!-- HTMLDOC_CONTENT -->
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
-if (window.hljs) {
-  hljs.configure({ cssSelector: 'pre code[class*="language-"]' });
-  hljs.highlightAll();
+const highlighted = document.querySelectorAll('pre code[class*="language-"]');
+if (highlighted.length) {
+  const s = document.createElement("script");
+  s.src = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js";
+  s.onload = () => highlighted.forEach(el => hljs.highlightElement(el));
+  document.head.appendChild(s);
 }
 document.querySelectorAll("pre.code").forEach(pre => {
   const b = document.createElement("button");
@@ -472,6 +507,15 @@ document.querySelectorAll("pre.code").forEach(pre => {
     b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200);
   });
   pre.appendChild(b);
+});
+document.querySelectorAll(".diff-scroll").forEach(sc => {
+  const update = () => {
+    const more = sc.clientWidth > 0 && sc.scrollWidth - sc.clientWidth - sc.scrollLeft > 1;
+    sc.parentElement.classList.toggle("has-more", more);
+  };
+  sc.addEventListener("scroll", update, { passive: true });
+  new ResizeObserver(update).observe(sc);
+  update();
 });
 const setAll = open => document.querySelectorAll("details").forEach(d => (d.open = open));
 document.getElementById("expand-all")?.addEventListener("click", () => setAll(true));
@@ -487,52 +531,55 @@ window.addEventListener("afterprint", () => {
 });
 </script>
 <script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  const cs = getComputedStyle(document.documentElement);
-  const v = name => cs.getPropertyValue(name).trim();
-  mermaid.initialize({
-    startOnLoad: true,
-    securityLevel: "strict",
-    theme: "base",
-    themeVariables: {
-      fontFamily: v("--mono"),
-      fontSize: "14px",
-      background: v("--card"),
-      mainBkg: v("--card-2"),
-      textColor: v("--text"),
-      primaryColor: v("--card-2"),
-      primaryTextColor: v("--text"),
-      primaryBorderColor: v("--accent"),
-      secondaryColor: v("--card"),
-      secondaryBorderColor: v("--line-soft"),
-      tertiaryColor: v("--card"),
-      tertiaryBorderColor: v("--line-soft"),
-      lineColor: v("--accent"),
-      edgeLabelBackground: v("--bg"),
-      clusterBkg: v("--bg"),
-      clusterBorder: v("--line"),
-      titleColor: v("--text"),
-      noteBkgColor: v("--card-2"),
-      noteTextColor: v("--text"),
-      noteBorderColor: v("--line"),
-      errorBkgColor: v("--del-bg"),
-      errorTextColor: v("--del-ink"),
-      actorBkg: v("--card-2"),
-      actorBorder: v("--accent"),
-      actorTextColor: v("--text"),
-      actorLineColor: v("--line"),
-      signalColor: v("--muted"),
-      signalTextColor: v("--text"),
-      labelBoxBkgColor: v("--card-2"),
-      labelBoxBorderColor: v("--line"),
-      labelTextColor: v("--text"),
-      loopTextColor: v("--text"),
-      activationBkgColor: v("--card-2"),
-      activationBorderColor: v("--accent"),
-      sequenceNumberColor: v("--accent-ink"),
-      pieOpacity: "0.9",
-    },
-  });
+  if (document.querySelector("pre.mermaid")) {
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
+    const cs = getComputedStyle(document.documentElement);
+    const v = name => cs.getPropertyValue(name).trim();
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: "base",
+      themeVariables: {
+        fontFamily: v("--mono"),
+        fontSize: "14px",
+        background: v("--card"),
+        mainBkg: v("--card-2"),
+        textColor: v("--text"),
+        primaryColor: v("--card-2"),
+        primaryTextColor: v("--text"),
+        primaryBorderColor: v("--accent"),
+        secondaryColor: v("--card"),
+        secondaryBorderColor: v("--line-soft"),
+        tertiaryColor: v("--card"),
+        tertiaryBorderColor: v("--line-soft"),
+        lineColor: v("--accent"),
+        edgeLabelBackground: v("--bg"),
+        clusterBkg: v("--bg"),
+        clusterBorder: v("--line"),
+        titleColor: v("--text"),
+        noteBkgColor: v("--card-2"),
+        noteTextColor: v("--text"),
+        noteBorderColor: v("--line"),
+        errorBkgColor: v("--del-bg"),
+        errorTextColor: v("--del-ink"),
+        actorBkg: v("--card-2"),
+        actorBorder: v("--accent"),
+        actorTextColor: v("--text"),
+        actorLineColor: v("--line"),
+        signalColor: v("--muted"),
+        signalTextColor: v("--text"),
+        labelBoxBkgColor: v("--card-2"),
+        labelBoxBorderColor: v("--line"),
+        labelTextColor: v("--text"),
+        loopTextColor: v("--text"),
+        activationBkgColor: v("--card-2"),
+        activationBorderColor: v("--accent"),
+        sequenceNumberColor: v("--accent-ink"),
+        pieOpacity: "0.9",
+      },
+    });
+    await mermaid.run();
+  }
 </script>
 </body>
 </html>

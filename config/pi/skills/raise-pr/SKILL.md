@@ -1,9 +1,7 @@
 ---
 name: raise-pr
-description: Use when the user asks to raise or create a PR.
+description: Use when asked to raise or create a PR.
 ---
-
-# Raise PR
 
 Before raising, check whether a PR for this branch already exists. If one does, report it instead of opening a duplicate.
 
@@ -20,7 +18,7 @@ When raising multiple PRs in a stack append this block to the end of the descrip
 ```md
 ---
 
-This is **part 3 of 3 in a stack**:
+This is **part 3 of 3** in a stack:
 
 - `3` https://github.com/mjsamuel/dotfiles/pull/3 👈
 - `2` https://github.com/mjsamuel/dotfiles/pull/2

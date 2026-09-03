@@ -20,14 +20,16 @@ TITLE_MARKER = "<!-- HTMLDOC_TITLE -->"
 FORBIDDEN = re.compile(r"<(?:/?(?:html|head|body)|/?(?:style|script)|link)\b", re.IGNORECASE)
 
 # Tags whose contents are literal text: never parsed, always escaped and dedented.
-LITERAL_TAGS = ("codeblock", "mermaid", "diff", "in", "out")
+IO_TAGS = ("in", "out", "err")
+LITERAL_TAGS = ("codeblock", "mermaid", "diff", *IO_TAGS)
 DSL_TAGS = {
     "doc", "standfirst", "tldr", "sec", "callout", "cols",
     "stepper", "step", "toc", "ctl", *LITERAL_TAGS,
 }
 HTML_TAGS = {
-    "a", "abbr", "aside", "b", "blockquote", "br", "button", "caption", "cite",
-    "code", "col", "colgroup", "dd", "del", "details", "div", "dl", "dt", "em",
+    "a", "abbr", "address", "article", "aside", "b", "blockquote", "br", "button",
+    "caption", "cite", "code", "col", "colgroup", "dd", "del", "details", "dfn",
+    "div", "dl", "dt", "em",
     "figcaption", "figure", "h1", "h2", "h3", "h4", "h5", "h6", "header", "hr",
     "i", "img", "ins", "kbd", "li", "main", "mark", "nav", "ol", "p", "pre",
     "q", "s", "samp", "section", "small", "span", "strong", "sub", "summary",
@@ -127,22 +129,16 @@ def render_literal(tag, attrs, body):
         caption = attrs.get("caption", "")
         head = f"\n      <figcaption>{caption}</figcaption>" if caption else ""
         return f'<figure>{head}\n      <pre class="mermaid">{text}</pre>\n    </figure>'
-    if tag in ("in", "out"):
-        label = "Input" if tag == "in" else "Output"
-        state = "" if "closed" in attrs else " open"
-        return (
-            f'<details class="io io-{tag}"{state}>\n'
-            f"          <summary>{label}</summary>\n"
-            f'          <pre class="code"><code>{text}</code></pre>\n'
-            f"        </details>"
-        )
+    if tag in IO_TAGS:
+        return render_io(tag, attrs, text)
     lang = attrs.get("lang", "")
     loc = attrs.get("loc", "")
     head = f'\n      <figcaption><span class="pill pill-loc">{loc}</span></figcaption>' if loc else ""
     cls = f' class="language-{lang}"' if lang else ""
     line_count = text.count("\n") + 1
     pre = f'<pre class="code"><code{cls}>{text}</code></pre>'
-    if line_count > 1:
+    # Logs and command output (no lang) read better without a line-number gutter.
+    if line_count > 1 and lang:
         gutter = "\n".join(str(n) for n in range(1, line_count + 1))
         pre = (
             '<div class="code-frame">\n'
@@ -151,6 +147,44 @@ def render_literal(tag, attrs, body):
             "      </div>"
         )
     return f'<figure class="codeblock">{head}\n' f"      {pre}\n" f"    </figure>"
+
+
+def render_io(tag, attrs, text):
+    """One ledger row. Adjacent rows are framed together later by group_io_rows."""
+    label = attrs.get("label") or tag
+    lines = text.split("\n")
+    pre = f'<pre class="code">{text}</pre>'
+    # Collapsing a single line would only hide what the summary already shows.
+    if "closed" not in attrs or len(lines) == 1:
+        return (
+            f'<div class="io-row io-{tag}">\n'
+            f'          <span class="io-tag">{label}</span>\n'
+            f"          {pre}\n"
+            f"        </div>"
+        )
+    return (
+        f'<details class="io-row io-{tag}">\n'
+        f'          <summary><span class="io-tag">{label}</span>'
+        f'<pre class="io-peek">{lines[0]}</pre>'
+        f'<span class="pill io-count">{len(lines)} lines</span></summary>\n'
+        f"          {pre}\n"
+        f"        </details>"
+    )
+
+
+IO_ROW = r'<(?:div|details) class="io-row[^"]*">[\s\S]*?</(?:div|details)>'
+IO_RUN = re.compile(IO_ROW + r"(?:\s*" + IO_ROW + ")*")
+
+
+def group_io_rows(body):
+    """Wrap each run of adjacent I/O rows in one frame so they read as an exchange."""
+
+    def wrap(match):
+        labels = re.findall(r'<span class="io-tag">(.*?)</span>', match.group(0))
+        wide = " io-wide" if any(len(strip_tags(label)) > 3 for label in labels) else ""
+        return f'<div class="io{wide}">\n        {match.group(0)}\n        </div>'
+
+    return IO_RUN.sub(wrap, body)
 
 
 def render_diff(attrs, body):
@@ -174,7 +208,7 @@ def render_diff(attrs, body):
         f'<details class="diff"{state}>\n'
         f'      <summary><span class="diff-file">{attrs.get("file", "")}</span>'
         f'<span class="pill pill-{kind}">{kind}</span></summary>\n'
-        f'      <div class="diff-body">\n{body_html}\n      </div>\n'
+        f'      <div class="diff-body"><div class="diff-scroll">\n{body_html}\n      </div></div>\n'
         f"    </details>"
     )
 
@@ -361,6 +395,7 @@ def build(fragment, template, opts):
     body, sections = expand(shell, doc_attrs.get("numbering") != "off")
     for index, (block, newlines) in enumerate(blocks):
         body = body.replace(f"\x00{index}\x00" + "\n" * newlines, block)
+    body = group_io_rows(body)
     body = place_rows(body, sections, doc_attrs, "<details" in body).strip()
 
     lead = f'\n    <p class="standfirst">{standfirst.group(1).strip()}</p>' if standfirst else ""

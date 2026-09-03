@@ -1,9 +1,9 @@
 ---
 name: htmldoc
-description: Render a document as a self-contained HTML page. Use only when the user explicitly asks for a HTML document/writeup (e.g. "present this as html"). Do not use for ordinary text responses.
+description: Render a document as a self-contained HTML page. Use only when the user explicitly asks for a HTML document/writeup.
 ---
 
-Write a semantic fragment, then render it. **Do not read `template.html`**: the renderer wraps your fragment in it.
+Write a semantic fragment, then render it. DO NOT read template.html: the renderer wraps your fragment in it.
 
 ## Procedure
 
@@ -34,16 +34,15 @@ Write a semantic fragment, then render it. **Do not read `template.html`**: the 
 
 An `<em>` may accent one phrase in `<h1>`. Include the `<tldr>`; omit it only for purely descriptive reference.
 
-Everything inside `<doc>` is freeform — add, remove, reorder, or omit to fit the document. It is an injection boundary, not a fixed schema. Ordinary HTML (`<p>`, lists, `<table>`, `<h3>`, `<a>`, `<code>`, `<details>`) passes through, as does anything using the shell's own classes. The tags below are shorthand for the common shapes; nest them freely.
+Everything inside `<doc>` is freeform — add, remove, reorder, or omit to fit the document. It is an injection boundary, not a fixed schema. Ordinary HTML (`<p>`, lists, `<table>`, `<h3>`, `<a>`, `<code>`, `<details>`) passes through; the only classes worth adding are `pill`, `pill-loc`, and `mono`. The tags below are shorthand for the common shapes; nest them freely.
 
 ## Elements
 
 - `<sec title="T">` — section. Id, number, and a contents row (at 4+ sections) are added for you; override with `<doc numbering="off">`, `<doc toc="off|on">`, or a `<toc/>` marker placing the row.
 - `<callout label="L" [warn]>` — aside; `warn` for risks and caveats.
 - `<cols [n="3"]>` — 2- or 3-up row, short sibling blocks only.
-- `<codeblock [lang="ts"] [loc="src/a.ts"]>` — omit `lang` for logs and command output.
+- `<codeblock [lang="ts"] [loc="src/a.ts"]>` — omit `lang` for logs and command output; line numbers appear only with `lang`.
 - `<mermaid [caption="C"]>` — source only, rendered live. Prefer a diagram when relationships or flow read better than prose.
 - `<diff file="P" kind="proposed|actual" [closed]>` — paste a unified diff; lines are classified. Always label which kind.
-- `<stepper>` with `<step title="T" [loc="P"]>` — a sequence. Inside a step, `<in>`/`<out>` show its I/O; add `closed` to collapse.
-
-Prefer steppers for sequences, tables for comparisons and risks, diffs for code changes. `sample.html` is a worked example using every element.
+- `<stepper>` with `<step title="T" [loc="P"]>` — a sequence.
+- `<in>`, `<out>`, `<err>` — a step's I/O, one literal block each; adjacent ones join into a single frame. `label="L"` renames a row (e.g. Request/Response); `closed` collapses a long one to its first line.
