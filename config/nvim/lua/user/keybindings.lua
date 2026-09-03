@@ -89,21 +89,9 @@ local function make(make_args)
 end
 keymap.set("n", "gm", function() make() end, { silent = true })
 
--- copilot
-keymap.set("i", "<Right>", function()
-  local cp = require("copilot.suggestion")
-  local right_key = vim.api.nvim_replace_termcodes("<Right>", true, false, true)
-  if not cp.is_visible() then
-    vim.api.nvim_feedkeys(right_key, "n", false)
-    return
-  end
-  cp.accept()
-end)
-
 -- misc
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
 keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { silent = true })
-command.set("PackUpdate", function() vim.pack.update() end, { nargs = 0 })
 
 -- copy to system clipboard
 keymap.set("n", "Y", function()
