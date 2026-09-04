@@ -68,7 +68,7 @@ function fgHex(hex: string, text: string): string {
   return `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m`;
 }
 
-type Paint = (text: string) => string;
+export type Paint = (text: string) => string;
 type Granularity = "daily" | "weekly";
 type Grouping = "model" | "provider";
 type Action = "daily" | "weekly" | "group" | "prev" | "next" | "today" | "refresh" | "close";
@@ -356,44 +356,7 @@ class UsageDashboard implements Component {
       totals.set(key, (totals.get(key) ?? 0) + record.cost);
     }
     const keys = [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([key]) => key);
-    const dim: Paint = (text) => this.theme.fg("dim", text);
-
-    this.colorMap = new Map();
-
-    if (this.theme.getColorMode() === "truecolor") {
-      const palette = this.isLightBackground() ? SERIES_HEX_LIGHT : SERIES_HEX_DARK;
-      keys.forEach((key, index) => {
-        const hex = palette[index];
-        this.colorMap.set(key, hex ? (text) => fgHex(hex, text) : dim);
-      });
-      return;
-    }
-
-    const seenAnsi = new Set<string>();
-    const distinctColors: ThemeColor[] = [];
-    for (const color of CHART_COLORS_FALLBACK) {
-      const ansi = this.theme.getFgAnsi(color);
-      if (seenAnsi.has(ansi)) continue;
-      seenAnsi.add(ansi);
-      distinctColors.push(color);
-    }
-    keys.forEach((key, index) => {
-      const role = distinctColors[index];
-      this.colorMap.set(key, role ? (text) => this.theme.fg(role, text) : dim);
-    });
-  }
-
-  /**
-   * No public API exposes a theme's light/dark polarity directly. A theme's
-   * own text color has to contrast its background, so infer it from that:
-   * dark text implies a light surface, light text implies a dark one.
-   */
-  private isLightBackground(): boolean {
-    const match = /38;2;(\d+);(\d+);(\d+)/.exec(this.theme.getFgAnsi("text"));
-    if (!match) return false;
-    const [r, g, b] = [Number(match[1]), Number(match[2]), Number(match[3])];
-    const textLuminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return textLuminance < 0.5;
+    this.colorMap = buildSeriesColors(keys, this.theme);
   }
 
   dispose(): void {
@@ -839,6 +802,98 @@ class UsageDashboard implements Component {
     else if (data === "t") this.performAction("today");
     else if (data === "r") this.performAction("refresh");
   }
+}
+
+/**
+ * No public API exposes a theme's light/dark polarity directly. A theme's
+ * own text color has to contrast its background, so infer it from that:
+ * dark text implies a light surface, light text implies a dark one.
+ */
+function isLightBackground(theme: Theme): boolean {
+  const match = /38;2;(\d+);(\d+);(\d+)/.exec(theme.getFgAnsi("text"));
+  if (!match) return false;
+  const [r, g, b] = [Number(match[1]), Number(match[2]), Number(match[3])];
+  const textLuminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return textLuminance < 0.5;
+}
+
+// Fixed colors for specific models, matched against the model segment of the
+// series key: luna is white, sol is yellow, terra is green. The light-theme
+// variants keep the same reading (neutral/yellow/green) but darkened for
+// contrast. Overridden series skip the ranked palette so they don't consume
+// a slot another model could use.
+const MODEL_COLOR_OVERRIDES: { pattern: RegExp; dark: string; light: string; fallback: ThemeColor }[] = [
+  { pattern: /luna/i, dark: "#ffffff", light: "#57606a", fallback: "text" },
+  { pattern: /sol/i, dark: "#e3b341", light: "#9a6700", fallback: "warning" },
+  { pattern: /terra/i, dark: "#3fb950", light: "#1a7f37", fallback: "success" },
+  // Keep the current Fable release on the ranked palette's orange. The 5.1
+  // pattern must come first since the first match wins.
+  { pattern: /fable-?5[.-]1/i, dark: "#d95926", light: "#e9561c", fallback: "syntaxNumber" },
+  { pattern: /fable-?5/i, dark: "#e8763d", light: "#c94a15", fallback: "syntaxNumber" },
+  { pattern: /grok/i, dark: "#9198a1", light: "#59636e", fallback: "dim" },
+];
+
+function colorOverride(key: string) {
+  const model = key.split("/").pop() ?? key;
+  return MODEL_COLOR_OVERRIDES.find(({ pattern }) => pattern.test(model));
+}
+
+export function buildSeriesColors(rankedKeys: string[], theme: Theme): Map<string, Paint> {
+  const dim: Paint = (text) => theme.fg("dim", text);
+  const colorMap = new Map<string, Paint>();
+
+  if (theme.getColorMode() === "truecolor") {
+    const light = isLightBackground(theme);
+    const palette = light ? SERIES_HEX_LIGHT : SERIES_HEX_DARK;
+    let slot = 0;
+    for (const key of rankedKeys) {
+      const override = colorOverride(key);
+      if (override) {
+        const hex = light ? override.light : override.dark;
+        colorMap.set(key, (text) => fgHex(hex, text));
+        continue;
+      }
+      const hex = palette[slot++];
+      colorMap.set(key, hex ? (text) => fgHex(hex, text) : dim);
+    }
+    return colorMap;
+  }
+
+  const seenAnsi = new Set<string>();
+  const distinctColors: ThemeColor[] = [];
+  for (const color of CHART_COLORS_FALLBACK) {
+    const ansi = theme.getFgAnsi(color);
+    if (seenAnsi.has(ansi)) continue;
+    seenAnsi.add(ansi);
+    distinctColors.push(color);
+  }
+  let slot = 0;
+  for (const key of rankedKeys) {
+    const override = colorOverride(key);
+    if (override) {
+      colorMap.set(key, (text) => theme.fg(override.fallback, text));
+      continue;
+    }
+    const role = distinctColors[slot++];
+    colorMap.set(key, role ? (text) => theme.fg(role, text) : dim);
+  }
+  return colorMap;
+}
+
+/**
+ * The same canonical series colors the usage dashboard assigns, keyed by
+ * "provider/model" and ranked by all-time spend, for reuse elsewhere (e.g.
+ * the footer's model label).
+ */
+export async function loadModelSeriesColors(theme: Theme): Promise<Map<string, Paint>> {
+  const records = await loadUsage();
+  const totals = new Map<string, number>();
+  for (const record of records) {
+    const key = `${record.provider}/${record.model}`;
+    totals.set(key, (totals.get(key) ?? 0) + record.cost);
+  }
+  const keys = [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([key]) => key);
+  return buildSeriesColors(keys, theme);
 }
 
 function sessionCost(ctx: ExtensionContext): number {

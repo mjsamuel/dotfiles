@@ -6,6 +6,7 @@ import {
 } from "@earendil-works/pi-coding-agent";
 import type { EditorTheme, TUI } from "@earendil-works/pi-tui";
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+import { loadModelSeriesColors, type Paint } from "./model-usage";
 
 function formatTokens(count: number): string {
   if (count < 1_000) return count.toString();
@@ -61,20 +62,19 @@ function modelLabel(ctx: ExtensionContext): string {
   return `${model.id} · ${ctx.thinkingLevel}`;
 }
 
-function thinkingColor(level: string) {
-  switch (level) {
-    case "minimal": return "thinkingMinimal" as const;
-    case "low": return "thinkingLow" as const;
-    case "medium": return "thinkingMedium" as const;
-    case "high": return "thinkingHigh" as const;
-    case "xhigh": return "thinkingXhigh" as const;
-    case "max": return "thinkingMax" as const;
-    default: return "thinkingOff" as const;
-  }
-}
-
 export default function footer(pi: ExtensionAPI) {
+  let modelColors = new Map<string, Paint>();
+
+  const refreshModelColors = async (ctx: ExtensionContext) => {
+    modelColors = await loadModelSeriesColors(ctx.ui.theme);
+  };
+
+  pi.on("model_select", async (_event, ctx) => {
+    await refreshModelColors(ctx).catch(() => undefined);
+  });
+
   pi.on("session_start", (_event, ctx) => {
+    void refreshModelColors(ctx).catch(() => undefined);
     class FixedBorderEditor extends CustomEditor {
       constructor(tui: TUI, theme: EditorTheme, keybindings: KeybindingsManager) {
         super(tui, theme, keybindings);
@@ -137,11 +137,12 @@ export default function footer(pi: ExtensionAPI) {
         parts.push(coloredContext);
 
         const left = modelLabel(ctx);
+        const paintModel = ctx.model
+          ? modelColors.get(`${ctx.model.provider}/${ctx.model.id}`)
+          : undefined;
         const styledLeft = ctx.model
-          ? theme.fg("text", `${ctx.model.id}${ctx.model.reasoning ? " · " : ""}`)
-            + (ctx.model.reasoning
-              ? theme.fg(thinkingColor(ctx.thinkingLevel), ctx.thinkingLevel)
-              : "")
+          ? (paintModel ? paintModel(ctx.model.id) : theme.fg("text", ctx.model.id))
+            + (ctx.model.reasoning ? theme.fg("text", ` · ${ctx.thinkingLevel ?? "off"}`) : "")
           : theme.fg("text", left);
         const right = parts.join(" · ");
         const minimumGap = 2;
