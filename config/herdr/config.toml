@@ -38,16 +38,16 @@ prefix = "ctrl+b"
 navigate_workspace_down = "j"
 navigate_workspace_up   = "k"
 new_workspace           = "prefix+shift+c"
+next_workspace     = "alt+j"
+previous_workspace = "alt+k"
 
 # Agents
-next_agent     = "alt+j"
-previous_agent = "alt+k"
+next_agent     = "alt+shift+j"
+previous_agent = "alt+shift+k"
 
 # Tabs
 move_tab_next     = "alt+>"
 move_tab_previous = "alt+<"
-new_tab           = "prefix+c"
-switch_tab        = "alt+1..9"
 
 # Panes
 last_pane        = "alt+l"
@@ -80,3 +80,6 @@ height      = "80%"
 
 [worktrees]
 directory = "~/.local/share/worktrees"
+
+[experimental]
+kitty_graphics = true
