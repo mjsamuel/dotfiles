@@ -68,7 +68,7 @@ function fgHex(hex: string, text: string): string {
   return `\x1b[38;2;${r};${g};${b}m${text}\x1b[39m`;
 }
 
-export type Paint = (text: string) => string;
+type Paint = (text: string) => string;
 type Granularity = "daily" | "weekly";
 type Grouping = "model" | "provider";
 type Action = "daily" | "weekly" | "group" | "prev" | "next" | "today" | "refresh" | "close";
@@ -335,8 +335,8 @@ class UsageDashboard implements Component {
   }
 
   /**
-   * Canonical colors: assign the palette by all-time spend rank so a model
-   * keeps its color while navigating periods, instead of reshuffling per view.
+   * Assign the palette by all-time spend rank so a model keeps its color while
+   * navigating periods, instead of reshuffling per view.
    *
    * Truecolor terminals get the fixed SERIES_HEX palette, picked for the light
    * or dark variant by isLightBackground(). 256-color terminals can't render
@@ -368,7 +368,7 @@ class UsageDashboard implements Component {
   invalidate(): void {}
 
   private groupKey(record: UsageRecord): string {
-    return this.grouping === "provider" ? record.provider : `${record.provider}/${record.model}`;
+    return this.grouping === "provider" ? record.provider : record.model;
   }
 
   private bucketCount(width: number): number {
@@ -510,9 +510,7 @@ class UsageDashboard implements Component {
       const flush = (end: number) => {
         const run = end - runStart;
         if (runKey === undefined || runStart < 0 || run < 2) return;
-        const name = this.grouping === "model"
-          ? runKey.split("/").slice(1).join("/") || runKey
-          : runKey;
+        const name = runKey;
         if (visibleWidth(name) <= barWidth - 2) {
           labels.set(runStart + Math.floor((run - 1) / 2), name);
         }
@@ -817,45 +815,17 @@ function isLightBackground(theme: Theme): boolean {
   return textLuminance < 0.5;
 }
 
-// Fixed colors for specific models, matched against the model segment of the
-// series key: luna is white, sol is yellow, terra is green. The light-theme
-// variants keep the same reading (neutral/yellow/green) but darkened for
-// contrast. Overridden series skip the ranked palette so they don't consume
-// a slot another model could use.
-const MODEL_COLOR_OVERRIDES: { pattern: RegExp; dark: string; light: string; fallback: ThemeColor }[] = [
-  { pattern: /luna/i, dark: "#ffffff", light: "#57606a", fallback: "text" },
-  { pattern: /sol/i, dark: "#e3b341", light: "#9a6700", fallback: "warning" },
-  { pattern: /terra/i, dark: "#3fb950", light: "#1a7f37", fallback: "success" },
-  // Keep the current Fable release on the ranked palette's orange. The 5.1
-  // pattern must come first since the first match wins.
-  { pattern: /fable-?5[.-]1/i, dark: "#d95926", light: "#e9561c", fallback: "syntaxNumber" },
-  { pattern: /fable-?5/i, dark: "#e8763d", light: "#c94a15", fallback: "syntaxNumber" },
-  { pattern: /grok/i, dark: "#9198a1", light: "#59636e", fallback: "dim" },
-];
-
-function colorOverride(key: string) {
-  const model = key.split("/").pop() ?? key;
-  return MODEL_COLOR_OVERRIDES.find(({ pattern }) => pattern.test(model));
-}
-
-export function buildSeriesColors(rankedKeys: string[], theme: Theme): Map<string, Paint> {
+function buildSeriesColors(rankedKeys: string[], theme: Theme): Map<string, Paint> {
   const dim: Paint = (text) => theme.fg("dim", text);
   const colorMap = new Map<string, Paint>();
 
   if (theme.getColorMode() === "truecolor") {
     const light = isLightBackground(theme);
     const palette = light ? SERIES_HEX_LIGHT : SERIES_HEX_DARK;
-    let slot = 0;
-    for (const key of rankedKeys) {
-      const override = colorOverride(key);
-      if (override) {
-        const hex = light ? override.light : override.dark;
-        colorMap.set(key, (text) => fgHex(hex, text));
-        continue;
-      }
-      const hex = palette[slot++];
+    rankedKeys.forEach((key, index) => {
+      const hex = palette[index];
       colorMap.set(key, hex ? (text) => fgHex(hex, text) : dim);
-    }
+    });
     return colorMap;
   }
 
@@ -867,33 +837,11 @@ export function buildSeriesColors(rankedKeys: string[], theme: Theme): Map<strin
     seenAnsi.add(ansi);
     distinctColors.push(color);
   }
-  let slot = 0;
-  for (const key of rankedKeys) {
-    const override = colorOverride(key);
-    if (override) {
-      colorMap.set(key, (text) => theme.fg(override.fallback, text));
-      continue;
-    }
-    const role = distinctColors[slot++];
+  rankedKeys.forEach((key, index) => {
+    const role = distinctColors[index];
     colorMap.set(key, role ? (text) => theme.fg(role, text) : dim);
-  }
+  });
   return colorMap;
-}
-
-/**
- * The same canonical series colors the usage dashboard assigns, keyed by
- * "provider/model" and ranked by all-time spend, for reuse elsewhere (e.g.
- * the footer's model label).
- */
-export async function loadModelSeriesColors(theme: Theme): Promise<Map<string, Paint>> {
-  const records = await loadUsage();
-  const totals = new Map<string, number>();
-  for (const record of records) {
-    const key = `${record.provider}/${record.model}`;
-    totals.set(key, (totals.get(key) ?? 0) + record.cost);
-  }
-  const keys = [...totals.entries()].sort((a, b) => b[1] - a[1]).map(([key]) => key);
-  return buildSeriesColors(keys, theme);
 }
 
 function sessionCost(ctx: ExtensionContext): number {

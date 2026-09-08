@@ -8,7 +8,6 @@ Don't use jargon and speak coherently. State things simply and concisely, like o
 
 ## Coding preferences
 
-- Prioritize readability. Prefer guard clauses and early returns to reduce unnecessary nesting.
 - Use comments sparingly. Add them only to explain non-obvious reasoning or constraints, not what the code does.
 
 ## Searching
