@@ -1,0 +1,65 @@
+{
+  "appVersion": "1.6.0",
+  "dictionaryEntries": [],
+  "exportedAt": "2026-09-08T12:14:45Z",
+  "history": [],
+  "hotkeys": {
+    "hybridHotkeys": [
+      {
+        "isDoubleTap": false,
+        "isFn": false,
+        "keyCode": 49,
+        "modifierFlags": 262144,
+        "modifierKeyCodes": []
+      }
+    ]
+  },
+  "plugins": [
+    {
+      "id": "com.typewhisper.parakeet",
+      "name": "Parakeet",
+      "version": "1.3.1",
+      "wasEnabled": true
+    },
+    {
+      "id": "com.typewhisper.speechanalyzer",
+      "name": "Apple Speech",
+      "version": "1.0.15",
+      "wasEnabled": true
+    }
+  ],
+  "preferences": {
+    "audioDuckingEnabled": true,
+    "audioDuckingLevel": 0.35000000000000003,
+    "dictationRecoveryLanguage": "en",
+    "dictationRecoveryRetentionDays": 1,
+    "dockIconBehaviorWhenMenuBarHidden": "onlyWhileWindowOpen",
+    "fileTranscriptionLanguage": "auto",
+    "indicatorStyle": "overlay",
+    "indicatorTranscriptPreviewFontSizeOffset": 3,
+    "mediaPauseEnabled": false,
+    "preserveClipboard": true,
+    "requireSecondEscapeToCancelRecording": false,
+    "selectedLanguage": "en",
+    "showMenuBarIcon": false
+  },
+  "profiles": [],
+  "promptActions": [],
+  "schemaVersion": 1,
+  "snippets": [
+    {
+      "caseSensitive": false,
+      "isEnabled": true,
+      "replacement": "{{CLIPBOARD}}",
+      "trigger": "current clipboard"
+    },
+    {
+      "caseSensitive": false,
+      "isEnabled": true,
+      "replacement": "{{ TIME }}",
+      "trigger": "current time"
+    }
+  ],
+  "updateChannel": "stable",
+  "workflows": []
+}
