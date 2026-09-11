@@ -30,6 +30,7 @@ pi = [
 [ui.toast]
 herdr.position    = "top-right"
 clipboard.enabled = false
+delivery          = "herdr"
 
 [keys]
 prefix = "ctrl+b"
@@ -38,8 +39,8 @@ prefix = "ctrl+b"
 navigate_workspace_down = "j"
 navigate_workspace_up   = "k"
 new_workspace           = "prefix+shift+c"
-next_workspace     = "alt+j"
-previous_workspace = "alt+k"
+next_workspace          = "alt+j"
+previous_workspace      = "alt+k"
 
 # Agents
 next_agent     = "alt+shift+j"
@@ -57,13 +58,13 @@ new_worktree  = "alt+shift+w"
 open_worktree = "alt+w"
 
 [[keys.command]]
-key         = "alt+o"
+key         = "prefix+o"
 type        = "plugin_action"
 command     = "mjsamuel.even-panes.even-panes"
 description = "evenly resize panes"
 
 [[keys.command]]
-key         = "alt+shift+s"
+key         = "prefix+s"
 type        = "popup"
 command     = "herdr-sessionizer"
 description = "herdr-sessionizer"
@@ -71,10 +72,18 @@ width       = "80%"
 height      = "80%"
 
 [[keys.command]]
-key         = "alt+shift+n"
+key         = "prefix+n"
 type        = "popup"
 command     = "notarizer"
 description = "notarizer"
+width       = "80%"
+height      = "80%"
+
+[[keys.command]]
+key         = "prefix+space"
+type        = "popup"
+command     = "~/Developer/herdr-pallete/dist/herdr-pallete"
+description = "palette"
 width       = "80%"
 height      = "80%"
 
