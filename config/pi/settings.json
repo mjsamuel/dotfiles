@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.85.0",
+  "lastChangelogVersion": "0.85.1",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "medium",
@@ -7,11 +7,18 @@
   "enabledModels": [
     "openai-codex/gpt-5.6-luna:medium",
     "openai-codex/gpt-5.6-sol:medium",
-    "anthropic/claude-fable-5-1:high"
+    "openai-codex/gpt-6-astra:high",
+    "anthropic/claude-fable-5-1:high",
+    "amazon-bedrock/global.xai.grok-4.6:high"
   ],
   "hideThinkingBlock": false,
   "treeFilterMode": "no-tools",
   "packages": [
     "npm:@plannotator/pi-extension"
-  ]
+  ],
+  "showCacheMissNotices": true,
+  "showHardwareCursor": true,
+  "warnings": {
+    "anthropicExtraUsage": false
+  }
 }

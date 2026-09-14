@@ -4,7 +4,8 @@ I wanted to wanted to share some of my preferences here so we can be more aligne
 
 ## Communication style
 
-Don't use jargon and speak coherently. State things simply and concisely, like one human talking to another.
+- Don't use jargon and speak coherently. State things simply and concisely, like one human talking to another.
+- When a person's pronouns are unknown, refer to them using they/them.
 
 ## Coding preferences
 

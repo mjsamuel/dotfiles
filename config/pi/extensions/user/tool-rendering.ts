@@ -18,7 +18,8 @@ type ToolResult = { content: unknown[]; details?: unknown };
 
 const COLLAPSED_OUTPUT_LINES = 3;
 const MAX_COLLAPSED_COMMAND_CHARS = 160;
-const RESULT_CONTENT_MARGIN = 9;
+const LEFT_PADDING = " ";
+const RESULT_CONTENT_MARGIN = 10;
 const ANSI_ESCAPE =
   /[\u001B\u009B][[\]()#;?]*(?:(?:[a-zA-Z\d]*(?:;[-a-zA-Z\d\/#&.:=?%@~_]+)*)?\u0007|(?:(?:\d{1,4}(?:[;:]\d{0,4})*)?[\dA-PR-TZcf-nq-uy=><~]))/g;
 
@@ -108,6 +109,7 @@ function callLine(
       ? "accent"
       : "success";
   const content =
+    LEFT_PADDING +
     theme.fg(bulletColor, "●") +
     " " +
     theme.fg("text", theme.bold(label)) +
@@ -125,7 +127,7 @@ function resultTree(
     lines.length > 0 ? lines : [context.isError ? "Failed" : "Done"];
   const content = rendered
     .map((line, index) => {
-      const branch = index === 0 ? "  ⎿ " : "    ";
+      const branch = index === 0 ? `${LEFT_PADDING}  ⎿ ` : `${LEFT_PADDING}    `;
       return theme.fg("dim", branch) + theme.fg(color, line || " ");
     })
     .join("\n");
@@ -136,10 +138,13 @@ function resultTree(
 // output line cannot make a collapsed tool result arbitrarily tall.
 class PreviewResultTree implements Component {
   private lines: string[] = [];
+  private rawLines: string[] = [];
   private expanded = false;
   private preferTail = false;
   private theme!: Theme;
   private isError = false;
+  private cachedWidth?: number;
+  private cachedLines?: string[];
 
   update(
     lines: string[],
@@ -148,16 +153,44 @@ class PreviewResultTree implements Component {
     theme: Theme,
     isError: boolean,
   ): void {
-    this.lines = lines.flatMap((line) => formatJsonLine(line).split("\n"));
+    const sameLines =
+      lines.length === this.rawLines.length &&
+      lines.every((line, i) => line === this.rawLines[i]);
+    if (
+      sameLines &&
+      expanded === this.expanded &&
+      preferTail === this.preferTail &&
+      theme === this.theme &&
+      isError === this.isError
+    ) {
+      return;
+    }
+
+    if (!sameLines) {
+      this.rawLines = lines;
+      this.lines = lines.flatMap((line) => formatJsonLine(line).split("\n"));
+    }
     this.expanded = expanded;
     this.preferTail = preferTail;
     this.theme = theme;
     this.isError = isError;
+    this.invalidate();
   }
 
-  invalidate(): void {}
+  invalidate(): void {
+    this.cachedWidth = undefined;
+    this.cachedLines = undefined;
+  }
 
   render(width: number): string[] {
+    if (this.cachedLines && this.cachedWidth === width) return this.cachedLines;
+    const result = this.renderUncached(width);
+    this.cachedWidth = width;
+    this.cachedLines = result;
+    return result;
+  }
+
+  private renderUncached(width: number): string[] {
     const color = this.isError ? "error" : "toolOutput";
     // Match Claude Code's safety margin so wrapped output stays within the tool tree.
     const contentWidth = Math.max(width - RESULT_CONTENT_MARGIN, 10);
@@ -179,13 +212,13 @@ class PreviewResultTree implements Component {
         ? visible
         : [this.theme.fg(color, this.isError ? "Failed" : "Done")];
     const result = rendered.map((line, index) => {
-      const branch = index === 0 ? "  ⎿ " : "    ";
+      const branch = index === 0 ? `${LEFT_PADDING}  ⎿ ` : `${LEFT_PADDING}    `;
       return this.theme.fg("dim", branch) + line;
     });
 
     if (hidden > 0) {
       const footer = `… +${hidden} line${hidden === 1 ? "" : "s"} (ctrl+o to expand)`;
-      result.push(this.theme.fg("dim", "    " + footer));
+      result.push(this.theme.fg("dim", `${LEFT_PADDING}    ${footer}`));
     }
     return result;
   }

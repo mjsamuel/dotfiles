@@ -8,7 +8,7 @@ import {
   type TUI,
 } from "@earendil-works/pi-tui";
 import { createHash } from "node:crypto";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
@@ -172,67 +172,100 @@ function usageRecord(
   };
 }
 
+type FileRecord = { record: UsageRecord; fingerprint: string };
+type FileCacheEntry = { mtimeMs: number; size: number; records: FileRecord[] };
+
+// Parsing every session file after each message gets slow as sessions pile up,
+// so cache per file and only re-parse the ones that changed.
+const fileCache = new Map<string, FileCacheEntry>();
+
+async function parseSessionFile(path: string): Promise<FileRecord[]> {
+  let text: string;
+  try {
+    text = await readFile(path, "utf8");
+  } catch {
+    return [];
+  }
+
+  const records: FileRecord[] = [];
+  let selectedProvider = "unknown";
+  let selectedModel = "unknown";
+  for (const line of text.split("\n")) {
+    if (!line.trim()) continue;
+    let entry: any;
+    try {
+      entry = JSON.parse(line);
+    } catch {
+      continue;
+    }
+
+    if (entry.type === "model_change") {
+      selectedProvider = entry.provider || selectedProvider;
+      selectedModel = entry.modelId || selectedModel;
+      continue;
+    }
+
+    const timestamp =
+      finite(entry.message?.timestamp) || Date.parse(entry.timestamp) || Date.now();
+    let record: UsageRecord | undefined;
+    let identity: string | undefined;
+
+    if (entry.type === "message" && entry.message?.role === "assistant") {
+      const message = entry.message;
+      record = usageRecord(message.usage, timestamp, message.provider, message.model);
+      selectedProvider = message.provider || selectedProvider;
+      selectedModel = message.model || selectedModel;
+      identity = message.responseId ||
+        `${message.timestamp}:${message.provider}:${message.model}:${message.usage?.cost?.total}:${entry.id}`;
+    } else if (entry.type === "message" && entry.message?.role === "toolResult" && entry.message.usage) {
+      record = usageRecord(entry.message.usage, timestamp, selectedProvider, selectedModel);
+      identity = `tool:${entry.message.toolCallId || entry.id}:${entry.message.timestamp || entry.timestamp}`;
+    } else if ((entry.type === "compaction" || entry.type === "branch_summary") && entry.usage) {
+      record = usageRecord(entry.usage, timestamp, selectedProvider, selectedModel);
+      identity = `${entry.type}:${entry.id}:${entry.timestamp}`;
+    }
+
+    if (!record || !identity) continue;
+    records.push({ record, fingerprint: createHash("sha1").update(identity).digest("hex") });
+  }
+  return records;
+}
+
 async function loadUsage(): Promise<UsageRecord[]> {
   const files = await findSessionFiles(sessionRoot());
-  const seen = new Set<string>();
-  const records: UsageRecord[] = [];
+  const live = new Set(files);
+  for (const path of fileCache.keys()) {
+    if (!live.has(path)) fileCache.delete(path);
+  }
 
-  await Promise.all(
+  const perFile = await Promise.all(
     files.map(async (path) => {
-      let text: string;
+      let info;
       try {
-        text = await readFile(path, "utf8");
+        info = await stat(path);
       } catch {
-        return;
+        return [];
       }
-
-      let selectedProvider = "unknown";
-      let selectedModel = "unknown";
-      for (const line of text.split("\n")) {
-        if (!line.trim()) continue;
-        let entry: any;
-        try {
-          entry = JSON.parse(line);
-        } catch {
-          continue;
-        }
-
-        if (entry.type === "model_change") {
-          selectedProvider = entry.provider || selectedProvider;
-          selectedModel = entry.modelId || selectedModel;
-          continue;
-        }
-
-        const timestamp =
-          finite(entry.message?.timestamp) || Date.parse(entry.timestamp) || Date.now();
-        let record: UsageRecord | undefined;
-        let identity: string | undefined;
-
-        if (entry.type === "message" && entry.message?.role === "assistant") {
-          const message = entry.message;
-          record = usageRecord(message.usage, timestamp, message.provider, message.model);
-          selectedProvider = message.provider || selectedProvider;
-          selectedModel = message.model || selectedModel;
-          identity = message.responseId ||
-            `${message.timestamp}:${message.provider}:${message.model}:${message.usage?.cost?.total}:${entry.id}`;
-        } else if (entry.type === "message" && entry.message?.role === "toolResult" && entry.message.usage) {
-          record = usageRecord(entry.message.usage, timestamp, selectedProvider, selectedModel);
-          identity = `tool:${entry.message.toolCallId || entry.id}:${entry.message.timestamp || entry.timestamp}`;
-        } else if ((entry.type === "compaction" || entry.type === "branch_summary") && entry.usage) {
-          record = usageRecord(entry.usage, timestamp, selectedProvider, selectedModel);
-          identity = `${entry.type}:${entry.id}:${entry.timestamp}`;
-        }
-
-        if (!record || !identity) continue;
-        // Forked sessions copy prior messages. Deduplicate copied API responses globally.
-        const fingerprint = createHash("sha1").update(identity).digest("hex");
-        if (seen.has(fingerprint)) continue;
-        seen.add(fingerprint);
-        records.push(record);
+      const cached = fileCache.get(path);
+      if (cached && cached.mtimeMs === info.mtimeMs && cached.size === info.size) {
+        return cached.records;
       }
+      const records = await parseSessionFile(path);
+      fileCache.set(path, { mtimeMs: info.mtimeMs, size: info.size, records });
+      return records;
     }),
   );
 
+  // Forked sessions copy prior messages. Deduplicate copied API responses globally.
+  const seen = new Set<string>();
+  const records: UsageRecord[] = [];
+  for (const fileRecords of perFile) {
+    for (const { record, fingerprint } of fileRecords) {
+      if (seen.has(fingerprint)) continue;
+      seen.add(fingerprint);
+      records.push(record);
+    }
+  }
   return records.sort((a, b) => a.timestamp - b.timestamp);
 }
 

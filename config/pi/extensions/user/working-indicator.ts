@@ -26,14 +26,8 @@ const WORKING_VERBS = [
   "Whatchamacalliting", "Whirlpooling", "Whirring", "Whisking", "Wibbling", "Working", "Wrangling", "Zesting", "Zigzagging",
 ] as const;
 
-function indicatorColor(theme: Theme, text: string): string {
-  const match = /38;2;(\d+);(\d+);(\d+)/.exec(theme.getFgAnsi("text"));
-  if (!match) return theme.fg("text", text);
-
-  const [r, g, b] = [Number(match[1]), Number(match[2]), Number(match[3])];
-  const textLuminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  const rgb = textLuminance < 0.5 ? "0;0;0" : "255;255;255";
-  return `\x1b[38;2;${rgb}m${text}\x1b[39m`;
+function workingMessage(theme: Theme, verb: string): string {
+  return theme.fg("muted", `${verb}…`);
 }
 
 export default function (pi: ExtensionAPI) {
@@ -49,25 +43,24 @@ export default function (pi: ExtensionAPI) {
     return verb;
   };
   pi.on("session_start", (_event, ctx) => {
-    const frame = (text: string) => indicatorColor(ctx.ui.theme, text);
+    const { theme } = ctx.ui;
+    const frame = (active: 0 | 1 | 2) =>
+      [0, 1, 2]
+        .map((index) => (index === active ? theme.fg("accent", "●") : theme.fg("dim", "∙")))
+        .join("");
 
     ctx.ui.setWorkingIndicator({
-      frames: [
-        frame("●∙∙"),
-        frame("∙●∙"),
-        frame("∙∙●"),
-        frame("∙●∙"),
-      ],
+      frames: [frame(0), frame(1), frame(2), frame(1)],
       intervalMs: 180,
     });
   });
 
   pi.on("agent_start", (_event, ctx) => {
     if (verbRefreshTimer) clearTimeout(verbRefreshTimer);
-    ctx.ui.setWorkingMessage(indicatorColor(ctx.ui.theme, `${chooseVerb()}…`));
+    ctx.ui.setWorkingMessage(workingMessage(ctx.ui.theme, chooseVerb()));
 
     verbRefreshTimer = setTimeout(() => {
-      ctx.ui.setWorkingMessage(indicatorColor(ctx.ui.theme, `${chooseVerb()}…`));
+      ctx.ui.setWorkingMessage(workingMessage(ctx.ui.theme, chooseVerb()));
       verbRefreshTimer = undefined;
     }, 1_000);
   });

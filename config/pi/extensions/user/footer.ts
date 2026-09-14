@@ -122,10 +122,33 @@ export default function footer(pi: ExtensionAPI) {
     }
 
     ctx.ui.setEditorComponent((tui, theme, keybindings) => new FixedBorderEditor(tui, theme, keybindings));
+
+    // Usage totals and context estimation walk the whole session, and the footer
+    // renders on every keystroke, so only recompute when the session has changed.
+    let statsKey: string | undefined;
+    let cachedUsage: ReturnType<typeof usageStats> | undefined;
+    let cachedContext: ReturnType<typeof ctx.getContextUsage> | undefined;
+    const sessionStats = () => {
+      const key = [
+        ctx.sessionManager.getEntries().length,
+        ctx.sessionManager.getLeafId(),
+        ctx.model?.id,
+        ctx.thinkingLevel,
+      ].join("|");
+      if (key !== statsKey || !cachedUsage) {
+        statsKey = key;
+        cachedUsage = usageStats(ctx);
+        cachedContext = ctx.getContextUsage();
+      }
+      return { usage: cachedUsage, context: cachedContext };
+    };
+
     ctx.ui.setFooter((_tui, theme, footerData) => ({
-      invalidate() {},
+      invalidate() {
+        statsKey = undefined;
+      },
       render(width: number): string[] {
-        const usage = usageStats(ctx);
+        const { usage, context } = sessionStats();
         const statusEntries = Array.from(footerData.getExtensionStatuses().entries())
           .sort(([a], [b]) => a.localeCompare(b));
         const usageStatus = statusEntries.find(([key]) => key === "model-usage")?.[1];
@@ -144,7 +167,6 @@ export default function footer(pi: ExtensionAPI) {
         }
         if (cost) parts.push(cost);
 
-        const context = ctx.getContextUsage();
         const contextWindow = context?.contextWindow ?? ctx.model?.contextWindow ?? 0;
         const contextPercent = context?.percent;
         const formattedPercent = contextPercent === null || contextPercent === undefined
