@@ -53,3 +53,15 @@ local lsp_config_names = vim.iter(installed_packages)
     end)
     :totable()
 vim.lsp.enable(lsp_config_names)
+
+-- diagnostic icon
+local diagnostic_signs = vim.iter(vim.diagnostic.severity)
+    :fold({}, function(acc, _, v)
+      acc[v] = '●'
+      return acc
+    end)
+vim.diagnostic.config({
+  severity_sort = true,
+  float = { border = "rounded" },
+  signs = { text = diagnostic_signs }
+})

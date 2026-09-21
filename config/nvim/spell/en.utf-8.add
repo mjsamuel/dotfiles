@@ -9,3 +9,5 @@ terraform
 fallback
 metadata
 DCR
+LLM
+repo

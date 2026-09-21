@@ -52,19 +52,6 @@ set.secure = true -- disable potentially harmful commands in project config file
 vim.g.loaded_sql_completion = 0
 vim.g.omni_sql_no_default_maps = 1
 
-vim.diagnostic.config({
-  severity_sort = true,
-  float = { border = "rounded" },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "",
-      [vim.diagnostic.severity.WARN] = "",
-      [vim.diagnostic.severity.INFO] = "",
-      [vim.diagnostic.severity.HINT] = "",
-    }
-  }
-})
-
 -- set background based on os theme
 local function get_os_appearance()
   local os_theme_file = os.getenv("OS_APPEARANCE_FILE") or os.getenv("XDG_CACHE_HOME") .. "/os_theme"
