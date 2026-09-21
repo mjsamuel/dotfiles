@@ -4,6 +4,7 @@ import {
   matchesKey,
   truncateToWidth,
   visibleWidth,
+  wrapTextWithAnsi,
   type Component,
   type TUI,
 } from "@earendil-works/pi-tui";
@@ -534,7 +535,7 @@ class UsageDashboard implements Component {
       return cells;
     });
 
-    // Pass 2: in-bar names, centered on segment runs of ≥2 full rows that fit.
+    // Only full rows can hold text without exaggerating a segment's height.
     const inBarLabels = columns.map((cells) => {
       const labels = new Map<number, string>();
       if (barWidth < 6) return labels;
@@ -542,11 +543,15 @@ class UsageDashboard implements Component {
       let runKey: string | undefined;
       const flush = (end: number) => {
         const run = end - runStart;
-        if (runKey === undefined || runStart < 0 || run < 2) return;
-        const name = runKey;
-        if (visibleWidth(name) <= barWidth - 2) {
-          labels.set(runStart + Math.floor((run - 1) / 2), name);
+        if (runKey === undefined || runStart < 0 || run < 1) return;
+        const nameWidth = barWidth - 2;
+        const wrapped = wrapTextWithAnsi(runKey, nameWidth);
+        const nameLines = wrapped.slice(0, run);
+        if (wrapped.length > run) {
+          nameLines[run - 1] = wrapTextWithAnsi(wrapped.slice(run - 1).join(""), nameWidth - 1)[0] + "…";
         }
+        const top = runStart + Math.floor((run + nameLines.length - 1) / 2);
+        nameLines.forEach((name, index) => labels.set(top - index, name));
       };
       for (let r = 0; r < chartHeight; r++) {
         const cell = cells[r]!;

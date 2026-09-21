@@ -106,7 +106,7 @@ function callLine(
   const bulletColor = context.isError
     ? "error"
     : context.isPartial
-      ? "accent"
+      ? "warning"
       : "success";
   const content =
     LEFT_PADDING +

@@ -42,7 +42,7 @@ Everything inside `<doc>` is freeform — add, remove, reorder, or omit to fit t
 - `<callout label="L" [warn]>` — aside; `warn` for risks and caveats.
 - `<cols [n="3"]>` — 2- or 3-up row, short sibling blocks only.
 - `<codeblock [lang="ts"] [loc="src/a.ts"]>` — omit `lang` for logs and command output; line numbers appear only with `lang`.
-- `<mermaid [caption="C"]>` — source only, rendered live. Prefer a diagram when relationships or flow read better than prose.
+- `<mermaid [caption="C"]>` — source only, rendered live. Diagrams have a 280px minimum height, preserve their proportions, and scroll horizontally when too wide. The shared template controls this via `--mermaid-min-height`; printed diagrams fit the page. Prefer top-to-bottom layouts for long flows to reduce scrolling.
 - `<diff file="P" kind="proposed|actual" [closed]>` — paste a unified diff; lines are classified. Always label which kind.
 - `<stepper>` with `<step title="T" [loc="P"]>` — a sequence.
 - `<in>`, `<out>`, `<err>` — a step's I/O, one literal block each; adjacent ones join into a single frame. `label="L"` renames a row (e.g. Request/Response); `closed` collapses a long one to its first line.
