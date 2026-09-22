@@ -33,8 +33,7 @@ alias \
 	note="notarizer" \
 	notes="notarizer" \
 	tf="terraform" \
-	tree='eza --tree --icons --group-directories-first --git-ignore' \
-	h='herdr'
+	tree='eza --tree --icons --group-directories-first --git-ignore'
 
 # ssh
 s() {
@@ -46,14 +45,6 @@ s() {
 alias \
 	pr='gh pr view --web' \
 	repo='gh repo view --web'
-
-g() {
-	if [ "$#" -ne 0 ]; then
-		git "$@"
-	else
-		git status
-	fi
-}
 
 # youtube-dl
 alias \
@@ -69,14 +60,6 @@ alias \
 # ai junk
 alias \
 	cursor='cursor-agent'
-
-ai() {
-	cat <<-EOF | fzf | sh
-		claude
-		cursor-agent
-		pi
-	EOF
-}
 
 # typo guards
 alias \
