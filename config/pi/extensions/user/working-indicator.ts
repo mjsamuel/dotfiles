@@ -42,18 +42,6 @@ export default function (pi: ExtensionAPI) {
     previousVerb = verb;
     return verb;
   };
-  pi.on("session_start", (_event, ctx) => {
-    const { theme } = ctx.ui;
-    const frame = (active: 0 | 1 | 2) =>
-      [0, 1, 2]
-        .map((index) => (index === active ? theme.fg("accent", "●") : theme.fg("dim", "∙")))
-        .join("");
-
-    ctx.ui.setWorkingIndicator({
-      frames: [frame(0), frame(1), frame(2), frame(1)],
-      intervalMs: 180,
-    });
-  });
 
   pi.on("agent_start", (_event, ctx) => {
     if (verbRefreshTimer) clearTimeout(verbRefreshTimer);

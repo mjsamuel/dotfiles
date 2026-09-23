@@ -17,6 +17,7 @@ const MODEL_COLORS: ModelColor[] = [
   { pattern: /sol/i, dark: "#e3b341", light: "#9a6700", fallback: "warning" },
   { pattern: /terra/i, dark: "#3fb950", light: "#1a7f37", fallback: "success" },
   { pattern: /fable-?5/i, dark: "#d95926", light: "#e9561c", fallback: "syntaxNumber" },
+  { pattern: /opus/i, dark: "#a371f7", light: "#8250df", fallback: "syntaxKeyword" },
   { pattern: /grok/i, dark: "#9198a1", light: "#59636e", fallback: "dim" },
 ];
 
