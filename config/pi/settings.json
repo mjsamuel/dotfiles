@@ -7,10 +7,11 @@
   "enabledModels": [
     "openai-codex/gpt-6-luna:high",
     "openai-codex/gpt-6-sol:medium",
+    "anthropic/claude-opus-5-5:medium",
+    "anthropic/claude-fable-5-1:high",
     "openai-codex/gpt-6-astra:high",
-    "anthropic/claude-opus-5-5:high",
-    "anthropic/claude-fable-5-1:medium",
-    "amazon-bedrock/global.xai.grok-4.7:high"
+    "amazon-bedrock/global.xai.grok-4.7:high",
+    "amazon-bedrock/global.moonshotai.kimi-k3"
   ],
   "hideThinkingBlock": false,
   "treeFilterMode": "no-tools",
