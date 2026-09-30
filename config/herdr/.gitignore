@@ -1,5 +1,5 @@
-.plugins.lock
 *.log
-*.sock
+*.sock*
 session.json
 release-notes.json
+session-snapshots/

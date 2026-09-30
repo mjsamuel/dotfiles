@@ -33,23 +33,10 @@ main() {
 	if [ -n "$workspace_id" ]; then
 		herdr workspace focus "$workspace_id" >/dev/null
 	else
-		workspace=$(herdr workspace create --cwd "$selected" --label "$selected_name" --focus) || exit 1
-		workspace_id=$(printf '%s' "$workspace" | jq -r '.result.workspace.workspace_id')
-		initial_tab_id=$(printf '%s' "$workspace" | jq -r '.result.tab.tab_id')
-
-		create_tab editor nvim || exit 1
-		create_tab agents pi || exit 1
-		create_tab git lazygit || exit 1
-		herdr tab close "$initial_tab_id" >/dev/null || exit 1
+		herdr workspace create --cwd "$selected" --label "$selected_name" --focus
 	fi
 
 	[ -n "$HERDR_ENV" ] || herdr
-}
-
-create_tab() {
-	created_tab=$(herdr tab create --workspace "$workspace_id" --cwd "$selected" --label "$1" --no-focus) || return 1
-	created_pane_id=$(printf '%s' "$created_tab" | jq -r '.result.root_pane.pane_id')
-	herdr pane run "$created_pane_id" "$2" >/dev/null
 }
 
 main "$@"
