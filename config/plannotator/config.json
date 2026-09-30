@@ -1,0 +1,16 @@
+{
+  "displayName": "Matthew",
+  "reviewAnalysis": {
+    "semanticDiff": true,
+    "callFlow": false
+  },
+  "diffOptions": {
+    "diffStyle": "unified",
+    "defaultDiffType": "since-base",
+    "hideWhitespace": true,
+    "diffIndicators": "bars",
+    "overflow": "wrap",
+    "lineBgIntensity": "subtle",
+    "lineDiffType": "word-alt"
+  }
+}
