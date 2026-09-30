@@ -19,5 +19,6 @@ __pycache__/
 # AI junk
 .claude/settings.local.json
 .claude/worktrees
-CLAUDE.local.md
 AGENTS.local.md
+
+.playwright-mcp

@@ -1,19 +1,19 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "0.99.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-6-sol",
+  "defaultModel": "gpt-6.1-sol",
   "defaultThinkingLevel": "medium",
   "theme": "rose-pine-dawn/rose-pine",
   "enabledModels": [
     "openai-codex/gpt-6-luna:high",
-    "openai-codex/gpt-6-sol:medium",
+    "openai-codex/gpt-6.1-sol:medium",
     "anthropic/claude-opus-5-5:medium",
     "anthropic/claude-fable-5-1:high",
     "openai-codex/gpt-6-astra:high",
     "amazon-bedrock/global.xai.grok-4.7:high",
     "amazon-bedrock/global.moonshotai.kimi-k3"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "treeFilterMode": "no-tools",
   "packages": [
     "npm:@plannotator/pi-extension"
@@ -22,5 +22,6 @@
   "showHardwareCursor": true,
   "warnings": {
     "anthropicExtraUsage": false
-  }
+  },
+  "tuiMode": "fullscreen"
 }

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "canva-otter": {
+      "command": "otter",
+      "args": ["mcp", "serve"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--isolated"]
+    }
+  }
+}

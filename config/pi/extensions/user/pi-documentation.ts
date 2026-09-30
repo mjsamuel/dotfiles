@@ -9,8 +9,7 @@ import { dirname, join } from "node:path";
 import { tmpdir } from "node:os";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-const DOCUMENTATION_HEADER_PREFIX =
-  "Pi documentation (read only when the user asks about pi itself";
+const DOCS_BLOCK = /<docs>\n([\s\S]*?)\n<\/docs>/;
 const SKILL_DESCRIPTION =
   "Reference Pi documentation and examples. Use when asked about Pi itself, its SDK, extensions, themes, skills, prompt templates, TUI, keybindings, providers, models, packages, configuration, or environment variables.";
 
@@ -42,36 +41,20 @@ function getExistingGeneratedSkillPath(): string | undefined {
   return existsSync(skillPath) ? skillPath : undefined;
 }
 
-/** Extract the documentation header and its contiguous list of bullet points. */
+/** Extract the contents of the `<docs>` section. */
 export function extractPiDocumentation(systemPrompt: string): string | undefined {
-  const lines = systemPrompt.split("\n");
-  const start = lines.findIndex((line) =>
-    line.startsWith(DOCUMENTATION_HEADER_PREFIX),
-  );
-
-  if (start === -1) return undefined;
-
-  let end = start + 1;
-  while (end < lines.length && lines[end].startsWith("- ")) {
-    end += 1;
-  }
-
-  if (end === start + 1) return undefined;
-
-  return lines.slice(start, end).join("\n");
+  const content = systemPrompt.match(DOCS_BLOCK)?.[1]?.trim();
+  return content || undefined;
 }
 
-/** Remove only the block extracted earlier, preserving one blank separator. */
-export function removePiDocumentation(
-  systemPrompt: string,
-  section: string,
-): string {
-  const sectionStart = systemPrompt.indexOf(section);
-  if (sectionStart === -1) return systemPrompt;
+/** Remove the whole `<docs>` section, preserving one blank separator. */
+export function removePiDocumentation(systemPrompt: string): string {
+  const match = DOCS_BLOCK.exec(systemPrompt);
+  if (!match) return systemPrompt;
 
-  const before = systemPrompt.slice(0, sectionStart).replace(/\n+$/, "");
+  const before = systemPrompt.slice(0, match.index).replace(/\n+$/, "");
   const after = systemPrompt
-    .slice(sectionStart + section.length)
+    .slice(match.index + match[0].length)
     .replace(/^\n+/, "");
 
   if (!before) return after;
@@ -130,10 +113,7 @@ export default function piDocumentation(pi: ExtensionAPI): void {
 
     if (!documentationSection) return undefined;
 
-    const systemPrompt = removePiDocumentation(
-      event.systemPrompt,
-      documentationSection,
-    );
+    const systemPrompt = removePiDocumentation(event.systemPrompt);
     if (systemPrompt === event.systemPrompt) return undefined;
 
     return { systemPrompt };
