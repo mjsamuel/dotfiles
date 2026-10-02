@@ -11,7 +11,7 @@ Look at recently merged PRs and Git history for examples. Prefer a concise, huma
 
 ## Body
 
-The body should be similarly concise and human readable. Use big pictures and few words.
+The body should be similarly concise and human readable. Use fewer words and more pictures/diagrams.
 
 The following structure should be used in lieu of any project conventions:
 
@@ -22,12 +22,15 @@ The following structure should be used in lieu of any project conventions:
 
 ### Validation
 
-- A validation checklist
+{{ A validation checklist }}
 
 <details>
 <summary>Demo</summary>
 
-{{ A place to put any screenshots or videos that demo the change }}
+{{
+    A place to put any screenshots or videos that demo the change.
+    Can omit the details/summary entirely if there's nothing to demo.
+}}
 
 </details>
 ```

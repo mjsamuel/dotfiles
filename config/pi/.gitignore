@@ -1,7 +1,7 @@
-sessions/
-npm/
 auth.json
+bin/
+install/
 models-store.json
+npm/
+sessions/
 trust.json
-
-!settings.json
