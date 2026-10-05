@@ -2,6 +2,10 @@ onboarding = false
 
 [terminal]
 new_cwd = "follow"
+kitty_graphics = true
+
+[worktrees]
+directory = "~/.local/share/worktrees"
 
 [theme]
 auto_switch = true
@@ -36,22 +40,16 @@ delivery          = "herdr"
 prefix = "ctrl+b"
 
 # Workspaces
-navigate_workspace_down = "j"
-navigate_workspace_up   = "k"
-new_workspace           = "prefix+shift+c"
-next_workspace          = "alt+j"
-previous_workspace      = "alt+k"
-
-# Agents
-next_agent     = "alt+shift+j"
-previous_agent = "alt+shift+k"
+navigate_workspace_down = ["j", "down"]
+navigate_workspace_up   = ["k", "up"]
 
 # Tabs
 move_tab_next     = "alt+>"
 move_tab_previous = "alt+<"
 
 # Panes
-last_pane        = "alt+l"
+last_pane = ["prefix+l", "alt+l"]
+clear_pane = "alt+k"
 
 # Worktrees
 new_worktree  = "alt+shift+w"
@@ -64,7 +62,7 @@ command     = "mjsamuel.even-panes.even-panes"
 description = "evenly resize panes"
 
 [[keys.command]]
-key         = "prefix+s"
+key         = ["prefix+s", "alt+shift+s"]
 type        = "popup"
 command     = "herdr-sessionizer"
 description = "herdr-sessionizer"
@@ -86,9 +84,3 @@ command = "exec \"${SHELL:-sh}\""
 description = "open scratch terminal"
 width = "80%"
 height = "80%"
-
-[worktrees]
-directory = "~/.local/share/worktrees"
-
-[experimental]
-kitty_graphics = true
