@@ -5,7 +5,7 @@
     "callFlow": false
   },
   "diffOptions": {
-    "diffStyle": "unified",
+    "diffStyle": "split",
     "defaultDiffType": "since-base",
     "hideWhitespace": true,
     "diffIndicators": "bars",
