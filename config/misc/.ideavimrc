@@ -99,7 +99,8 @@ imap <Right> <Action>(copilot.applyInlays)
 " IDE equivalents for Oil and Snacks explorer
 nmap <Bslash> <Action>(ActivateProjectToolWindow)
 nmap <C-e> <Action>(SelectInProjectView)
-command! Path action CopyPaths
+command! Path action CopyContentRootPath
+command! PathFull action CopyAbsolutePath
 
 " format
 nmap <leader>f <Action>(ReformatCode)
