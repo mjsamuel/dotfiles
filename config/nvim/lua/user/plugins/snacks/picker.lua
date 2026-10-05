@@ -82,6 +82,25 @@ M = {
         hidden = {}, -- show preview by default
       }
     },
+    explorer = {
+      layout = {
+        hidden = { "input" },
+      },
+      win = {
+        list = {
+          -- unset all keybindings
+          keys = vim.iter({
+                "<BS>", "l", "h", "a", "d", "r", "c", "m", "o", "P", "y", "p", "u",
+                "<c-c>", "<leader>/", "<c-t>", ".", "I", "H", "Z", "]g", "[g", "]d", "[d",
+                "]w", "[w", "]e", "[e", "/", "<Esc>",
+              })
+              :fold({}, function(acc, key)
+                acc[key] = false
+                return acc
+              end),
+        },
+      },
+    },
   },
   actions = {
     trouble_open = function(picker)
@@ -97,7 +116,7 @@ M = {
     input = {
       keys = {
         ["<Tab>"] = { "toggle_preview", mode = { "i", "n" } },
-        ["<C-space>"] = { "toggle_live", mode = { "i", "n" } },
+        ["<S-Tab>"] = { "toggle_live", mode = { "i", "n" } },
         ["<C-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
         ["<C-f>"] = { "toggle_fullscreen", mode = { "i", "n" } },
         ["<C-t>"] = { "trouble_open", mode = { "i", "n" } },

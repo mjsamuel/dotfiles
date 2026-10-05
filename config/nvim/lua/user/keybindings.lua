@@ -89,9 +89,11 @@ local function make(make_args)
 end
 keymap.set("n", "gm", function() make() end, { silent = true })
 
--- misc
+-- file browsers
 keymap.set("n", "\\", function() require("oil").open() end, { silent = true })
-keymap.set("n", "<C-e>", function() require("snacks").explorer.reveal() end, { silent = true })
+keymap.set("n", "<C-e>", function()
+  require("snacks").explorer.open({ follow_file = true })
+end, { silent = true })
 
 -- copy to system clipboard
 keymap.set("n", "Y", function()
