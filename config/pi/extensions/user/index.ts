@@ -6,12 +6,14 @@ import herdrAgentSummary from "./herdr-agent-summary";
 import modelUsage from "./model-usage";
 import piDocumentation from "./pi-documentation";
 import { registerPromptStash } from "./prompt-stash";
+import { registerSlashCommandGuard } from "./slash-command-guard";
 import { registerToolRendering } from "./tool-rendering";
 import workingIndicator from "./working-indicator";
 
 export default function user(pi: ExtensionAPI) {
   registerClearCommand(pi);
   registerExitCommand(pi);
+  registerSlashCommandGuard(pi);
   footer(pi);
   herdrAgentSummary(pi);
   modelUsage(pi);

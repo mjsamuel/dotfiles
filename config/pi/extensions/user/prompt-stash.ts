@@ -1,5 +1,5 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { mkdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
@@ -13,24 +13,24 @@ function isNotFound(error: unknown): boolean {
   return (error as NodeJS.ErrnoException).code === "ENOENT";
 }
 
-async function saveStash(prompt: string): Promise<void> {
-  await mkdir(dirname(stashPath), { recursive: true, mode: 0o700 });
+function saveStash(prompt: string): void {
+  mkdirSync(dirname(stashPath), { recursive: true, mode: 0o700 });
   const temporaryPath = `${stashPath}.${process.pid}.${Date.now()}`;
-  await writeFile(temporaryPath, prompt, { mode: 0o600 });
-  await rename(temporaryPath, stashPath);
+  writeFileSync(temporaryPath, prompt, { mode: 0o600 });
+  renameSync(temporaryPath, stashPath);
 }
 
-async function consumeStash(): Promise<string | undefined> {
+function consumeStash(): string | undefined {
   let prompt: string;
   try {
-    prompt = await readFile(stashPath, "utf8");
+    prompt = readFileSync(stashPath, "utf8");
   } catch (error) {
     if (isNotFound(error)) return undefined;
     throw error;
   }
 
   try {
-    await unlink(stashPath);
+    unlinkSync(stashPath);
   } catch (error) {
     if (isNotFound(error)) return undefined;
     throw error;
@@ -41,17 +41,18 @@ async function consumeStash(): Promise<string | undefined> {
 export function registerPromptStash(pi: ExtensionAPI) {
   pi.registerShortcut("ctrl+shift+s", {
     description: "Stash or restore the current prompt",
-    handler: async (ctx) => {
+    // Pi redraws after key handling; finish editor updates before that redraw.
+    handler: (ctx) => {
       const currentPrompt = ctx.ui.getEditorText();
 
       try {
         if (currentPrompt.length === 0) {
-          const stashedPrompt = await consumeStash();
+          const stashedPrompt = consumeStash();
           if (stashedPrompt !== undefined) ctx.ui.setEditorText(stashedPrompt);
           return;
         }
 
-        await saveStash(currentPrompt);
+        saveStash(currentPrompt);
         ctx.ui.setEditorText("");
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);

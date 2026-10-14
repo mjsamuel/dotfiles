@@ -11,6 +11,7 @@ I wanted to wanted to share some of my preferences here so we can be more aligne
 ## Coding preferences
 
 - Use comments sparingly. Add them only to explain non-obvious reasoning or constraints, not what the code does.
+- Make small, atomic commits along the way - it makes it easier for me to review later on
 
 ## Searching
 
