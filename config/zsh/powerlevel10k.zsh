@@ -2,7 +2,7 @@
   emulate -L zsh -o extended_glob
   unset -m '(POWERLEVEL9K_*|DEFAULT_USER)~POWERLEVEL9K_GITSTATUS_DIR'
 
-  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir vcs newline prompt_char)
+  typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir git_branch vcs newline prompt_char)
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=()
   typeset -g POWERLEVEL9K_MODE=ascii
   typeset -g POWERLEVEL9K_BACKGROUND=
@@ -21,13 +21,22 @@
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 
   typeset -g POWERLEVEL9K_VCS_BACKENDS=(git)
-  typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=0
-  typeset -g POWERLEVEL9K_VCS_FOREGROUND=4
+  typeset -g POWERLEVEL9K_VCS_MAX_SYNC_LATENCY_SECONDS=0
+  typeset -g POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY=-1
+  typeset -g POWERLEVEL9K_VCS_{STAGED,UNSTAGED,UNTRACKED,CONFLICTED}_MAX_NUM=1
+  typeset -g POWERLEVEL9K_VCS_FOREGROUND=3
   typeset -g POWERLEVEL9K_VCS_VISUAL_IDENTIFIER_EXPANSION=
   typeset -g POWERLEVEL9K_VCS_DISABLE_GITSTATUS_FORMATTING=true
-  # Show the commit instead of a branch when HEAD is detached; escape prompt sequences.
-  typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${${(V)${VCS_STATUS_LOCAL_BRANCH:-${VCS_STATUS_COMMIT[1,8]}}}//\%/%%}'
+  typeset -g POWERLEVEL9K_VCS_CONTENT_EXPANSION='${${VCS_STATUS_NUM_STAGED:#0}:++}${${VCS_STATUS_NUM_UNSTAGED:#0}:+~}${${VCS_STATUS_NUM_UNTRACKED:#0}:+?}${${VCS_STATUS_NUM_CONFLICTED:#0}:+!}'
   typeset -g POWERLEVEL9K_VCS_LOADING_CONTENT_EXPANSION=
+
+  function prompt_git_branch() {
+    local branch
+    branch=$(command git symbolic-ref --quiet --short HEAD 2>/dev/null) ||
+      branch=$(command git rev-parse --verify --short=8 HEAD 2>/dev/null) || return
+    # Escape control characters and prompt sequences in branch names.
+    p10k segment -f 4 -t "${${(V)branch}//\%/%%}"
+  }
 
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_{VIINS,VICMD,VIVIS,VIOWR}_CONTENT_EXPANSION='→'
   typeset -g POWERLEVEL9K_PROMPT_CHAR_{OK,ERROR}_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=
