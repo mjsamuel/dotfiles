@@ -1,17 +1,18 @@
 ---
 name: raise-pr
-description: Use when asked to raise or create a PR.
+description: Use when asked to raise/create or update a PR.
 ---
+
+## Guiding light
+
+Be as concise as possible - use few words and more pictures/diagrams.
 
 ## Title
 
 PR titles usually become commit messages, so follow the repository's title conventions.
-
-Look at recently merged PRs and Git history for examples. Prefer a concise, human-readable title that explains why the change matters.
+Prefer a human-readable title that explains why the change matters.
 
 ## Body
-
-The body should be similarly concise and human readable. Use fewer words and more pictures/diagrams.
 
 The following structure should be used in lieu of any project conventions:
 
@@ -28,11 +29,25 @@ The following structure should be used in lieu of any project conventions:
 <summary>Demo</summary>
 
 {{
-    A place to put any screenshots or videos that demo the change.
+    A place to put screenshots/videos that demo the change.
     Can omit the details/summary entirely if there's nothing to demo.
 }}
 
 </details>
+```
+
+## Attachments
+
+The GitHub CLI now supports adding attachments!
+
+For example:
+
+```sh
+gh pr create \
+  --title "PULL-REQUEST-TITLE" \
+  --body-file PATH/TO/BODY-FILE \
+  --attach PATH/TO/FIRST-IMAGE \
+  --attach PATH/TO/SECOND-IMAGE
 ```
 
 ## Stacked branches
