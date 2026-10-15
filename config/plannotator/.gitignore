@@ -6,7 +6,9 @@ migrations/
 review-progress/
 semantic-diff/
 sessions/
+update-notes/
 vendor/
 
 install-flags.json
 install-prefs
+update-state.json
