@@ -46,14 +46,14 @@ navigate_workspace_up   = ["k", "up"]
 # Tabs
 move_tab_next     = "alt+>"
 move_tab_previous = "alt+<"
+switch_tab        = ["prefix+1..9", "alt+1..9"]
 
 # Panes
-last_pane = ["prefix+l", "alt+l"]
+last_pane = ["alt+l"]
 clear_pane = "alt+k"
 
 # Worktrees
-new_worktree  = "alt+shift+w"
-open_worktree = "alt+w"
+open_worktree = ["prefix+ctrl+w"]
 
 [[keys.command]]
 key         = "prefix+o"
