@@ -85,6 +85,7 @@ M = {
     explorer = {
       layout = {
         hidden = { "input" },
+        layout = { position = "right" },
       },
       win = {
         list = {
