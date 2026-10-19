@@ -43,6 +43,23 @@ command.set("Github", function(args)
   require("snacks").gitbrowse.open(opts)
 end, { nargs = 0, range = true })
 
+-- :Review [base] diffs against the fork point (or base)
+command.set("Review", function(args)
+  local ref = args.args ~= "" and args.args or utils.find_fork_point()
+  local merge_base = ref and utils.git("merge-base", "HEAD", ref)
+  if not merge_base then
+    vim.notify("Could not determine fork point", vim.log.levels.ERROR)
+    return
+  end
+
+  local gitsigns = require("gitsigns")
+  gitsigns.change_base(merge_base[1], true, function(err)
+    if err then return end
+    gitsigns.setqflist("all")
+    vim.notify("Reviewing against " .. ref)
+  end)
+end, { nargs = "?" })
+
 -- lsp
 keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end) -- [f]ormat
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)                  -- [D]iagnostics
