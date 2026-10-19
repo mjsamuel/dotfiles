@@ -52,6 +52,7 @@
     lol = "log --oneline --decorate"
     oops = "!git log --pretty=format:%B -1 | osc52 && git reset HEAD~1"
     worktree-clean = "!git-worktree-clean"
+    get = "!f() { git fetch origin \"refs/heads/$1\" && git switch --no-track -c \"$1\" FETCH_HEAD; }; f"
 
 [includeIf "gitdir/i:~/work/"]
     path = ~/work/.gitconfig
