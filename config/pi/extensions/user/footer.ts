@@ -107,18 +107,7 @@ export default function footer(pi: ExtensionAPI) {
         // Pi updates this property when effort changes, so restore the muted
         // border immediately before each render.
         this.borderColor = (text) => ctx.ui.theme.fg("dim", text);
-        const lines = super.render(width);
-        const sessionName = ctx.sessionManager.getSessionName()?.trim();
-
-        if (!sessionName || lines.length === 0 || width < 4) return lines;
-
-        const name = truncateToWidth(sessionName, Math.max(0, width - 4), "");
-        const label = ` ${name} `;
-        const labelWidth = visibleWidth(label);
-        const prefix = this.borderColor("─");
-        const suffix = this.borderColor("─".repeat(Math.max(0, width - 1 - labelWidth)));
-        lines[0] = prefix + this.borderColor(label) + suffix;
-        return lines;
+        return super.render(width);
       }
     }
 
@@ -181,16 +170,26 @@ export default function footer(pi: ExtensionAPI) {
             : contextText;
         parts.push(coloredContext);
 
-        const left = modelLabel(ctx);
-        const styledLeft = ctx.model
+        const sessionName = sanitizeStatus(ctx.sessionManager.getSessionName() ?? "");
+        const model = ctx.model
           ? styledModel(ctx.model.id, theme)
             + (ctx.model.reasoning ? theme.fg("text", ` · ${ctx.thinkingLevel ?? "off"}`) : "")
-          : theme.fg("text", left);
+          : theme.fg("text", modelLabel(ctx));
+        const visibleModel = truncateToWidth(model, width, "");
         const right = parts.join(" · ");
         const minimumGap = 2;
-        const availableRight = Math.max(0, width - visibleWidth(left) - minimumGap);
+        const availableRight = Math.max(0, width - visibleWidth(visibleModel) - minimumGap);
         const visibleRight = truncateToWidth(right, availableRight, "");
-        const padding = " ".repeat(Math.max(0, width - visibleWidth(left) - visibleWidth(visibleRight)));
+        const availableName = Math.max(
+          0,
+          width - visibleWidth(visibleModel) - visibleWidth(visibleRight) - minimumGap - 3,
+        );
+        const name = sessionName && availableName > 0
+          ? truncateToWidth(sessionName, availableName, theme.fg("dim", "…"))
+          : "";
+        const styledLeft = visibleModel + (name ? theme.fg("dim", ` · ${name}`) : "");
+        const leftWidth = visibleWidth(styledLeft);
+        const padding = " ".repeat(Math.max(0, width - leftWidth - visibleWidth(visibleRight)));
         const lines = [styledLeft + padding + theme.fg("dim", visibleRight)];
 
         const remainingStatuses = statusEntries
