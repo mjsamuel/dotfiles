@@ -18,7 +18,7 @@ set.listchars = { tab = "  ", trail = "•", extends = "", precedes = "" }
 set.mouse = "a" -- enable mouse mode
 set.number = true -- show line numbers
 set.relativenumber = true -- relative line numbers
-set.scrolloff = 4 -- padding on top and bottom of screen when scrolling
+set.scrolloff = 8 -- padding on top and bottom of screen when scrolling
 set.shiftround = true -- round indent to multiple of shiftwidth
 set.shiftwidth = 4 -- number of spaces to use for autoindent
 set.showmode = true -- show the current mode (insert, normal, etc) in she command line

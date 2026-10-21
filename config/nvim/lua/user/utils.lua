@@ -35,25 +35,4 @@ M.get_visual_selection = function()
   }
 end
 
----Run a git command in the current working directory.
----@return string[]? output lines, or nil if the command failed
-M.git = function(...)
-  local out = vim.fn.systemlist({ "git", ... })
-  return vim.v.shell_error == 0 and out or nil
-end
-
----Find the ref the current branch most likely forked from.
----Picks the nearest ref behind HEAD, so stacked branches resolve to their
----parent rather than main. --no-contains drops the current branch and anything
----stacked on it.
----@return string?
-M.find_fork_point = function()
-  local refs = M.git("for-each-ref", "--no-contains=HEAD", "--format=%(refname:short)",
-    "refs/heads", "refs/remotes/origin/HEAD")
-  local nearest = vim.iter(refs or {})
-      :map(function(ref) return { ref = ref, distance = tonumber(M.git("rev-list", "--count", ref .. "..HEAD")[1]) } end)
-      :fold(nil, function(best, c) return (not best or c.distance < best.distance) and c or best end)
-  return nearest and nearest.ref
-end
-
 return M

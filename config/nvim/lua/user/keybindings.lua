@@ -30,7 +30,7 @@ keymap.set("v", "gs", function() require("gitsigns").stage_hunk({ vim.fn.line(".
 keymap.set("n", "<C-g>", function() require("gitsigns").blame_line({ ignore_whitespace = true, full = true }) end)
 command.set("Blame", function() require("gitsigns").blame() end, { nargs = 0 })
 command.set("Diff", function()
-  require("gitsigns").diffthis(nil, { split = "botright" })
+  require("gitsigns").diffthis(nil, { vertical = true }, function() end)
 end, { nargs = 0 })
 command.set("Github", function(args)
   local opts = {}
@@ -42,23 +42,12 @@ command.set("Github", function(args)
   end
   require("snacks").gitbrowse.open(opts)
 end, { nargs = 0, range = true })
-
--- :Review [base] diffs against the fork point (or base)
+-- :Review [base] compares the selected ref's merge-base with the working tree.
 command.set("Review", function(args)
-  local ref = args.args ~= "" and args.args or utils.find_fork_point()
-  local merge_base = ref and utils.git("merge-base", "HEAD", ref)
-  if not merge_base then
-    vim.notify("Could not determine fork point", vim.log.levels.ERROR)
-    return
-  end
-
-  local gitsigns = require("gitsigns")
-  gitsigns.change_base(merge_base[1], true, function(err)
-    if err then return end
-    gitsigns.setqflist("all")
-    vim.notify("Reviewing against " .. ref)
-  end)
-end, { nargs = "?" })
+  require("user.review").open(args.args)
+end, { nargs = "?", complete = function()
+  return vim.fn.systemlist({ "git", "for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes" })
+end })
 
 -- lsp
 keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end) -- [f]ormat
@@ -66,7 +55,7 @@ keymap.set("n", "D", function() vim.diagnostic.open_float() end)                
 keymap.set("n", "K", function() vim.lsp.buf.hover() end)
 -- overriding default behaviour with snacks picker
 keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
-keymap.set("n", "gt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
+keymap.set("n", "grt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
 keymap.set("n", "grr", function() require("snacks").picker.lsp_references() end)
 keymap.set("n", "gri", function() require("snacks").picker.lsp_implementations() end)
 
