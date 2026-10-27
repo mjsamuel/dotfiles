@@ -10,14 +10,6 @@ local function celebrate()
   end
 end
 
-local function fingerprint(filename)
-  local ok, disk = pcall(vim.fn.readfile, filename, "b")
-  local buf = vim.fn.bufnr(filename)
-  local lines = buf ~= -1 and vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].modified
-    and vim.api.nvim_buf_get_lines(buf, 0, -1, false) or false
-  return vim.fn.sha256(vim.json.encode({ disk = ok and disk or false, buffer = lines }))
-end
-
 local function hunk_key(item)
   return vim.json.encode({ item.filename, item.pos, item.item.text })
 end
@@ -79,28 +71,8 @@ function M.attach(view, opts)
     end
   end
 
-  local function validate(event)
-    if not view.win:valid() then return end
-    local filename_filter
-    if event and (event.event == "TextChanged" or event.event == "TextChangedI"
-      or event.event == "BufWritePost" or event.event == "BufEnter") then
-      filename_filter = vim.api.nvim_buf_get_name(event.buf)
-    end
-    local changed, signatures = false, {}
-    for id, filename in pairs(hunks) do
-      if reviewed[id] and (not filename_filter or filename_filter == filename) then
-        signatures[filename] = signatures[filename] or fingerprint(filename)
-        if signatures[filename] ~= reviewed[id] then
-          reviewed[id] = nil
-          changed = true
-        end
-      end
-    end
-    if changed then render() end
-    update()
-  end
-
-  view:map("<Space>", { desc = "Toggle hunk reviewed", action = function(_, ctx)
+  local keys = require("user.review_keys")
+  keys.map(view, "<Space>", { desc = "Toggle hunk reviewed", action = function(_, ctx)
     local item = ctx.item
     if not item or not hunks[hunk_key(item)] then return end
     local id = hunk_key(item)
@@ -110,7 +82,7 @@ function M.attach(view, opts)
       update()
       return
     end
-    reviewed[id] = fingerprint(item.filename)
+    reviewed[id] = true
     local next_item
     local items = view:flatten()
     local complete = true
@@ -156,7 +128,7 @@ function M.attach(view, opts)
     end)
   end })
 
-  vim.keymap.set("x", "<Space>", function()
+  keys.map(view, "<Space>", { mode = "x", desc = "Toggle selected hunks reviewed", action = function()
     local anchor = vim.fn.line("v")
     local cursor = vim.api.nvim_win_get_cursor(view.win.win)[1]
     local selected, seen = {}, {}
@@ -170,15 +142,14 @@ function M.attach(view, opts)
     vim.cmd("normal! " .. string.char(27))
     if #selected == 0 then return end
 
-    local touched, signatures = {}, {}
+    local touched = {}
     for _, item in ipairs(selected) do
       local id = hunk_key(item)
       touched[item.filename] = item
       if reviewed[id] then
         reviewed[id] = nil
       else
-        signatures[item.filename] = signatures[item.filename] or fingerprint(item.filename)
-        reviewed[id] = signatures[item.filename]
+        reviewed[id] = true
       end
     end
     -- Fold only after all selected hunks have been toggled.
@@ -191,15 +162,9 @@ function M.attach(view, opts)
     end
     render(true)
     update()
-  end, { buffer = view.win.buf, silent = true, desc = "Toggle selected hunks reviewed" })
+  end })
 
-  local group = vim.api.nvim_create_augroup("ReviewProgress", { clear = true })
-  vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI", "BufWritePost", "BufEnter",
-    "FocusGained", "CursorHold", "FileChangedShellPost" }, {
-    group = group,
-    callback = validate,
-  })
-  validate()
+  update()
   view:wait(update)
   return function(item) return reviewed[hunk_key(item)] ~= nil end
 end

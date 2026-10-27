@@ -93,8 +93,10 @@ local function open_list(files, opts)
   })
   if view then
     view:wait(function()
+      local keys = require("user.review_keys")
+      keys.attach(view)
       if opts.change_base then
-        view:map("b", { desc = "Change review base", action = opts.change_base })
+        keys.map(view, "<C-b>", { desc = "Change review base", action = opts.change_base })
       end
       is_reviewed = require("user.review_progress").attach(view, opts)
       for _, item in ipairs(view:flatten()) do item.cache:clear() end

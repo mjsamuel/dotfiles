@@ -43,18 +43,19 @@ command.set("Github", function(args)
   require("snacks").gitbrowse.open(opts)
 end, { nargs = 0, range = true })
 -- :Review [base] compares the selected ref's merge-base with the working tree.
-command.set("Review", function(args)
-  require("user.review").open(args.args)
-end, { nargs = "?", complete = function()
-  return vim.fn.systemlist({ "git", "for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes" })
-end })
+command.set("Review", function(args) require("user.review").open(args.args) end, {
+  nargs = "?",
+  complete = function()
+    return vim.fn.systemlist({ "git", "for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes" })
+  end
+})
 
 -- lsp
 keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end) -- [f]ormat
 keymap.set("n", "D", function() vim.diagnostic.open_float() end)                  -- [D]iagnostics
 keymap.set("n", "K", function() vim.lsp.buf.hover() end)
 -- overriding default behaviour with snacks picker
-keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)      -- [g]o to [d]efinition
+keymap.set("n", "gd", function() require("snacks").picker.lsp_definitions() end)       -- [g]o to [d]efinition
 keymap.set("n", "grt", function() require("snacks").picker.lsp_type_definitions() end) -- [g]o to [t]ype definition
 keymap.set("n", "grr", function() require("snacks").picker.lsp_references() end)
 keymap.set("n", "gri", function() require("snacks").picker.lsp_implementations() end)
