@@ -11,4 +11,6 @@ vendor/
 
 install-flags.json
 install-prefs
+update-result.json
 update-state.json
+update.log
