@@ -7,6 +7,8 @@ import {
   wrapTextWithAnsi,
   type Component,
   type TUI,
+  type TuiMouseEvent,
+  type TuiMouseEventResult,
 } from "@earendil-works/pi-tui";
 import { createHash } from "node:crypto";
 import { readFile, readdir, stat } from "node:fs/promises";
@@ -70,9 +72,9 @@ function fgHex(hex: string, text: string): string {
 }
 
 type Paint = (text: string) => string;
-type Granularity = "daily" | "weekly";
+type Granularity = "daily" | "weekly" | "monthly";
 type Grouping = "model" | "provider";
-type Action = "daily" | "weekly" | "group" | "prev" | "next" | "today" | "refresh" | "close";
+type Action = Granularity | "group" | "prev" | "next" | "today" | "refresh" | "close";
 
 interface ClickRegion {
   row: number;
@@ -350,7 +352,7 @@ class UsageDashboard implements Component {
   private error: string | undefined;
   private regions: ClickRegion[] = [];
   private colorMap = new Map<string, Paint>();
-  private readonly mouseCapable: boolean;
+  private readonly ownsMouseReporting: boolean;
   private disposed = false;
 
   constructor(
@@ -360,11 +362,9 @@ class UsageDashboard implements Component {
     private readonly done: () => void,
   ) {
     this.records = records;
-    // The alt-screen TUI owns the mouse (selection/scrolling) and never forwards
-    // clicks to components, so only take over mouse reporting on the main screen.
-    const ctor = (this.tui as unknown as { constructor?: { name?: string } }).constructor?.name ?? "";
-    this.mouseCapable = !ctor.includes("AltScreen");
-    if (this.mouseCapable) this.tui.terminal.write(MOUSE_ENABLE);
+    // Fullscreen owns mouse reporting; disabling it on close breaks chat scrolling.
+    this.ownsMouseReporting = this.tui.mode === "regular";
+    if (this.ownsMouseReporting) this.tui.terminal.write(MOUSE_ENABLE);
     this.rebuildColors();
   }
 
@@ -396,13 +396,14 @@ class UsageDashboard implements Component {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
-    if (this.mouseCapable) this.tui.terminal.write(MOUSE_DISABLE);
+    if (this.ownsMouseReporting) this.tui.terminal.write(MOUSE_DISABLE);
   }
 
   invalidate(): void {}
 
   private groupKey(record: UsageRecord): string {
-    return this.grouping === "provider" ? record.provider : record.model;
+    if (this.grouping === "model") return record.model;
+    return record.provider === "openai-codex" ? "openai" : record.provider;
   }
 
   private bucketCount(width: number): number {
@@ -412,14 +413,23 @@ class UsageDashboard implements Component {
   }
 
   private period(count: number): { start: number; end: number; priorStart: number; boundaries: number[] } {
-    const daysPerBucket = this.granularity === "daily" ? 1 : 7;
-    const current = this.granularity === "daily" ? localDayStart(Date.now()) : localWeekStart(Date.now());
-    const end = addLocalDays(current, daysPerBucket * (1 - this.offset * count));
-    const start = addLocalDays(end, -daysPerBucket * count);
-    const priorStart = addLocalDays(start, -daysPerBucket * count);
+    const now = Date.now();
+    const current = this.granularity === "monthly"
+      ? new Date(new Date(now).getFullYear(), new Date(now).getMonth(), 1).getTime()
+      : this.granularity === "daily" ? localDayStart(now) : localWeekStart(now);
+    const advance = (timestamp: number, buckets: number): number => {
+      if (this.granularity === "monthly") {
+        const date = new Date(timestamp);
+        return new Date(date.getFullYear(), date.getMonth() + buckets, 1).getTime();
+      }
+      return addLocalDays(timestamp, buckets * (this.granularity === "daily" ? 1 : 7));
+    };
+    const end = advance(current, 1 - this.offset * count);
+    const start = advance(end, -count);
+    const priorStart = advance(start, -count);
     const boundaries = Array.from(
       { length: count + 1 },
-      (_, index) => addLocalDays(start, index * daysPerBucket),
+      (_, index) => advance(start, index),
     );
     return { start, end, priorStart, boundaries };
   }
@@ -431,7 +441,9 @@ class UsageDashboard implements Component {
       return {
         start: bucketStart,
         end: boundaries[index + 1]!,
-        label: formatShortDate(bucketStart),
+        label: this.granularity === "monthly"
+          ? new Date(bucketStart).toLocaleDateString("en", { month: "short", year: "2-digit" })
+          : formatShortDate(bucketStart),
         values: new Map<string, number>(),
         total: 0,
       };
@@ -686,6 +698,7 @@ class UsageDashboard implements Component {
       { text: "  " },
       { text: tab("Daily", this.granularity === "daily"), action: "daily" },
       { text: tab("Weekly", this.granularity === "weekly"), action: "weekly" },
+      { text: tab("Monthly", this.granularity === "monthly"), action: "monthly" },
       { text: "  " },
       {
         text: this.theme.fg("dim", "Group: ") + this.grouping + this.theme.fg("dim", " ⇆"),
@@ -758,8 +771,8 @@ class UsageDashboard implements Component {
     // Fill to the terminal height so the fullscreen overlay blanks the chat
     // behind it and the hint line sits on the bottom row.
     while (lines.length < height - 1) lines.push("");
-    const hints = ["←/→ period", "d daily", "w weekly", "g group", "r refresh", "t latest", "esc close"];
-    if (this.mouseCapable) hints.push("or click/scroll");
+    const hints = ["←/→ period", "d daily", "w weekly", "m monthly", "g group", "r refresh", "t latest", "esc close"];
+    hints.push("or click/scroll");
     lines.push(this.theme.fg("dim", hints.join("  ")));
     return lines.map((line) => truncateToWidth(line, width, ""));
   }
@@ -779,11 +792,9 @@ class UsageDashboard implements Component {
         this.offset = 0;
         break;
       case "daily":
-        this.granularity = "daily";
-        this.offset = 0;
-        break;
       case "weekly":
-        this.granularity = "weekly";
+      case "monthly":
+        this.granularity = action;
         this.offset = 0;
         break;
       case "group":
@@ -810,6 +821,23 @@ class UsageDashboard implements Component {
     this.tui.requestRender();
   }
 
+  handleMouse(event: TuiMouseEvent): TuiMouseEventResult | undefined {
+    if (event.type === "wheel" && event.wheelDelta) {
+      this.performAction(event.wheelDelta < 0 ? "prev" : "next");
+      return { handled: true, render: false };
+    }
+    if (event.button !== "left") return undefined;
+    const region = this.regions.find((r) => r.row === event.y && event.x >= r.x1 && event.x < r.x2);
+    if (!region) return undefined;
+    // Claim the press so the TUI tracks the gesture and sends a single click.
+    if (event.type === "press") return { handled: true, render: false };
+    if (event.type === "click") {
+      this.performAction(region.action);
+      return { handled: true, render: false };
+    }
+    return undefined;
+  }
+
   handleInput(data: string): void {
     const mouse = SGR_MOUSE.exec(data);
     if (mouse) {
@@ -834,6 +862,7 @@ class UsageDashboard implements Component {
     else if (matchesKey(data, Key.right)) this.performAction("next");
     else if (data === "d") this.performAction("daily");
     else if (data === "w") this.performAction("weekly");
+    else if (data === "m") this.performAction("monthly");
     else if (data === "g") this.performAction("group");
     else if (data === "t") this.performAction("today");
     else if (data === "r") this.performAction("refresh");
