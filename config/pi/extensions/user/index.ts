@@ -8,6 +8,7 @@ import modelUsage from "./model-usage";
 import piDocumentation from "./pi-documentation";
 import { registerPromptStash } from "./prompt-stash";
 import { registerSlashCommandGuard } from "./slash-command-guard";
+import turnTiming from "./turn-timing";
 import workingIndicator from "./working-indicator";
 
 export default function user(pi: ExtensionAPI) {
@@ -21,4 +22,5 @@ export default function user(pi: ExtensionAPI) {
   piDocumentation(pi);
   registerPromptStash(pi);
   workingIndicator(pi);
+  turnTiming(pi);
 }
