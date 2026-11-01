@@ -1,35 +1,47 @@
 ---
 name: raise-pr
-description: Use when asked to raise/create or update a PR.
+description: Use when asked to create or update a PR.
 ---
 
 ## Guiding light
 
-Be as concise as possible - use few words and more pictures/diagrams.
+Don't use jargon and speak coherently. State thing simply and concisely, like one human talking to another.
+Additionally use fewer words and more pictures/diagrams to illustrate your point.
 
-## Title
+## PR structure
+
+### Title
 
 PR titles usually become commit messages, so follow the repository's title conventions.
 Prefer a human-readable title that explains why the change matters.
 
-## Body
+### Body
 
 The following structure should be used in lieu of any project conventions:
 
 ```md
-### Problem
+{{ Briefly explain the problem (if known) and why the change matters }}
 
 ### Solution
 
+{{
+    A brief description of what's changed.
+    This is the place for diagrams (mermaid, plain ascii, etc.) if you think it would be useful to the reviewer.
+}}
+
 ### Validation
 
-{{ A validation checklist }}
+{{
+    A validation checklist that calls out **valuable information**.
+    Stating that formatting and linting passes doesn't provided value.
+}}
 
 <details>
 <summary>Demo</summary>
 
 {{
     A place to put screenshots/videos that demo the change.
+    Placing these within a table is usually easier to scan.
     Can omit the details/summary entirely if there's nothing to demo.
 }}
 
