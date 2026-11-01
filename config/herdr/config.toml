@@ -27,7 +27,7 @@ status_indicators                = "dots"
 
 [ui.sidebar.agents.rows_by_agent]
 pi = [
-    ["state_icon", "$session_name"],
+    ["state_icon", "machine", "$session_name"],
 ]
 
 [ui.toast]
