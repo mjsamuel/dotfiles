@@ -26,18 +26,8 @@ function M.render()
   local buffer = vim.api.nvim_win_get_buf(window)
   local file_path = vim.api.nvim_buf_get_name(buffer)
   local directory = file_path ~= "" and vim.fn.fnamemodify(file_path, ":.:h") .. "/ " or ""
-  local file_name = vim.fn.fnamemodify(file_path, ":t")
+  local icon, file_name = require("user.buffer_label")(buffer)
   local modified = vim.bo[buffer].modified
-
-  local icon = ""
-  if file_name ~= "" then
-    local extension = vim.fn.fnamemodify(file_path, ":e")
-    icon = require("nvim-web-devicons").get_icon(file_name, extension, { default = true })
-  end
-
-  if file_name == "" then
-    file_name = vim.bo[buffer].filetype ~= "" and vim.bo[buffer].filetype or "No Name"
-  end
 
   local segments = {
     modified and "%#StatusLineModified#" or "%#StatusLine#",
