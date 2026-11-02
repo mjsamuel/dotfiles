@@ -158,7 +158,7 @@ function M.open(base, opts)
               vim.notify("Review: could not load hunks: " .. tostring(qf_err), vim.log.levels.ERROR)
               return
             end
-            require("user.review_list").open({
+            require("user.review.list").open({
               win = review_win, cwd = cwd, active = active, label = label,
               session = cwd .. ":" .. merge_base[1], base = merge_base[1],
               change_base = function()

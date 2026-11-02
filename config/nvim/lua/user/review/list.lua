@@ -93,12 +93,12 @@ local function open_list(files, opts)
   })
   if view then
     view:wait(function()
-      local keys = require("user.review_keys")
+      local keys = require("user.review.keys")
       keys.attach(view)
       if opts.change_base then
         keys.map(view, "<C-b>", { desc = "Change review base", action = opts.change_base })
       end
-      is_reviewed = require("user.review_progress").attach(view, opts)
+      is_reviewed = require("user.review.progress").attach(view, opts)
       for _, item in ipairs(view:flatten()) do item.cache:clear() end
       for _, node in ipairs(view.renderer.root_nodes) do
         if node.item and generated[node.item.filename] then
@@ -122,7 +122,7 @@ function M.open(opts)
     if opts.active and not opts.active() then return end
     local current = vim.fn.getqflist({ id = 0, changedtick = 0 })
     if current.id ~= list.id or current.changedtick ~= list.changedtick then return end
-    require("user.review_preload").start(function()
+    require("user.review.preload").start(function()
       return id == request and vim.api.nvim_win_is_valid(win) and (not opts.active or opts.active())
     end, opts.base)
     vim.api.nvim_win_call(win, function() open_list(files, opts) end)

@@ -71,7 +71,7 @@ function M.attach(view, opts)
     end
   end
 
-  local keys = require("user.review_keys")
+  local keys = require("user.review.keys")
   keys.map(view, "<Space>", { desc = "Toggle hunk reviewed", action = function(_, ctx)
     local item = ctx.item
     if not item or not hunks[hunk_key(item)] then return end
@@ -98,7 +98,8 @@ function M.attach(view, opts)
     end
     local after_current = false
     for _, candidate in ipairs(items) do
-      if after_current and (not complete or candidate.filename ~= item.filename) then
+      if after_current and not reviewed[hunk_key(candidate)]
+        and (not complete or candidate.filename ~= item.filename) then
         next_item = candidate
         break
       end
