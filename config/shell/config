@@ -36,6 +36,10 @@ alias \
 	tf="terraform" \
 	tree='eza --tree --icons --group-directories-first --git-ignore'
 
+review() {
+	nvim -c ":Review $1"
+}
+
 # ssh
 s() {
 	selected=$(awk '/^Host / { print $2 }' ~/.ssh/config | grep -v '\*' | fzf)
