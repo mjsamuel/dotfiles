@@ -1,7 +1,10 @@
-auth.json
 bin/
 install/
-models-store.json
 npm/
 sessions/
+skills/
+
+AGENTS.md
+auth.json
+models-store.json
 trust.json

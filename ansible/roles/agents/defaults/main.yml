@@ -1,0 +1,7 @@
+agent_targets:
+  - instructions: "~/.agents/AGENTS.md"
+    skills: "~/.agents/skills"
+  - instructions: "~/.config/pi/AGENTS.md"
+    skills: "~/.config/pi/skills"
+  - instructions: "~/.claude/CLAUDE.md"
+    skills: "~/.claude/skills"

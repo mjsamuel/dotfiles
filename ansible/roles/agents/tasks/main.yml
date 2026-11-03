@@ -1,34 +1,36 @@
 - name: create agent directories
   file:
-    path: "{{ item }}"
+    path: "{{ item.skills }}"
     state: directory
-  loop:
-    - "~/.agents"
-    - "~/.agents/skills"
-    - "~/.config/agents"
-    - "~/.config/agents/skills"
+  loop: "{{ agent_targets }}"
+  loop_control:
+    label: "{{ item.skills }}"
+  tags: ["skills"]
 
 - name: symlink agent instructions
   file:
-    src: "{{ dotfiles_dir }}/config/pi/AGENTS.md"
-    path: "{{ item }}/AGENTS.md"
+    src: "{{ dotfiles_dir }}/config/agents/AGENTS.md"
+    path: "{{ item.instructions }}"
     state: link
-  loop:
-    - "~/.agents"
-    - "~/.config/agents"
-
-- name: find all agent skills in dotfiles
-  find:
-    paths: "{{ dotfiles_dir }}/config/pi/skills"
-    file_type: directory
-    recurse: no
-  register: agent_skills
-
-- name: symlink agent skills
-  file:
-    src: "{{ item.1.path }}"
-    path: "{{ item.0 }}/{{ item.1.path | basename }}"
-    state: link
-  loop: "{{ ['~/.agents/skills', '~/.config/agents/skills'] | product(agent_skills.files) | list }}"
+    force: yes
+  loop: "{{ agent_targets }}"
   loop_control:
-    label: "{{ item.0 }}/{{ item.1.path | basename }}"
+    label: "{{ item.instructions }}"
+
+- block:
+    - name: find all agent skills in dotfiles
+      find:
+        paths: "{{ dotfiles_dir }}/config/agents/skills"
+        file_type: directory
+        recurse: no
+      register: agent_skills
+
+    - name: symlink agent skills
+      file:
+        src: "{{ item.1.path }}"
+        path: "{{ item.0.skills }}/{{ item.1.path | basename }}"
+        state: link
+      loop: "{{ agent_targets | product(agent_skills.files) | list }}"
+      loop_control:
+        label: "{{ item.0.skills }}/{{ item.1.path | basename }}"
+  tags: ["skills"]
