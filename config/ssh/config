@@ -1,0 +1,12 @@
+Host *
+    SetEnv TERM=xterm-256color
+    CanonicalizeHostname yes
+    CanonicalizeMaxDots 0
+    CanonicalDomains device.mjsamuel.com
+
+Match exec "test -z $SSH_CONNECTION"
+    IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Match host *.device.mjsamuel.com
+    ForwardAgent yes
+    User matt
