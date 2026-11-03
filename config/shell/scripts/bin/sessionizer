@@ -1,0 +1,92 @@
+#!/bin/sh
+
+set -e
+
+main() {
+	if [ "$#" -ne 1 ]; then
+		printf 'Usage: sessionizer --herdr | --rex\n' >&2
+		exit 1
+	fi
+
+	case "$1" in
+	--herdr) open_session=open_herdr ;;
+	--rex) open_session=open_rex ;;
+	-h | --help)
+		printf 'Usage: sessionizer --herdr | --rex\n'
+		exit 0
+		;;
+	*)
+		printf 'Unknown option: %s\nUsage: sessionizer --herdr | --rex\n' "$1" >&2
+		exit 1
+		;;
+	esac
+
+	WORKSPACES_FILE="$HOME/.config/workspaces"
+	if [ ! -f "$WORKSPACES_FILE" ]; then
+		mkdir -p "$(dirname "$WORKSPACES_FILE")"
+		cat <<-EOF >"$WORKSPACES_FILE"
+			${HOME}/[Dd]eveloper
+			${HOME}/[Ww]ork
+		EOF
+	fi
+	selected="$(
+		workspace_projects "$WORKSPACES_FILE" | fzf --preview 'eza {} --tree --level=1 --icons' \
+			--prompt "space: " \
+			--preview-window=right:50% --height=100% \
+			--delimiter / --with-nth -2,-1 \
+			--bind "enter:accept-non-empty" \
+			--exit-0
+	)" || exit 0
+	[ -n "$selected" ] || exit 0
+	selected_name=$(basename "$selected" | tr '.' '-')
+
+	"$open_session" "$selected" "$selected_name"
+}
+
+workspace_projects() {
+	while IFS= read -r dir || [ -n "$dir" ]; do
+		case "$dir" in
+		'' | \#*)
+			continue
+			;;
+		@*)
+			# An @ prefix marks a project rather than a workspace root.
+			dir=${dir#@}
+			[ ! -d "$dir" ] || printf '%s\n' "$dir"
+			;;
+		*)
+			# Expand workspace-root patterns such as [Dd]eveloper.
+			for root in $dir; do
+				[ ! -d "$root" ] || find "$root" -mindepth 1 -maxdepth 1 -type d -not -path '*/.*'
+			done
+			;;
+		esac
+	done <"$1"
+}
+
+open_herdr() {
+	selected=$1
+	selected_name=$2
+
+	workspace_id=$(herdr workspace list | jq -r --arg n "$selected_name" '.result.workspaces[] | select(.label == $n) | .workspace_id' | head -n1)
+	if [ -n "$workspace_id" ]; then
+		herdr workspace focus "$workspace_id" >/dev/null
+	else
+		herdr workspace create --cwd "$selected" --label "$selected_name" --focus
+	fi
+	[ -n "$HERDR_ENV" ] || herdr
+}
+
+open_rex() {
+	selected=$1
+	selected_name=$2
+
+	session_id=$(rex ls --json | jq -r --arg n "$selected_name" '(.sessions // .)[] | select(.label == $n) | .session_id' | head -n1)
+	if [ -z "$session_id" ]; then
+		session_id=$(rex new "$selected_name" -c "$selected" --json | jq -er '.session_id')
+	fi
+
+	rex do session.select session_id="$session_id" >/dev/null
+}
+
+main "$@"

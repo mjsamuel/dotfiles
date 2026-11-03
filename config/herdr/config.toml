@@ -63,8 +63,8 @@ description = "evenly resize panes"
 [[keys.command]]
 key         = ["prefix+s", "alt+shift+s"]
 type        = "popup"
-command     = "herdr-sessionizer"
-description = "herdr-sessionizer"
+command     = "sessionizer --herdr"
+description = "sessionizer"
 width       = "80%"
 height      = "80%"
 

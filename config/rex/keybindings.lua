@@ -49,7 +49,7 @@ for i = 1, 9 do
 end
 
 -- Popups
-rex.bind("alt+shift+s", popup({ "rex-sessionizer" }))
-bind_prefix("s", popup({ "rex-sessionizer" }))
+rex.bind("alt+shift+s", popup({ "sessionizer", "--rex" }))
+bind_prefix("s", popup({ "sessionizer", "--rex" }))
 bind_prefix("n", popup({ "notarizer" }))
 bind_prefix("p", popup({ os.getenv("SHELL") or "sh" }))
