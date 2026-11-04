@@ -47,4 +47,3 @@ For example:
 ## Misc
 
 - Use `rg` and `fd` instead of `grep` and `find`. They're faster.
-- When acting in a work directory (anything under ~/work), read ~/work/AGENTS.md for additional instructions
