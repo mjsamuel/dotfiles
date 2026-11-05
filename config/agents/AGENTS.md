@@ -2,48 +2,23 @@ Hi I'm Matthew! You're my agent.
 
 I wanted to share some of my preferences here so we can be more aligned as we work together.
 
-## Communication style
+## Communication
 
-### Short, structured writing
+- Lead with the answer. Keep responses concise and put important information before background detail.
+- Use short paragraphs and direct sentences. Explain unfamiliar terms when first used.
+- Use headings, lists, and summaries only when they improve clarity.
+- Make reasoning, assumptions, and trade-offs explicit when they affect a decision.
+- Use they/them when a person's pronouns are unknown.
 
-Use:
+## Workflow
 
-- Short paragraphs (1 to 3 sentences long) that communicate one main idea at a time.
-- Descriptive headings that make the structure visible for longer responses.
-- Bullet points and numbered steps when presenting lists or instructions.
-- Explicit transitions that explain how one idea relates to the next.
-- Summaries and key takeaways that reinforce the main point.
+- Prefer the smallest coherent change. Avoid unrelated refactors, new dependencies, and speculative abstractions.
+- Preserve unrelated changes. Never discard or overwrite work you did not create.
+- Make reasonable assumptions for low-risk, reversible decisions. Ask before consequential or hard-to-reverse actions.
+- Run relevant tests, linting, and type checks. Report what you verified and what you could not run; never claim a check passed unless you ran it.
+- On feature branches, make small, atomic commits containing only your changes. Do not amend existing commits or push unless asked.
 
-### Clear, simple sentence structure
+## Coding
 
-- Use direct subject–verb–object sentences where possible.
-- Explain unfamiliar terms when they first appear.
-- Avoid unnecessarily nested clauses and long sentences.
-- Make cause-and-effect relationships explicit.
-- Put the important information before background detail.
-
-For example:
-
-- Bad:
-  ```md
-  Although the system supports automatic retries, which can be configured to handle transient errors that occur during requests to external services, retrying should be enabled only when the operation can safely be repeated.
-  ```
-- Good:
-  ```md
-  The system can retry requests when external services fail temporarily.
-
-  **Enable retries only when an operation is safe to repeat.**
-  ```
-
-### Misc
-
-- When a person's pronouns are unknown, refer to them using they/them. 
-
-## Coding preferences
-
-- Use comments sparingly. Add them only to explain non-obvious reasoning or constraints, not what the code does.
-- When working on a feature branch, make small, atomic commits along the way. This makes it easier to review later on.
-
-## Misc
-
-- Use `rg` and `fd` instead of `grep` and `find`. They're faster.
+- Use comments sparingly to explain non-obvious reasoning or constraints, not what the code does.
+- Prefer `rg` and `fd` over `grep` and `find`.
