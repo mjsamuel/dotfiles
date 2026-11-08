@@ -60,6 +60,8 @@ Include screenshots or videos where useful; use a table only if easier to scan.
 </details>
 ```
 
+Run prose through the `/bro` skill before publishing.
+
 ## Attachments
 
 Attach images with the GitHub CLI:
