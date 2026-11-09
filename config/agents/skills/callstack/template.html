@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>__TITLE__</title>
+<style>
+  :root { --bg: #fff; --ink: #1f2328; --muted: #656d76; --rule: #d8dee4; --add: #1a7f37; --add-bg: #dafbe1; --del: #cf222e; --del-bg: #ffebe9; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0d1117; --ink: #e6edf3; --muted: #8d96a0; --rule: #30363d; --add: #3fb950; --add-bg: #12261e; --del: #f85149; --del-bg: #2d1214; } }
+  body { margin: 3rem auto; padding: 0 1.5rem; max-width: 1100px; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, sans-serif; }
+  code, .mono { font-family: ui-monospace, Menlo, monospace; font-size: .88em; }
+  a { color: inherit; }
+  h1 { font-size: 1.4rem; font-weight: 600; margin: 0; }
+  .sub { color: var(--muted); margin: .2rem 0 0; }
+  h2 { font-size: 1.05rem; font-weight: 600; margin: 2.2rem 0 .1rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem 1.5rem; margin-top: .6rem; }
+  .head { color: var(--muted); font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+  .cell { padding: .45rem .8rem; border-left: 3px solid var(--rule); color: var(--muted); }
+  .cell.del { border-color: var(--del); background: var(--del-bg); color: var(--ink); }
+  .cell.add { border-color: var(--add); background: var(--add-bg); color: var(--ink); }
+  .cell.empty { border-left-style: dashed; }
+  .call { display: block; margin-top: .15rem; color: var(--muted); overflow-wrap: anywhere; }
+  .at { color: var(--muted); font-size: .75rem; text-decoration: none; }
+  a.at:hover { text-decoration: underline; }
+  b { font-weight: 600; }
+  body.changes .cell.same { display: none; }
+  .hint { color: var(--muted); font-size: .75rem; margin-top: 3rem; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1 id="title"></h1>
+<p class="sub" id="sub"></p>
+<main id="main"></main>
+<p class="hint">c: hide unchanged steps</p>
+<script>
+const DATA = __DATA__;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const md = (s) => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+const step = (s) => (s == null ? null : typeof s === "string" ? { text: s } : s);
+const el = (cls, html) => { const e = document.createElement("div"); e.className = cls; e.innerHTML = html; return e; };
+
+function cell(s, kind, base) {
+  if (!s) return el(`cell empty ${kind}`, "—");
+  let html = md(s.text || "");
+  if (s.call) html += `<code class="call">${esc(s.call)}</code>`;
+  if (s.at) {
+    const [f, line] = s.at.split(":");
+    const label = esc(s.at.split("/").pop());
+    html += base ? ` <a class="at mono" href="${esc(base + f + (line ? `#L${line}` : ""))}" title="${esc(s.at)}">${label}</a>` : ` <span class="at mono">${label}</span>`;
+  }
+  return el(`cell ${kind}`, html);
+}
+
+document.getElementById("title").textContent = DATA.title || "Call flow";
+document.getElementById("sub").innerHTML = [DATA.summary && md(DATA.summary), DATA.context && esc(DATA.context)].filter(Boolean).join(" · ");
+const main = document.getElementById("main");
+for (const sc of DATA.scenarios || []) {
+  main.append(Object.assign(document.createElement("h2"), { innerHTML: md(sc.name || "") }));
+  if (sc.note) main.append(el("sub", md(sc.note)));
+  const grid = el("grid", `<div class="head">Before</div><div class="head">After</div>`);
+  for (const r of sc.rows || []) {
+    if ("same" in r) grid.append(cell(step(r.same), "same", DATA.link), cell(step(r.same), "same", DATA.link));
+    else grid.append(cell(step(r.before), "del", DATA.baseLink || DATA.link), cell(step(r.after), "add", DATA.link));
+  }
+  main.append(grid);
+}
+const toggle = () => { const on = document.body.classList.toggle("changes"); history.replaceState(null, "", on ? "#changes" : location.pathname); };
+if (location.hash === "#changes") toggle();
+addEventListener("keydown", (e) => { if (e.key === "c" && !e.metaKey && !e.ctrlKey) toggle(); });
+</script>
+</body>
+</html>

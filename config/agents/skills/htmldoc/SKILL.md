@@ -1,6 +1,7 @@
 ---
 name: htmldoc
 description: Use when the user asks for a HTML doc/writeup.
+disable-model-invocation: true
 ---
 
 Write a plain, self-contained HTML page.
