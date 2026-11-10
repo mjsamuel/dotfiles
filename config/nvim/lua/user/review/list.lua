@@ -1,10 +1,73 @@
 local M = {}
 local generated = {}
 local request = 0
+local review_list_id
+local review_active
+
+local function quickfix_key(item)
+  local data = type(item.user_data) == "table" and item.user_data or {}
+  return data.review_comment and data.id or vim.json.encode({ item.bufnr, item.lnum, item.col, item.text })
+end
+
+local function sync_comments()
+  local list = vim.fn.getqflist({ id = 0, items = 1, idx = 0 })
+  if list.id ~= review_list_id or (review_active and not review_active()) then return end
+  local current = list.items[list.idx]
+  local items = {}
+  for _, item in ipairs(list.items) do
+    local data = type(item.user_data) == "table" and item.user_data or {}
+    if not data.review_comment then items[#items + 1] = item end
+  end
+  for _, comment in ipairs(require("user.review.comments").items()) do
+    items[#items + 1] = {
+      bufnr = vim.fn.bufadd(comment.filename), lnum = comment.lnum, col = 1, text = comment.text,
+      valid = 1, user_data = { review_comment = true, id = comment.id },
+    }
+  end
+  table.sort(items, function(a, b)
+    local af, bf = vim.api.nvim_buf_get_name(a.bufnr), vim.api.nvim_buf_get_name(b.bufnr)
+    if generated[af] ~= generated[bf] then return not generated[af] end
+    if af ~= bf then return af < bf end
+    if a.lnum ~= b.lnum then return a.lnum < b.lnum end
+    return a.text < b.text
+  end)
+  local idx = 1
+  for i, item in ipairs(items) do
+    if current and quickfix_key(item) == quickfix_key(current) then idx = i end
+  end
+  vim.fn.setqflist({}, "r", { id = list.id, items = items, idx = idx })
+end
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "ReviewCommentsChanged",
+  callback = sync_comments,
+})
 
 local config = require("trouble.config")
 config.get("quickfix")
-config.defaults({ modes = { review = { mode = "quickfix" } } })
+require("trouble.sources").register("review", {
+  get = function(callback)
+    sync_comments()
+    local items = require("trouble.sources.qf").get_list()
+    for _, item in ipairs(items) do
+      local data = type(item.item.user_data) == "table" and item.item.user_data or {}
+      if data.review_comment then
+        item.review_comment = true
+        item.id = data.id
+      end
+    end
+    callback(items)
+  end,
+})
+config.defaults({ modes = { review = {
+  mode = "quickfix",
+  source = "review",
+  events = {
+    "QuickFixCmdPost",
+    "BufReadPost",
+    { event = "TextChanged", main = true },
+  },
+} } })
 
 local function generated_files(cwd, callback)
   local files = {}
@@ -67,8 +130,10 @@ local function open_list(files, opts)
 
   local function formatter(template, hunk)
     return function(ctx)
+      local comment = ctx.item.review_comment
       local prefix = hunk and (is_reviewed(ctx.item) and "[✓] " or "[ ] ") or ""
-      local segments = require("trouble.format").format(prefix .. template, ctx)
+      local text = hunk and comment and "{text:ReviewComment} {pos}" or template
+      local segments = require("trouble.format").format(prefix .. text, ctx)
       if generated[ctx.item.filename] then
         for _, segment in ipairs(segments) do
           segment.hl = "ReviewGenerated"
@@ -88,13 +153,17 @@ local function open_list(files, opts)
     },
     formatters = {
       review_file = formatter("{file_icon}{filename} {count}"),
-      review_hunk = formatter("{text:ts} {pos}", true),
+      review_text = function(ctx) return require("user.review.snippet").format(ctx.item) end,
+      review_hunk = formatter("{review_text} {pos}", true),
     },
   })
   if view then
     view:wait(function()
       local keys = require("user.review.keys")
       keys.attach(view)
+      keys.map(view, "K", { desc = "Open selectable comment thread", action = function(_, ctx)
+        if ctx.item and ctx.item.review_comment then require("user.review.comments").open(ctx.item) end
+      end })
       if opts.change_base then
         keys.map(view, "<C-b>", { desc = "Change review base", action = opts.change_base })
       end
@@ -116,12 +185,15 @@ function M.open(opts)
   request = request + 1
   local id = request
   local win = opts.win or vim.api.nvim_get_current_win()
+  review_list_id = nil
   local list = vim.fn.getqflist({ id = 0, changedtick = 0 })
   generated_files(opts.cwd or vim.fn.getcwd(), function(files)
     if id ~= request or not vim.api.nvim_win_is_valid(win) then return end
     if opts.active and not opts.active() then return end
     local current = vim.fn.getqflist({ id = 0, changedtick = 0 })
     if current.id ~= list.id or current.changedtick ~= list.changedtick then return end
+    review_list_id = current.id
+    review_active = opts.active
     require("user.review.preload").start(function()
       return id == request and vim.api.nvim_win_is_valid(win) and (not opts.active or opts.active())
     end, opts.base)

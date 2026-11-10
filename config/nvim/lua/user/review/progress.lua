@@ -11,6 +11,7 @@ local function celebrate()
 end
 
 local function hunk_key(item)
+  if item.review_comment then return item.id end
   return vim.json.encode({ item.filename, item.pos, item.item.text })
 end
 
@@ -30,7 +31,7 @@ function M.attach(view, opts)
   local added, removed = 0, 0
   for _, item in ipairs(view:flatten()) do
     local id = hunk_key(item)
-    if not hunks[id] then
+    if not item.review_comment and not hunks[id] then
       -- Gitsigns quickfix headers omit the count when a range contains one line.
       local minus, plus = item.item.text:match("^%a+%s+%(%-%d+(,?%d*) %+%d+(,?%d*)%):")
       if minus then
@@ -44,6 +45,7 @@ function M.attach(view, opts)
   vim.api.nvim_set_hl(0, "ReviewRemoved", { link = "Removed", default = true })
 
   local function render(immediate)
+    require("user.review.comments").set_reviewed(reviewed)
     -- Trouble caches leaf formatting, including the reviewed marker.
     for _, item in ipairs(view:flatten()) do item.cache:clear() end
     if immediate then
@@ -56,23 +58,34 @@ function M.attach(view, opts)
 
   local was_complete
   local function update()
-    local count, total = 0, 0
-    for id in pairs(hunks) do
-      total = total + 1
-      if reviewed[id] then count = count + 1 end
+    local count, total, comments, checked_comments = 0, 0, 0, 0
+    hunks = {}
+    for _, item in ipairs(view:flatten()) do
+      local id = hunk_key(item)
+      if not hunks[id] then
+        if item.review_comment then
+          comments = comments + 1
+          if reviewed[id] then checked_comments = checked_comments + 1 end
+        else
+          total = total + 1
+          if reviewed[id] then count = count + 1 end
+        end
+      end
+      hunks[id] = item.filename
     end
-    local complete = total > 0 and count == total
+    local complete = total + comments > 0 and count + checked_comments == total + comments
     if complete and was_complete == false then celebrate() end
     was_complete = complete
     if view.win:valid() then
       local label = ("%s | %d/%d hunks reviewed"):format(opts.label or "Review", count, total)
+      if comments > 0 then label = label .. (" | %d/%d comments reviewed"):format(checked_comments, comments) end
       vim.wo[view.win.win].winbar = label:gsub("%%", "%%%%")
         .. " | %#ReviewAdded#+" .. added .. "%* %#ReviewRemoved#−" .. removed .. "%*"
     end
   end
 
   local keys = require("user.review.keys")
-  keys.map(view, "<Space>", { desc = "Toggle hunk reviewed", action = function(_, ctx)
+  keys.map(view, "<Space>", { desc = "Toggle item reviewed", action = function(_, ctx)
     local item = ctx.item
     if not item or not hunks[hunk_key(item)] then return end
     local id = hunk_key(item)
@@ -87,7 +100,7 @@ function M.attach(view, opts)
     local items = view:flatten()
     local complete = true
     for _, candidate in ipairs(items) do
-      if candidate.filename == item.filename and not reviewed[hunk_key(candidate)] then
+      if candidate.filename == item.filename and hunks[hunk_key(candidate)] and not reviewed[hunk_key(candidate)] then
         complete = false
         break
       end
@@ -98,7 +111,7 @@ function M.attach(view, opts)
     end
     local after_current = false
     for _, candidate in ipairs(items) do
-      if after_current and not reviewed[hunk_key(candidate)]
+      if after_current and hunks[hunk_key(candidate)] and not reviewed[hunk_key(candidate)]
         and (not complete or candidate.filename ~= item.filename) then
         next_item = candidate
         break
@@ -129,7 +142,7 @@ function M.attach(view, opts)
     end)
   end })
 
-  keys.map(view, "<Space>", { mode = "x", desc = "Toggle selected hunks reviewed", action = function()
+  keys.map(view, "<Space>", { mode = "x", desc = "Toggle selected items reviewed", action = function()
     local anchor = vim.fn.line("v")
     local cursor = vim.api.nvim_win_get_cursor(view.win.win)[1]
     local selected, seen = {}, {}
@@ -153,9 +166,9 @@ function M.attach(view, opts)
         reviewed[id] = true
       end
     end
-    -- Fold only after all selected hunks have been toggled.
+    -- Fold only after all selected items have been toggled.
     for _, item in ipairs(view:flatten()) do
-      if not reviewed[hunk_key(item)] then touched[item.filename] = nil end
+      if hunks[hunk_key(item)] and not reviewed[hunk_key(item)] then touched[item.filename] = nil end
     end
     for _, item in pairs(touched) do
       local node = find_node(view.renderer.root_nodes, item)
@@ -165,6 +178,16 @@ function M.attach(view, opts)
     update()
   end })
 
+  vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("ReviewProgress" .. view.win.buf, { clear = true }),
+    pattern = "ReviewCommentsChanged",
+    callback = function()
+      if not view.win:valid() or (opts.active and not opts.active()) then return true end
+      local refresh = view:refresh()
+      if refresh then refresh:next(update) end
+    end,
+  })
+  require("user.review.comments").set_reviewed(reviewed)
   update()
   view:wait(update)
   return function(item) return reviewed[hunk_key(item)] ~= nil end

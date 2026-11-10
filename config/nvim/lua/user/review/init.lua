@@ -1,5 +1,6 @@
 local M = {}
 local request = 0
+local layout
 
 local function run(cwd, command)
   local thread = coroutine.running()
@@ -69,8 +70,11 @@ function M.open(base, opts)
   opts = opts or {}
   request = request + 1
   local id = request
-  local review_win = opts.win or vim.api.nvim_get_current_win()
-  local review_buf = vim.api.nvim_win_get_buf(review_win)
+  local reuse = opts.details ~= false and layout
+    and vim.api.nvim_win_is_valid(layout.details_win) and vim.api.nvim_win_is_valid(layout.review_win)
+    and (not opts.win or opts.win == layout.review_win)
+  local review_win = opts.win or (reuse and layout.review_win) or vim.api.nvim_get_current_win()
+  local details_win = reuse and layout.details_win or nil
   local cwd = opts.cwd or vim.fn.getcwd()
   local ready, pr_result = false, nil
 
@@ -87,27 +91,23 @@ function M.open(base, opts)
 
     local buf = vim.fn.bufnr("^PR Details$")
     if buf == -1 then
-      buf = vim.api.nvim_create_buf(true, false)
+      buf = vim.api.nvim_create_buf(false, true)
       vim.api.nvim_buf_set_name(buf, "PR Details")
     end
-    -- Trouble only uses normal buffers as navigation targets.
-    vim.bo[buf].buftype = ""
+    vim.bo[buf].buftype = "nofile"
     vim.bo[buf].bufhidden = "hide"
     vim.bo[buf].swapfile = false
     vim.bo[buf].modifiable = true
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(vim.trim(pr_result.stdout or ""), "\n", { plain = true }))
     vim.bo[buf].modifiable = false
     vim.bo[buf].modified = false
-    vim.api.nvim_win_set_buf(review_win, buf)
-    vim.api.nvim_win_call(review_win, function()
+    if not details_win or not vim.api.nvim_win_is_valid(details_win) then return end
+    vim.api.nvim_win_set_buf(details_win, buf)
+    vim.api.nvim_win_call(details_win, function()
       vim.bo[buf].filetype = "markdown"
     end)
     vim.keymap.set("n", "q", function()
-      if vim.api.nvim_buf_is_valid(review_buf) then
-        vim.api.nvim_win_set_buf(0, review_buf)
-      else
-        vim.cmd("enew")
-      end
+      if vim.api.nvim_win_is_valid(review_win) then vim.api.nvim_set_current_win(review_win) end
     end, { buffer = buf, silent = true })
   end
 
@@ -141,7 +141,21 @@ function M.open(base, opts)
       vim.notify("Review: could not determine fork point for '" .. ref .. "': " .. merge_err, vim.log.levels.ERROR)
       return
     end
+    if opts.details ~= false then
+      if not details_win then
+        details_win = review_win
+        vim.api.nvim_set_current_win(details_win)
+        vim.cmd("tabnew")
+        review_win = vim.api.nvim_get_current_win()
+        layout = { details_win = details_win, review_win = review_win }
+      end
+      vim.api.nvim_set_current_win(details_win)
+      vim.cmd("tabmove 0")
+      vim.api.nvim_set_current_win(review_win)
+      vim.cmd("tabmove 1")
+    end
     local label = "Review: " .. ref
+    require("user.review.comments").load(cwd, active)
 
     local gitsigns = require("gitsigns")
     vim.api.nvim_win_call(review_win, function()
