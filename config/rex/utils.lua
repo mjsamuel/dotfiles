@@ -2,7 +2,7 @@ local M = {}
 
 -- Define an action that opens a command in a floating window covering most of
 -- the screen. Modes can only bind actions by name, so popups need to be actions
-M.popup = function(name, command)
+M.define_popup = function(name, command)
   rex.action({
     name = name,
     title = name,

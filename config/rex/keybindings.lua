@@ -35,26 +35,6 @@ local bind_resize = bind_in.resize
 
 rex.bind(prefix, enter_mode("prefix"))
 
--- Press prefix twice to send it once to the terminal
-bind_prefix(prefix, "pane.send_key", { key = prefix })
-
--- Sessions -------------------------------------------------------------------
-bind_prefix("w", "session.switch")
-bind_prefix("shift+n", "session.new")
-bind_prefix("shift+d", "session.close")
-bind_prefix("shift+w", "session.rename")
-bind_prefix("shift+4", "session.rename")
-
--- Tabs -----------------------------------------------------------------------
-bind_prefix("t", "client.tab.new")
-bind_prefix("shift+t", "client.tab.rename")
-bind_prefix("shift+x", "client.tab.close")
-
-for i = 1, 9 do
-  bind_prefix(tostring(i), "client.tab.goto", { index = i })
-  rex.bind("alt+" .. i, "client.tab.goto", { index = i })
-end
-
 -- Panes ----------------------------------------------------------------------
 bind_prefix("v", "pane.split.right")
 bind_prefix("-", "pane.split.down")
@@ -64,8 +44,6 @@ bind_prefix("h", "pane.focus.left")
 bind_prefix("j", "pane.focus.down")
 bind_prefix("k", "pane.focus.up")
 bind_prefix("l", "pane.focus.right")
-bind_prefix("tab", "pane.focus_next")
-bind_prefix("shift+tab", "pane.focus_previous")
 rex.bind("alt+l", "pane.focus_previous")
 
 bind_prefix("shift+h", "pane.move.left")
@@ -76,7 +54,6 @@ bind_prefix("shift+l", "pane.move.right")
 bind_prefix("x", "pane.close")
 bind_prefix("z", "pane.zoom")
 bind_prefix("o", "pane.balance")
-bind_prefix("shift+p", "pane.rename")
 rex.bind("alt+k", "com.superlogical.terminal.clear")
 
 -- Resize mode: prefix+r, then h/j/k/l or the arrow keys. Esc or enter leaves.
@@ -96,15 +73,11 @@ bind_float("f", "pane.float")
 bind_float("m", "pane.minimize_floating")
 
 -- Popups ---------------------------------------------------------------------
-local sessionizer = utils.popup("sessionizer", { "sessionizer", "--rex" })
-local notarizer = utils.popup("notarizer", { "notarizer" })
-local scratch = utils.popup("scratch", { os.getenv("SHELL") or "sh" })
+utils.define_popup("notarizer", { "notarizer" })
 
+local sessionizer = utils.define_popup("sessionizer", { "sessionizer", "--rex" })
 rex.bind("alt+shift+s", sessionizer)
-bind_prefix("s", sessionizer)
-bind_prefix("n", notarizer)
-bind_prefix("p", scratch)
 
 -- Misc -----------------------------------------------------------------------
-bind_prefix("b", "client.sidebar.toggle")
+rex.bind("cmd+s", "client.sidebar.toggle")
 bind_prefix("shift+r", "client.config.reload")
