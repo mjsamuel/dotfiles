@@ -13,7 +13,7 @@ M.define_popup = function(name, command)
         layout = {
           block = {
             flavor = "com.superlogical.terminal.shell",
-            options = { command = command },
+            options = { command = command, interactive = true },
           },
         },
       })
