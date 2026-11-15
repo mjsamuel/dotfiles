@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "blender": {
+      "type": "stdio",
+      "command": "blender-mcp",
+      "args": [],
+      "env": {}
+    },
+    "executor": {
+      "type": "http",
+      "url": "https://executor.mjsamuel.com/mcp"
+    }
+  }
+}

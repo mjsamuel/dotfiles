@@ -15,3 +15,47 @@
     src: "{{ dotfiles_dir }}/config/claude/keybindings.json"
     path: "~/.claude/keybindings.json"
     state: link
+
+- name: configure claude MCP servers
+  tags: ["claude-mcp"]
+  vars:
+    desired_mcp_servers: "{{ (lookup('file', dotfiles_dir ~ '/config/claude/mcp.json') | from_json).mcpServers }}"
+    current_mcp_servers: "{{ (claude_config.content | default('e30=') | b64decode | from_json).get('mcpServers', {}) }}"
+  block:
+    - name: check for claude user config
+      stat:
+        path: "~/.claude.json"
+      register: claude_config_stat
+
+    - name: read claude user config
+      slurp:
+        src: "~/.claude.json"
+      register: claude_config
+      when: claude_config_stat.stat.exists
+
+    - name: remove changed claude MCP servers
+      command:
+        argv:
+          - claude
+          - mcp
+          - remove
+          - --scope
+          - user
+          - "{{ item.key }}"
+      loop: "{{ desired_mcp_servers | dict2items }}"
+      when:
+        - item.key in current_mcp_servers
+        - current_mcp_servers[item.key] != item.value
+
+    - name: register claude MCP servers
+      command:
+        argv:
+          - claude
+          - mcp
+          - add-json
+          - --scope
+          - user
+          - "{{ item.key }}"
+          - "{{ item.value | to_json }}"
+      loop: "{{ desired_mcp_servers | dict2items }}"
+      when: current_mcp_servers.get(item.key) != item.value
