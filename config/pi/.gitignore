@@ -6,5 +6,6 @@ skills/
 
 AGENTS.md
 auth.json
+mcp-auth.json
 models-store.json
 trust.json

@@ -1,5 +1,8 @@
 {
   "mcpServers": {
+    "executor": {
+      "url": "https://executor.mjsamuel.com/mcp"
+    },
     "canva-otter": {
       "command": "otter",
       "args": ["mcp", "serve"]
