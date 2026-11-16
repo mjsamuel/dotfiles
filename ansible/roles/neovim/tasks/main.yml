@@ -34,6 +34,26 @@
   become: yes
   when: clone is changed
 
+# Private repo, so this needs GitHub auth (`gh auth login && gh auth setup-git`).
+# update: no avoids clobbering local work in the checkout.
+- name: clone review.nvim
+  git:
+    repo: https://github.com/mjsamuel/review.nvim
+    dest: "{{ ansible_env.HOME }}/Developer/review.nvim"
+    clone: true
+    update: no
+  environment:
+    GIT_TERMINAL_PROMPT: "0"
+  register: review_clone
+  failed_when: false
+
+- name: warn if review.nvim could not be cloned
+  debug:
+    msg: >-
+      Skipped cloning review.nvim ({{ review_clone.msg | default('unknown error') | trim }}).
+      Authenticate with GitHub and re-run with --tags nvim.
+  when: review_clone.rc | default(0) != 0
+
 - name: install plugins
   shell: |
     command -v fnm >/dev/null && eval "$(fnm env)"

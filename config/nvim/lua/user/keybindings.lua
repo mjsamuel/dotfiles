@@ -42,13 +42,6 @@ command.set("Github", function(args)
   end
   require("snacks").gitbrowse.open(opts)
 end, { nargs = 0, range = true })
--- :Review [base] compares the selected ref's merge-base with the working tree.
-command.set("Review", function(args) require("user.review").open(args.args) end, {
-  nargs = "?",
-  complete = function()
-    return vim.fn.systemlist({ "git", "for-each-ref", "--format=%(refname:short)", "refs/heads", "refs/remotes" })
-  end
-})
 
 -- lsp
 keymap.set({ "n", "v" }, "<Leader>f", function() require("conform").format() end) -- [f]ormat
