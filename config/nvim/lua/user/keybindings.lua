@@ -77,6 +77,11 @@ for i, key in ipairs({ "w", "f", "p", "r", "s", "t", "x", "c", "v" }) do -- corr
   keymap.set("n", "m" .. i, f)
 end
 
+-- treesitter context
+vim.keymap.set('n', '<leader>c', function()
+  require('treesitter-context').toggle()
+end)
+
 -- make
 local function make(make_args)
   if not vim.g.makefile_exists then return end
@@ -96,10 +101,10 @@ keymap.set("n", "<C-e>", function()
 end, { silent = true })
 
 -- copy to system clipboard
-keymap.set("n", "Y", function()
+keymap.set("n", "<Leader>y", function()
   utils.copy_to_system_clipboard(vim.fn.getreg("\""))
 end, { silent = true })
-keymap.set("v", "Y", function()
+keymap.set("v", "yc", function()
   local visual = utils.get_visual_selection()
   if not visual then return end
   local text = visual.text
@@ -107,9 +112,8 @@ keymap.set("v", "Y", function()
   utils.copy_to_system_clipboard(text)
 end, { silent = true })
 
--- copy the current file path and line number to the system clipboard in a
--- format easier ai code assistants to understand
-keymap.set("v", "ai", function()
+-- copy the current file path and line number to the system clipboard for agents
+keymap.set("v", "ya", function()
   local text = utils.get_visual_selection()
   if not text then return end
   local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
