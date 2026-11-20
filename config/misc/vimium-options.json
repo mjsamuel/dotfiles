@@ -1,0 +1,10 @@
+{
+  "exclusionRules": [
+    {
+      "passKeys": "f",
+      "pattern": "https?://www.youtube.com/watch*"
+    }
+  ],
+  "keyMappings": "unmapAll\n\nmap h scrollLeft\nmap j scrollDown\nmap k scrollUp\nmap l scrollRight\n\nmap gg scrollToTop\nmap G scrollToBottom\n\nmap gi focusInput\nmap gp togglePinTab\nmap <space>y copyCurrentUrl\n\nmap f LinkHints.activateMode\nmap F LinkHints.activateModeToOpenInNewTab\n\nmap ss Vomnibar.activateBookmarksInNewTab\nmap sb Vomnibar.activateTabSelection\n\nmap / enterFindMode\nmap n performFind\nmap N performBackwardsFind",
+  "settingsVersion": "2.4.2"
+}
