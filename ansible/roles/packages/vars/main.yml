@@ -13,7 +13,6 @@ homebrew_installed_packages:
   - gnu-tar
   - herdr # agent multiplexer
   - imagemagick
-  - jordanbaird-ice # menu bar manager
   - jq # json formatter & other utils
   - lazygit # git gui
   - luarocks
@@ -38,6 +37,7 @@ homebrew_cask_apps:
   - { name: helium-browser, install_options: [adopt] }
   - { name: iina, install_options: [adopt] }
   - { name: tailscale, install_options: [adopt] }
+  - { name: thaw, install_options: [adopt] } # menu bar manager
   - { name: transmission, install_options: [adopt] }
   - { name: typewhisper/tap/typewhisper, install_options: [adopt] }
   - { name: visual-studio-code, install_options: [adopt] }
