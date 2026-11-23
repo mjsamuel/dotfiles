@@ -3,7 +3,6 @@ import autoName from "./auto-name";
 import { registerClearCommand } from "./clear";
 import { registerExitCommand } from "./exit";
 import footer from "./footer";
-import herdrSessionName from "./herdr-session-name";
 import modelUsage from "./model-usage";
 import piDocumentation from "./pi-documentation";
 import { registerPromptStash } from "./prompt-stash";
@@ -17,7 +16,6 @@ export default function user(pi: ExtensionAPI) {
   registerExitCommand(pi);
   registerSlashCommandGuard(pi);
   footer(pi);
-  herdrSessionName(pi);
   modelUsage(pi);
   piDocumentation(pi);
   registerPromptStash(pi);

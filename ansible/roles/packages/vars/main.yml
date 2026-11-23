@@ -11,7 +11,6 @@ homebrew_installed_packages:
   - gh # GitHub CLI
   - git
   - gnu-tar
-  - herdr # agent multiplexer
   - imagemagick
   - jq # json formatter & other utils
   - lazygit # git gui
@@ -59,10 +58,6 @@ github_releases:
   - repo: pnpm/pnpm
     binary: pnpm
     pattern: "^pnpm-linux-{{ {'x86_64': 'x64', 'aarch64': 'arm64'}[ansible_architecture] | default(ansible_architecture) }}\\.tar\\.gz$"
-  - repo: herdrdev/herdr
-    binary: herdr
-    pattern: "^herdr-{{ ansible_system | lower }}-{{ ansible_architecture }}$"
-    archive_type: raw
   - repo: earendil-works/pi
     binary: pi
     pattern: "^pi-{{ ansible_system | lower }}-{{ {'x86_64': 'x64', 'aarch64': 'arm64'}[ansible_architecture] | default(ansible_architecture) }}\\.tar\\.gz$"
