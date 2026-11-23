@@ -1,4 +1,5 @@
 local utils = require("utils")
+require("sessionizer")
 
 local bind = utils.bind
 local prefix = "ctrl+b"
@@ -65,8 +66,7 @@ bind("float/m", "pane.minimize_floating")
 -- Popups ---------------------------------------------------------------------
 utils.define_popup("notarizer", { "notarizer" })
 
-local sessionizer = utils.define_popup("sessionizer", { "sessionizer", "--rex" })
-bind("alt+shift+s", sessionizer)
+bind("alt+shift+s", "sessionizer")
 
 -- Misc -----------------------------------------------------------------------
 bind("cmd+s", "client.sidebar.toggle")

@@ -4,19 +4,18 @@ set -e
 
 main() {
 	if [ "$#" -ne 1 ]; then
-		printf 'Usage: sessionizer --herdr | --rex\n' >&2
+		printf 'Usage: sessionizer --herdr\n' >&2
 		exit 1
 	fi
 
 	case "$1" in
 	--herdr) open_session=open_herdr ;;
-	--rex) open_session=open_rex ;;
 	-h | --help)
-		printf 'Usage: sessionizer --herdr | --rex\n'
+		printf 'Usage: sessionizer --herdr\n'
 		exit 0
 		;;
 	*)
-		printf 'Unknown option: %s\nUsage: sessionizer --herdr | --rex\n' "$1" >&2
+		printf 'Unknown option: %s\nUsage: sessionizer --herdr\n' "$1" >&2
 		exit 1
 		;;
 	esac
@@ -77,16 +76,5 @@ open_herdr() {
 	[ -n "$HERDR_ENV" ] || herdr
 }
 
-open_rex() {
-	selected=$1
-	selected_name=$2
-
-	session_id=$(rex ls --json | jq -r --arg n "$selected_name" '(.sessions // .)[] | select(.label == $n) | .session_id' | head -n1)
-	if [ -z "$session_id" ]; then
-		session_id=$(rex new "$selected_name" -c "$selected" --json | jq -er '.session_id')
-	fi
-
-	rex do session.select session_id="$session_id" >/dev/null
-}
 
 main "$@"

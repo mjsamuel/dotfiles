@@ -53,7 +53,6 @@ function zshaddhistory() {
 disable r
 bindkey -v # vi mode
 bindkey "^?" backward-delete-char # delete with backspace
-bindkey -s '^[S' '^Uherdr-sessionizer\n'
 bindkey -s '^[N' '^Unotarizer\n'
 
 # Edit current command in nvim
